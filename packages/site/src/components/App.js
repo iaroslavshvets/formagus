@@ -1,6 +1,11 @@
-import React from 'react';
-import {PAGE_BACKGROUND, SIDEBAR_SIZE, SMALL_BREAK, TOPBAR_SIZE} from '../theme';
-import {Nav} from './Nav';
+import React from "react";
+import {
+  PAGE_BACKGROUND,
+  SIDEBAR_SIZE,
+  SMALL_BREAK,
+  TOPBAR_SIZE
+} from "../theme";
+import { Nav } from "./Nav";
 
 export const App = ({ children }) => (
   <div>
@@ -8,7 +13,7 @@ export const App = ({ children }) => (
     <div
       css={{
         background: PAGE_BACKGROUND,
-        minHeight: '100vw',
+        minHeight: "100vw",
         marginLeft: SIDEBAR_SIZE,
         [SMALL_BREAK]: {
           marginLeft: 0,

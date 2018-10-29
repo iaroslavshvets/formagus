@@ -1,16 +1,16 @@
-import React from 'react';
-import {Link, Match} from '@reach/router';
-import {Logo} from './Logo';
+import React from "react";
+import { Link, Match } from "@reach/router";
+import { Logo } from "./Logo";
 import {
   BLACK,
   SMALL_BREAK,
   SMALL_BREAK_QUERY,
   SIDEBAR_SIZE,
   TOPBAR_SIZE
-} from '../theme';
-import Component from '@reactions/component';
-import scrollIntoView from 'scroll-into-view-if-needed';
-import Media from 'react-media';
+} from "../theme";
+import Component from "@reactions/component";
+import scrollIntoView from "scroll-into-view-if-needed";
+import Media from "react-media";
 
 export const Nav = () => (
   <Media query={SMALL_BREAK_QUERY}>
@@ -82,14 +82,18 @@ export const Nav = () => (
                     <div css={{ padding: 20 }}>
                       <div css={{ fontSize: "85%" }}>
                         v{VERSION} -{" "}
-                        <a href="https://github.com/wix-playground/magus form">Github</a>
+                        <a href="https://github.com/wix-playground/magus form">
+                          Github
+                        </a>
                       </div>
 
                       <Header>About</Header>
 
                       <NavLink to="./">Introduction</NavLink>
                       <NavLink to="installation">Installation</NavLink>
-                      <NavLink to="comparison">Comparison to other form libraries</NavLink>
+                      <NavLink to="comparison">
+                        Comparison to other form libraries
+                      </NavLink>
 
                       <Header>Recipes</Header>
                       <NavLink to="example/basic">Basic Usage</NavLink>
@@ -159,7 +163,11 @@ const NavLink = ({ to, ...props }) => (
     {({ match }) => (
       <Component
         initialState={{ refs: { node: null } }}
-        didUpdate={({ state: { refs: { node } } }) => {
+        didUpdate={({
+          state: {
+            refs: { node }
+          }
+        }) => {
           if (match) {
             scrollIntoView(node, {
               behavior: "smooth",

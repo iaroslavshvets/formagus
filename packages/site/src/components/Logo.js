@@ -1,5 +1,5 @@
-import React from 'react';
-import {GREEN} from '../theme';
+import React from "react";
+import { GREEN } from "../theme";
 
 export const Logo = () => (
   <div css={{ background: GREEN, padding: "10px 20px" }}>
@@ -10,7 +10,17 @@ export const Logo = () => (
       xmlns="http://www.w3.org/2000/svg"
     >
       <title>Magus form Logo</title>
-      <text xmlns="http://www.w3.org/2000/svg" style={{fill:'white',fontFamily:'Bangers, cursive',fontSize:'140px'}} x="0" y="110" id="e1_texte">
+      <text
+        xmlns="http://www.w3.org/2000/svg"
+        style={{
+          fill: "white",
+          fontFamily: "Bangers, cursive",
+          fontSize: "140px"
+        }}
+        x="0"
+        y="110"
+        id="e1_texte"
+      >
         MAGUS FORM
       </text>
     </svg>

@@ -1,6 +1,6 @@
-import {PAGE_BACKGROUND} from '../theme';
-import React from 'react';
-import {MarkdownPage} from './MarkdownPage';
+import { PAGE_BACKGROUND } from "../theme";
+import React from "react";
+import { MarkdownPage } from "./MarkdownPage";
 
 export const MarkdownRoute = ({ dir, filename }) => (
   <div

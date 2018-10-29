@@ -1,5 +1,5 @@
-import * as React from 'react';
-import Component from '@reactions/component';
+import * as React from "react";
+import Component from "@reactions/component";
 
 export const DocumentTitle = ({ title }) => (
   <Component

@@ -1,8 +1,8 @@
-import React, {Fragment} from 'react';
-import {DocumentTitle} from './DocumentTitle';
+import React, { Fragment } from "react";
+import { DocumentTitle } from "./DocumentTitle";
 
 const exampleSandboxen = {
-  basic: 'lyzwj8w0qz',
+  basic: "lyzwj8w0qz"
 };
 
 export const Example = ({ id }) => (

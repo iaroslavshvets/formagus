@@ -1,15 +1,15 @@
-import React from 'react';
-import {Home} from './Home';
-import {hot} from 'react-hot-loader';
-import {Router} from '@reach/router';
-import {Tutorial} from './Tutorial';
-import {App} from './App';
-import {BLACK} from '../theme';
-import {MarkdownRoute} from './MarkdownRoute';
-import {Example} from './Example';
-require('../public/styles/app.scss');
-require('../public/styles/markdown.scss');
-require('../public/styles/prismjs.scss');
+import React from "react";
+import { Home } from "./Home";
+import { hot } from "react-hot-loader";
+import { Router } from "@reach/router";
+import { Tutorial } from "./Tutorial";
+import { App } from "./App";
+import { BLACK } from "../theme";
+import { MarkdownRoute } from "./MarkdownRoute";
+import { Example } from "./Example";
+require("../public/styles/app.scss");
+require("../public/styles/markdown.scss");
+require("../public/styles/prismjs.scss");
 
 const RootView = () => (
   <div css={{ color: BLACK }}>

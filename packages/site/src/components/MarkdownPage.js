@@ -1,6 +1,6 @@
-import React, {Fragment} from 'react';
-import {AsyncModule} from './AsyncModule';
-import {DocumentTitle} from './DocumentTitle';
+import React, { Fragment } from "react";
+import { AsyncModule } from "./AsyncModule";
+import { DocumentTitle } from "./DocumentTitle";
 
 export const MarkdownPage = ({ dir, filename, css }) => (
   <AsyncModule

@@ -1,6 +1,6 @@
-import React, {Fragment} from 'react';
-import {DocumentTitle} from './DocumentTitle';
-import {MarkdownRoute} from './MarkdownRoute';
+import React, { Fragment } from "react";
+import { DocumentTitle } from "./DocumentTitle";
+import { MarkdownRoute } from "./MarkdownRoute";
 
 export const Home = () => (
   <Fragment>

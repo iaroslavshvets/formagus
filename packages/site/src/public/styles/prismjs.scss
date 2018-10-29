@@ -1,7 +1,8 @@
 code {
-  font-family: 'SFMono-Regular', Consolas, 'Roboto Mono', 'Droid Sans Mono', 'Liberation Mono', Menlo, Courier, monospace;
+  font-family: "SFMono-Regular", Consolas, "Roboto Mono", "Droid Sans Mono",
+    "Liberation Mono", Menlo, Courier, monospace;
 }
-code:not([class]){
+code:not([class]) {
   text-shadow: 0.5px 0.5px;
 }
 
@@ -9,7 +10,7 @@ code[class*="language-"],
 pre[class*="language-"] {
   display: block;
   color: #a9b7c6;
-  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  font-family: Consolas, Monaco, "Andale Mono", monospace;
   direction: ltr;
   text-align: left;
   white-space: pre;
@@ -30,22 +31,26 @@ pre[class*="language-"] {
   border-left: solid 5px black;
 }
 
-pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
-code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+pre[class*="language-"]::-moz-selection,
+pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection,
+code[class*="language-"] ::-moz-selection {
   color: inherit;
-  background: rgba(33,66,131,.85);
+  background: rgba(33, 66, 131, 0.85);
 }
 
-pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
-code[class*="language-"]::selection, code[class*="language-"] ::selection {
+pre[class*="language-"]::selection,
+pre[class*="language-"] ::selection,
+code[class*="language-"]::selection,
+code[class*="language-"] ::selection {
   color: inherit;
-  background: rgba(33,66,131,.85);
+  background: rgba(33, 66, 131, 0.85);
 }
 
 /* Code blocks */
 pre[class*="language-"] {
   padding: 1em;
-  margin: .5em 0;
+  margin: 0.5em 0;
   overflow: auto;
 }
 
@@ -56,8 +61,8 @@ pre[class*="language-"] {
 
 /* Inline code */
 :not(pre) > code[class*="language-"] {
-  padding: .1em;
-  border-radius: .3em;
+  padding: 0.1em;
+  border-radius: 0.3em;
 }
 
 .token.comment,

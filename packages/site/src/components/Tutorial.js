@@ -1,17 +1,11 @@
-import * as React from 'react';
-import {GREEN} from '../theme';
-import {MarkdownPage} from './MarkdownPage';
-import {Link} from '@reach/router';
+import * as React from "react";
+import { GREEN } from "../theme";
+import { MarkdownPage } from "./MarkdownPage";
+import { Link } from "@reach/router";
 
-const tutorialLinks = [
-  '01-intro',
-  '10-next-steps'
-];
+const tutorialLinks = ["01-intro", "10-next-steps"];
 
-const tutorialSandboxen = [
-  'rwo3jz5vno',
-  'n01l63w4nl'
-];
+const tutorialSandboxen = ["rwo3jz5vno", "n01l63w4nl"];
 
 export const Tutorial = ({ id, location }) => (
   <div
@@ -100,7 +94,7 @@ export const Tutorial = ({ id, location }) => (
       title="Codesandbox"
       src={`https://codesandbox.io/embed/${
         tutorialSandboxen[tutorialLinks.indexOf(id)]
-        }?fontsize=13`}
+      }?fontsize=13`}
       css={{
         display: location.search === "?fullpage" ? "none" : "block",
         width: "100%",
