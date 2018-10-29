@@ -3,12 +3,12 @@
 You can install this library with npm or yarn.
 
 ```sh
-npm install @wix/broform
+npm install @wix/magus-form
 # or
-yarn add @wix/broform
+yarn add @wix/magus-form
 ```
 
-Also broform has a dependency on mobx, if it's not installed, please do
+Also magus form has a dependency on mobx, if it's not installed, please do
 
 ```sh
 npm install mobx mobx-react

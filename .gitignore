@@ -1,0 +1,16 @@
+# IDE
+.idea
+
+# dependencies
+node_modules
+packages/**/node_modules
+
+# production
+packages/**/dist
+
+# misc
+.DS_Store
+
+packages/**npm-debug.log*
+packages/**yarn-debug.log*
+packages/**yarn-error.log*

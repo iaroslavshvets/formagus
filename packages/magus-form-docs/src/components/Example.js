@@ -7,7 +7,7 @@ const exampleSandboxen = {
 
 export const Example = ({ id }) => (
   <Fragment>
-    <DocumentTitle title={`Reach Router - Example - ${id}`} />
+    <DocumentTitle title={`Magus form - Example - ${id}`} />
     <iframe
       title="example"
       src={`https://codesandbox.io/embed/${exampleSandboxen[id]}?fontsize=13`}

@@ -82,7 +82,7 @@ export const Nav = () => (
                     <div css={{ padding: 20 }}>
                       <div css={{ fontSize: "85%" }}>
                         v{VERSION} -{" "}
-                        <a href="https://github.com/wix-playground/broform">Github</a>
+                        <a href="https://github.com/wix-playground/magus form">Github</a>
                       </div>
 
                       <Header>About</Header>
@@ -108,7 +108,7 @@ export const Nav = () => (
                         }}
                       >
                         <NavLink to="api/RouteComponent">
-                          Broform Component
+                          Magus form Component
                         </NavLink>
                       </div>
 
@@ -119,7 +119,7 @@ export const Nav = () => (
                         }}
                       >
                         <NavLink to="api/RouteComponent">
-                          Broform Component
+                          Magus form Component
                         </NavLink>
                       </div>
                     </div>

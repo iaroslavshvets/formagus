@@ -5,7 +5,7 @@ the nasty stuff, like different form and field states (dirty, touched, submit co
 your bro to carry out this mission, by providing adapters, which are responsible for the displaying your actual components. Together
 you will become a real team.
 
-Broform is compatible with React 15+ and is powered by `Mobx`.
+Magus form is compatible with React 15+ and is powered by `Mobx`.
 
 ## Features
 
@@ -42,9 +42,9 @@ const SimpleAsHellForm = (props) => (
 Now lets add the library sugar into the mix:
 
 ```jsx
-import {Form} from '@wix/broform';
+import {Form} from '@wix/magus-form';
 
-const BroForm = (props) => (
+const Magus form = (props) => (
   <Form onSubmit={props.onSubmit}>
     {(submit) => {
       return (
@@ -59,26 +59,26 @@ const BroForm = (props) => (
 ```
 
 Hm... Looks legit. But. It will not work. We missing the crucial player in the game – Mr. `Field`, which is the bridge
-between Broform and your components. In order to set it up, you need to pass an Adapter.
-Adapter – is a component, which will receive all available form properties as `props.broform`, which
+between Magus form and your components. In order to set it up, you need to pass an Adapter.
+Adapter – is a component, which will receive all available form properties as `props.magus form`, which
 are injected by the `<Field/>`. Now, back to school:
 
 ```jsx
-import {Form, Field} from '@wix/broform';
+import {Form, Field} from '@wix/magus-form';
 
 const InputAdapter = (props) => {
-  const {broform} = props;
+  const {magus form} = props;
   return (
     <input
-      value={broform.value}
+      value={magus form.value}
       onChange={(e) => {
-        broform.onChange(e.target.value);
+        magus form.onChange(e.target.value);
       }}
     />
   )
 }
 
-const BroForm = (props) => (
+const Magus form = (props) => (
   <Form onSubmit={props.onSubmit}>
     {(submit) => {
       return (
@@ -101,7 +101,7 @@ There are cases, when you need to interact with the form programatically. `FormC
 1. in any place in the code
 
 ```jsx
-import {FormController} from '@wix/broform';
+import {FormController} from '@wix/magus-form';
 
 const formController = new FormController({
   onSubmit: (errors, values) => {
@@ -119,11 +119,11 @@ export {formController}
 2. later in React Component file
 
 ```jsx
-import {Form, Field} from '@wix/broform';
+import {Form, Field} from '@wix/magus-form';
 import {formController} from './formController';
 import {InputAdapter} from './InputAdapter';
 
-const BroForm = (props) => (
+const Magus form = (props) => (
   <Form controller={formController}>
     {(submit) => {
       return (

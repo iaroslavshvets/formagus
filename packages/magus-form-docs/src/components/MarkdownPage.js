@@ -12,7 +12,7 @@ export const MarkdownPage = ({ dir, filename, css }) => (
     {mod =>
       mod ? (
         <Fragment>
-          <DocumentTitle title={`Reach Router - ${mod.title}`} />
+          <DocumentTitle title={`Magus form - ${mod.title}`} />
           <mod.default />
         </Fragment>
       ) : (
