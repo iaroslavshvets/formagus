@@ -33,7 +33,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
-      title: 'Magus form - magical form',
+      title: 'Formagus - magical form',
       template: 'src/index.html',
     }),
     new webpack.NamedModulesPlugin(),

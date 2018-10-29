@@ -5,7 +5,7 @@ the nasty stuff, like different form and field states (dirty, touched, submit co
 your bro to carry out this mission, by providing adapters, which are responsible for the displaying your actual components. Together
 you will become a real team.
 
-Magus form is compatible with React 15+ and is powered by `Mobx`.
+Formagus is compatible with React 15+ and is powered by `Mobx`.
 
 ## Features
 
@@ -44,7 +44,7 @@ Now lets add the library sugar into the mix:
 ```jsx
 import {Form} from '@wix/magus-form';
 
-const Magus form = (props) => (
+const Formagus = (props) => (
   <Form onSubmit={props.onSubmit}>
     {(submit) => {
       return (
@@ -59,26 +59,26 @@ const Magus form = (props) => (
 ```
 
 Hm... Looks legit. But. It will not work. We missing the crucial player in the game – Mr. `Field`, which is the bridge
-between Magus form and your components. In order to set it up, you need to pass an Adapter.
-Adapter – is a component, which will receive all available form properties as `props.magus form`, which
+between Formagus and your components. In order to set it up, you need to pass an Adapter.
+Adapter – is a component, which will receive all available form properties as `props.Formagus`, which
 are injected by the `<Field/>`. Now, back to school:
 
 ```jsx
 import {Form, Field} from '@wix/magus-form';
 
 const InputAdapter = (props) => {
-  const {magus form} = props;
+  const {Formagus} = props;
   return (
     <input
-      value={magus form.value}
+      value={Formagus.value}
       onChange={(e) => {
-        magus form.onChange(e.target.value);
+        Formagus.onChange(e.target.value);
       }}
     />
   )
 }
 
-const Magus form = (props) => (
+const Formagus = (props) => (
   <Form onSubmit={props.onSubmit}>
     {(submit) => {
       return (
@@ -123,7 +123,7 @@ import {Form, Field} from '@wix/magus-form';
 import {formController} from './formController';
 import {InputAdapter} from './InputAdapter';
 
-const Magus form = (props) => (
+const Formagus = (props) => (
   <Form controller={formController}>
     {(submit) => {
       return (

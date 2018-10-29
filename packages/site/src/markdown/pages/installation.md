@@ -8,7 +8,7 @@ npm install @wix/magus-form
 yarn add @wix/magus-form
 ```
 
-Also magus form has a dependency on mobx, if it's not installed, please do
+Also Formagus has a dependency on mobx, if it's not installed, please do
 
 ```sh
 npm install mobx mobx-react

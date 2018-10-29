@@ -9,7 +9,7 @@ export const Logo = () => (
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <title>Magus form Logo</title>
+      <title>Formagus Logo</title>
       <text
         xmlns="http://www.w3.org/2000/svg"
         style={{
@@ -21,7 +21,7 @@ export const Logo = () => (
         y="110"
         id="e1_texte"
       >
-        MAGUS FORM
+        Formagus
       </text>
     </svg>
   </div>
