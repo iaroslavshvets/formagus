@@ -1,0 +1,6 @@
+{
+  "extends": ["tslint-config-wix", "tslint-config-prettier"],
+  "rules": {
+    "no-empty": [true, "allow-empty-catch"]
+  }
+}

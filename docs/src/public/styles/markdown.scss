@@ -1,0 +1,27 @@
+.markdown h1 {
+  font-family: Bangers, cursive;
+}
+.markdown h2 {
+  font-family: Bangers, cursive;
+  font-weight: 100;
+}
+
+.markdown table {
+  border-collapse: collapse;
+  border: solid 1px #aaa;
+}
+.markdown td {
+  border-bottom: solid 1px #ccc;
+  padding: 10px;
+}
+.markdown td:first-child {
+  text-align: right;
+}
+.markdown th {
+  background: #eee;
+}
+.markdown th {
+  text-align: left;
+  padding: 10px;
+  border-bottom: solid 1px #aaa;
+}
