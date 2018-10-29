@@ -13,5 +13,5 @@ run_postcommit_hook () {
     fi
 }
 
-run_postcommit_hook packages/magus-form
-run_postcommit_hook packages/magus-form-docs
+run_postcommit_hook packages/lib
+run_postcommit_hook packages/site

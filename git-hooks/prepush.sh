@@ -16,6 +16,6 @@ run_prepush_hook () {
 
 # run prepush only if branch exists remotely
 if git branch -r | grep -q -e "^\s*origin/$BRANCH$"; then
-    run_prepush_hook packages/magus-form
-    run_prepush_hook packages/magus-form-docs
+    run_prepush_hook packages/lib
+    run_prepush_hook packages/site
 fi

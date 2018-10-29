@@ -2,7 +2,7 @@ import * as React from 'react';
 import {observable, action, runInAction, toJS, computed} from 'mobx';
 import {flatten, unflatten} from 'flat';
 import {Field, ValidationFunction, EqualityCheckFunction, FieldProps, FormatterFunction} from '../Field';
-const set = require('lodash/set');
+const set = require('lodash-es/set');
 const get = require('lodash/get');
 const merge = require('lodash/merge');
 

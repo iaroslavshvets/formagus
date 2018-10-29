@@ -13,5 +13,5 @@ run_precommit_hook () {
     fi
 }
 
-run_precommit_hook packages/magus-form
-run_precommit_hook packages/magus-form-docs
+run_precommit_hook packages/lib
+run_precommit_hook packages/site

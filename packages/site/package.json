@@ -1,7 +1,8 @@
 {
-  "name": "magus-form-docs",
+  "name": "site",
   "version": "1.0.0",
   "main": "index.js",
+  "private": true,
   "license": "MIT",
   "scripts": {
     "build": "webpack",
