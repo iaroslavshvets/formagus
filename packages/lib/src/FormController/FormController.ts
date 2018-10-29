@@ -2,7 +2,7 @@ import * as React from 'react';
 import {observable, action, runInAction, toJS, computed} from 'mobx';
 import {flatten, unflatten} from 'flat';
 import {Field, ValidationFunction, EqualityCheckFunction, FieldProps, FormatterFunction} from '../Field';
-const set = require('lodash-es/set');
+const set = require('lodash/set');
 const get = require('lodash/get');
 const merge = require('lodash/merge');
 
@@ -71,15 +71,11 @@ export interface FormAPI {
 }
 
 export class FormController {
-  //Form options
-  @observable
+  //Form options passed through form Props or directly through new Controller(options)
   protected options!: FormControllerOptions;
-  @action
-  setOptions = (options: FormControllerOptions) => (this.options = options);
 
-  //set current form values as initialValues
   @action
-  protected updateInitialValues = () => {
+  protected setInitialValuesToCurrentValues = () => {
     this.options.initialValues = this.values;
     this.fields.forEach((field: FormField) => {
       field.meta.initialValue = get(this.options.initialValues, field.props!.name);
@@ -232,7 +228,7 @@ export class FormController {
 
   //used for first time field creation
   @action
-  protected updateFieldAsNew = (fieldInstance: Field, props: FieldProps) => {
+  protected initializeNewlyCreatedField = (fieldInstance: Field, props: FieldProps) => {
     const {name, onEqualityCheck} = props;
     const field = this.fields.get(name);
 
@@ -253,7 +249,7 @@ export class FormController {
 
   //used for cases when field was created, unmounted and created again
   @action
-  protected updateFieldAsExisting = (fieldInstance: Field, props: FieldProps) => {
+  protected initializeAlreadyExistedField = (fieldInstance: Field, props: FieldProps) => {
     const field = this.fields.get(props.name)!;
 
     field.instance = fieldInstance;
@@ -263,10 +259,10 @@ export class FormController {
   registerField = (fieldInstance: Field, props: FieldProps) => {
     const {name} = props;
     if (this.fields.has(name) && this.fields.get(name)!.meta.isRegistered) {
-      this.updateFieldAsExisting(fieldInstance, props);
+      this.initializeAlreadyExistedField(fieldInstance, props);
     } else {
       this.createVirtualField(name);
-      this.updateFieldAsNew(fieldInstance, props);
+      this.initializeNewlyCreatedField(fieldInstance, props);
     }
   };
 
@@ -281,7 +277,6 @@ export class FormController {
       : null;
   };
 
-  //sets errors for all fields
   @action
   protected updateErrorsForEveryField = (formValidationErrors: FormValidationErrors) => {
     const fieldErrors = this.flattenErrors(formValidationErrors);
@@ -312,10 +307,10 @@ export class FormController {
   };
 
   constructor(options: FormControllerOptions) {
-    this.setOptions(options);
+    runInAction(() => this.options = options);
   }
 
-  //form FormAPI, which will be passed to child render function or could be retrieved with getApi prop callback
+  //form FormAPI, which will be passed to child render function or could be retrieved with API prop from controller
   @computed
   get API(): FormAPI {
     return {
@@ -471,10 +466,12 @@ export class FormController {
     await this.validate();
 
     try {
-      await this.options.onSubmit!(this.errors, this.formattedValues, submitEvent);
+      if (this.options.onSubmit) {
+        await this.options.onSubmit(this.errors, this.formattedValues, submitEvent);
+      }
 
       if (this.errors === null) {
-        this.updateInitialValues();
+        this.setInitialValuesToCurrentValues();
       }
     } catch {
     } finally {

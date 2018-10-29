@@ -1,6 +1,11 @@
 module.exports = {
-  setupFiles: ['./test/jest-setup.ts'],
-  watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
+  setupFiles: [
+    './test/jest-setup.ts',
+  ],
+  watchPlugins: [
+    'jest-watch-typeahead/filename',
+    'jest-watch-typeahead/testname',
+  ],
   moduleNameMapper: {
     '^.+\\.(css|scss)$': 'identity-obj-proxy',
   },
@@ -9,11 +14,19 @@ module.exports = {
   },
   globals: {
     'ts-jest': {
-      enableTsDiagnostics: false,
+      diagnostics: false,
       ignoreCoverageForDecorators: true,
       ignoreCoverageForAllDecorators: true,
     },
   },
   testRegex: '/__tests__/.*\\.(ts|tsx)$',
-  moduleFileExtensions: ['ts', 'js', 'tsx', 'json'],
+  moduleFileExtensions: [
+    'js',
+    'json',
+    'ts',
+    'tsx',
+  ],
+  preset: 'ts-jest',
+  testMatch: null,
 };
+
