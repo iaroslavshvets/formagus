@@ -62,7 +62,7 @@ export interface FormAPI {
   setFieldValue: (fieldName: string, value: any) => void;
   setFieldCustomState: (fieldName: string, key: string, value: any) => void;
   setFormCustomState: (key: string, value: any) => void;
-  onValidate: () => void;
+  validate: () => void;
   getFieldMeta: (fieldName: string) => FormFieldMeta;
   meta: FormMeta;
   validation: {
@@ -313,7 +313,7 @@ export class FormController {
       setFieldValue: this.changeFieldValue,
       setFieldCustomState: this.setFieldCustomState,
       setFormCustomState: this.setFormCustomState,
-      onValidate: this.validate,
+      validate: this.validate,
       getFieldMeta: this.getFieldMeta,
       meta: {
         isValidating: this.isValidating,
@@ -432,7 +432,7 @@ export class FormController {
     field.value = value;
   };
 
-  createFieldIfDoesNotExist = (fieldName: string) => {
+  protected createFieldIfDoesNotExist = (fieldName: string) => {
     if (!this.fields.has(fieldName)) {
       this.addVirtualField(fieldName);
     }
