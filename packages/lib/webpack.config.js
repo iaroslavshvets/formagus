@@ -1,5 +1,6 @@
 const path = require('path');
-var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: './src/index.ts',
@@ -14,7 +15,27 @@ module.exports = {
     ],
   },
   'plugins': [
-    new LodashModuleReplacementPlugin()
+    new LodashModuleReplacementPlugin(),
+    new UglifyJsPlugin({
+      uglifyOptions: {
+        mangle: {
+          toplevel: true
+        },
+        beautify: false,
+        compress: {
+          warnings: false,
+          conditionals: true,
+          unused: true,
+          comparisons: true,
+          sequences: true,
+          dead_code: true,
+          evaluate: true,
+          if_return: true,
+          join_vars: true,
+          negate_iife: false
+        }
+      }
+    })
   ],
   mode: 'production',
   externals: {
