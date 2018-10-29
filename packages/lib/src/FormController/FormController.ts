@@ -202,7 +202,7 @@ export class FormController {
   };
 
   @action
-  protected createVirtualField = (name: string) => {
+  protected addVirtualField = (name: string) => {
     const self = this;
 
     const meta: FormFieldMeta = {
@@ -230,7 +230,7 @@ export class FormController {
 
   //used for first time field creation
   @action
-  protected initializeNewlyCreatedField = (fieldInstance: Field, props: FieldProps) => {
+  protected initializeVirtualField = (fieldInstance: Field, props: FieldProps) => {
     const {name, onEqualityCheck} = props;
     const field = this.fields.get(name);
 
@@ -263,8 +263,8 @@ export class FormController {
     if (this.fields.has(name) && this.fields.get(name)!.meta.isRegistered) {
       this.initializeAlreadyExistedField(fieldInstance, props);
     } else {
-      this.createVirtualField(name);
-      this.initializeNewlyCreatedField(fieldInstance, props);
+      this.addVirtualField(name);
+      this.initializeVirtualField(fieldInstance, props);
     }
   };
 
@@ -295,17 +295,6 @@ export class FormController {
   protected getFieldMeta = (fieldName: string) => {
     this.createFieldIfDoesNotExist(fieldName);
     return toJS(this.fields.get(fieldName)!.meta);
-  };
-
-  //general handler for resetting form to specific state
-  @action
-  protected resetToValues = (values: FormValues) => {
-    this.fields.forEach((field: FormField, name: string) => {
-      field.value = get(values, name);
-      field.meta.isTouched = false;
-    });
-    this.setSubmitCount(0);
-    this.updateErrorsForEveryField({});
   };
 
   constructor(options: FormControllerOptions) {
@@ -388,6 +377,16 @@ export class FormController {
   @action
   setFormCustomState = (key: string, value: any) => (this.formCustomState[key] = value);
 
+  //general handler for resetting form to specific state
+  @action
+  protected resetToValues = (values: FormValues) => {
+    this.fields.forEach((field: FormField, name: string) => {
+      field.value = get(values, name);
+      field.meta.isTouched = false;
+    });
+    this.setSubmitCount(0);
+    this.updateErrorsForEveryField({});
+  };
   //resets the form to initial values and making it pristine
   reset = () => {
     return this.options.initialValues && this.resetToValues(this.options.initialValues);
@@ -435,7 +434,7 @@ export class FormController {
 
   createFieldIfDoesNotExist = (fieldName: string) => {
     if (!this.fields.has(fieldName)) {
-      this.createVirtualField(fieldName);
+      this.addVirtualField(fieldName);
     }
   };
 
