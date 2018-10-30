@@ -49,6 +49,7 @@ export interface OwnFieldProps {
   onValidate?: ValidationFunction;
   onFormat?: FormatterFunction;
   onEqualityCheck?: EqualityCheckFunction;
+  onInit?: Function;
   persist?: boolean;
   adapterProps?: any;
 }
@@ -126,9 +127,15 @@ export class Field extends React.Component<FieldProps> {
     this.props.controller!.changeFieldValue(this.props.name, value);
   };
 
+  //called when field is initialized
+  protected onInit = (callback: Function) => callback();
+
   //registers Field in FormController
   componentDidMount() {
     this.props.controller!.registerField(this, this.props);
+    if (this.props.onInit) {
+      this.props.onInit();
+    }
   }
 
   //unregisters Field in FormController
