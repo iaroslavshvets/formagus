@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {toJS, computed} from 'mobx';
 import {inject, observer} from 'mobx-react';
-import {FormController, FormField, FormMeta} from '../FormController';
+import {FormController, FormField, FormMeta, FieldValidationState} from '../FormController';
+const isEmpty = require('lodash/isEmpty');
 
 export type ValidationFunction =
-  | ((value: any, values?: any) => any | null)
-  | ((value: any, values?: any) => Promise<any | null>);
+  | ((value: any, values?: any) => FieldValidationState)
+  | ((value: any, values?: any) => Promise<FieldValidationState>);
 
 export type FieldAdapter = ((adapterProps: AdapterProps) => JSX.Element) | React.ComponentClass<any> | React.SFC<any>;
 
@@ -21,12 +22,11 @@ export interface AdapterMetaInfo {
 }
 
 export interface AdapterProps {
-  broform?: {
+  formagus?: {
     name: string;
     meta: AdapterMetaInfo;
     value: any;
     setCustomState: (key: string, value: any) => void;
-    setFormCustomState: (key: string, value: any) => void;
     onChange: (value: any) => void;
     onFocus: () => void;
     onBlur: () => void;
@@ -59,7 +59,9 @@ export interface FieldProps extends InjectedFieldProps, OwnFieldProps {}
 @observer
 export class Field extends React.Component<FieldProps> {
   static defaultProps: Partial<FieldProps> = {
-    onEqualityCheck: (newValue: any, oldValue: any) => newValue === oldValue,
+    onEqualityCheck: (newValue: any, oldValue: any) => {
+      return newValue === oldValue || (isEmpty(newValue) && isEmpty(oldValue));
+    },
     persist: false,
   };
 
@@ -110,17 +112,17 @@ export class Field extends React.Component<FieldProps> {
   };
 
   //focus handler, passed to adapter
-  protected onFocus = (): void => {
+  protected onFocus = () => {
     this.props.controller!.changeFieldActiveState(this.props.name, true);
   };
 
   //blur handler, passed to adapter
-  protected onBlur = (): void => {
+  protected onBlur = () => {
     this.props.controller!.changeFieldActiveState(this.props.name, false);
   };
 
   //value change handler, passed to adapter
-  protected onChange = (value: any): void => {
+  protected onChange = (value: any) => {
     this.props.controller!.changeFieldValue(this.props.name, value);
   };
 
@@ -135,7 +137,7 @@ export class Field extends React.Component<FieldProps> {
   }
 
   //render the adapter passed as `adapter` prop  with optional `adapterProps` prop,
-  //or as children render function, broform prop is injected either way, but `adapterProps` are not passed in second case.
+  //or as children render function, formagus prop is injected either way, but `adapterProps` are not passed in second case.
   render() {
     if (!this.field) {
       return null;
@@ -145,14 +147,13 @@ export class Field extends React.Component<FieldProps> {
     const controller = this.props.controller!;
 
     const injectedAdapterProps: AdapterProps = {
-      broform: {
+      formagus: {
         name,
         meta: this.meta,
         value: this.value,
         onChange: this.onChange,
         setCustomState: this.setCustomState,
         onFocus: this.onFocus,
-        setFormCustomState: controller.setFormCustomState,
         onBlur: this.onBlur,
         validate: controller.validate,
       },

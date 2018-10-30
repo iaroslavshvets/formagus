@@ -14,8 +14,9 @@ export {
   FormAPI,
   FormValidationErrors,
   FormValues,
-  FieldValidationError,
+  FieldValidationState,
   FormField,
   FormFieldMeta,
 } from './FormController';
 export {FormPart} from './FormPart';
+export {utils} from './FormController/utils';

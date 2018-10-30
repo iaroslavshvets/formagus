@@ -1,21 +1,22 @@
 import * as React from 'react';
 import {observable, action, runInAction, toJS, computed} from 'mobx';
-import {flatten, unflatten} from 'flat';
 import {Field, ValidationFunction, EqualityCheckFunction, FieldProps, FormatterFunction} from '../Field';
 const set = require('lodash/set');
 const get = require('lodash/get');
 const merge = require('lodash/merge');
 const cloneDeep = require('lodash/cloneDeep');
 
-export type FormValidationErrors = {
-  [key: string]: string[] | FormValidationErrors;
-} | null;
+export type FieldDictionary<T> = {[fieldName: string]: T};
+
+export type FormValidationErrors = FieldDictionary<Invalid> | null;
 
 export type FormValues = {
   [key: string]: any | FormValues;
 };
 
-export type FieldValidationError = string | string[] | null;
+export type Valid = null | undefined;
+export type Invalid = any;
+export type FieldValidationState = Valid | Invalid;
 
 export interface FormControllerOptions {
   initialValues?: FormValues;
@@ -27,7 +28,7 @@ export interface FormControllerOptions {
 
 export interface FormField {
   instance: null | Field;
-  errors: FieldValidationError;
+  errors: FieldValidationState;
   meta: FormFieldMeta;
   props: undefined | FieldProps;
   value: any;
@@ -61,14 +62,9 @@ export interface FormAPI {
   clear: () => void;
   setFieldValue: (fieldName: string, value: any) => void;
   setFieldCustomState: (fieldName: string, key: string, value: any) => void;
-  setFormCustomState: (key: string, value: any) => void;
   validate: () => void;
   getFieldMeta: (fieldName: string) => FormFieldMeta;
   meta: FormMeta;
-  validation: {
-    flattenErrors: (formValidationErrors: FormValidationErrors) => {[key: string]: string[]} | null;
-    unflattenErrors: (formValidationErrors: FormValidationErrors) => any;
-  };
 }
 
 export class FormController {
@@ -86,7 +82,7 @@ export class FormController {
   //get all field level validations
   @computed
   protected get fieldFormatters() {
-    const fieldFormatters: {[index: string]: FormatterFunction} = {};
+    const fieldFormatters: FieldDictionary<FormatterFunction> = {};
     this.fields.forEach((field: FormField, name: string) => {
       if (field.instance && field.props!.onFormat) {
         fieldFormatters[name] = field.props!.onFormat as FormatterFunction;
@@ -99,7 +95,7 @@ export class FormController {
   //get all field level validations
   @computed
   protected get fieldValidations() {
-    const fieldValidations: {[index: string]: ValidationFunction} = {};
+    const fieldValidations: FieldDictionary<ValidationFunction> = {};
 
     this.fields.forEach((field: FormField, name: string) => {
       if (field.instance && field.props!.onValidate) {
@@ -149,7 +145,7 @@ export class FormController {
   };
 
   //executes all field level validators passed to Fields as a `onValidate` prop and returns errors
-  protected runFieldLevelValidations = async (): Promise<({[name: string]: FieldValidationError}) | {}> => {
+  protected runFieldLevelValidations = async (): Promise<(FieldDictionary<FieldValidationState>) | {}> => {
     let pendingValidationCount = Object.keys(this.fieldValidations).length;
 
     if (pendingValidationCount === 0) {
@@ -157,7 +153,7 @@ export class FormController {
     }
 
     return await new Promise((resolve) => {
-      const errors: {[index: string]: FieldValidationError} = {};
+      const errors: {[index: string]: FieldValidationState} = {};
 
       Object.keys(this.fieldValidations).forEach((fieldName) => {
         const fieldMeta = this.fields.get(fieldName)!.meta;
@@ -166,7 +162,7 @@ export class FormController {
 
         Promise.resolve(this.validateField(fieldName))
           .then(
-            (error: FieldValidationError) => {
+            (error: FieldValidationState) => {
               if (!(error === null || error === undefined)) {
                 errors[fieldName] = error;
               }
@@ -197,7 +193,7 @@ export class FormController {
   protected errors: FormValidationErrors = null;
 
   //validates particular field by calling field level validator passed to Field as a `validate` prop
-  protected validateField = async (name: string): Promise<any> => {
+  protected validateField = async (name: string): Promise<FieldValidationState> => {
     return await this.fieldValidations[name](get(this.values, name), this.values);
   };
 
@@ -268,24 +264,11 @@ export class FormController {
     }
   };
 
-  protected unflattenErrors = (formValidationErrors: FormValidationErrors) => {
-    return unflatten(formValidationErrors);
-  };
-  protected flattenErrors = (formValidationErrors: FormValidationErrors): {[key: string]: string[]} | null => {
-    return formValidationErrors
-      ? flatten(formValidationErrors, {
-          safe: true,
-        })
-      : null;
-  };
-
   @action
   protected updateErrorsForEveryField = (formValidationErrors: FormValidationErrors) => {
-    const fieldErrors = this.flattenErrors(formValidationErrors);
-
     this.fields.forEach((field) => {
       if (field.instance) {
-        const errors = fieldErrors && fieldErrors[field.props!.name];
+        const errors: FieldValidationState = formValidationErrors && formValidationErrors[field.props!.name];
 
         field.errors = errors ? errors : null;
       }
@@ -298,7 +281,7 @@ export class FormController {
   };
 
   constructor(options: FormControllerOptions) {
-    runInAction(() => this.options = options);
+    runInAction(() => (this.options = options));
   }
 
   //form FormAPI, which will be passed to child render function or could be retrieved with API prop from controller
@@ -312,7 +295,6 @@ export class FormController {
       clear: this.clear,
       setFieldValue: this.changeFieldValue,
       setFieldCustomState: this.setFieldCustomState,
-      setFormCustomState: this.setFormCustomState,
       validate: this.validate,
       getFieldMeta: this.getFieldMeta,
       meta: {
@@ -322,10 +304,6 @@ export class FormController {
         isValid: this.isValid,
         isDirty: this.isDirty,
         isTouched: this.isTouched,
-      },
-      validation: {
-        flattenErrors: this.flattenErrors,
-        unflattenErrors: this.unflattenErrors,
       },
     };
   }
@@ -370,12 +348,6 @@ export class FormController {
   submitCount: number = 0;
   @action
   setSubmitCount = (state: number) => (this.submitCount = state);
-
-  //used for setting custom form state, which should be accessible from form api, is passed to adapter options as well
-  @observable
-  formCustomState: any = {};
-  @action
-  setFormCustomState = (key: string, value: any) => (this.formCustomState[key] = value);
 
   //general handler for resetting form to specific state
   @action
@@ -455,7 +427,7 @@ export class FormController {
   };
 
   //wraps submit function passed as a form `onSubmit` prop and it's being passed to child render function
-  submit = async (submitEvent?: React.FormEvent<any>) => {
+  submit = async <E>(submitEvent?: React.FormEvent<E>) => {
     if (submitEvent) {
       submitEvent.persist();
       submitEvent.preventDefault();

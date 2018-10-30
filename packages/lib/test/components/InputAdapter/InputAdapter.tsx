@@ -15,11 +15,11 @@ export class InputAdapter extends React.Component<InputAdapterProps> {
   private setCustomState = () => {
     const key = Object.keys(this.props.customState!)[0];
     const value = this.props.customState![key];
-    this.props.broform!.setCustomState(key, value);
+    this.props.formagus!.setCustomState(key, value);
   };
 
   render() {
-    const {onFocus, onBlur, validate, name, onChange, value, meta} = this.props.broform!;
+    const {onFocus, onBlur, validate, name, onChange, value, meta} = this.props.formagus!;
     const {errors} = meta;
     const normalizedValue = isNil(value) ? '' : value;
 
