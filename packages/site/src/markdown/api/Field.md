@@ -1,6 +1,25 @@
-# Route Component
+# Form
 
-Any component passed as a child to `<Router>` is called a "Route Component". There are three types of props for Route Components.
+**type summary:**
+
+```typescript
+type Valid = null | undefined;
+type Invalid = Omit<any, Valid>;
+type FormValidationErrors = {[fieldName: string]: Invalid};
+```
+
+**Available props:**
+
+| prop           | signature | description | 
+| -------------- | --- | --- |
+| onSubmit       | (errors: FormValidationErrors, values: FormValues, submitEvent?: React.FormEvent<any>) => void |
+| initialValues? | FormValues | 
+| onValidate?    | (values: any) => FormValidationErrors |
+| onFormat?      | (values: FormValues) => FormValues | 
+| onSubmitAfter? | (errors: FormValidationErrors, values: FormValues, submitEvent?: React.FormEvent<any>) => void; |
+| children?      | (renderProps: FormAPI) => JSX.Element |
+| controller?    | FormController;|
+
 
 1. **Matching Props** - You provide these props where the `<Router>` is rendered. They are used by `Router` to match the component against the location to see if the component should be rendered. But, they're not really all that important to the component itself. Think of these like the `key` prop in React. Your component doesn't really care about it, but it's information React needs in the parent.
 

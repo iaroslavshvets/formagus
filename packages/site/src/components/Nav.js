@@ -100,31 +100,17 @@ export const Nav = () => (
 
                       <Header>Tutorial</Header>
                       <NavLink to="tutorial/01-intro">Introduction</NavLink>
-                      <NavLink to="tutorial/10-next-steps">Next Steps</NavLink>
 
-                      <Header>Guides</Header>
-                      <NavLink to="ranking">Path Ranking</NavLink>
-
-                      <Header>Primary API</Header>
+                      <Header>API</Header>
                       <div
                         css={{
                           fontFamily: `'SFMono-Regular', Consolas, 'Roboto Mono', 'Droid Sans Mono', 'Liberation Mono', Menlo, Courier, monospace`
                         }}
                       >
-                        <NavLink to="api/RouteComponent">
-                          Formagus Component
-                        </NavLink>
-                      </div>
-
-                      <Header>Additional API</Header>
-                      <div
-                        css={{
-                          fontFamily: `'SFMono-Regular', Consolas, 'Roboto Mono', 'Droid Sans Mono', 'Liberation Mono', Menlo, Courier, monospace`
-                        }}
-                      >
-                        <NavLink to="api/RouteComponent">
-                          Formagus Component
-                        </NavLink>
+                        <NavLink to="api/Form">Form</NavLink>
+                        <NavLink to="api/FormPart">FormPart</NavLink>
+                        <NavLink to="api/FormController">FormController</NavLink>
+                        <NavLink to="api/Field">Field</NavLink>
                       </div>
                     </div>
                     <footer

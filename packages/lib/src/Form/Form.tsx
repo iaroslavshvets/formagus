@@ -15,11 +15,12 @@ export class Form extends React.Component<FormProps> {
       //add children to the count
       throw new Error('You should provide either single "controller" prop or pass props directly');
     }
-    //controller can be injected by prop and created in any place outside of `render` function / component where used
+    //controller can be injected by prop and created in any place,
+    //outside of `render` function of component, where it's used
     this.controller = props.controller || new FormController(props);
   }
 
-  //creates the provider and sets the controller which will be accessible from `Field`
+  //creates the provider and sets the controller, which will control all the form state
   render() {
     return (
       <Provider controller={this.controller}>

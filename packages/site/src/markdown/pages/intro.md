@@ -1,51 +1,64 @@
 # Introduction
 
-Yo! This library will become your real bro, while working on the forms. It will handle all
-the nasty stuff, like different form and field states (dirty, touched, submit count, up to date values, errors and bla-bla-bla). But you will need to help out
-your bro to carry out this mission, by providing adapters, which are responsible for the displaying your actual components. Together
-you will become a real team.
+Formagus adds some necessary magic, while working on the forms. That kind, that allows easily handle all
+the nasty stuff, like different form and field states (dirty, touched, submit count, up to date values, errors and so on). Magic is good, too much of it and it easily becomes 
+a noose over your neck, binding your to the structure chosen by library and not you. So to balance the scales you need to provide adapters, which are responsible for the displaying of form state. 
+Formagus doesn't have any adapters by default, but you can find some examples in /examples section. 
 
 Formagus is compatible with React 15+ and is powered by `Mobx`.
 
-## Features
+## What differs from other form libraries
 
-* component centric approach
-* is powered by Mobx and highly optimized, so it has great performance (it's as fast as Mobx is),
-* You can use your own validations of any kind (eventually most of forms end up with home-baked validation),
-* support for field and form level validations(sync and async works)
-* programatical way to interact with the form, from any place in code
-* simple, yet powerful form API, which allows you to model any form interactions
-* written in typescript
-* own adapters allow you easily use ANY 3rd-party components or write your own, whatever you like - you the boss!
+* React way of structuring app, forms are made of dynamic elements.
+ It was rendered - it becomes a part of form state and vice versa.
+* is powered by Mobx and highly optimized, so it has great performance,
+* You can use your own validation of any kind (eventually a lot of forms end up with home-baked solution well tailored for specific needs),
+* support for field and form level validations (sync and async works out of the box)
+* Imperative way to interact with the form, from any place in code, by creating new instance of form controller and then
+ passing it as a prop
+* simple, yet powerful form API, which allows you to model any form interactions (mobx `reaction`, `autorun`, etc.)
+* written in typescript, fully typed
+* own adapters allow you easily use `ANY` 3rd-party components or write your own, basically there is not difference in usage, you choose - you the boss!
 
 ## Basic concept
 
 `<Form/>` injects all available props to your component by passing them to its child render function.
-If you will render `<Field/>` component with `name` prop (supports nesting like `name="someProps.nestedProp"`, and change the value to
+When you render `<Field/>` component with `name` prop (supports nesting like `name="someProps.nestedProp"`, and change the value to
 `nestedPropValue` will result into having form values like `{someProps: {nestedProps: nestedPropValue}}`. `<Field/>` also
-have to receive `adapter` property, or `child render function`, which will render actual input or whatever element you want.
-`<Field/>` injects all available props to the adapter in any case.
+have to receive `adapter` property, or `child render function`, which will render actual `<input />` or whatever element you want.
+`<Field/>` injects form and it's own state to the adapter in any case, passing it as a prop.
 
 ## Step by step guide
 
 Form without any blows and whistles looks like this:
 
 ```jsx
-const SimpleAsHellForm = (props) => (
-  <form onSubmit={props.onSubmit}>
+const onSubmit = ...implement me;
+
+const SimpleAsHellForm = () => (
+  <form onSubmit={onSubmit}>
     <input name="form_field_1" />
     <button type="submit">Submit</button>
   </form>
 )
 ```
 
-Now lets add the library sugar into the mix:
+Now lets add the Formagus into the mix:
 
 ```jsx
-import {Form} from '@wix/magus-form';
+import {Form} from '@wix/formagus';
 
-const Formagus = (props) => (
-  <Form onSubmit={props.onSubmit}>
+const onSubmit = (errors, values) => {
+    if (errors === null) {
+        fetch('www.endpoint.com', {
+            method: 'POST',
+            body: JSON.stringify(values),
+        })
+    }
+};
+
+const Formagus = () => (
+  <Form onSubmit={onSubmit}>
     {(submit) => {
       return (
        <form onSubmit={submit}>
@@ -60,19 +73,19 @@ const Formagus = (props) => (
 
 Hm... Looks legit. But. It will not work. We missing the crucial player in the game – Mr. `Field`, which is the bridge
 between Formagus and your components. In order to set it up, you need to pass an Adapter.
-Adapter – is a component, which will receive all available form properties as `props.Formagus`, which
+Adapter – is a component, which will receive all available state as `props.formagus`, which
 are injected by the `<Field/>`. Now, back to school:
 
 ```jsx
-import {Form, Field} from '@wix/magus-form';
+import {Form, Field} from '@wix/formagus';
 
 const InputAdapter = (props) => {
-  const {Formagus} = props;
+  const {formagus} = props;
   return (
     <input
-      value={Formagus.value}
+      value={formagus.value}
       onChange={(e) => {
-        Formagus.onChange(e.target.value);
+        formagus.onChange(e.target.value);
       }}
     />
   )
@@ -96,12 +109,12 @@ Much better, now everything works. So, as you see, basic usage is pretty simple.
 
 ## Advanced usage
 
-There are cases, when you need to interact with the form programatically. `FormController` here to the rescue.
+There are cases, when you need to interact with the form from outside of it. `FormController` hurries to the rescue.
 
 1. in any place in the code
 
 ```jsx
-import {FormController} from '@wix/magus-form';
+import {FormController} from '@wix/formagus';
 
 const formController = new FormController({
   onSubmit: (errors, values) => {
@@ -119,7 +132,8 @@ export {formController}
 2. later in React Component file
 
 ```jsx
-import {Form, Field} from '@wix/magus-form';
+import * as React from 'react';
+import {Form, Field} from '@wix/formagus';
 import {formController} from './formController';
 import {InputAdapter} from './InputAdapter';
 
@@ -127,15 +141,16 @@ const Formagus = (props) => (
   <Form controller={formController}>
     {(submit) => {
       return (
-       <form onSubmit={submit}>
+        <form onSubmit={submit}>
           <Field name="form_field_1" adapter={InputAdapter}>
           <button type="submit">Submit</button>
-       </form>
+        </form>
       )
     }}
   </Form>
 )
 ```
+
 `FormController` receives the very same options, which can be passed to `Form` directly. If one passes `controller` prop,
 then no other props should be passed to the `Form` and all the options should be passed to the created form controller instance.
 

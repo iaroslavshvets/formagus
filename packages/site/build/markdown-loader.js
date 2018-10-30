@@ -37,16 +37,16 @@ let getTitle = html =>
 module.exports = markdown => {
   let html = md.render(markdown);
   return `
-import React from 'react'
-export const title = ${JSON.stringify(getTitle(html))};
-export default function() {
-  return React.createElement(
-    'div',
-    {
-      className: 'markdown',
-      dangerouslySetInnerHTML: { __html: ${JSON.stringify(html)}}
+    import React from 'react'
+    export const title = ${JSON.stringify(getTitle(html))};
+    export default function() {
+      return React.createElement(
+        'div',
+        {
+          className: 'markdown',
+          dangerouslySetInnerHTML: { __html: ${JSON.stringify(html)}}
+        }
+      )
     }
-  )
-}
-`;
+  `;
 };
