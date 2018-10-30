@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { AsyncModule } from "./AsyncModule";
 import { DocumentTitle } from "./DocumentTitle";
-import * as mermaid from 'mermaid';
+import * as mermaid from "mermaid";
 
 export const MarkdownPage = ({ dir, filename, css }) => (
   <AsyncModule
