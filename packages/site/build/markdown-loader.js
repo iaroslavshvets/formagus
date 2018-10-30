@@ -1,9 +1,10 @@
 const markdownIt = require("markdown-it");
 const Prism = require("prismjs");
 const cheerio = require("cheerio");
+const markdownItMermaid = require('markdown-it-mermaid').default;
 
 let aliases = {
-  js: "jsx",
+  js: "tsx",
   html: "markup",
   sh: "bash"
 };
@@ -28,6 +29,8 @@ let md = markdownIt({
   typographer: true,
   highlight
 });
+
+md.use(markdownItMermaid);
 
 let getTitle = html =>
   cheerio

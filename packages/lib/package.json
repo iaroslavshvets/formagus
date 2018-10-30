@@ -20,7 +20,8 @@
     "precommit": "lint-staged",
     "postcommit": "git update-index --again",
     "prepush": "npm run test",
-    "format": "prettier --write '{src,test}/**/*.{ts,tsx,js,json,scss,css}'"
+    "format": "prettier --write '{src,test}/**/*.{ts,tsx,js,json,scss,css}'",
+    "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls"
   },
   "lint-staged": {
     "*.{ts,tsx,js,json,scss,css}": [
@@ -40,6 +41,7 @@
     "@types/lodash-es": "^4.17.1",
     "@types/react": "^16.4.10",
     "@types/react-dom": "^16.0.7",
+    "coveralls": "^3.0.2",
     "enzyme": "^3.4.1",
     "enzyme-adapter-react-15": "^1.0.6",
     "enzyme-to-json": "^3.3.4",

@@ -6,4 +6,23 @@ matrix:
     include:
         - env: PROJECT=packages/lib
 
+branches:
+  only:
+  - master
+
+cache:
+  directories:
+  - node_modules
+
+before_install:
+- npm update
+
+install:
+- npm install
+
+script:
+- npm test
+- npm run coveralls
+
+
 script: if .travis/build-condition.sh $TRAVIS_COMMIT_RANGE $PROJECT; then echo "$PROJECT is being built"; else echo "$PROJECT is NOT being built"; fi

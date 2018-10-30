@@ -25,3 +25,7 @@
   padding: 10px;
   border-bottom: solid 1px #aaa;
 }
+
+.mermaid:not([data-processed="true"]) {
+  opacity: 0;
+}
