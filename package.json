@@ -2,7 +2,7 @@
 	"private": true,
 	"name": "magus-form-packages",
 	"version": "0.0.1",
-	"license": "mit"
+	"license": "mit",
 	"description": "magus-form monorepo",
 	"author": "Wix",
 	"scripts": {
