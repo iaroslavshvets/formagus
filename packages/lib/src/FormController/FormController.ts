@@ -21,7 +21,7 @@ export type FieldValidationState = Valid | Invalid;
 export interface FormControllerOptions {
   initialValues?: FormValues;
   onValidate?: (values: any) => FieldDictionary<Invalid>;
-  onFormat?: (values: FormValues) => FormValues;
+  onFormat?: <T = Function>(values: FormValues) =>  {[P in keyof FormValues]: T[FormValues[P]]};
   onSubmit?: (errors: FormValidationErrors, values: FormValues, submitEvent?: React.FormEvent<any>) => void;
   onSubmitAfter?: (errors: FormValidationErrors, values: FormValues, submitEvent?: React.FormEvent<any>) => void;
 }

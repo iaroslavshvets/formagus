@@ -100,6 +100,7 @@ export const Nav = () => (
 
                       <Header>Tutorial</Header>
                       <NavLink to="tutorial/01-intro">Introduction</NavLink>
+                      <NavLink to="tutorial/02-next-steps">Next steps</NavLink>
 
                       <Header>API</Header>
                       <div

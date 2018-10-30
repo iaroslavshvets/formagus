@@ -1,59 +1,66 @@
 # Form
 
+## Available props:
+<p class="category">look for type summary</p>
+
+| prop            | signature | description |
+| --------------- | --- | --- |
+| name            | string |
+| children        | (injectedAdapterProps: AdapterProps) => JSX.Element |
+| adapter         | `FieldAdapter` |
+| defaultValue    | any |
+| onValidate      | `ValidationFunction` |
+| onFormat        | `FormatterFunction` |
+| onEqualityCheck | `EqualityCheckFunction` |
+| onInit          | Function |
+| persist         | boolean |
+| adapterProps    | any |
+
 **type summary:**
 
 ```typescript
-type Valid = null | undefined;
-type Invalid = Omit<any, Valid>;
-type FormValidationErrors = {[fieldName: string]: Invalid};
+export type Valid = null | undefined;
+export type Invalid = any;
+export type FieldValidationState = Valid | Invalid;
+
+export type ValidationFunction =
+  | ((value: any, values?: any) => FieldValidationState)
+  | ((value: any, values?: any) => Promise<FieldValidationState>);
+
+interface FormMeta {
+  isValidating: boolean;
+  isSubmitting: boolean;
+  submitCount: number;
+  isValid: boolean;
+  isDirty: boolean;
+  isTouched: boolean;
+}
+
+interface AdapterMetaInfo {
+  errors: FieldValidationState;
+  isDirty: boolean;
+  isTouched: boolean;
+  isActive: boolean;
+  isValidating: boolean;
+  isRegistered: boolean;
+  custom: {[key: string]: any};
+  form: FormMeta;
+}
+
+interface AdapterProps {
+  formagus?: {
+    name: string;
+    meta: AdapterMetaInfo;
+    value: any;
+    setCustomState: (key: string, value: any) => void;
+    onChange: (value: any) => void;
+    onFocus: () => void;
+    onBlur: () => void;
+    validate: () => void;
+  };
+}
+
+type EqualityCheckFunction = (newValue: any, oldValue: any) => boolean
+
+type FormatterFunction = <T = Function>(values: FormValues) =>  {[P in keyof FormValues]: T[FormValues[P]]} |
 ```
-
-**Available props:**
-
-| prop           | signature | description | 
-| -------------- | --- | --- |
-| onSubmit       | (errors: FormValidationErrors, values: FormValues, submitEvent?: React.FormEvent<any>) => void |
-| initialValues? | FormValues | 
-| onValidate?    | (values: any) => FormValidationErrors |
-| onFormat?      | (values: FormValues) => FormValues | 
-| onSubmitAfter? | (errors: FormValidationErrors, values: FormValues, submitEvent?: React.FormEvent<any>) => void; |
-| children?      | (renderProps: FormAPI) => JSX.Element |
-| controller?    | FormController;|
-
-
-1. **Matching Props** - You provide these props where the `<Router>` is rendered. They are used by `Router` to match the component against the location to see if the component should be rendered. But, they're not really all that important to the component itself. Think of these like the `key` prop in React. Your component doesn't really care about it, but it's information React needs in the parent.
-
-2. **Route Props** - These props are passed to your component by `Router` when your component matches the URL: URL parameters and `navigate` are a couple of them. They are all documented on this page.
-
-3. **Other Props** - Route Components are your own components so go ahead and pass them whatever props they need.
-
-## path: string
-
-<p class="category">matching prop</p>
-
-Used to match your component to the location. When it matches, the component will be rendered.
-
-```jsx
-<Router>
-  <Home path="/" />
-  <Dashboard path="dashboard" />
-</Router>
-```
-
-At "/", Router will render `<Home/>`. At "/dashboard", Router will render `<Dashboard/>`.
-
-### URL Parameters with Dynamic Segments
-
-You can make a segment dynamic with `:someName`. Router will parse the value out of the URL and pass it to your component as a prop by the same name.
-
-```jsx
-<Router>
-  <Dashboard path="dashboard" />
-  <Invoice path="invoice/:invoiceId" />
-</Router>
-```
-
-At "invoice/10023", Router will render `<Invoice invoiceId="10023"/>`.
-
-**Reserved Names**: You can name your parameters anything want except `uri` and `path`. You'll get a warning if you try, so don’t worry if you didn’t actually read these docs (... 🤔).
-

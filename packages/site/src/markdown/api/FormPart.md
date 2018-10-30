@@ -1,8 +1,8 @@
 # FormPart
 
-**Available props:**
+## Available props:
 
-| prop           | signature | description | 
-| -------------- | --- | --- |
-| children?      | (renderProps: FormAPI) => JSX.Element |
-| controller?    | FormController;|
+| prop          | signature | description |
+| ------------- | --- | --- |
+| children      | (renderProps: FormAPI) => JSX.Element |
+| controller    | `FormController` |

@@ -3,7 +3,7 @@ import { GREEN } from "../theme";
 import { MarkdownPage } from "./MarkdownPage";
 import { Link } from "@reach/router";
 
-const tutorialLinks = ["01-intro", "10-next-steps"];
+const tutorialLinks = ["01-intro", "02-next-steps"];
 
 const tutorialSandboxen = ["rwo3jz5vno", "n01l63w4nl"];
 
