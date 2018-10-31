@@ -7,8 +7,8 @@ import {
   SMALL_BREAK_QUERY,
   SIDEBAR_SIZE,
   TOPBAR_SIZE,
-  GREEN,
-} from '../theme';
+  GREEN
+} from "../theme";
 import Component from "@reactions/component";
 import scrollIntoView from "scroll-into-view-if-needed";
 import Media from "react-media";
@@ -47,12 +47,12 @@ export const Nav = () => (
                   >
                     <button
                       css={{
-                        color: 'white',
-                        borderRadius: '4px',
-                        textShadow: '0 1px 1px rgba(0, 0, 0, 0.2)',
+                        color: "white",
+                        borderRadius: "4px",
+                        textShadow: "0 1px 1px rgba(0, 0, 0, 0.2)",
                         background: GREEN,
-                        outline: 'none',
-                        margin: '5px',
+                        outline: "none",
+                        margin: "5px"
                       }}
                       onClick={() =>
                         setState(({ sidebarOpen }) => ({
