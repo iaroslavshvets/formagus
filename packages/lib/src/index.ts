@@ -2,7 +2,7 @@ export {
   ValidationFunction,
   FieldAdapter,
   AdapterProps,
-  AdapterMetaInfo,
+  FieldMeta,
   EqualityCheckFunction,
   InjectedFieldProps,
   FieldProps,

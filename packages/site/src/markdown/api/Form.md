@@ -31,7 +31,7 @@ interface FormMeta {
   isTouched: boolean;
 }
 
-interface FormFieldMeta {
+interface FieldMeta {
   custom: {[key: string]: any};
   onEqualityCheck: EqualityCheckFunction;
   initialValue: any;
@@ -51,7 +51,7 @@ interface FormAPI {
   setFieldValue: (fieldName: string, value: any) => void;
   setFieldCustomState: (fieldName: string, key: string, value: any) => void;
   validate: () => void;
-  getFieldMeta: (fieldName: string) => FormFieldMeta;
+  getFieldMeta: (fieldName: string) => FieldMeta;
   meta: FormMeta;
 }
 

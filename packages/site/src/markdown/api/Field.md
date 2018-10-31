@@ -36,7 +36,7 @@ interface FormMeta {
   isTouched: boolean;
 }
 
-interface AdapterMetaInfo {
+interface FieldMeta {
   errors: FieldValidationState;
   isDirty: boolean;
   isTouched: boolean;
@@ -50,7 +50,7 @@ interface AdapterMetaInfo {
 interface AdapterProps {
   formagus?: {
     name: string;
-    meta: AdapterMetaInfo;
+    meta: FieldMeta;
     value: any;
     setCustomState: (key: string, value: any) => void;
     onChange: (value: any) => void;

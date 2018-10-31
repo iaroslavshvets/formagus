@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {isEmpty, isObject} from 'lodash';
-import {AdapterMetaInfo} from '../../../src/Field';
+import {FieldMeta} from '../../../src/Field';
 import {observer} from 'mobx-react';
 
-export const Meta = observer((props: {meta: AdapterMetaInfo}) => {
+export const Meta = observer((props: {meta: FieldMeta}) => {
   const renderMetaProperty = (meta: any, currentKey: string = ''): any => {
     return Object.keys(meta).map((key) => {
       if (!isObject(meta[key])) {

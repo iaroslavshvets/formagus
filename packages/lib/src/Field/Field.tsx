@@ -10,7 +10,7 @@ export type ValidationFunction =
 
 export type FieldAdapter = ((adapterProps: AdapterProps) => JSX.Element) | React.ComponentClass<any> | React.SFC<any>;
 
-export interface AdapterMetaInfo {
+export interface FieldMeta {
   errors: any | null;
   isDirty: boolean;
   isTouched: boolean;
@@ -24,7 +24,7 @@ export interface AdapterMetaInfo {
 export interface AdapterProps {
   formagus?: {
     name: string;
-    meta: AdapterMetaInfo;
+    meta: FieldMeta;
     value: any;
     setCustomState: (key: string, value: any) => void;
     onChange: (value: any) => void;
@@ -68,7 +68,7 @@ export class Field extends React.Component<FieldProps> {
 
   //meta info passed to Adapter
   @computed
-  protected get meta(): AdapterMetaInfo {
+  protected get meta(): FieldMeta {
     const controller = this.props.controller!;
     const {meta, errors} = this.field;
 
