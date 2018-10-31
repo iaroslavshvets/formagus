@@ -21,7 +21,7 @@
     "postcommit": "git update-index --again",
     "prepush": "npm run test",
     "format": "prettier --write '{src,test}/**/*.{ts,tsx,js,json,scss,css}'",
-    "commit": "git-cz",
+    "commit-cz": "git-cz",
     "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls"
   },
   "lint-staged": {
