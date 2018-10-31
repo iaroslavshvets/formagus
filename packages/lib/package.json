@@ -1,6 +1,6 @@
 {
   "name": "formagus",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "MIT",
   "private": false,
   "authors": [
@@ -71,5 +71,11 @@
   "dependencies": {
     "flat": "^4.1.0",
     "lodash-es": "^4.17.8"
+  },
+  "peerDependencies": {
+    "mobx": "*",
+    "mobx-react": "*",
+    "react": "*",
+    "react-dom": "*"
   }
 }
