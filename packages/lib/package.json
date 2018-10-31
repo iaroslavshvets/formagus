@@ -1,6 +1,6 @@
 {
   "name": "formagus",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "private": false,
   "authors": [
@@ -32,7 +32,7 @@
       "tslint --fix"
     ]
   },
-  "main": "./dist/src/index.js",
+  "main": "./dist/index.js",
   "devDependencies": {
     "@types/enzyme": "^3.1.13",
     "@types/enzyme-adapter-react-15": "^1.0.3",

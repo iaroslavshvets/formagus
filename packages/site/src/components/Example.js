@@ -5,7 +5,7 @@ const exampleSandboxen = {
   basic: "lyzwj8w0qz"
 };
 
-export const Example = ({ id }) => (
+export const Example = ({ id }) =>   (
   <Fragment>
     <DocumentTitle title={`Formagus - Example - ${id}`} />
     <iframe

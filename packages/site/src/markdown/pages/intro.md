@@ -59,7 +59,7 @@ const onSubmit = (errors, values) => {
 
 const Formagus = () => (
   <Form onSubmit={onSubmit}>
-    {(submit) => {
+    {({submit}) => {
       return (
        <form onSubmit={submit}>
           <input name="form_field_1" />
@@ -93,7 +93,7 @@ const InputAdapter = (props) => {
 
 const Formagus = (props) => (
   <Form onSubmit={props.onSubmit}>
-    {(submit) => {
+    {({submit}) => {
       return (
        <form onSubmit={submit}>
           <Field name="form_field_1" adapter={InputAdapter}>
@@ -139,7 +139,7 @@ import {InputAdapter} from './InputAdapter';
 
 const Formagus = (props) => (
   <Form controller={formController}>
-    {(submit) => {
+    {({submit}) => {
       return (
         <form onSubmit={submit}>
           <Field name="form_field_1" adapter={InputAdapter}>
