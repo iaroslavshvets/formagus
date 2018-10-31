@@ -29,3 +29,14 @@
 .mermaid:not([data-processed="true"]) {
   opacity: 0;
 }
+.mermaid {
+  g rect {
+    fill: #155f00!important;
+  }
+  g .label {
+    color: white!important;
+  }
+  .edgeLabel {
+    color: black;
+  }
+}

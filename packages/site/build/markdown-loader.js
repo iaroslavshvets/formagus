@@ -3,13 +3,12 @@ const Prism = require("prismjs");
 const cheerio = require("cheerio");
 const markdownItMermaid = require('markdown-it-mermaid').default;
 
-let aliases = {
-  js: "tsx",
+const aliases = {
   html: "markup",
   sh: "bash"
 };
 
-let highlight = (str, lang) => {
+const highlight = (str, lang) => {
   if (!lang) {
     return str;
   } else {
@@ -23,7 +22,7 @@ let highlight = (str, lang) => {
   }
 };
 
-let md = markdownIt({
+const md = markdownIt({
   html: true,
   linkify: true,
   typographer: true,
@@ -32,12 +31,12 @@ let md = markdownIt({
 
 md.use(markdownItMermaid);
 
-let getTitle = html =>
+const getTitle = (html) =>
   cheerio
     .load(html)("h1")
     .text();
 
-module.exports = markdown => {
+module.exports = (markdown) => {
   let html = md.render(markdown);
   return `
     import React from 'react'

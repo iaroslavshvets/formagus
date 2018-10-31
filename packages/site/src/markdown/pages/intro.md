@@ -1,9 +1,9 @@
 # Introduction
 
 Formagus adds some necessary magic, while working on the forms. That kind, that allows easily handle all
-the nasty stuff, like different form and field states (dirty, touched, submit count, up to date values, errors and so on). Magic is good, too much of it and it easily becomes 
-a noose over your neck, binding your to the structure chosen by library and not you. So to balance the scales you need to provide adapters, which are responsible for the displaying of form state. 
-Formagus doesn't have any adapters by default, but you can find some examples in /examples section. 
+the nasty stuff, like different form and field states (dirty, touched, submit count, up to date values, errors and so on). Magic is good, too much of it and it easily becomes
+a noose over your neck, binding your to the structure chosen by library and not you. So to balance the scales you need to provide adapters, which are responsible for the displaying of form state.
+Formagus doesn't have any adapters by default, but you can find some examples in /examples section.
 
 Formagus is compatible with React 15+ and is powered by `Mobx`.
 
@@ -153,5 +153,25 @@ const Formagus = (props) => (
 
 `FormController` receives the very same options, which can be passed to `Form` directly. If one passes `controller` prop,
 then no other props should be passed to the `Form` and all the options should be passed to the created form controller instance.
+
+## How it all works:
+
+### Sample form
+```tsx
+<Form>
+	{() => {
+		<Field apdater={YourInputAdapter} />
+	}}
+</Form>
+```
+### Basic flow
+```mermaid
+graph TD
+A(FORM render)
+A -->| render //FIELD | B(FIELD is returning null)
+B -->|ComponentDidMount //FIELD| C(FIELD registers itself in CONTROLLER)
+C --> |render // FIELD receives data for rendering from Controller| D(FIELD renders props.adapter and passing data as formagus prop)
+D --> |render // YourInputAdapter | E(Visible component is being rendered // YourInputAdapter passed to FIELD)
+```
 
 
