@@ -18,7 +18,7 @@ const RootView = () => (
         <Home path="/" />
         <Example path="example/:id" />
         <Tutorial path="tutorial/:id" />
-        <MarkdownRoute dir="api" path="api/:filename" />
+        <MarkdownRoute dir="api" path="api/:filename/*" />
         <MarkdownRoute dir="pages" path=":filename" />
       </App>
     </Router>

@@ -3,7 +3,7 @@ import { AsyncModule } from "./AsyncModule";
 import { DocumentTitle } from "./DocumentTitle";
 import * as mermaid from "mermaid";
 
-export const MarkdownPage = ({ dir, filename, css }) => (
+export const MarkdownPage = ({ dir, filename, css, changeTitle = true }) => (
   <AsyncModule
     key={dir + filename}
     load={() => {
@@ -15,7 +15,7 @@ export const MarkdownPage = ({ dir, filename, css }) => (
     {mod =>
       mod ? (
         <Fragment>
-          <DocumentTitle title={`Formagus - ${mod.title}`} />
+          {changeTitle && <DocumentTitle title={`Formagus - ${mod.title}`} />}
           <mod.default />
         </Fragment>
       ) : (

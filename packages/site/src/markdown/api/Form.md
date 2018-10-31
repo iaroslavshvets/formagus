@@ -5,61 +5,13 @@
 
 | prop          | signature | description |
 | ------------- | --- | --- |
-| onSubmit      | (errors: `FormValidationErrors`, values: `FormValues`, submitEvent?: React.FormEvent<any>) => void |
-| initialValues | `FormValues` |
-| onValidate    | (values: any) => `FormValidationErrors` |
-| onFormat      | <T = Function>(values: `FormValues`) =>  {[P in keyof `FormValues`]: T[`FormValues`[P]]} |
-| onSubmitAfter | (errors: `FormValidationErrors`, values: `FormValues`, submitEvent?: React.FormEvent<any>) => void |
-| children      | (renderProps: `FormAPI`) => JSX.Element |
+| onSubmit      | (errors: [FormValidationErrors](/api/Form/types/FormValidationErrors), values: [FormValues](/api/Form/types/FormValues), submitEvent?: React.FormEvent<any>) => void |
+| initialValues | [FormValues](/api/Form/types/FormValues) |
+| onValidate    | (values: any) => [FormValidationErrors](/api/Form/types/FormValidationErrors) |
+| onFormat      | <T = Function>(values: [FormValues](/api/Form/types/FormValues)) =>  {[P in keyof [FormValues](/api/Form/types/FormValues)]: T[[FormValues](/api/Form/types/FormValues)[P]]} |
+| onSubmitAfter | (errors: [FormValidationErrors](/api/Form/types/FormValidationErrors), values: [FormValues](/api/Form/types/FormValues), submitEvent?: React.FormEvent<any>) => void |
+| children      | (renderProps: [FormAPI](/api/Form/types/FormAPI)) => JSX.Element |
 | controller * | `FormController`|
 
 
 `*` - **controller** prop should be passed (instance of controller created manually before) OR any other props, but not both.
-
-
-**type summary:**
-
-```typescript
-type EqualityCheckFunction = (newValue: any, oldValue: any) => boolean;
-
-interface FormMeta {
-  isValidating: boolean;
-  isSubmitting: boolean;
-  submitCount: number;
-  isValid: boolean;
-  isDirty: boolean;
-  isTouched: boolean;
-}
-
-interface FieldMeta {
-  custom: {[key: string]: any};
-  onEqualityCheck: EqualityCheckFunction;
-  initialValue: any;
-  isTouched: boolean;
-  isActive: boolean;
-  isValidating: boolean;
-  isDirty: boolean;
-  isRegistered: boolean;
-}
-
-interface FormAPI {
-  values: FormValues;
-  errors: FormValidationErrors;
-  submit: (submitEvent?: React.FormEvent<any>) => void;
-  reset: () => void;
-  clear: () => void;
-  setFieldValue: (fieldName: string, value: any) => void;
-  setFieldCustomState: (fieldName: string, key: string, value: any) => void;
-  validate: () => void;
-  getFieldMeta: (fieldName: string) => FieldMeta;
-  meta: FormMeta;
-}
-
-type FormValues = {
-  [key: string]: any | FormValues;
-};
-
-type Valid = null | undefined;
-type Invalid = Omit<any, Valid>;
-type FormValidationErrors = {[fieldName: string]: Invalid};
-```

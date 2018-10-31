@@ -60,6 +60,7 @@
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-media": "^1.8.0",
+    "react-responsive-modal": "^3.5.0",
     "rehype-parse": "^5.0.0",
     "rehype-stringify": "^4.0.0",
     "remark-highlight.js": "^5.0.0",

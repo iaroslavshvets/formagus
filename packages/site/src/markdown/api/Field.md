@@ -47,7 +47,7 @@ interface FieldMeta {
   form: FormMeta;
 }
 
-interface AdapterProps {
+interface FieldProps {
   formagus?: {
     name: string;
     meta: FieldMeta;
@@ -62,5 +62,5 @@ interface AdapterProps {
 
 type EqualityCheckFunction = (newValue: any, oldValue: any) => boolean
 
-type FormatterFunction = <T = Function>(values: FormValues) =>  {[P in keyof FormValues]: T[FormValues[P]]} |
+type FormatterFunction = <T = Function>(values: FormValues) =>  {[P in keyof FormValues]: T[FormValues[P]]}
 ```
