@@ -39,8 +39,8 @@ module.exports = {
   ],
   mode: 'production',
   externals: {
-    'react': 'React',
-    'react-dom': 'ReactDOM',
+    'react': 'react',
+    'react-dom': 'react-dom',
     'mobx': 'mobx',
     'mobx-react': 'mobx-react',
   },
