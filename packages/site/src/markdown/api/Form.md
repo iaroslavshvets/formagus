@@ -1,13 +1,24 @@
+
 # Form
 
-How it all works
+## How it all works:
+
+### Sample form
+```typescript
+<Form>
+	{() => {
+		<Field apdater={YourInputAdapter} />
+	}}
+</Form>
+```
+### Basic flow
 ```mermaid
 graph TD
 A(FORM render)
 A -->| render //FIELD | B(FIELD is returning null)
 B -->|ComponentDidMount //FIELD| C(FIELD registers itself in CONTROLLER)
-C --> |render // FIELD receives data for rendering from Controller| D(FIELD renders props.adapter or props.children and passing data inside)
-D --> E(Actual component is being rendered // ADAPTER passed to FIELD)
+C --> |render // FIELD receives data for rendering from Controller| D(FIELD renders props.adapter and passing data as formagus prop)
+D --> |render // YourInputAdapter | E(Visible component is being rendered // YourInputAdapter passed to FIELD)
 ```
 
 ## Available props:
