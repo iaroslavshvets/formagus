@@ -2,7 +2,9 @@ import React, { Fragment } from "react";
 import { DocumentTitle } from "./DocumentTitle";
 
 const exampleSandboxen = {
-  basic: "nk2pznjq0j"
+  basic: "nk2pznjq0j",
+  withExternalController: 'q3m27nr9v4',
+  validation: 'nwm3w561mj',
 };
 
 export const Example = ({ id }) =>   (

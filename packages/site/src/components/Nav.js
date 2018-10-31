@@ -105,7 +105,9 @@ export const Nav = () => (
                       </NavLink>
 
                       <Header>Recipes</Header>
-                      <NavLink to="example/basic">Basic Usage</NavLink>
+                      <NavLink to="example/basic">Basic</NavLink>
+                      <NavLink to="example/withExternalController">With external controller</NavLink>
+                      <NavLink to="example/validation">Validation</NavLink>
 
                       <Header>Tutorial</Header>
                       <NavLink to="tutorial/01-intro">Introduction</NavLink>
