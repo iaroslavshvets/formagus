@@ -32,7 +32,7 @@
       "tslint --fix"
     ]
   },
-  "main": "./dist/src/index.js",
+  "main": "./dist/src/bundle.js",
   "devDependencies": {
     "@types/enzyme": "^3.1.13",
     "@types/enzyme-adapter-react-15": "^1.0.3",
