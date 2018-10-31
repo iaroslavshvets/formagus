@@ -21,6 +21,7 @@
     "postcommit": "git update-index --again",
     "prepush": "npm run test",
     "format": "prettier --write '{src,test}/**/*.{ts,tsx,js,json,scss,css}'",
+    "commit": "git-cz",
     "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls"
   },
   "lint-staged": {
@@ -41,7 +42,9 @@
     "@types/lodash-es": "^4.17.1",
     "@types/react": "^16.4.10",
     "@types/react-dom": "^16.0.7",
+    "commitizen": "^3.0.4",
     "coveralls": "^3.0.2",
+    "cz-conventional-changelog": "^2.1.0",
     "enzyme": "^3.4.1",
     "enzyme-adapter-react-16": "^1.6.0",
     "enzyme-to-json": "^3.3.4",
@@ -77,5 +80,10 @@
     "mobx-react": "*",
     "react": "*",
     "react-dom": "*"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./packages/lib/node_modules/cz-conventional-changelog"
+    }
   }
 }
