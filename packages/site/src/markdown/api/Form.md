@@ -1,5 +1,15 @@
 # Form
 
+How it all works
+```mermaid
+graph TD
+A(FORM render)
+A -->| render //FIELD | B(FIELD is returning null)
+B -->|ComponentDidMount //FIELD| C(FIELD registers itself in CONTROLLER)
+C --> |render // FIELD receives data for rendering from Controller| D(FIELD renders props.adapter or props.children and passing data inside)
+D --> E(Actual component is being rendered // ADAPTER passed to FIELD)
+```
+
 ## Available props:
 <p class="category">look for type summary</p>
 
