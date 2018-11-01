@@ -1,9 +1,9 @@
-import React, { Fragment } from "react";
-import { AsyncModule } from "./AsyncModule";
-import { DocumentTitle } from "./DocumentTitle";
-import * as mermaid from "mermaid";
+import React, {Fragment} from 'react';
+import {AsyncModule} from './AsyncModule';
+import {DocumentTitle} from './DocumentTitle';
+import * as mermaid from 'mermaid';
 
-export const MarkdownPage = ({ dir, filename, css, changeTitle = true }) => (
+export const MarkdownPage = ({dir, filename, css, changeTitle = true}) => (
   <AsyncModule
     key={dir + filename}
     load={() => {
@@ -12,7 +12,7 @@ export const MarkdownPage = ({ dir, filename, css, changeTitle = true }) => (
       return module;
     }}
   >
-    {mod =>
+    {(mod) =>
       mod ? (
         <Fragment>
           {changeTitle && <DocumentTitle title={`Formagus - ${mod.title}`} />}

@@ -1,62 +1,51 @@
-import React from "react";
-import { Link, Match } from "@reach/router";
-import { Logo } from "./Logo";
-import {
-  BLACK,
-  SMALL_BREAK,
-  SMALL_BREAK_QUERY,
-  SIDEBAR_SIZE,
-  TOPBAR_SIZE,
-  GREEN
-} from "../theme";
-import Component from "@reactions/component";
-import scrollIntoView from "scroll-into-view-if-needed";
-import Media from "react-media";
+import React from 'react';
+import {Link, Match} from '@reach/router';
+import {Logo} from './Logo';
+import {BLACK, SMALL_BREAK, SMALL_BREAK_QUERY, SIDEBAR_SIZE, TOPBAR_SIZE, GREEN} from '../theme';
+import Component from '@reactions/component';
+import scrollIntoView from 'scroll-into-view-if-needed';
+import Media from 'react-media';
 
 export const Nav = () => (
   <Media query={SMALL_BREAK_QUERY}>
-    {isSmall => (
+    {(isSmall) => (
       <Match path="*">
-        {({ location }) => (
+        {({location}) => (
           <Component
-            initialState={{ sidebarOpen: false }}
+            initialState={{sidebarOpen: false}}
             isSmall={isSmall}
             location={location}
-            didUpdate={({ prevProps, state, setState }) => {
-              if (
-                state.sidebarOpen &&
-                (prevProps.location !== location ||
-                  prevProps.isSmall !== isSmall)
-              ) {
-                setState({ sidebarOpen: false });
+            didUpdate={({prevProps, state, setState}) => {
+              if (state.sidebarOpen && (prevProps.location !== location || prevProps.isSmall !== isSmall)) {
+                setState({sidebarOpen: false});
               }
             }}
           >
-            {({ state, setState }) => (
+            {({state, setState}) => (
               <div>
                 {isSmall && (
                   <div
                     css={{
                       background: BLACK,
-                      position: "fixed",
+                      position: 'fixed',
                       top: 0,
                       left: 0,
                       right: 0,
-                      height: TOPBAR_SIZE
+                      height: TOPBAR_SIZE,
                     }}
                   >
                     <button
                       css={{
-                        color: "white",
-                        borderRadius: "4px",
-                        textShadow: "0 1px 1px rgba(0, 0, 0, 0.2)",
+                        color: 'white',
+                        borderRadius: '4px',
+                        textShadow: '0 1px 1px rgba(0, 0, 0, 0.2)',
                         background: GREEN,
-                        outline: "none",
-                        margin: "5px"
+                        outline: 'none',
+                        margin: '5px',
                       }}
                       onClick={() =>
-                        setState(({ sidebarOpen }) => ({
-                          sidebarOpen: !sidebarOpen
+                        setState(({sidebarOpen}) => ({
+                          sidebarOpen: !sidebarOpen,
                         }))
                       }
                     >
@@ -67,42 +56,37 @@ export const Nav = () => (
                 <div
                   className="navigation-panel"
                   css={{
-                    position: "fixed",
+                    position: 'fixed',
                     top: 0,
                     bottom: 0,
-                    overflow: "auto",
+                    overflow: 'auto',
                     width: SIDEBAR_SIZE,
-                    borderRight: "solid 2px black",
+                    borderRight: 'solid 2px black',
                     backgroundColor: BLACK,
-                    color: "#e6e2a6",
-                    " a": { color: "white" },
+                    color: '#e6e2a6',
+                    ' a': {color: 'white'},
                     [SMALL_BREAK]: {
-                      top: TOPBAR_SIZE
+                      top: TOPBAR_SIZE,
                     },
-                    transition: "background-color 300ms, left 200ms"
+                    transition: 'background-color 300ms, left 200ms',
                   }}
                   style={{
-                    left: isSmall && !state.sidebarOpen ? -SIDEBAR_SIZE : 0
+                    left: isSmall && !state.sidebarOpen ? -SIDEBAR_SIZE : 0,
                   }}
                 >
-                  <div css={{ position: "sticky", overflow: "auto" }}>
+                  <div css={{position: 'sticky', overflow: 'auto'}}>
                     <Logo />
 
-                    <div css={{ padding: 20 }}>
-                      <div css={{ fontSize: "85%" }}>
-                        v{VERSION} -{" "}
-                        <a href="https://github.com/wix-playground/formagus">
-                          Github
-                        </a>
+                    <div css={{padding: 20}}>
+                      <div css={{fontSize: '85%'}}>
+                        v{VERSION} - <a href="https://github.com/wix-playground/formagus">Github</a>
                       </div>
 
                       <Header>About</Header>
 
                       <NavLink to="./">Introduction</NavLink>
                       <NavLink to="installation">Installation</NavLink>
-                      <NavLink to="comparison">
-                        Comparison to other form libraries
-                      </NavLink>
+                      <NavLink to="comparison">Comparison to other form libraries</NavLink>
 
                       <Header>Recipes</Header>
                       <NavLink to="example/basic">Basic</NavLink>
@@ -116,20 +100,16 @@ export const Nav = () => (
                       <Header>API</Header>
                       <div
                         css={{
-                          fontFamily: `'SFMono-Regular', Consolas, 'Roboto Mono', 'Droid Sans Mono', 'Liberation Mono', Menlo, Courier, monospace`
+                          fontFamily: `'SFMono-Regular', Consolas, 'Roboto Mono', 'Droid Sans Mono', 'Liberation Mono', Menlo, Courier, monospace`,
                         }}
                       >
                         <NavLink to="api/Form">Form</NavLink>
                         <NavLink to="api/FormPart">FormPart</NavLink>
-                        <NavLink to="api/FormController">
-                          FormController
-                        </NavLink>
+                        <NavLink to="api/FormController">FormController</NavLink>
                         <NavLink to="api/Field">Field</NavLink>
                       </div>
                     </div>
-                    <footer
-                      css={{ fontSize: "66%", marginTop: 60, opacity: 0.66 }}
-                    >
+                    <footer css={{fontSize: '66%', marginTop: 60, opacity: 0.66}}>
                       <p>Copyright &copy; 2018 WIX</p>
                     </footer>
                   </div>
@@ -143,64 +123,64 @@ export const Nav = () => (
   </Media>
 );
 
-const Header = ({ children }) => (
+const Header = ({children}) => (
   <h2
     css={{
-      fontWeight: "200",
-      fontStyle: "italic",
-      fontSize: "100%",
+      fontWeight: '200',
+      fontStyle: 'italic',
+      fontSize: '100%',
       marginTop: 30,
       marginBottom: 10,
-      opacity: 0.8
+      opacity: 0.8,
     }}
   >
     {children}
   </h2>
 );
 
-const NavLink = ({ to, ...props }) => (
+const NavLink = ({to, ...props}) => (
   <Match path={to}>
-    {({ match }) => (
+    {({match}) => (
       <Component
-        initialState={{ refs: { node: null } }}
+        initialState={{refs: {node: null}}}
         didUpdate={({
           state: {
-            refs: { node }
-          }
+            refs: {node},
+          },
         }) => {
           if (match) {
             scrollIntoView(node, {
-              behavior: "smooth",
-              scrollMode: "if-needed",
-              block: "nearest",
-              inline: "nearest"
+              behavior: 'smooth',
+              scrollMode: 'if-needed',
+              block: 'nearest',
+              inline: 'nearest',
             });
           }
         }}
       >
-        {({ state }) => (
-          <div ref={n => (state.refs.node = n)}>
+        {({state}) => (
+          <div ref={(n) => (state.refs.node = n)}>
             <Link
               to={to}
               {...props}
               css={{
-                textDecoration: "none",
-                display: "block",
-                padding: "5px 10px 5px 20px",
-                fontSize: "85%",
-                position: "relative",
+                textDecoration: 'none',
+                display: 'block',
+                padding: '5px 10px 5px 20px',
+                fontSize: '85%',
+                position: 'relative',
                 ...(match
                   ? {
-                      ":before": {
-                        position: "absolute",
-                        content: "•",
-                        left: 0
-                      }
+                      ':before': {
+                        position: 'absolute',
+                        content: '•',
+                        left: 0,
+                      },
                     }
                   : null),
-                ":hover": {
-                  textDecoration: "underline"
-                }
+                ':hover': {
+                  textDecoration: 'underline',
+                },
               }}
             />
           </div>

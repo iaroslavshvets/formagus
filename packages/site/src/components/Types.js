@@ -1,16 +1,15 @@
-import React from "react";
+import React from 'react';
 import Modal from 'react-responsive-modal';
 import {MarkdownPage} from './MarkdownPage';
 
 export class Types extends React.Component {
   state = {
-    isOpen: true
+    isOpen: true,
   };
 
   onCloseModal = () => {
-    this.setState({ isOpen: false }, () => {
+    this.setState({isOpen: false}, () => {
       this.props.navigate('../../');
-      location.reload(true);
     });
   };
 
@@ -27,13 +26,17 @@ export class Types extends React.Component {
     const {isOpen} = this.state;
 
     return (
-      <Modal open={isOpen} onClose={this.onCloseModal} center={true}>
+      <Modal open={isOpen} onClose={this.onCloseModal} center={true} blockScroll={false}>
         <div className="modal-navigation">
-          <button className="back-button" onClick={this.onClickBack}>Back</button>
-          <button className="next-button"onClick={this.onClickNext}>Next</button>
+          <button className="back-button" onClick={this.onClickBack}>
+            Back
+          </button>
+          <button className="next-button" onClick={this.onClickNext}>
+            Next
+          </button>
         </div>
-        <MarkdownPage dir="api/types" filename={type}/>
+        <MarkdownPage dir="api/types" filename={type} />
       </Modal>
-    )
+    );
   }
 }

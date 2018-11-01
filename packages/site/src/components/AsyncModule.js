@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
 export class AsyncModule extends React.Component {
-  state = { mod: null };
+  state = {mod: null};
 
   componentDidMount() {
-    this.props.load().then(mod => {
-      this.setState({ mod });
+    this.props.load().then((mod) => {
+      this.setState({mod});
     });
   }
 
