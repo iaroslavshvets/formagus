@@ -32,7 +32,7 @@ const md = markdownIt({
 
 md
   .use(markdownItMermaid)
-  .use(markdownItForInline, 'open_link_on_same_page', 'link_open', function (tokens, idx) {
+  .use(markdownItForInline, 'open_relative_link', 'link_open', function (tokens, idx) {
     const token = tokens[idx];
     const [,href] = token.attrs[0];
 
@@ -62,7 +62,6 @@ module.exports = (markdown) => {
     class Markdown extends React.Component {
       constructor(props) {
         super(props);
-        console.log('OK');
         this.onLinkClick = this.onLinkClick.bind(this);
       }
       
