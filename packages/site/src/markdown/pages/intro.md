@@ -160,7 +160,7 @@ then no other props should be passed to the `Form` and all the options should be
 ```tsx
 <Form>
 	{() => {
-		<Field apdater={YourInputAdapter} />
+		<Field name="formagus_user" adapter={YourInputAdapter} />
 	}}
 </Form>
 ```
@@ -169,9 +169,9 @@ then no other props should be passed to the `Form` and all the options should be
 graph TD
 A(FORM render)
 A -->| render //FIELD | B(FIELD is returning null)
-B -->|ComponentDidMount //FIELD| C(FIELD registers itself in CONTROLLER)
-C --> |render // FIELD receives data for rendering from Controller| D(FIELD renders props.adapter and passing data as formagus prop)
-D --> |render // YourInputAdapter | E(Visible component is being rendered // YourInputAdapter passed to FIELD)
+B -->|ComponentDidMount //FIELD| C(FIELD registers itself in FormController)
+C --> |render // FIELD receives data (FieldMeta) from Controller| D(FIELD renders props.adapter and passing data as formagus prop)
+D --> |render // YourInputAdapter | E(Visible component is being rendered)``
 ```
 
 
