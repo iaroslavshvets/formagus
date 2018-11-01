@@ -79,11 +79,11 @@ module.exports = (markdown) => {
       }
       
       componentDidMount() {
-        this.root.current.addEventListener('click', this.onLinkClick, true);
+        this.root.current.addEventListener('click', this.onLinkClick);
       }
       
       componentWillUnmount() {
-        this.root.current.removeEventListener('click', this.onLinkClick, true);
+        this.root.current.removeEventListener('click', this.onLinkClick);
       }
       
       render() {

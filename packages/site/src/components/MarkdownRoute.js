@@ -12,7 +12,7 @@ export class MarkdownRoute extends React.Component {
       <div
         css={{
           background: PAGE_BACKGROUND,
-          padding: 40,
+          padding: '10px 40px',
           maxWidth: 800,
           lineHeight: 1.3,
         }}
