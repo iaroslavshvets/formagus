@@ -1,6 +1,7 @@
 import React from 'react';
-import {PAGE_BACKGROUND, SIDEBAR_SIZE, SMALL_BREAK, TOPBAR_SIZE} from '../theme';
+import {BLACK, PAGE_BACKGROUND, SIDEBAR_SIZE, SMALL_BREAK, TOPBAR_SIZE} from '../theme';
 import {Nav} from './Nav';
+import GithubCorner from 'react-github-corner';
 
 export class App extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ export class App extends React.Component {
 
     return (
       <div>
+        <GithubCorner href="https://github.com/iaroslavshvets/formagus" bannerColor={BLACK} />
         <Nav />
         <div
           css={{

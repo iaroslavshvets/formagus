@@ -65,6 +65,23 @@ module.exports = {
         }],
       },
       {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/env']
+            }
+          },
+          {
+            loader: 'react-svg-loader',
+            options: {
+              jsx: true
+            }
+          }
+        ]
+      },
+      {
         test: /\.md$/,
         use: path.resolve('build/markdown-loader.js')
       },

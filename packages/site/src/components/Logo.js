@@ -1,8 +1,9 @@
 import React from 'react';
 import {GREEN} from '../theme';
+import Formagus from '../public/images/formagus.svg';
 
 export const Logo = () => (
-  <div css={{background: GREEN, padding: '10px 20px'}}>
+  <div css={{background: GREEN, padding: '15px 20px'}}>
     <svg width="100%" viewBox="0 0 831 111" version="1.1" xmlns="http://www.w3.org/2000/svg">
       <title>Formagus Logo</title>
       <text
@@ -19,5 +20,15 @@ export const Logo = () => (
         Formagus
       </text>
     </svg>
+    <span
+      css={{
+        width: '50px',
+        position: 'relative',
+        float: 'right',
+        top: '-38px',
+      }}
+    >
+      <Formagus />
+    </span>
   </div>
 );

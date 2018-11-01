@@ -54,7 +54,7 @@ export const Nav = () => (
                     bottom: 0,
                     overflow: 'auto',
                     width: SIDEBAR_SIZE,
-                    borderRight: 'solid 2px black',
+                    borderRight: 'solid 3px black',
                     backgroundColor: BLACK,
                     color: '#e6e2a6',
                     ' a': {color: 'white'},
