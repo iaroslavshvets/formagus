@@ -158,20 +158,33 @@ then no other props should be passed to the `Form` and all the options should be
 
 ### Sample form
 ```tsx
+const InputAdapter = (props) => {
+  const {formagus} = props;
+  return (
+    <input
+      value={formagus.value}
+      onChange={(e) => {
+        formagus.onChange(e.target.value);
+      }}
+    />
+  )
+}
+
 <Form>
 	{() => {
-		<Field name="formagus_user" adapter={YourInputAdapter} />
+		<Field name="formagus_user" adapter={InputAdapter} />
 	}}
 </Form>
 ```
+
 ### Basic flow
 ```mermaid
 graph TD
-A(FORM render)
-A -->| render //FIELD | B(FIELD is returning null)
-B -->|ComponentDidMount //FIELD| C(FIELD registers itself in FormController)
-C --> |render // FIELD receives data (FieldMeta) from Controller| D(FIELD renders props.adapter and passing data as formagus prop)
-D --> |render // YourInputAdapter | E(Visible component is being rendered)``
+A(`Form` render)
+A -->|1-st render //`Field` | B(`Field` is returning null)
+B -->|ComponentDidMount //`Field`| C(`Field` registers itself in `FormController`)
+C --> |2-nd render // `Field` receives data `FieldMeta` from `FormController`| D(`Field` renders props.adapter and passing data as `formagus` prop)
+D --> |render // `InputAdapter` | E(Actual input is being rendered)
 ```
 
 
