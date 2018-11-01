@@ -16,7 +16,7 @@ export const MarkdownPage = ({dir, filename, css, changeTitle = true}) => (
       mod ? (
         <Fragment>
           {changeTitle && <DocumentTitle title={`Formagus - ${mod.title}`} />}
-          <mod.default />
+          <mod.Markdown />
         </Fragment>
       ) : (
         <div>Loading...</div>

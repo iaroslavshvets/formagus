@@ -1,41 +1,68 @@
-.markdown h1 {
+.markdown > h1 {
   font-family: Bangers, cursive;
 }
-.markdown h2 {
+
+.markdown > h2 {
   font-family: Bangers, cursive;
+  margin-top: 2em;
   font-weight: 100;
+}
+
+.markdown > h3 {
+  opacity: 0.75;
+  margin-top: 2em;
+}
+
+.markdown > hr {
+  margin: 4em 0;
+  border: 0;
+  background: #ccc;
+}
+
+.markdown > p.category {
+  margin-top: -1.5em;
+  font-weight: bold;
+  opacity: 0.5;
+  font-style: italic;
 }
 
 .markdown table {
   border-collapse: collapse;
   border: solid 1px #aaa;
-}
-.markdown td {
-  border-bottom: solid 1px #ccc;
-  padding: 10px;
-}
-.markdown td:first-child {
-  text-align: right;
-}
-.markdown th {
-  background: #eee;
-}
-.markdown th {
-  text-align: left;
-  padding: 10px;
-  border-bottom: solid 1px #aaa;
+
+  th {
+    text-align: left;
+    padding: 10px;
+    border-bottom: solid 1px #aaa;
+    background: #eee;
+  }
+  td {
+    border-bottom: solid 1px #ccc;
+    padding: 10px;
+
+    &:first-child {
+      text-align: right;
+    }
+  }
 }
 
-.mermaid:not([data-processed='true']) {
-  opacity: 0;
+.markdown code[class^='language'] {
+  padding: 20px;
 }
-.mermaid {
+
+.markdown .mermaid {
+  &:not([data-processed='true']) {
+    opacity: 0;
+  }
+
   g rect {
     fill: #155f00 !important;
   }
+
   g .label {
     color: white !important;
   }
+
   .edgeLabel {
     color: black;
   }

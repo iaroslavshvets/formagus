@@ -39,6 +39,7 @@ module.exports = {
     new webpack.NamedModulesPlugin(),
     new webpack.DefinePlugin({
       BASEPATH: JSON.stringify(PROD ? '/router' : '/'),
+      LIB_VERSION: JSON.stringify(require('../lib/package.json').version),
       VERSION: JSON.stringify(require('./package.json').version)
     }),
     new webpack.ProvidePlugin({

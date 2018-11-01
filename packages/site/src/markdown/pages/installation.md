@@ -3,9 +3,9 @@
 You can install this library with npm or yarn.
 
 ```sh
-npm install @wix/formagus
+npm install formagus
 # or
-yarn add @wix/formagus
+yarn add formagus
 ```
 
 Also Formagus has a dependency on mobx, if it's not installed, please do

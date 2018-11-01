@@ -2,7 +2,6 @@ const markdownIt = require("markdown-it");
 const Prism = require("prismjs");
 const cheerio = require("cheerio");
 const markdownItMermaid = require('markdown-it-mermaid').default;
-const markdownItForInline = require('markdown-it-for-inline');
 
 const aliases = {
   html: "markup",
@@ -30,21 +29,25 @@ const md = markdownIt({
   highlight
 });
 
-md
-  .use(markdownItMermaid)
-  .use(markdownItForInline, 'open_relative_link', 'link_open', function (tokens, idx) {
-    const token = tokens[idx];
-    const [,href] = token.attrs[0];
+md.use(markdownItMermaid);
 
-    if ((tokens[idx + 2].type !== 'link_close') ||
-      (tokens[idx + 1].type !== 'text')) {
-      return;
-    }
+const defaultLinkRender = md.renderer.rules.link_open || function(tokens, idx, options, env, self) {
+  return self.renderToken(tokens, idx, options);
+};
 
-    if (href.startsWith('/')) {
-      token.attrPush([ 'data-relative-link', 'true' ]);
-    }
-  });
+md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+  const token = tokens[idx];
+  const [,href] = token.attrs[0];
+
+  if ((tokens[idx + 2].type !== 'link_close') || (tokens[idx + 1].type !== 'text')) {
+    return;
+  }
+
+  if (href.startsWith('/')) {
+    token.attrPush([ 'data-relative-link', 'true' ]);
+  }
+  return defaultLinkRender(tokens, idx, options, env, self);
+};
 
 const getTitle = (html) =>
   cheerio
@@ -59,7 +62,9 @@ module.exports = (markdown) => {
     import React from 'react';
     import {Link, navigate} from '@reach/router';
     
-    class Markdown extends React.Component {
+    export const title = ${title};
+        
+    export class Markdown extends React.Component {
       constructor(props) {
         super(props);
         this.onLinkClick = this.onLinkClick.bind(this);
@@ -89,11 +94,6 @@ module.exports = (markdown) => {
           }
         )
       }
-    }
-    
-    export const title = ${title};
-    export default function() {
-      return React.createElement(Markdown)
     }
   `;
 };

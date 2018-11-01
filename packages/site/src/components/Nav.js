@@ -79,7 +79,7 @@ export const Nav = () => (
 
                     <div css={{padding: 20}}>
                       <div css={{fontSize: '85%'}}>
-                        v{VERSION} - <a href="https://github.com/wix-playground/formagus">Github</a>
+                        v{LIB_VERSION} - <a href="https://github.com/iaroslavshvets/formagus">Github</a>
                       </div>
 
                       <Header>About</Header>
