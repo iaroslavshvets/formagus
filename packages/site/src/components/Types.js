@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-responsive-modal';
 import {MarkdownPage} from './MarkdownPage';
-import {BUTTON} from '../theme';
+import {BUTTON, PAGE_BACKGROUND} from '../theme';
 
 export class Types extends React.Component {
   state = {
@@ -27,7 +27,18 @@ export class Types extends React.Component {
     const {isOpen} = this.state;
 
     return (
-      <Modal open={isOpen} onClose={this.onCloseModal} center={true} blockScroll={false}>
+      <Modal
+        open={isOpen}
+        onClose={this.onCloseModal}
+        center={true}
+        blockScroll={false}
+        styles={{
+          modal: {
+            padding: '10px 50px',
+            background: PAGE_BACKGROUND,
+          },
+        }}
+      >
         <div className="modal-navigation">
           <button css={{...BUTTON, fontSize: '1.2em'}} onClick={this.onClickBack}>
             ◀ Back

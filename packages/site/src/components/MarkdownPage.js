@@ -19,7 +19,24 @@ export const MarkdownPage = ({dir, filename, css, changeTitle = true}) => (
           <mod.Markdown />
         </Fragment>
       ) : (
-        <div>Loading...</div>
+        <div
+          css={{
+            justifyContent: 'center',
+            display: 'flex',
+          }}
+        >
+          <div className="overlay-loader">
+            <div className="loader">
+              <div />
+              <div />
+              <div />
+              <div />
+              <div />
+              <div />
+              <div />
+            </div>
+          </div>
+        </div>
       )
     }
   </AsyncModule>
