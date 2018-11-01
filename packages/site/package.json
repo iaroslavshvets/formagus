@@ -9,7 +9,9 @@
     "start": "webpack-dev-server --open",
     "now-start": "serve dist --single",
     "format": "prettier --write '{src,test}/**/*.{ts,tsx,js,json,scss,css}'",
-    "prepush": "npm run build && surge --project ./dist --domain formagus.surge.sh"
+    "prepush": "npm run upload",
+    "upload": "npm run build && npm run prepare:upload && surge --project ./dist --domain formagus.surge.sh",
+    "prepare:upload": "node ./build/fix-surge-routing"
   },
   "lint-staged": {
     "*.{ts,tsx,js,json,scss,css}": [
