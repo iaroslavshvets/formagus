@@ -3,16 +3,18 @@ import {PAGE_BACKGROUND, SIDEBAR_SIZE, SMALL_BREAK, TOPBAR_SIZE} from '../theme'
 import {Nav} from './Nav';
 
 export class App extends React.Component {
-  // componentDidMount() {
-  //   const [,...pathParts] = location.pathname.split('/');
-  //
-  //   if (pathParts.length > 2) {
-  //     history.replaceState('','', '/' + pathParts[0] + '/' + pathParts[1]);
-  //   }
-  // }
+  constructor(props) {
+    super(props);
+    const [, ...pathParts] = location.pathname.split('/');
+
+    if (pathParts.length > 2) {
+      this.props.navigate('/' + pathParts[0] + '/' + pathParts[1]);
+    }
+  }
 
   render() {
     const {children} = this.props;
+
     return (
       <div>
         <Nav />

@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from 'react-responsive-modal';
 import {MarkdownPage} from './MarkdownPage';
+import {BUTTON} from '../theme';
 
 export class Types extends React.Component {
   state = {
@@ -28,11 +29,11 @@ export class Types extends React.Component {
     return (
       <Modal open={isOpen} onClose={this.onCloseModal} center={true} blockScroll={false}>
         <div className="modal-navigation">
-          <button className="back-button" onClick={this.onClickBack}>
-            Back
+          <button css={{...BUTTON, fontSize: '1.2em'}} onClick={this.onClickBack}>
+            ◀ Back
           </button>
-          <button className="next-button" onClick={this.onClickNext}>
-            Next
+          <button css={{...BUTTON, fontSize: '1.2em'}} onClick={this.onClickNext}>
+            Next ▶
           </button>
         </div>
         <MarkdownPage dir="api/types" filename={type} />

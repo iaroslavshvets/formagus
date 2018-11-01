@@ -68,6 +68,7 @@ module.exports = (markdown) => {
       constructor(props) {
         super(props);
         this.onLinkClick = this.onLinkClick.bind(this);
+        this.root = React.createRef();
       }
       
       onLinkClick(e) {
@@ -78,17 +79,18 @@ module.exports = (markdown) => {
       }
       
       componentDidMount() {
-        document.addEventListener('click', this.onLinkClick, true);
+        this.root.current.addEventListener('click', this.onLinkClick, true);
       }
       
       componentWillUnmount() {
-        document.removeEventListener('click', this.onLinkClick, true);
+        this.root.current.removeEventListener('click', this.onLinkClick, true);
       }
       
       render() {
         return React.createElement(
           'div',
           {
+            ref: this.root,
             className: 'markdown',
             dangerouslySetInnerHTML: { __html: ${JSON.stringify(html)}}
           }

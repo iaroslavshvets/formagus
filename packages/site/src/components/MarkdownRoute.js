@@ -20,6 +20,7 @@ export class MarkdownRoute extends React.Component {
         <Router>
           <Types path="/types/:type" />
         </Router>
+
         <MarkdownPage dir={dir} filename={filename} css={{padding: 40, maxWidth: 800}} />
       </div>
     );
