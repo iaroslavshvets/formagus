@@ -6,7 +6,7 @@ import {Tutorial} from './Tutorial';
 import {App} from './App';
 import {BLACK} from '../theme';
 import {MarkdownRoute} from './MarkdownRoute';
-import {Example} from './Example';
+import {Recipe} from './Recipe';
 require('../public/styles/app.scss');
 require('../public/styles/markdown.scss');
 require('../public/styles/prismjs.scss');
@@ -16,7 +16,7 @@ const RootView = () => (
     <Router basepath={BASEPATH}>
       <App path="/">
         <Home path="/" />
-        <Example path="example/:id" />
+        <Recipe path="recipe/:id" />
         <Tutorial path="tutorial/:id" />
         <MarkdownRoute dir="api" path="api/:filename/*" />
         <MarkdownRoute dir="pages" path=":filename" />

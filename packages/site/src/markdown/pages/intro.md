@@ -3,7 +3,7 @@
 Formagus adds some necessary magic, while working on the forms. That kind, that allows easily handle all
 the nasty stuff, like different form and field states (dirty, touched, submit count, up to date values, errors and so on). Magic is good, too much of it and it easily becomes
 a noose over your neck, binding your to the structure chosen by library and not you. So to balance the scales you need to provide adapters, which are responsible for the displaying of form state.
-Formagus doesn't have any adapters by default, but you can find some examples in /examples section.
+Formagus doesn't have any adapters by default, but you can find some examples in `Recipes` section.
 
 Formagus is compatible with React 15+ and is powered by `Mobx`.
 

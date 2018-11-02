@@ -9,9 +9,9 @@ const exampleSandboxen = {
   validation: 'nwm3w561mj',
 };
 
-export const Example = ({id}) => (
+export const Recipe = ({id}) => (
   <Fragment>
-    <DocumentTitle title={`Formagus - Example - ${id}`} />
+    <DocumentTitle title={`Formagus - Recipe - ${id}`} />
     <iframe
       title="example"
       src={`https://codesandbox.io/embed/${exampleSandboxen[id]}?fontsize=13`}
