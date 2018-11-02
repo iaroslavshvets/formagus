@@ -14,7 +14,7 @@ export const Recipe = ({id}) => (
     <DocumentTitle title={`Formagus - Recipe - ${id}`} />
     <iframe
       title="example"
-      src={`https://codesandbox.io/embed/${exampleSandboxen[id]}?fontsize=13`}
+      src={`https://codesandbox.io/embed/${exampleSandboxen[id]}?fontsize=13&module=/src/ExampleForm.tsx&view=split`}
       css={{
         display: 'block',
         width: '100%',
