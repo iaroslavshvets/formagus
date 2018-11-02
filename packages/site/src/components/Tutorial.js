@@ -5,7 +5,7 @@ import {Link} from '@reach/router';
 
 const tutorialLinks = ['01-intro', '02-next-steps'];
 
-const tutorialSandboxen = ['rwo3jz5vno', 'n01l63w4nl'];
+const tutorialSandboxen = ['rwo3jz5vno', 'rwo3jz5vno'];
 
 export const Tutorial = ({id, location}) => (
   <div
