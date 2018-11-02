@@ -46,7 +46,7 @@ const SimpleAsHellForm = () => (
 Now lets add the Formagus into the mix:
 
 ```jsx
-import {Form} from '@wix/formagus';
+import {Form} from 'formagus';
 
 const onSubmit = (errors, values) => {
     if (errors === null) {
@@ -77,7 +77,7 @@ Adapter – is a component, which will receive all available state as `props.for
 are injected by the `<Field/>`. Now, back to school:
 
 ```jsx
-import {Form, Field} from '@wix/formagus';
+import {Form, Field} from 'formagus';
 
 const InputAdapter = (props) => {
   const {formagus} = props;
@@ -114,7 +114,7 @@ There are cases, when you need to interact with the form from outside of it. `Fo
 1. in any place in the code
 
 ```jsx
-import {FormController} from '@wix/formagus';
+import {FormController} from 'formagus';
 
 const formController = new FormController({
   onSubmit: (errors, values) => {
@@ -133,7 +133,7 @@ export {formController}
 
 ```jsx
 import * as React from 'react';
-import {Form, Field} from '@wix/formagus';
+import {Form, Field} from 'formagus';
 import {formController} from './formController';
 import {InputAdapter} from './InputAdapter';
 
