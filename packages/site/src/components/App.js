@@ -4,12 +4,20 @@ import {Nav} from './Nav';
 import GithubCorner from 'react-github-corner';
 
 export class App extends React.Component {
+  state = {
+    redirectTo: null,
+  };
+
+  //TODO make actual redirect
   constructor(props) {
     super(props);
+
     const [, ...pathParts] = location.pathname.split('/');
 
     if (pathParts.length > 2) {
-      this.props.navigate('/' + pathParts[0] + '/' + pathParts[1]);
+      this.state = {
+        redirectTo: '/' + pathParts[0] + '/' + pathParts[1],
+      };
     }
   }
 

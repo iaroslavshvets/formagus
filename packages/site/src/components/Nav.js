@@ -83,6 +83,12 @@ export const Nav = () => (
 
                       <Header>Recipes</Header>
                       <NavLink to="example/basic">Basic</NavLink>
+                      <NavLink to="example/passingPropsToAdapter">
+                        Passing custom props to Adapter as adapterProps
+                      </NavLink>
+                      <NavLink to="example/passingPropsToAdapterAsChild">
+                        Passing custom props to Adapter from child render
+                      </NavLink>
                       <NavLink to="example/withExternalController">With external controller</NavLink>
                       <NavLink to="example/validation">Validation</NavLink>
 

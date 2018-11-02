@@ -1,25 +1,18 @@
 # FormController
 
 ## Available props:
-<p class="category">look for type summary</p>
+<p class="category">Click on Type to see description</p>
 
 | prop          | signature | description |
 | ------------- | --- | --- |
-| onSubmit      | (errors: `FormValidationErrors`, values: `FormValues`, submitEvent?: React.FormEvent<any>) => void |
-| initialValues | `FormValues` |
-| onValidate    | (values: any) => `FormValidationErrors` |
-| onFormat      | <T = Function>(values: `FormValues`) =>  {[P in keyof `FormValues`]: T[`FormValues`[P]]} |
-| onSubmitAfter | (errors: `FormValidationErrors`, values: `FormValues`, submitEvent?: React.FormEvent<any>) => void; |
+| onSubmit      | (errors: [FormValidationErrors][FormValidationErrors], values: [FormValues][FormValues], submitEvent?: React.FormEvent<any>) => void |
+| initialValues | [FormValues][FormValues] |
+| onValidate    | (values: any) => [FormValidationErrors][FormValidationErrors] |
+| onFormat      | <T = Function>(values: [FormValues][FormValues]) =>  {[P in keyof [FormValues][FormValues]]: T[[FormValues][FormValues][P]]} |
+| onSubmitAfter | (errors: [FormValidationErrors][FormValidationErrors], values: [FormValues][FormValues], submitEvent?: React.FormEvent<any>) => void; |
 
+`*` - **FormController** instance will have `API` field, which will have all of the [FormAPI][FormAPI] methods.
 
-**type summary:**
-
-```typescript
-type FormValues = {
-  [key: string]: any | FormValues;
-};
-
-type Valid = null | undefined;
-type Invalid = Omit<any, Valid>;
-type FormValidationErrors = {[fieldName: string]: Invalid};
-```
+[FormValidationErrors]: /api/FormController/types/FormValidationErrors
+[FormValues]: /api/FormController/types/FormValues
+[FormAPI]: /api/FormController/types/FormAPI

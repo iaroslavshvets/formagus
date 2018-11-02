@@ -22,6 +22,12 @@ export class Types extends React.Component {
     history.forward();
   };
 
+  componentWillUnmount() {
+    this.setState({
+      isOpen: false,
+    });
+  }
+
   render() {
     const {type} = this.props;
     const {isOpen} = this.state;
@@ -36,6 +42,7 @@ export class Types extends React.Component {
           modal: {
             padding: '10px 50px',
             background: PAGE_BACKGROUND,
+            maxWidth: '1000px',
           },
         }}
       >

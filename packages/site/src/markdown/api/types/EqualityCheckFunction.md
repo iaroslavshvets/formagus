@@ -1,3 +1,4 @@
 ```typescript
-type EqualityCheckFunction = (newValue: any, oldValue: any) => boolean;
+type EqualityCheckFunction = 
+  (newValue: any, oldValue: any) => boolean;
 ```

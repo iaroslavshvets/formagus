@@ -1,14 +1,14 @@
 ```typescript
 interface FieldMeta {
-  custom: {[key: string]: any};
-  onEqualityCheck: EqualityCheckFunction;
-  initialValue: any;
+  errors: any | null;
+  isDirty: boolean;
   isTouched: boolean;
   isActive: boolean;
   isValidating: boolean;
-  isDirty: boolean;
   isRegistered: boolean;
+  custom: {[key: string]: any};
+  form: FormMeta;
 }
 ```
 
-- [EqualityCheckFunction](/api/Form/types/EqualityCheckFunction)
+- [FormMeta](/api/Form/types/FormMeta)

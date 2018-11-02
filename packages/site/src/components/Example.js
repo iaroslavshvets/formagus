@@ -3,6 +3,8 @@ import {DocumentTitle} from './DocumentTitle';
 
 const exampleSandboxen = {
   basic: 'nk2pznjq0j',
+  passingPropsToAdapter: '4z6y33wx30',
+  passingPropsToAdapterAsChild: 'oq79541m7q',
   withExternalController: 'q3m27nr9v4',
   validation: 'nwm3w561mj',
 };

@@ -4,5 +4,6 @@
 
 | prop          | signature | description |
 | ------------- | --- | --- |
-| children      | (renderProps: FormAPI) => JSX.Element |
-| controller    | `FormController` |
+| children      | (renderProps: [FormAPI][FormAPI]) => JSX.Element |
+
+[FormAPI]: /api/FormPart/types/FormAPI
