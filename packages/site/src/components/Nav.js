@@ -5,6 +5,7 @@ import {BLACK, SMALL_BREAK, SMALL_BREAK_QUERY, SIDEBAR_SIZE, TOPBAR_SIZE, GREEN,
 import Component from '@reactions/component';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import Media from 'react-media';
+import MenuIcon from '../public/images/menu_icon.svg';
 
 export const Nav = () => (
   <Media query={SMALL_BREAK_QUERY}>
@@ -35,14 +36,23 @@ export const Nav = () => (
                     }}
                   >
                     <button
-                      css={BUTTON}
+                      css={{
+                        background: 'transparent',
+                        border: 'none',
+                        outline: 'none',
+                      }}
                       onClick={() =>
                         setState(({sidebarOpen}) => ({
                           sidebarOpen: !sidebarOpen,
                         }))
                       }
                     >
-                      TOGGLE NAVIGATION PANEL
+                      <MenuIcon
+                        css={{
+                          position: 'absolute',
+                          transform: `scale(0.12) translateX(-375%) translateY(-400%);`,
+                        }}
+                      />
                     </button>
                   </div>
                 )}

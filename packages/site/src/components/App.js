@@ -26,7 +26,13 @@ export class App extends React.Component {
 
     return (
       <div>
-        <GithubCorner href="https://github.com/iaroslavshvets/formagus" bannerColor={BLACK} />
+        <div
+          css={{
+            position: 'relative',
+          }}
+        >
+          <GithubCorner href="https://github.com/iaroslavshvets/formagus" bannerColor={BLACK} />
+        </div>
         <Nav />
         <div
           css={{
