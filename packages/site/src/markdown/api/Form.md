@@ -16,7 +16,7 @@
 
 `*` - **controller** prop should be passed (instance of controller created manually before) OR any other props, but not both.
 
-[FormatterFunction]: /api/Field/types/FormatterFunction
+[FormatterFunction]: /api/Form/types/FormatterFunction
 [FormValidationErrors]: /api/Form/types/FormValidationErrors
 [FormValues]: /api/Form/types/FormValues
 [FormAPI]: /api/Form/types/FormAPI
