@@ -8,11 +8,12 @@
 | onSubmit      | (errors: [FormValidationErrors][FormValidationErrors], values: [FormValues][FormValues], submitEvent?: React.FormEvent<any>) => void |
 | initialValues | [FormValues][FormValues] |
 | onValidate    | (values: any) => [FormValidationErrors][FormValidationErrors] |
-| onFormat      | <T = Function>(values: [FormValues][FormValues]) =>  {[P in keyof [FormValues][FormValues]]: T[[FormValues][FormValues][P]]} |
+| onFormat      | [FormatterFunction][FormatterFunction] |
 | onSubmitAfter | (errors: [FormValidationErrors][FormValidationErrors], values: [FormValues][FormValues], submitEvent?: React.FormEvent<any>) => void; |
 
 `*` - **FormController** instance will have `API` field, which will have all of the [FormAPI][FormAPI] methods.
 
+[FormatterFunction]: /api/Field/types/FormatterFunction
 [FormValidationErrors]: /api/FormController/types/FormValidationErrors
 [FormValues]: /api/FormController/types/FormValues
 [FormAPI]: /api/FormController/types/FormAPI
