@@ -183,8 +183,8 @@ graph TD
 A(`Form` render)
 A -->|1-st render //`Field` | B(`Field` is returning null)
 B -->|ComponentDidMount //`Field`| C(`Field` registers itself in `FormController`)
-C --> |2-nd render // `Field` receives data `FieldMeta` from `FormController`| D(`Field` renders props.adapter and passing data as `formagus` prop)
-D --> |render // `InputAdapter` | E(Actual input is being rendered)
+C --> |2-nd render // `Field` receives value and other meta-data from `FormController`| D(`Field` renders props.adapter and passing data as `formagus` prop)
+D --> |1-st render // `InputAdapter` | E(Actual input is being rendered)
 ```
 
 
