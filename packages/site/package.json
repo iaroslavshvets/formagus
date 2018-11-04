@@ -10,6 +10,8 @@
     "now-start": "serve dist --single",
     "format": "prettier --write '{src,test}/**/*.{ts,tsx,js,json,scss,css}'",
     "prepush": "npm run upload",
+    "precommit": "lint-staged",
+    "postcommit": "git update-index --again",
     "upload": "npm run build && npm run prepare:upload && surge --project ./dist --domain formagus.surge.sh",
     "prepare:upload": "node ./build/fix-surge-routing"
   },
