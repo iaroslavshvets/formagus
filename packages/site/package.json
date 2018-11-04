@@ -19,9 +19,6 @@
     "*.{ts,tsx,js,json,scss,css}": [
       "prettier --write",
       "git add"
-    ],
-    "*.{ts,tsx}": [
-      "tslint --fix"
     ]
   },
   "devDependencies": {
@@ -37,6 +34,7 @@
     "cheerio": "^1.0.0-rc.2",
     "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^1.0.1",
+    "lint-staged": "^8.0.4",
     "markdown-it-mermaid": "^0.2.5",
     "mini-css-extract-plugin": "^0.4.0",
     "node-sass": "^4.9.0",
