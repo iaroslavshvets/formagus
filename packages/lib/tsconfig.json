@@ -26,6 +26,8 @@
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",
+    "./__tests__/**/*.ts",
+    "./__tests__/**/*.tsx",
     "./test/**/*.ts",
     "./test/**/*.tsx",
     "./stories/**/*.ts",

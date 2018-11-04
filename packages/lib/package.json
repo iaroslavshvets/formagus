@@ -19,11 +19,10 @@
     "test:coverage": "jest --coverage",
     "precommit": "lint-staged",
     "postcommit": "git update-index --again",
-    "postinstall": "npm run test",
     "prepush": "npm run test",
     "format": "prettier --write '{src,test}/**/*.{ts,tsx,js,json,scss,css}'",
     "commit-cz": "git-cz",
-    "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls"
+    "coveralls": "jest --coverage && cat ./coverage/lcov.info"
   },
   "lint-staged": {
     "*.{ts,tsx,js,json,scss,css}": [

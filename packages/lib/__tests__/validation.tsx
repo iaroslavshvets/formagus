@@ -1,12 +1,11 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
-import {FormController} from '../src/FormController';
+import {FormController, Field} from '../src';
 import {createInputAdapterDriver} from '../test/components/InputAdapter/InputAdapter.driver';
 import {TestForm} from '../test/components/TestForm';
 import {waitFor} from '../test/helpers/conditions';
 import {createTestFormDriver} from '../test/components/TestForm.driver';
 import {InputAdapter} from '../test/components/InputAdapter';
-import {Field} from '../src/Field';
 
 describe('Validation', async () => {
   describe('form level', () => {

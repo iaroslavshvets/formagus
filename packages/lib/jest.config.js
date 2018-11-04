@@ -28,5 +28,9 @@ module.exports = {
   ],
   preset: 'ts-jest',
   testMatch: null,
+  collectCoverageFrom: [
+    '!<rootDir>/src/index.ts',
+    '<rootDir>/src/**'
+  ]
 };
 

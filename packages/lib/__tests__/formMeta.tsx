@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
-import {Field} from '../src/Field';
+import {Field} from '../src';
 import {InputAdapter} from '../test/components/InputAdapter';
 import {TestForm} from '../test/components/TestForm';
 import {waitFor} from '../test/helpers/conditions';

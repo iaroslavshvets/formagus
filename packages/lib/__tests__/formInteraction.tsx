@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
-import {Field} from '../src/Field';
-import {FormController} from '../src/FormController';
+import {Field, FormController} from '../src';
 import {InputAdapter} from '../test/components/InputAdapter';
 import {TestForm} from '../test/components/TestForm';
 import {createInputAdapterDriver} from '../test/components/InputAdapter/InputAdapter.driver';

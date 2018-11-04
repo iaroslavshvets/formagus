@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import {TestForm} from '../test/components/TestForm';
 import {createTestFormDriver} from '../test/components/TestForm.driver';
 import {InputAdapter} from '../test/components/InputAdapter';
-import {Field} from '../src/Field';
+import {Field} from '../src';
 
 test('Render', () => {
   const wrapper = mount(

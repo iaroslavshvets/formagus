@@ -2,7 +2,7 @@ import * as React from 'react';
 import {mount} from 'enzyme';
 import {TestForm} from '../test/components/TestForm';
 import {InputAdapter} from '../test/components/InputAdapter';
-import {Field} from '../src/Field';
+import {Field} from '../src';
 import {createTestFormDriver} from '../test/components/TestForm.driver';
 import {createInputAdapterDriver} from '../test/components/InputAdapter/InputAdapter.driver';
 import {waitFor} from '../test/helpers/conditions';
