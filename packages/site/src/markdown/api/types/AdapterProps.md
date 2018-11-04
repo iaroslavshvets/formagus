@@ -13,4 +13,4 @@ export interface AdapterProps {
 }
 ```
 
-- [FieldMeta](/api/Field/types/FieldMeta)
+- [FieldMeta](/types/FieldMeta)

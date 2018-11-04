@@ -3,6 +3,15 @@ import Modal from 'react-responsive-modal';
 import {MarkdownPage} from './MarkdownPage';
 import {BUTTON, PAGE_BACKGROUND} from '../theme';
 
+const modalState = {
+  isModalOpened: false,
+  setModalState(state) {
+    modalState.isModalOpened = state;
+  },
+};
+
+export const ModalContext = React.createContext(modalState);
+
 export class Types extends React.Component {
   state = {
     isOpen: true,

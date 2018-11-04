@@ -6,4 +6,4 @@
 | ------------- | --- | --- |
 | children      | (renderProps: [FormAPI][FormAPI]) => JSX.Element |
 
-[FormAPI]: /api/FormPart/types/FormAPI
+[FormAPI]: /types/FormAPI

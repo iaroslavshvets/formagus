@@ -13,7 +13,7 @@ interface FormAPI {
 }
 ```
 
-- [FieldMeta](/api/Form/types/FieldMeta)
-- [FormValidationErrors](/api/Form/types/FormValidationErrors)
-- [FormValues](/api/Form/types/FormValues)
-- [FormMeta](/api/Form/types/FormMeta)
+- [FieldMeta](/types/FieldMeta)
+- [FormValidationErrors](/types/FormValidationErrors)
+- [FormValues](/types/FormValues)
+- [FormMeta](/types/FormMeta)

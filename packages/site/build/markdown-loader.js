@@ -71,10 +71,22 @@ module.exports = (markdown) => {
         this.root = React.createRef();
       }
       
+      getNewLocation(href) {
+        const oldLocation = location.pathname;
+        const [,firstPartOfNewHref,] = href.match(/\\/(.*\\/)/);
+        const rewritePosition = oldLocation.indexOf(firstPartOfNewHref);
+        const newLocation = rewritePosition !== -1
+          ? oldLocation.slice(0, rewritePosition - 1) + href
+          : oldLocation + href;
+          
+        return newLocation;
+      }
+      
       onLinkClick(e) {
         if (e.target.matches('[data-relative-link]')) {
           e.preventDefault();
-          navigate(e.target.getAttribute('href'));
+
+          navigate(this.getNewLocation(e.target.getAttribute('href')));
         }
       }
       

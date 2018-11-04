@@ -50,7 +50,7 @@ export const Nav = () => (
                       <MenuIcon
                         css={{
                           position: 'absolute',
-                          transform: `scale(0.12) translateX(-375%) translateY(-400%);`,
+                          transform: `scale(0.12) translateX(-375%) translateY(-400%)`,
                         }}
                       />
                     </button>

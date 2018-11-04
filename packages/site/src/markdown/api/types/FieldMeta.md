@@ -11,4 +11,4 @@ interface FieldMeta {
 }
 ```
 
-- [FormMeta](/api/Form/types/FormMeta)
+- [FormMeta](/types/FormMeta)

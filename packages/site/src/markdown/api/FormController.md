@@ -13,7 +13,7 @@
 
 `*` - **FormController** instance will have `API` field, which will have all of the [FormAPI][FormAPI] methods.
 
-[FormatterFunction]: /api/FormController/types/FormatterFunction
-[FormValidationErrors]: /api/FormController/types/FormValidationErrors
-[FormValues]: /api/FormController/types/FormValues
-[FormAPI]: /api/FormController/types/FormAPI
+[FormatterFunction]: /types/FormatterFunction
+[FormValidationErrors]: /types/FormValidationErrors
+[FormValues]: /types/FormValues
+[FormAPI]: /types/FormAPI

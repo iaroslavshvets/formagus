@@ -16,7 +16,7 @@
 | persist         | boolean |
 | adapterProps    | any |
 
-[EqualityCheckFunction]: /api/Field/types/EqualityCheckFunction
-[FormatterFunction]: /api/Field/types/FormatterFunction
-[ValidationFunction]: /api/Field/types/ValidationFunction
-[AdapterProps]: /api/Field/types/AdapterProps
+[EqualityCheckFunction]: /types/EqualityCheckFunction
+[FormatterFunction]: /types/FormatterFunction
+[ValidationFunction]: /types/ValidationFunction
+[AdapterProps]: /types/AdapterProps
