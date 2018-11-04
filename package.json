@@ -4,6 +4,9 @@
 	"license": "MIT",
 	"description": "magus-form monorepo",
 	"author": "iaroslav.shvets@gmail.co,",
+	"scripts": {
+		"postinstall": "lerna bootstrap"
+	},
 	"husky": {
 		"hooks": {
 			"precommit": "sh ./git-hooks/precommit.sh",
