@@ -9,9 +9,9 @@
 	},
 	"husky": {
 		"hooks": {
-			"precommit": "sh ./git-hooks/precommit.sh",
-			"postcommit": "sh ./git-hooks/postcommit.sh",
-			"prepush": "sh ./git-hooks/prepush.sh"
+			"pre-commit": "sh ./git-hooks/pre-commit.sh",
+			"post-commit": "sh ./git-hooks/post-commit.sh",
+			"pre-push": "sh ./git-hooks/pre-push.sh"
 		}
 	},
 	"devDependencies": {
