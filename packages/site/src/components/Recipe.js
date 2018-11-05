@@ -8,6 +8,7 @@ const exampleSandboxen = {
   withExternalController: 'q3m27nr9v4',
   validation: 'nwm3w561mj',
   fieldValidation: '5z1lz205m4',
+  persistingFieldState: 'wyv2jj0138',
 };
 
 export const Recipe = ({id}) => (
