@@ -2,6 +2,7 @@ import React from 'react';
 import {BLACK, PAGE_BACKGROUND, SIDEBAR_SIZE, SMALL_BREAK, TOPBAR_SIZE} from '../theme';
 import {Nav} from './Nav';
 import GithubCorner from 'react-github-corner';
+import {MagicBackground} from './MagicBackground';
 
 export class App extends React.Component {
   state = {
@@ -33,6 +34,7 @@ export class App extends React.Component {
         >
           <GithubCorner href="https://github.com/iaroslavshvets/formagus" bannerColor={BLACK} />
         </div>
+        <MagicBackground />
         <Nav />
         <div
           css={{
