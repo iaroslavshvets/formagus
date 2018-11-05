@@ -79,6 +79,15 @@ are injected by the `<Field/>`. Now, back to school:
 ```jsx
 import {Form, Field} from 'formagus';
 
+const onSubmit = (errors, values) => {
+    if (errors === null) {
+        fetch('www.endpoint.com', {
+            method: 'POST',
+            body: JSON.stringify(values),
+        })
+    }
+};
+
 const InputAdapter = (props) => {
   const {formagus} = props;
   return (
@@ -129,7 +138,7 @@ const formController = new FormController({
 export {formController}
 ```
 
-2. later in React Component file
+2. later in React Component
 
 ```jsx
 import * as React from 'react';
@@ -156,7 +165,7 @@ then no other props should be passed to the `Form` and all the options should be
 
 ## How it all works:
 
-### Sample form
+### Most simple form
 ```tsx
 const InputAdapter = (props) => {
   const {formagus} = props;
