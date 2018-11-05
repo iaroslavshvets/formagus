@@ -3,6 +3,7 @@ import React from 'react';
 import {MarkdownPage} from './MarkdownPage';
 import {Types} from './Types';
 import {Router} from '@reach/router';
+import {MagicBackground} from './MagicBackground';
 
 export class MarkdownRoute extends React.Component {
   state = {
@@ -34,6 +35,7 @@ export class MarkdownRoute extends React.Component {
           lineHeight: 1.3,
         }}
       >
+        <MagicBackground />
         <Router>
           <Types path="/types/:type" />
         </Router>
