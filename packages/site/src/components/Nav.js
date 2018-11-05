@@ -100,7 +100,8 @@ export const Nav = () => (
                         Passing custom props to Adapter from child render
                       </NavLink>
                       <NavLink to="recipe/withExternalController">With external controller</NavLink>
-                      <NavLink to="recipe/validation">Validation</NavLink>
+                      <NavLink to="recipe/validation">Form level validation</NavLink>
+                      <NavLink to="recipe/fieldValidation">Field level validation</NavLink>
 
                       <Header>Tutorial</Header>
                       <NavLink to="tutorial/01-intro">Introduction</NavLink>

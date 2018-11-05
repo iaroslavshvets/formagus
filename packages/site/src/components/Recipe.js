@@ -7,6 +7,7 @@ const exampleSandboxen = {
   passingPropsToAdapterAsChild: 'oq79541m7q',
   withExternalController: 'q3m27nr9v4',
   validation: 'nwm3w561mj',
+  fieldValidation: '5z1lz205m4',
 };
 
 export const Recipe = ({id}) => (
