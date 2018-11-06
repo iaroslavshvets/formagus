@@ -8,7 +8,9 @@ const exampleSandboxen = {
   withExternalController: 'q3m27nr9v4',
   validation: 'nwm3w561mj',
   fieldValidation: '5z1lz205m4',
+  formatter: 'qlp7nzz2q4',
   persistingFieldState: 'wyv2jj0138',
+  nestedFields: '93p2o713w',
   dynamicArray: '1q19ro79o7',
 };
 
