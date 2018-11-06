@@ -1,6 +1,6 @@
 {
   "name": "formagus",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "license": "MIT",
   "private": false,
   "authors": [
@@ -34,6 +34,7 @@
     ]
   },
   "main": "./dist/index.js",
+  "types": "./dist/src/index.d.ts",
   "devDependencies": {
     "@types/enzyme": "^3.1.13",
     "@types/enzyme-adapter-react-16": "^1.0.3",
