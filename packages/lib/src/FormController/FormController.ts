@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {observable, action, runInAction, toJS, computed} from 'mobx';
 import {Field, ValidationFunction, EqualityCheckFunction, FieldProps, FormatterFunction} from '../Field';
-const set = require('lodash/set');
-const get = require('lodash/get');
-const merge = require('lodash/merge');
-const cloneDeep = require('lodash/cloneDeep');
+import set from 'lodash-es/set';
+import get from 'lodash-es/get';
+import merge from 'lodash-es/merge';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 export type FieldDictionary<T> = {[fieldName: string]: T};
 
@@ -21,7 +21,7 @@ export type FieldValidationState = Valid | Invalid;
 export interface FormControllerOptions {
   initialValues?: FormValues;
   onValidate?: (values: any) => FieldDictionary<Invalid>;
-  onFormat?: <T = Function>(values: FormValues) =>  {[P in keyof FormValues]: T[FormValues[P]]};
+  onFormat?: <T = Function>(values: FormValues) => {[P in keyof FormValues]: T[FormValues[P]]};
   onSubmit?: (errors: FormValidationErrors, values: FormValues, submitEvent?: React.FormEvent<any>) => void;
   onSubmitAfter?: (errors: FormValidationErrors, values: FormValues, submitEvent?: React.FormEvent<any>) => void;
 }
