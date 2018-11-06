@@ -80,7 +80,7 @@ describe('Field interactions', async () => {
         );
       }
     }
-    const wrapper = mount(<StatefulForm props={null}/>);
+    const wrapper = mount(<StatefulForm props={null} />);
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
     const toggleField = wrapper.find(`[data-hook="toggle-field"]`);
     const NEW_VALUE = 'batman';
@@ -118,6 +118,26 @@ describe('Field interactions', async () => {
 
     await waitFor(wrapper)(() => {
       return fieldDriver.get.meta('custom:customProperty') === 'custom value';
+    });
+  });
+
+  it('set nested value', async () => {
+    const NESTED_FIELD_NAME = `${TestForm.FIELD_ONE_NAME}[0].nested`;
+    const NEW_VALUE = 'batman';
+    const formController = new FormController({});
+
+    const wrapper = mount(
+      <TestForm controller={formController}>
+        <Field name={NESTED_FIELD_NAME} adapter={InputAdapter} />
+      </TestForm>,
+    );
+
+    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: NESTED_FIELD_NAME});
+
+    fieldDriver.when.change(NEW_VALUE);
+
+    await waitFor(wrapper)(() => {
+      return formController.API.values[TestForm.FIELD_ONE_NAME][0].nested === NEW_VALUE;
     });
   });
 });
