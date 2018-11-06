@@ -1,7 +1,7 @@
 # FormController
 
 ## Available props:
-<p class="category">Click on Type to see description</p>
+<p class="category">Click on Type to see description in Popup</p>
 
 | prop          | signature | description |
 | ------------- | --- | --- |

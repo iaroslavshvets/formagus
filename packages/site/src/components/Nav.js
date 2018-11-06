@@ -103,6 +103,7 @@ export const Nav = () => (
                       <NavLink to="recipe/validation">Form level validation</NavLink>
                       <NavLink to="recipe/fieldValidation">Field level validation</NavLink>
                       <NavLink to="recipe/persistingFieldState">Persisting Field value after Field unmount</NavLink>
+                      <NavLink to="recipe/dynamicArray">Dynamic array of values</NavLink>
 
                       <Header>Tutorial</Header>
                       <NavLink to="tutorial/01-intro">Introduction</NavLink>

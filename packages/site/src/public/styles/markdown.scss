@@ -21,6 +21,10 @@
   background: #ccc;
 }
 
+.markdown a[data-relative-link] {
+  color: red;
+}
+
 .markdown > p.category {
   margin-top: -20px;
   font-weight: bold;
