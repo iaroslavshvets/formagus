@@ -1,5 +1,4 @@
 const path = require('path');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
@@ -14,12 +13,11 @@ module.exports = {
       },
     ],
   },
-  'plugins': [
-    new LodashModuleReplacementPlugin(),
+  plugins: [
     new UglifyJsPlugin({
       uglifyOptions: {
         mangle: {
-          toplevel: true
+          toplevel: true,
         },
         beautify: false,
         compress: {
@@ -32,16 +30,16 @@ module.exports = {
           evaluate: true,
           if_return: true,
           join_vars: true,
-          negate_iife: false
-        }
-      }
-    })
+          negate_iife: false,
+        },
+      },
+    }),
   ],
   mode: 'production',
   externals: {
-    'react': 'react',
+    react: 'react',
     'react-dom': 'react-dom',
-    'mobx': 'mobx',
+    mobx: 'mobx',
     'mobx-react': 'mobx-react',
   },
   resolve: {

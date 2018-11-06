@@ -1,19 +1,19 @@
 import {flatten, unflatten} from 'flat';
 import {FormValidationErrors} from './index';
 
-const unflattenErrors = (formValidationErrors: FormValidationErrors) => {
+const unflattenValues = (formValidationErrors: FormValidationErrors) => {
   return unflatten(formValidationErrors);
 };
 
-const flattenErrors = (formValidationErrors: FormValidationErrors): {[key: string]: string[]} | null => {
+const flattenValues = (formValidationErrors: FormValidationErrors, safe = true): {[key: string]: string[]} | null => {
   return formValidationErrors
     ? flatten(formValidationErrors, {
-        safe: true,
+        safe,
       })
     : null;
 };
 
 export const utils = {
-  flattenErrors,
-  unflattenErrors,
+  flattenValues,
+  unflattenValues,
 };
