@@ -22,7 +22,10 @@
 }
 
 .markdown a[data-relative-link] {
-  color: red;
+  color: grey;
+  border-bottom: dashed 1px;
+  text-decoration: none;
+  font-style: italic;
 }
 
 .markdown > p.category {
