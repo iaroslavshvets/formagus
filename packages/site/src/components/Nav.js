@@ -108,9 +108,10 @@ export const Nav = () => (
                       <NavLink to="recipe/nestedFields">Nested fields</NavLink>
                       <NavLink to="recipe/dynamicArray">Dynamic array of values</NavLink>
 
-                      <Header>Tutorial</Header>
-                      <NavLink to="tutorial/01-intro">Introduction</NavLink>
-                      <NavLink to="tutorial/02-next-steps">Next steps</NavLink>
+                      {/*TODO Uncomment later if needed*/}
+                      {/*<Header>Tutorial</Header>*/}
+                      {/*<NavLink to="tutorial/01-intro">Introduction</NavLink>*/}
+                      {/*<NavLink to="tutorial/02-next-steps">Next steps</NavLink>*/}
 
                       <Header>API</Header>
                       <div
