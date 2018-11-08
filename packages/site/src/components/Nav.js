@@ -100,6 +100,7 @@ export const Nav = () => (
                         Passing custom props to Adapter from child render
                       </NavLink>
                       <NavLink to="recipe/withExternalController">With external controller</NavLink>
+                      <NavLink to="recipe/dependantFields">Dependant field values</NavLink>
                       <NavLink to="recipe/validation">Form level validation</NavLink>
                       <NavLink to="recipe/fieldValidation">Field level validation</NavLink>
                       <NavLink to="recipe/validationOnSubmit">Validation on submit</NavLink>
@@ -125,7 +126,14 @@ export const Nav = () => (
                         <NavLink to="api/Field">Field</NavLink>
                       </div>
                     </div>
-                    <footer css={{fontSize: '66%', marginTop: 60, opacity: 0.66}}>
+                    <footer
+                      css={{
+                        fontSize: '66%',
+                        marginTop: 60,
+                        opacity: 0.66,
+                        paddingLeft: '25px',
+                      }}
+                    >
                       <p>Copyright &copy; 2018 WIX</p>
                     </footer>
                   </div>
