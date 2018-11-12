@@ -6,12 +6,6 @@ module.exports = {
     'jest-watch-typeahead/filename',
     'jest-watch-typeahead/testname',
   ],
-  moduleNameMapper: {
-    '^.+\\.(css|scss)$': 'identity-obj-proxy',
-  },
-  transform: {
-    '^.+\\.(ts|tsx)?$': 'ts-jest',
-  },
   globals: {
     'ts-jest': {
       diagnostics: false,
@@ -20,6 +14,7 @@ module.exports = {
     },
   },
   testRegex: '/__tests__/.*\\.(ts|tsx)$',
+  testPathIgnorePatterns: ['/__tests__/.*\\.d.ts$'],
   moduleFileExtensions: [
     'js',
     'json',

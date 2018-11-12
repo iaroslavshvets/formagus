@@ -2,7 +2,7 @@ import * as React from 'react';
 import {toJS, computed} from 'mobx';
 import {inject, observer} from 'mobx-react';
 import {FormController, FormField, FormMeta, FieldValidationState} from '../FormController';
-import isEmpty from 'lodash-es/isEmpty';
+const isEmpty = require('lodash/isEmpty');
 
 export type ValidationFunction =
   | ((value: any, values?: any) => FieldValidationState)

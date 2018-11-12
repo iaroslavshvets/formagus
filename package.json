@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"license": "MIT",
 	"description": "magus-form monorepo",
-	"author": "iaroslav.shvets@gmail.co,",
+	"author": "iaroslav.shvets@gmail.com",
 	"scripts": {
 		"postinstall": "lerna bootstrap"
 	},
