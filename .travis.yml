@@ -21,9 +21,9 @@ install:
 - npm install
 
 script:
-- npm test
 - npm i codecov -g
-- npx codecov --token=:3eda0bdf-2301-4bad-8fcf-0ec45b6e61fa
+- cd ./packages/lib && npm run test:coverage
+- npx codecov
 - if .travis/build-condition.sh $TRAVIS_COMMIT_RANGE $PROJECT; then echo "$PROJECT is being built"; else echo "$PROJECT is NOT being built"; fi
 
 after_success:
