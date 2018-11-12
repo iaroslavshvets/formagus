@@ -22,7 +22,7 @@ install:
 
 script:
 - npm test
-- npm install codecov -g & codecove
+- npm install codecov -g & codecov
 - if .travis/build-condition.sh $TRAVIS_COMMIT_RANGE $PROJECT; then echo "$PROJECT is being built"; else echo "$PROJECT is NOT being built"; fi
 
 after_success:
