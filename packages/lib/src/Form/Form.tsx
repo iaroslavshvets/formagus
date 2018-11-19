@@ -11,12 +11,16 @@ export class Form extends React.Component<FormProps> {
 
   constructor(props: any) {
     super(props);
+
+    //"children" will be another prop, so take it to the account as well
     if (props.controller && Object.keys(props).length > 2) {
-      //add children to the count
-      throw new Error('You should provide either single "controller" prop or pass props directly');
+      throw new Error(
+        'Form should have either "controller" prop with configured Controller instance or no '
+        + '"controller" prop and configuration passed as props, but not both',
+      );
     }
     //controller can be injected by prop and created in any place,
-    //outside of `render` function of component, where it's used
+    //or be created on the flight with passed configuration through props
     this.controller = props.controller || new FormController(props);
   }
 

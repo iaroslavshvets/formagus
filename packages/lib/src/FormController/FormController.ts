@@ -2,9 +2,9 @@ import * as React from 'react';
 import {observable, action, runInAction, toJS, computed} from 'mobx';
 import {Field, ValidationFunction, EqualityCheckFunction, FieldProps, FormatterFunction} from '../Field';
 const set = require('lodash/set');
-const get = require( 'lodash/get');
-const merge = require( 'lodash/merge');
-const cloneDeep = require( 'lodash/cloneDeep');
+const get = require('lodash/get');
+const merge = require('lodash/merge');
+const cloneDeep = require('lodash/cloneDeep');
 
 export type FieldDictionary<T> = {[fieldName: string]: T};
 
