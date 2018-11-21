@@ -1,7 +1,7 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {DocumentTitle} from './DocumentTitle';
 
-const exampleSandboxen = {
+const sandboxToIdMapping = {
   basic: 'nk2pznjq0j',
   passingPropsToAdapter: '4z6y33wx30',
   passingPropsToAdapterAsChild: 'oq79541m7q',
@@ -18,12 +18,12 @@ const exampleSandboxen = {
   dynamicArray: '1q19ro79o7',
 };
 
-export const Recipe = ({id}) => (
-  <Fragment>
-    <DocumentTitle title={`Formagus - Recipe - ${id}`} />
+export const Recipe = ({sandboxName}) => (
+  <>
+    <DocumentTitle title={`Formagus - Recipe - ${sandboxName}`} />
     <iframe
-      title="example"
-      src={`https://codesandbox.io/embed/${exampleSandboxen[id]}?fontsize=13&module=/src/ExampleForm.tsx&view=split`}
+      title="recipe"
+      src={`https://codesandbox.io/embed/${sandboxToIdMapping[sandboxName]}?fontsize=13&module=/src/ExampleForm.tsx&view=split`}
       css={{
         display: 'block',
         width: '100%',
@@ -32,5 +32,5 @@ export const Recipe = ({id}) => (
       }}
       sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"
     />
-  </Fragment>
+  </>
 );

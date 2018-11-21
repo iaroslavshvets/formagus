@@ -16,7 +16,7 @@ const RootView = () => (
     <Router basepath={BASEPATH}>
       <App path="/">
         <Home path="/" />
-        <Recipe path="recipe/:id" />
+        <Recipe path="recipe/:sandboxName" />
         <Tutorial path="tutorial/:id" />
         <MarkdownRoute dir="api" path="api/:filename/*" />
         <MarkdownRoute dir="pages" path=":filename" />
