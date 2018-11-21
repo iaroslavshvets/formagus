@@ -104,6 +104,7 @@ export const Nav = () => (
                       <NavLink to="recipe/validation">Form level validation</NavLink>
                       <NavLink to="recipe/fieldValidation">Field level validation</NavLink>
                       <NavLink to="recipe/validationOnSubmit">Validation on submit</NavLink>
+                      <NavLink to="recipe/validationWithWarning">Validations with errors and warning</NavLink>
                       <NavLink to="recipe/formatter">Values formatting</NavLink>
                       <NavLink to="recipe/persistingFieldState">Form with tabs and saving value upon switching</NavLink>
                       <NavLink to="recipe/nestedFields">Nested fields</NavLink>
