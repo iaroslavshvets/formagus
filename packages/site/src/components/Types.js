@@ -10,8 +10,6 @@ const modalState = {
   },
 };
 
-export const ModalContext = React.createContext(modalState);
-
 export class Types extends React.Component {
   state = {
     isOpen: true,

@@ -27,13 +27,9 @@ export const MarkdownPage = ({dir, filename, css, changeTitle = true}) => (
         >
           <div className="overlay-loader">
             <div className="loader">
-              <div />
-              <div />
-              <div />
-              <div />
-              <div />
-              <div />
-              <div />
+              {Array.from(Array(7)).map((el, i) => {
+                return <div key={i}/>
+              })}
             </div>
           </div>
         </div>
