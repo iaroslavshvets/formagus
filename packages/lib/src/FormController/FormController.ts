@@ -20,7 +20,7 @@ export type FieldValidationState = Valid | Invalid;
 
 export interface FormControllerOptions {
   initialValues?: FormValues;
-  onValidate?: (values: any) => FieldDictionary<Invalid>;
+  onValidate?: (values: any) => Promise<FieldDictionary<Invalid> | {}>;
   onFormat?: <T = Function>(values: FormValues) => {[P in keyof FormValues]: T[FormValues[P]]};
   onSubmit?: (errors: FormValidationErrors, values: FormValues, submitEvent?: React.FormEvent<any>) => void;
   onSubmitAfter?: (errors: FormValidationErrors, values: FormValues, submitEvent?: React.FormEvent<any>) => void;
@@ -35,7 +35,7 @@ export interface FormField {
 }
 
 export interface FormFieldMeta {
-  custom: {[key: string]: any};
+  customState: {[key: string]: any};
   onEqualityCheck: EqualityCheckFunction;
   initialValue: any;
   isTouched: boolean;
@@ -140,19 +140,19 @@ export class FormController {
   }
 
   //executes general form validator passed to Form as a `onValidate` prop and returns errors
-  protected runFormLevelValidations = async () => {
-    return this.options.onValidate ? await this.options.onValidate(this.formattedValues) : {};
+  protected runFormLevelValidations = (): Promise<FieldDictionary<Invalid> | {}> => {
+    return this.options.onValidate ? this.options.onValidate(this.formattedValues) : Promise.resolve({});
   };
 
   //executes all field level validators passed to Fields as a `onValidate` prop and returns errors
-  protected runFieldLevelValidations = async (): Promise<(FieldDictionary<FieldValidationState>) | {}> => {
+  protected runFieldLevelValidations = (): Promise<FieldDictionary<FieldValidationState> | {}> => {
     let pendingValidationCount = Object.keys(this.fieldValidations).length;
 
     if (pendingValidationCount === 0) {
-      return {};
+      return Promise.resolve({});
     }
 
-    return await new Promise((resolve) => {
+    return new Promise((resolve) => {
       const errors: {[index: string]: FieldValidationState} = {};
 
       Object.keys(this.fieldValidations).forEach((fieldName) => {
@@ -203,7 +203,7 @@ export class FormController {
 
     const meta: FormFieldMeta = {
       onEqualityCheck: (a: any, b: any) => a === b,
-      custom: observable.map(),
+      customState: observable.map(),
       initialValue: undefined,
       isTouched: false,
       isActive: false,
@@ -293,7 +293,7 @@ export class FormController {
       submit: this.submit,
       reset: this.reset,
       clear: this.clear,
-      setFieldValue: this.changeFieldValue,
+      setFieldValue: this.setFieldValue,
       setFieldCustomState: this.setFieldCustomState,
       validate: this.validate,
       getFieldMeta: this.getFieldMeta,
@@ -393,12 +393,12 @@ export class FormController {
   @action
   setFieldCustomState = (fieldName: string, key: string, value: any) => {
     this.createFieldIfDoesNotExist(fieldName);
-    this.fields.get(fieldName)!.meta.custom.set(key, value);
+    this.fields.get(fieldName)!.meta.customState.set(key, value);
   };
 
   //changes when called adapted onChange handler
   @action
-  changeFieldValue = (fieldName: string, value: any) => {
+  setFieldValue = (fieldName: string, value: any) => {
     this.createFieldIfDoesNotExist(fieldName);
     const field = this.fields.get(fieldName)!;
     field.value = value;

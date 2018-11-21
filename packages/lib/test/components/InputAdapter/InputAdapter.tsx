@@ -4,14 +4,24 @@ import {AdapterProps} from '../../../src/Field';
 import {isNil} from 'lodash';
 import {Meta} from './Meta';
 import {Errors} from './Errors';
+const noop = require('lodash/noop');
 
 export interface InputAdapterProps extends AdapterProps {
+  callback?: Function;
   customState?: {
     [key: string]: string;
   };
 }
 
 export class InputAdapter extends React.Component<InputAdapterProps> {
+  protected callback = noop;
+  constructor(props: InputAdapterProps) {
+    super(props);
+    if (props.callback) {
+      this.callback = props.callback.bind(this);
+    }
+  }
+
   private setCustomState = () => {
     const key = Object.keys(this.props.customState!)[0];
     const value = this.props.customState![key];
@@ -41,6 +51,7 @@ export class InputAdapter extends React.Component<InputAdapterProps> {
         <Meta meta={meta} />
 
         <span data-hook="set-custom-state" onClick={this.setCustomState} />
+        <span data-hook="callback" onClick={this.callback} />
         <span data-hook="validate" onClick={validate} />
       </div>
     );

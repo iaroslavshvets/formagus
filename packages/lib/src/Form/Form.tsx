@@ -15,8 +15,8 @@ export class Form extends React.Component<FormProps> {
     //"children" will be another prop, so take it to the account as well
     if (props.controller && Object.keys(props).length > 2) {
       throw new Error(
-        'Form should have either "controller" prop with configured Controller instance or no '
-        + '"controller" prop and configuration passed as props, but not both',
+        'Form should have either "controller" prop with configured Controller instance or no ' +
+          '"controller" prop and configuration passed as props, but not both',
       );
     }
     //controller can be injected by prop and created in any place,

@@ -52,10 +52,10 @@ describe('Field meta', async () => {
     expect(fieldDriver.get.meta('isDirty')).toBe('true');
   });
 
-  it('custom', async () => {
+  it('customState', async () => {
     const formController = new FormController({});
 
-    expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).custom).toEqual({});
+    expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).customState).toEqual({});
 
     const wrapper = mount(<TestForm controller={formController} />);
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
@@ -64,10 +64,10 @@ describe('Field meta', async () => {
 
     formController.API.setFieldCustomState(TestForm.FIELD_ONE_NAME, CUSTOM_KEY, CUSTOM_VALUE);
 
-    expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).custom[CUSTOM_KEY]).toBe(CUSTOM_VALUE);
+    expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).customState[CUSTOM_KEY]).toBe(CUSTOM_VALUE);
 
     await waitFor(wrapper)(() => {
-      return fieldDriver.get.meta(`custom:${CUSTOM_KEY}`) === CUSTOM_VALUE;
+      return fieldDriver.get.meta(`customState:${CUSTOM_KEY}`) === CUSTOM_VALUE;
     });
   });
 

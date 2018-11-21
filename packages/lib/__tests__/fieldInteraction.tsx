@@ -96,7 +96,7 @@ describe('Field interactions', async () => {
   it('set custom state', async () => {
     const formController = new FormController({});
 
-    expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).custom).toEqual({});
+    expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).customState).toEqual({});
 
     const wrapper = mount(
       <TestForm>
@@ -117,7 +117,7 @@ describe('Field interactions', async () => {
     fieldDriver.when.setCustomState();
 
     await waitFor(wrapper)(() => {
-      return fieldDriver.get.meta('custom:customProperty') === 'custom value';
+      return fieldDriver.get.meta('customState:customProperty') === 'custom value';
     });
   });
 
@@ -139,5 +139,39 @@ describe('Field interactions', async () => {
     await waitFor(wrapper)(() => {
       return formController.API.values[TestForm.FIELD_ONE_NAME][0].nested === NEW_VALUE;
     });
+  });
+
+  it('should be able to use formAPI', () => {
+    const NEW_VALUE = 'valueSetFromOutside';
+    const formController = new FormController({});
+
+    class StatefulForm extends React.Component {
+      render() {
+        return (
+          <TestForm controller={formController}>
+            <Field
+              name={TestForm.FIELD_ONE_NAME}
+              adapter={InputAdapter}
+              adapterProps={{
+                callback: function() {
+                  this.props.formagus.formAPI.setFieldValue(TestForm.FIELD_TWO_NAME, NEW_VALUE)
+                }
+              }}
+            />
+            <Field
+              name={TestForm.FIELD_TWO_NAME}
+              adapter={InputAdapter}
+            />
+          </TestForm>
+        );
+      }
+    }
+    const wrapper = mount(<StatefulForm />);
+    const fieldOneDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldTwoDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
+
+    fieldOneDriver.when.clickOnCallback();
+
+    expect(fieldTwoDriver.get.value()).toEqual(NEW_VALUE);
   });
 });

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {toJS, computed} from 'mobx';
 import {inject, observer} from 'mobx-react';
-import {FormController, FormField, FormMeta, FieldValidationState} from '../FormController';
+import {FormController, FormField, FormMeta, FieldValidationState, FormAPI} from '../FormController';
 const isEmpty = require('lodash/isEmpty');
 
 export type ValidationFunction =
@@ -17,7 +17,7 @@ export interface FieldMeta {
   isActive: boolean;
   isValidating: boolean;
   isRegistered: boolean;
-  custom: {[key: string]: any};
+  customState: {[key: string]: any};
   form: FormMeta;
 }
 
@@ -27,6 +27,7 @@ export interface AdapterProps {
     meta: FieldMeta;
     value: any;
     setCustomState: (key: string, value: any) => void;
+    formAPI: FormAPI;
     onChange: (value: any) => void;
     onFocus: () => void;
     onBlur: () => void;
@@ -73,10 +74,10 @@ export class Field extends React.Component<FieldProps> {
     const {meta, errors} = this.field;
 
     const adapterErrors = toJS(errors);
-    const custom = toJS(meta.custom);
+    const customState = toJS(meta.customState);
 
     return {
-      custom,
+      customState,
       errors: adapterErrors,
       isActive: meta.isActive,
       isDirty: meta.isDirty,
@@ -124,7 +125,7 @@ export class Field extends React.Component<FieldProps> {
 
   //value change handler, passed to adapter
   protected onChange = (value: any) => {
-    this.props.controller!.changeFieldValue(this.props.name, value);
+    this.props.controller!.setFieldValue(this.props.name, value);
   };
 
   //called when field is initialized
@@ -160,6 +161,7 @@ export class Field extends React.Component<FieldProps> {
         value: this.value,
         onChange: this.onChange,
         setCustomState: this.setCustomState,
+        formAPI: this.props.controller!.API,
         onFocus: this.onFocus,
         onBlur: this.onBlur,
         validate: controller.validate,

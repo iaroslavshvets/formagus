@@ -1,6 +1,6 @@
 {
   "name": "formagus",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "license": "MIT",
   "private": false,
   "authors": [
@@ -15,9 +15,10 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "test": "jest",
-    "test:watch": "jest --watch --detectOpenHandles",
-    "test:coverage": "jest --coverage",
-    "posttest": "npm run test:coverage",
+    "test-unit": "jest",
+    "test-watch": "jest --watch --detectOpenHandles",
+    "test-coverage": "jest --coverage",
+    "posttest": "npm run test-coverage",
     "precommit": "lint-staged",
     "postcommit": "git update-index --again",
     "prepush": "npm run test",

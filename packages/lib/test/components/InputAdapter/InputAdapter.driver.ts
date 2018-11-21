@@ -1,6 +1,6 @@
 import {ReactWrapper} from 'enzyme';
 
-export const createInputAdapterDriver = (options: {wrapper: ReactWrapper; dataHook: string}) => {
+export const createInputAdapterDriver = (options: {wrapper: ReactWrapper<any>; dataHook: string}) => {
   const {wrapper, dataHook} = options;
 
   const API = {
@@ -38,6 +38,12 @@ export const createInputAdapterDriver = (options: {wrapper: ReactWrapper; dataHo
           .find(`[data-hook="set-custom-state"]`)
           .simulate('click');
       },
+      clickOnCallback: () => {
+        API.get
+          .root()
+          .find(`[data-hook="callback"]`)
+          .simulate('click');
+      },
       focus: () => {
         API.get.input().simulate('focus');
       },
@@ -64,6 +70,7 @@ export const createInputAdapterDriver = (options: {wrapper: ReactWrapper; dataHo
       errors: API.get.errors,
     },
     when: {
+      clickOnCallback: API.when.clickOnCallback,
       setCustomState: API.when.setCustomState,
       focus: API.when.focus,
       blur: API.when.blur,
