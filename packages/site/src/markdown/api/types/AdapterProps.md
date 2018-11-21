@@ -5,6 +5,7 @@ export interface AdapterProps {
     meta: FieldMeta;
     value: any;
     setCustomState: (key: string, value: any) => void;
+    formAPI: FormAPI;
     onChange: (value: any) => void;
     onFocus: () => void;
     onBlur: () => void;
@@ -14,3 +15,4 @@ export interface AdapterProps {
 ```
 
 - [FieldMeta](/types/FieldMeta)
+- [FormAPI](/types/FormAPI)

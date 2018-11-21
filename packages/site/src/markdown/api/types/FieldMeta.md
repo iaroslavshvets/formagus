@@ -6,7 +6,7 @@ interface FieldMeta {
   isActive: boolean;
   isValidating: boolean;
   isRegistered: boolean;
-  custom: {[key: string]: any};
+  customState: {[key: string]: any};
   form: FormMeta;
 }
 ```
