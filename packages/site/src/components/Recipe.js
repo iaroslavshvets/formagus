@@ -11,6 +11,7 @@ const exampleSandboxen = {
   validationWithWarning: 'qlklvomzzq',
   validationOnSubmit: 'qq4p3zp6n6',
   fieldValidation: '5z1lz205m4',
+  fieldsDefinedOutsideOfForm: '4jwmy89p87',
   formatter: 'qlp7nzz2q4',
   persistingFieldState: 'wyv2jj0138',
   nestedFields: '93p2o713w',
