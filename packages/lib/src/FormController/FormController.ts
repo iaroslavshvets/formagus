@@ -1,6 +1,7 @@
 import * as React from 'react';
-import {observable, action, runInAction, toJS, computed} from 'mobx';
-import {Field, ValidationFunction, EqualityCheckFunction, FieldProps, FormatterFunction} from '../Field';
+import {action, computed, observable, runInAction, toJS} from 'mobx';
+import {EqualityCheckFunction, Field, FieldProps, FormatterFunction, ValidationFunction} from '../Field';
+
 const set = require('lodash/set');
 const get = require('lodash/get');
 const merge = require('lodash/merge');
@@ -54,10 +55,15 @@ export interface FormMeta {
   isTouched: boolean;
 }
 
+export interface SubmitResult {
+  errors: FormValidationErrors,
+  values: FormValues,
+}
+
 export interface FormAPI {
   values: FormValues;
   errors: FormValidationErrors;
-  submit: (submitEvent?: React.FormEvent<any>) => void;
+  submit: (submitEvent?: React.FormEvent<any>) => Promise<SubmitResult>;
   reset: () => void;
   clear: () => void;
   setFieldValue: (fieldName: string, value: any) => void;
@@ -453,6 +459,11 @@ export class FormController {
 
     if (this.options.onSubmitAfter) {
       this.options.onSubmitAfter(this.errors, this.formattedValues, submitEvent);
+    }
+
+    return {
+      errors: this.errors,
+      values: this.formattedValues,
     }
   };
 }
