@@ -4,6 +4,7 @@ import {Field, FormController} from '../src';
 import {InputAdapter} from '../test/components/InputAdapter';
 import {TestForm} from '../test/components/TestForm';
 import {createInputAdapterDriver} from '../test/components/InputAdapter/InputAdapter.driver';
+import {toJS} from 'mobx';
 
 describe('Form interaction', async () => {
   it('should reset values', async () => {
@@ -57,7 +58,7 @@ describe('Form interaction', async () => {
     expect(fieldDriver.get.value()).toBe('');
   });
 
-  it('should clear values', async () => {
+  it('should update field value', async () => {
     const controller = new FormController({
       initialValues: {
         [TestForm.FIELD_ONE_NAME]: 'batman is cool',
@@ -78,5 +79,33 @@ describe('Form interaction', async () => {
     expect(fieldDriver.get.meta('form:isTouched')).toBe('false');
 
     expect(fieldDriver.get.value()).toBe('joker is so cool');
+  });
+
+  it('should submit form with fields info', async () => {
+    const controller = new FormController({
+      onValidate: async () => {
+        return {
+          [TestForm.FIELD_ONE_NAME]: ['nameError'],
+        };
+      },
+    });
+
+    mount(
+      <TestForm controller={controller}>
+        <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+      </TestForm>,
+    );
+
+    controller.API.setFieldValue(TestForm.FIELD_ONE_NAME, 'batman is cool');
+
+    const {errors, values} = await controller.API.submit();
+
+    expect(toJS(errors)).toEqual({
+      [TestForm.FIELD_ONE_NAME]: ['nameError'],
+    });
+
+    expect(toJS(values)).toEqual({
+      [TestForm.FIELD_ONE_NAME]: 'batman is cool',
+    });
   });
 });
