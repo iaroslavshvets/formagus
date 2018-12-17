@@ -114,7 +114,7 @@ describe('Form meta', async () => {
     const wrapper = mount(
       <TestForm
         onValidate={() => {
-          return Promise.resolve();
+          return Promise.resolve({});
         }}
       />,
     );
