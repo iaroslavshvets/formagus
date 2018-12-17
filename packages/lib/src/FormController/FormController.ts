@@ -444,9 +444,12 @@ export class FormController {
 
     await this.validate();
 
+    const errors = toJS(this.errors);
+    const values = toJS(this.formattedValues);
+
     try {
       if (this.options.onSubmit) {
-        await this.options.onSubmit(this.errors, this.formattedValues, submitEvent);
+        await this.options.onSubmit(errors, values, submitEvent);
       }
 
       if (this.errors === null) {
@@ -458,12 +461,9 @@ export class FormController {
     }
 
     if (this.options.onSubmitAfter) {
-      this.options.onSubmitAfter(this.errors, this.formattedValues, submitEvent);
+      this.options.onSubmitAfter(errors, values, submitEvent);
     }
 
-    return {
-      errors: this.errors,
-      values: this.formattedValues,
-    }
+    return {errors, values}
   };
 }

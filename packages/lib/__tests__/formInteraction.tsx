@@ -4,7 +4,6 @@ import {Field, FormController} from '../src';
 import {InputAdapter} from '../test/components/InputAdapter';
 import {TestForm} from '../test/components/TestForm';
 import {createInputAdapterDriver} from '../test/components/InputAdapter/InputAdapter.driver';
-import {toJS} from 'mobx';
 
 describe('Form interaction', async () => {
   it('should reset values', async () => {
@@ -100,11 +99,11 @@ describe('Form interaction', async () => {
 
     const {errors, values} = await controller.API.submit();
 
-    expect(toJS(errors)).toEqual({
+    expect(errors).toEqual({
       [TestForm.FIELD_ONE_NAME]: ['nameError'],
     });
 
-    expect(toJS(values)).toEqual({
+    expect(values).toEqual({
       [TestForm.FIELD_ONE_NAME]: 'batman is cool',
     });
   });
