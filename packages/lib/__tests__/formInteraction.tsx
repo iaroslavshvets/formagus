@@ -34,7 +34,7 @@ describe('Form interaction', async () => {
     expect(fieldDriver.get.value()).toBe('batman is cool');
   });
 
-  it('should reset to values in specified in reset() arguments', async () => {
+  it('Should reset to specific values, if they are passed as "reset" argument, like "reset({newKey: ‘newValue’})"', async () => {
     const controller = new FormController({
       initialValues: {
         [TestForm.FIELD_ONE_NAME]: 'batman is cool',
