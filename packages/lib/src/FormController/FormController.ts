@@ -64,7 +64,7 @@ export interface FormAPI {
   values: FormValues;
   errors: FormValidationErrors;
   submit: (submitEvent?: React.FormEvent<any>) => Promise<SubmitResult>;
-  reset: () => void;
+  reset: (values?: FormValues) => void;
   clear: () => void;
   setFieldValue: (fieldName: string, value: any) => void;
   setFieldCustomState: (fieldName: string, key: string, value: any) => void;
@@ -366,8 +366,8 @@ export class FormController {
     this.updateErrorsForEveryField({});
   };
   //resets the form to initial values and making it pristine
-  reset = () => {
-    return this.options.initialValues && this.resetToValues(this.options.initialValues);
+  reset = (values = this.options.initialValues) => {
+    return values && this.resetToValues(values);
   };
 
   clear = () => {
