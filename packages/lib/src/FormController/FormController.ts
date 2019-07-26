@@ -257,6 +257,7 @@ export class FormController {
     const field = this.fields.get(props.name)!;
 
     field.instance = fieldInstance;
+    field.props = props;
   };
 
   //general handler for registering the field upon it's mounting
@@ -464,6 +465,6 @@ export class FormController {
       this.options.onSubmitAfter(errors, values, submitEvent);
     }
 
-    return {errors, values}
+    return {errors, values};
   };
 }
