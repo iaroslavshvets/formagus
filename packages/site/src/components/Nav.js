@@ -126,6 +126,7 @@ export const Nav = () => (
                         <NavLink to="api/FormPart">FormPart</NavLink>
                         <NavLink to="api/FormController">FormController</NavLink>
                         <NavLink to="api/Field">Field</NavLink>
+                        <NavLink to="api/injectFormApi">injectFormApi</NavLink>
                       </div>
                     </div>
                     <footer
