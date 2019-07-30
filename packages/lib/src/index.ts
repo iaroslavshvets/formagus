@@ -20,3 +20,4 @@ export {
 } from './FormController';
 export {FormPart} from './FormPart';
 export {utils} from './FormController/utils';
+export {injectFormApi} from './injectFormApi';
