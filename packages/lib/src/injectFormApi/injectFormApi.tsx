@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
 import {FormController} from '../FormController/FormController';
+import * as hoistNonReactStatics from 'hoist-non-react-statics';
 
 interface InjectFormApiWrapperProps {
   controller?: FormController;
@@ -15,6 +16,8 @@ function ComponentWithInjectedFormApi<C extends React.ComponentClass>(Component:
       return <Component {...props as any} formApi={controller!.API} />;
     }
   }
+
+  hoistNonReactStatics(InjectFormApiWrapper, Component);
 
   return InjectFormApiWrapper as C;
 }
