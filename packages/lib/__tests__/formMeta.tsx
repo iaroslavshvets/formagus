@@ -96,6 +96,30 @@ describe('Form meta', async () => {
 
       expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
     });
+
+    it('should ignore unmounted fields when calculating form isDirty', () => {
+      const TestComponent = ({hideField = false}) => (
+        <TestForm>
+          <Field defaultValue={''} name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+          {!hideField && (
+            <Field defaultValue={''} name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} persist={true} />
+          )}
+        </TestForm>
+      );
+
+      const wrapper = mount(<TestComponent />);
+      const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+      const secondFieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
+
+      expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
+
+      secondFieldDriver.when.change('batman');
+
+      expect(fieldDriver.get.meta('form:isDirty')).toBe('true');
+
+      wrapper.setProps({hideField: true});
+      expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
+    });
   });
 
   it('submitCount', () => {
