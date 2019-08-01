@@ -318,14 +318,14 @@ export class FormController {
   @computed
   get isTouched(): boolean {
     const fieldValues = Array.from(this.fields.values());
-    return fieldValues.some((field: FormField) => !!field.instance && field.meta.isTouched);
+    return fieldValues.some((field: FormField) => field.instance !== null && field.meta.isTouched);
   }
 
   //are any of the fields have value different from initial
   @computed
   get isDirty(): boolean {
     const fieldValues = Array.from(this.fields.values());
-    return fieldValues.some((field: FormField) => !!field.instance && field.meta.isDirty);
+    return fieldValues.some((field: FormField) => field.instance !== null && field.meta.isDirty);
   }
 
   //all registered form fields, new field is being added when Field constructor is called
@@ -464,6 +464,6 @@ export class FormController {
       this.options.onSubmitAfter(errors, values, submitEvent);
     }
 
-    return {errors, values}
+    return {errors, values};
   };
 }
