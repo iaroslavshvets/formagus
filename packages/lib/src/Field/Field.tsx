@@ -108,6 +108,23 @@ export class Field extends React.Component<FieldProps> {
     return this.props.controller!.fields.get(this.props.name) as FormField;
   }
 
+  @computed
+  get injectedAdapterProps(): AdapterProps {
+    return {
+      formagus: {
+        name: this.props.name,
+        meta: this.meta,
+        value: this.value,
+        onChange: this.onChange,
+        setCustomState: this.setCustomState,
+        formAPI: this.props.controller!.API,
+        onFocus: this.onFocus,
+        onBlur: this.onBlur,
+        validate: this.props.controller!.validate,
+      },
+    };
+  }
+
   //custom state for field, passed to adapter
   protected setCustomState = (key: string, value: any) => {
     this.props.controller!.setFieldCustomState(this.props.name, key, value);
@@ -151,27 +168,10 @@ export class Field extends React.Component<FieldProps> {
       return null;
     }
 
-    const {name} = this.props;
-    const controller = this.props.controller!;
-
-    const injectedAdapterProps: AdapterProps = {
-      formagus: {
-        name,
-        meta: this.meta,
-        value: this.value,
-        onChange: this.onChange,
-        setCustomState: this.setCustomState,
-        formAPI: this.props.controller!.API,
-        onFocus: this.onFocus,
-        onBlur: this.onBlur,
-        validate: controller.validate,
-      },
-    };
-
     return this.props.adapter ? (
-      <this.props.adapter {...injectedAdapterProps} {...this.props.adapterProps} />
+      <this.props.adapter {...this.injectedAdapterProps} {...this.props.adapterProps} />
     ) : (
-      this.props.children!(injectedAdapterProps)
+      this.props.children!(this.injectedAdapterProps)
     );
   }
 }
