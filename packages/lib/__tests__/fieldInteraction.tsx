@@ -18,7 +18,7 @@ describe('Field interactions', async () => {
       render() {
         return (
           <TestForm>
-            {!this.state.hiddenField && <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist={true} />}
+            {!this.state.hiddenField && <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist={true}/>}
             <button
               type="button"
               data-hook="toggle-field"
@@ -36,7 +36,8 @@ describe('Field interactions', async () => {
         );
       }
     }
-    const wrapper = mount(<StatefulForm />);
+
+    const wrapper = mount(<StatefulForm/>);
     const formDriver = createTestFormDriver({wrapper});
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
     const toggleField = wrapper.find(`[data-hook="toggle-field"]`);
@@ -62,7 +63,7 @@ describe('Field interactions', async () => {
       render() {
         return (
           <TestForm>
-            {!this.state.hiddenField && <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />}
+            {!this.state.hiddenField && <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter}/>}
             <button
               type="button"
               data-hook="toggle-field"
@@ -80,7 +81,8 @@ describe('Field interactions', async () => {
         );
       }
     }
-    const wrapper = mount(<StatefulForm props={null} />);
+
+    const wrapper = mount(<StatefulForm props={null}/>);
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
     const toggleField = wrapper.find(`[data-hook="toggle-field"]`);
     const NEW_VALUE = 'batman';
@@ -128,7 +130,7 @@ describe('Field interactions', async () => {
 
     const wrapper = mount(
       <TestForm controller={formController}>
-        <Field name={NESTED_FIELD_NAME} adapter={InputAdapter} />
+        <Field name={NESTED_FIELD_NAME} adapter={InputAdapter}/>
       </TestForm>,
     );
 
@@ -139,4 +141,5 @@ describe('Field interactions', async () => {
     await waitFor(wrapper)(() => {
       return formController.API.values[TestForm.FIELD_ONE_NAME][0].nested === NEW_VALUE;
     });
+  })
 });
