@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {toJS, computed} from 'mobx';
 import {inject, observer} from 'mobx-react';
-import {FormController, FormField, FormMeta, FieldValidationState, FormAPI} from '../FormController';
+import {FormController, FormField, FormMeta, FieldValidationState} from '../FormController';
 const isEmpty = require('lodash/isEmpty');
 
 export type ValidationFunction =
@@ -27,7 +27,6 @@ export interface AdapterProps {
     meta: FieldMeta;
     value: any;
     setCustomState: (key: string, value: any) => void;
-    formAPI: FormAPI;
     onChange: (value: any) => void;
     onFocus: () => void;
     onBlur: () => void;
@@ -117,7 +116,6 @@ export class Field extends React.Component<FieldProps> {
         value: this.value,
         onChange: this.onChange,
         setCustomState: this.setCustomState,
-        formAPI: this.props.controller!.API,
         onFocus: this.onFocus,
         onBlur: this.onBlur,
         validate: this.props.controller!.validate,
