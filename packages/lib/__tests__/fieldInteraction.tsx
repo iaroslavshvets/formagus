@@ -141,7 +141,7 @@ describe('Field interactions', async () => {
     });
   });
 
-  it('should be able to use formAPI', () => {
+  xit('should be able to use formAPI', () => {
     const NEW_VALUE = 'valueSetFromOutside';
     const formController = new FormController({});
 
