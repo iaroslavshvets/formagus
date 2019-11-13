@@ -3,7 +3,8 @@ interface FormAPI {
   values: FormValues;
   errors: FormValidationErrors;
   submit: (submitEvent?: React.FormEvent<any>) => void;
-  reset: (values?: FormValues) => void;
+  reset: () => void;
+  resetToValues: (values?: FormValues) => void;
   clear: () => void;
   setFieldValue: (fieldName: string, value: any) => void;
   setFieldCustomState: (fieldName: string, key: string, value: any) => void;
