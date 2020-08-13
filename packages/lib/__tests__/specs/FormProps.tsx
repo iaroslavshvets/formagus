@@ -1,21 +1,25 @@
-import * as React from 'react';
-import {mount} from 'enzyme';
-import {TestForm} from '../test/components/TestForm';
-import {InputAdapter} from '../test/components/InputAdapter';
-import {Field} from '../src';
-import {createTestFormDriver} from '../test/components/TestForm.driver';
-import {createInputAdapterDriver} from '../test/components/InputAdapter/InputAdapter.driver';
-import {waitFor} from '../test/helpers/conditions';
+import {cleanup, render} from '@testing-library/react';
+import React from 'react';
+import {TestForm} from '../components/TestForm';
+import {InputAdapter} from '../components/InputAdapter';
+import {Field} from '../../src';
+import {createTestFormDriver} from '../components/TestForm.driver';
+import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {waitFor} from '../helpers/conditions';
 
-describe('Form props', async () => {
+describe('Form props', () => {
+  afterEach(() => {
+    return cleanup();
+  });
+
   it('initialValues', async () => {
-    const wrapper = mount(
+    const wrapper = render(
       <TestForm
         initialValues={{
           [TestForm.FIELD_ONE_NAME]: 'John Snow',
         }}
       />,
-    );
+    ).container;
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.value()).toBe('John Snow');
@@ -24,7 +28,7 @@ describe('Form props', async () => {
   it('onSubmitAfter', async () => {
     const callbackStack: string[] = [];
 
-    const wrapper = mount(
+    const wrapper = render(
       <TestForm
         initialValues={{
           [TestForm.FIELD_ONE_NAME]: 'John Snow',
@@ -32,7 +36,7 @@ describe('Form props', async () => {
         onSubmit={() => callbackStack.push('onSubmit')}
         onSubmitAfter={() => callbackStack.push('onSubmitAfter')}
       />,
-    );
+    ).container;
 
     const formDriver = createTestFormDriver({wrapper});
     formDriver.when.submit();
@@ -49,7 +53,7 @@ describe('Form props', async () => {
     const FIELD_TWO_NAME = 'array[0].field_two_name';
 
     const onValidate = jest.fn();
-    const wrapper = mount(
+    const wrapper = render(
       <TestForm
         initialValues={{
           array: [
@@ -79,7 +83,7 @@ describe('Form props', async () => {
           }}
         />
       </TestForm>,
-    );
+    ).container;
 
     const formDriver = createTestFormDriver({wrapper});
     const fieldOneDriver = createInputAdapterDriver({wrapper, dataHook: FIELD_ONE_NAME});

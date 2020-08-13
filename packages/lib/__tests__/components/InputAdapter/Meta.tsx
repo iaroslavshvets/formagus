@@ -1,7 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import {isEmpty, isObject} from 'lodash';
-import {FieldMeta} from '../../../src/Field';
 import {observer} from 'mobx-react';
+import type {FieldMeta} from '../../../src/Field';
 
 export const Meta = observer((props: {meta: FieldMeta}) => {
   const renderMetaProperty = (meta: any, currentKey: string = ''): any => {

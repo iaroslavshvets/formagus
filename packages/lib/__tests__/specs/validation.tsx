@@ -1,13 +1,17 @@
-import * as React from 'react';
-import {mount} from 'enzyme';
-import {FormController, Field} from '../src';
-import {createInputAdapterDriver} from '../test/components/InputAdapter/InputAdapter.driver';
-import {TestForm} from '../test/components/TestForm';
-import {waitFor} from '../test/helpers/conditions';
-import {createTestFormDriver} from '../test/components/TestForm.driver';
-import {InputAdapter} from '../test/components/InputAdapter';
+import {cleanup, render} from '@testing-library/react';
+import React from 'react';
+import {FormController, Field} from '../../src';
+import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {TestForm} from '../components/TestForm';
+import {waitFor} from '../helpers/conditions';
+import {createTestFormDriver} from '../components/TestForm.driver';
+import {InputAdapter} from '../components/InputAdapter';
 
-describe('Validation', async () => {
+describe('Validation', () => {
+  afterEach(() => {
+    return cleanup();
+  });
+
   describe('form level', () => {
     it('should be with errors', async () => {
       const controller = new FormController({
@@ -18,7 +22,7 @@ describe('Validation', async () => {
           };
         },
       });
-      const wrapper = mount(<TestForm controller={controller} />);
+      const wrapper = render(<TestForm controller={controller} />).container;
       const formDriver = createTestFormDriver({wrapper});
       const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
@@ -35,7 +39,7 @@ describe('Validation', async () => {
       const controller = new FormController({
         onSubmit: jest.fn(),
       });
-      const wrapper = mount(
+      const wrapper = render(
         <TestForm controller={controller}>
           <Field
             defaultValue={'Batman'}
@@ -46,7 +50,7 @@ describe('Validation', async () => {
             }}
           />
         </TestForm>,
-      );
+      ).container;
       const formDriver = createTestFormDriver({wrapper});
       const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
@@ -61,7 +65,7 @@ describe('Validation', async () => {
       const controller = new FormController({
         onSubmit: jest.fn(),
       });
-      const wrapper = mount(
+      const wrapper = render(
         <TestForm controller={controller}>
           <Field
             defaultValue={'Batman'}
@@ -72,7 +76,7 @@ describe('Validation', async () => {
             }}
           />
         </TestForm>,
-      );
+      ).container;
       const formDriver = createTestFormDriver({wrapper});
       const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
@@ -101,7 +105,7 @@ describe('Validation', async () => {
           };
         },
       });
-      const wrapper = mount(
+      const wrapper = render(
         <TestForm controller={controller}>
           <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
           <Field
@@ -113,7 +117,7 @@ describe('Validation', async () => {
             }}
           />
         </TestForm>,
-      );
+      ).container;
       const formDriver = createTestFormDriver({wrapper});
       const firstFieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
       const secondFieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});

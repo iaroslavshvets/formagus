@@ -1,5 +1,8 @@
 import {flatten, unflatten} from 'flat';
-import {FormValidationErrors} from './index';
+import set from 'lodash/set';
+import get from 'lodash/get';
+import unset from 'lodash/unset';
+import type {FormValidationErrors} from './FormController.types';
 
 const unflattenValues = (formValidationErrors: FormValidationErrors) => {
   return unflatten(formValidationErrors);
@@ -16,4 +19,7 @@ const flattenValues = (formValidationErrors: FormValidationErrors, safe = true):
 export const utils = {
   flattenValues,
   unflattenValues,
+  getValue: get,
+  setValue: set,
+  unsetValue: unset,
 };

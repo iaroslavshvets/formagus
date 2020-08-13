@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {isEmpty} from 'lodash';
 import {observer} from 'mobx-react';
 
@@ -13,7 +13,6 @@ export const Errors = observer((props: {errors: any}) => {
           </span>
         );
       })}
-      }
     </span>
   ) : null;
 });

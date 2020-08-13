@@ -1,10 +1,10 @@
 'use strict';
 
-module.exports = function (wallaby) {
+module.exports = function (_wallaby) {
   return {
     files: [
       {pattern: 'tsconfig.json', instrument: false},
-      {pattern: 'test/**/*.ts*', instrument: false},
+      {pattern: '__tests__/**/*.ts*', instrument: false},
       {pattern: 'jest.config.js', instrument: false},
       {pattern: 'src/**/*.ts*'},
     ],

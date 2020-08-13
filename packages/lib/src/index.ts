@@ -1,16 +1,13 @@
-export {
+export type {
   ValidationFunction,
   FieldAdapter,
   AdapterProps,
   FieldMeta,
   EqualityCheckFunction,
-  InjectedFieldProps,
   FieldProps,
-  Field,
 } from './Field';
-export {FormProps, Form} from './Form';
-export {
-  FormController,
+export type {FormProps} from './Form';
+export type {
   FormAPI,
   FormValidationErrors,
   FormValues,
@@ -18,6 +15,11 @@ export {
   FormField,
   FormFieldMeta,
 } from './FormController';
-export {FormPart} from './FormPart';
+
 export {utils} from './FormController/utils';
+export {FormController} from './FormController';
+export {Field} from './Field';
+export {Form} from './Form';
+export {FormPart} from './FormPart';
+export {useFormApi} from './useFormApi';
 export {injectFormApi} from './injectFormApi';

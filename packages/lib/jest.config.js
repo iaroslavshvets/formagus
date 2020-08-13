@@ -1,6 +1,6 @@
 module.exports = {
   setupFiles: [
-    './test/jest-setup.ts',
+    './__tests__/jest-setup.ts',
   ],
   watchPlugins: [
     'jest-watch-typeahead/filename',
@@ -13,8 +13,8 @@ module.exports = {
       ignoreCoverageForAllDecorators: true,
     },
   },
-  testRegex: '/__tests__/.*\\.(ts|tsx)$',
-  testPathIgnorePatterns: ['/__tests__/.*\\.d.ts$'],
+  testRegex: '/__tests__/specs/.*\\.(ts|tsx)$',
+  testPathIgnorePatterns: ['/__tests__/specs/.*\\.d.ts$'],
   moduleFileExtensions: [
     'js',
     'json',
