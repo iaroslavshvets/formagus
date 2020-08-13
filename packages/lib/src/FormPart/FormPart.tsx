@@ -1,21 +1,10 @@
-import * as React from 'react';
-import {inject, observer} from 'mobx-react';
-import {FormAPI, FormController} from '../FormController';
+import React, {FC} from 'react';
+import {Observer} from 'mobx-react';
+import {useFormController} from '../Form';
+import type {FormProps} from '../Form';
 
-export interface FormPartOwnProps {
-  children: (renderProps: FormAPI) => JSX.Element;
-}
+export const FormPart: FC<Pick<FormProps, 'children'>> = (props) => {
+  const controller = useFormController();
 
-export interface FormPartInjectedProps {
-  controller?: FormController;
-}
-
-export interface FormPartProps extends FormPartOwnProps, FormPartInjectedProps {}
-
-@inject('controller')
-@observer
-export class FormPart extends React.Component<FormPartProps> {
-  render() {
-    return this.props.children(this.props.controller!.API);
-  }
-}
+  return <Observer>{() => props.children(controller.API)}</Observer>;
+};

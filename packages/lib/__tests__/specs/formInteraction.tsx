@@ -1,22 +1,26 @@
-import * as React from 'react';
-import {mount} from 'enzyme';
-import {Field, FormController} from '../src';
-import {InputAdapter} from '../test/components/InputAdapter';
-import {TestForm} from '../test/components/TestForm';
-import {createInputAdapterDriver} from '../test/components/InputAdapter/InputAdapter.driver';
+import {cleanup, render} from '@testing-library/react';
+import React from 'react';
+import {Field, FormController} from '../../src';
+import {InputAdapter} from '../components/InputAdapter';
+import {TestForm} from '../components/TestForm';
+import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
 
-describe('Form interaction', async () => {
+describe('Form interaction', () => {
+  afterEach(() => {
+    return cleanup();
+  });
+
   it('should reset values', async () => {
     const controller = new FormController({
       initialValues: {
         [TestForm.FIELD_ONE_NAME]: 'batman is cool',
       },
     });
-    const wrapper = mount(
+    const wrapper = render(
       <TestForm controller={controller}>
         <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
       </TestForm>,
-    );
+    ).container;
 
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
@@ -40,11 +44,11 @@ describe('Form interaction', async () => {
         [TestForm.FIELD_ONE_NAME]: 'batman is cool',
       },
     });
-    const wrapper = mount(
+    const wrapper = render(
       <TestForm controller={controller}>
         <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
       </TestForm>,
-    );
+    ).container;
 
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
@@ -70,11 +74,11 @@ describe('Form interaction', async () => {
         [TestForm.FIELD_ONE_NAME]: 'batman is cool',
       },
     });
-    const wrapper = mount(
+    const wrapper = render(
       <TestForm controller={controller}>
         <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
       </TestForm>,
-    );
+    ).container;
 
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
@@ -93,11 +97,11 @@ describe('Form interaction', async () => {
         [TestForm.FIELD_ONE_NAME]: 'batman is cool',
       },
     });
-    const wrapper = mount(
+    const wrapper = render(
       <TestForm controller={controller}>
         <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
       </TestForm>,
-    );
+    ).container;
 
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
@@ -119,7 +123,7 @@ describe('Form interaction', async () => {
       },
     });
 
-    mount(
+    render(
       <TestForm controller={controller}>
         <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
       </TestForm>,

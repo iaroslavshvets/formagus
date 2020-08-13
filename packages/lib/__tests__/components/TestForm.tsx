@@ -1,14 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import {Field} from '../../src/Field';
 import {Form} from '../../src/Form';
-import {FormAPI, FormControllerOptions} from '../../src/FormController';
 import {InputAdapter} from './InputAdapter';
+import type {FormAPI, FormControllerOptions} from '../../src/FormController';
 
-export interface TestFormProps extends FormControllerOptions {
-  controller?: any;
-}
-
-export class TestForm extends React.Component<TestFormProps> {
+export class TestForm extends React.Component<FormControllerOptions & {controller?: any;}> {
   static FIELD_ONE_NAME = 'field_one_name';
   static FIELD_TWO_NAME = 'field_two_name';
 

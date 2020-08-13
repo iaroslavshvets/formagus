@@ -1,37 +1,19 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
-    "sourceMap": true,
-    "allowJs": false,
-    "noImplicitAny": true,
+    "strict": true,
     "importHelpers": true,
-    "skipLibCheck": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
     "pretty": true,
-    "strictFunctionTypes": false,
-    "strictPropertyInitialization": true,
-    "strictNullChecks": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
     "target": "es5",
     "jsx": "react",
-    "lib": ["dom", "es2015", "es2016", "es2017"],
-    "experimentalDecorators": true,
     "declaration": true
   },
   "include": [
     "./typings/**/*.d.ts",
-    "./src/**/*.ts",
-    "./src/**/*.tsx",
-    "./__tests__/**/*.ts",
-    "./__tests__/**/*.tsx",
-    "./test/**/*.ts",
-    "./test/**/*.tsx",
-    "./stories/**/*.ts",
-    "./stories/**/*.tsx"
+    "./src/**/*.ts*",
+    "./__tests__/**/*.ts*"
   ]
 }

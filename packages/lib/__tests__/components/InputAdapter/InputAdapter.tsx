@@ -1,10 +1,9 @@
-import * as React from 'react';
-import {ChangeEvent} from 'react';
-import {AdapterProps} from '../../../src/Field';
-import {isNil} from 'lodash';
+import React from 'react';
+import {isNil, noop} from 'lodash';
 import {Meta} from './Meta';
 import {Errors} from './Errors';
-const noop = require('lodash/noop');
+import type {ChangeEvent} from 'react';
+import type {AdapterProps} from '../../../src/Field';
 
 export interface InputAdapterProps extends AdapterProps {
   callback?: Function;
@@ -23,9 +22,11 @@ export class InputAdapter extends React.Component<InputAdapterProps> {
   }
 
   private setCustomState = () => {
-    const key = Object.keys(this.props.customState!)[0];
-    const value = this.props.customState![key];
-    this.props.formagus!.setCustomState(key, value);
+    if (this.props.customState) {
+      const key = Object.keys(this.props.customState)[0];
+      const value = this.props.customState[key];
+      this.props.formagus!.setCustomState(key, value);
+    }
   };
 
   render() {

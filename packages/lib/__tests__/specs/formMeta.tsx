@@ -1,15 +1,19 @@
-import * as React from 'react';
-import {mount} from 'enzyme';
-import {Field} from '../src';
-import {InputAdapter} from '../test/components/InputAdapter';
-import {TestForm} from '../test/components/TestForm';
-import {waitFor} from '../test/helpers/conditions';
-import {createInputAdapterDriver} from '../test/components/InputAdapter/InputAdapter.driver';
-import {createTestFormDriver} from '../test/components/TestForm.driver';
+import {cleanup, render} from '@testing-library/react';
+import React from 'react';
+import {Field} from '../../src';
+import {InputAdapter} from '../components/InputAdapter';
+import {TestForm} from '../components/TestForm';
+import {waitFor} from '../helpers/conditions';
+import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {createTestFormDriver} from '../components/TestForm.driver';
 
-describe('Form meta', async () => {
+describe('Form meta', () => {
+  afterEach(() => {
+    return cleanup();
+  });
+
   it('isValid', async () => {
-    const wrapper = mount(
+    const wrapper = render(
       <TestForm
         onSubmit={jest.fn()}
         onValidate={async (values) => {
@@ -22,7 +26,7 @@ describe('Form meta', async () => {
           }
         }}
       />,
-    );
+    ).container;
     const formDriver = createTestFormDriver({wrapper});
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
@@ -42,7 +46,7 @@ describe('Form meta', async () => {
   });
 
   it('isTouched', () => {
-    const wrapper = mount(<TestForm />);
+    const wrapper = render(<TestForm />).container;
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.meta('form:isTouched')).toBe('false');
@@ -56,7 +60,7 @@ describe('Form meta', async () => {
 
   describe('isDirty', () => {
     it('using initial values', () => {
-      const wrapper = mount(
+      const wrapper = render(
         <TestForm
           initialValues={{
             [TestForm.FIELD_ONE_NAME]: '',
@@ -64,7 +68,7 @@ describe('Form meta', async () => {
         >
           <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
         </TestForm>,
-      );
+      ).container;
       const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
       expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
@@ -79,11 +83,11 @@ describe('Form meta', async () => {
     });
 
     it('using initial field default value', () => {
-      const wrapper = mount(
+      const wrapper = render(
         <TestForm>
           <Field defaultValue={''} name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
         </TestForm>,
-      );
+      ).container;
       const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
       expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
@@ -107,7 +111,8 @@ describe('Form meta', async () => {
         </TestForm>
       );
 
-      const wrapper = mount(<TestComponent />);
+      const {container, rerender} = render(<TestComponent />);
+      const wrapper = container;
       const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
       const secondFieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
 
@@ -117,13 +122,14 @@ describe('Form meta', async () => {
 
       expect(fieldDriver.get.meta('form:isDirty')).toBe('true');
 
-      wrapper.setProps({hideField: true});
+      rerender(<TestComponent hideField={true}/>);
+
       expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
     });
   });
 
   it('submitCount', () => {
-    const wrapper = mount(<TestForm />);
+    const wrapper = render(<TestForm />).container;
     const formDriver = createTestFormDriver({wrapper});
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
@@ -135,13 +141,13 @@ describe('Form meta', async () => {
   });
 
   it('isSubmitting', async () => {
-    const wrapper = mount(
+    const wrapper = render(
       <TestForm
         onValidate={() => {
           return Promise.resolve({});
         }}
       />,
-    );
+    ).container;
     const formDriver = createTestFormDriver({wrapper});
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
@@ -157,14 +163,14 @@ describe('Form meta', async () => {
   });
 
   it('isValidating', async () => {
-    const wrapper = mount(
+    const wrapper = render(
       <TestForm
         onSubmit={jest.fn()}
         onValidate={async () => {
           return {[TestForm.FIELD_ONE_NAME]: ['notBatman']};
         }}
       />,
-    );
+    ).container;
     const formDriver = createTestFormDriver({wrapper});
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 

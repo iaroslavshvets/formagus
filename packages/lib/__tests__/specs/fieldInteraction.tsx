@@ -1,14 +1,19 @@
-import * as React from 'react';
-import {mount} from 'enzyme';
-import {FormController} from '../src/FormController';
-import {TestForm} from '../test/components/TestForm';
-import {Field} from '../src/Field';
-import {InputAdapter} from '../test/components/InputAdapter';
-import {createInputAdapterDriver} from '../test/components/InputAdapter/InputAdapter.driver';
-import {createTestFormDriver} from '../test/components/TestForm.driver';
-import {waitFor} from '../test/helpers/conditions';
+import React from 'react';
+import {render} from '@testing-library/react';
+import {FormController} from '../../src/FormController';
+import {TestForm} from '../components/TestForm';
+import {Field} from '../../src/Field';
+import {InputAdapter} from '../components/InputAdapter';
+import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {createTestFormDriver} from '../components/TestForm.driver';
+import {waitFor} from '../helpers/conditions';
+import {fireEvent} from '@testing-library/react';
+import {cleanup} from '@testing-library/react';
 
-describe('Field interactions', async () => {
+describe('Field interactions', () => {
+  afterEach(() => {
+    return cleanup();
+  });
   it('should keep value if "persist=true"', () => {
     class StatefulForm extends React.Component<{}, {hiddenField: boolean}> {
       state = {
@@ -37,19 +42,19 @@ describe('Field interactions', async () => {
       }
     }
 
-    const wrapper = mount(<StatefulForm/>);
+    const wrapper = render(<StatefulForm/>).container;
     const formDriver = createTestFormDriver({wrapper});
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
-    const toggleField = wrapper.find(`[data-hook="toggle-field"]`);
+    const toggleField = wrapper.querySelector(`[data-hook="toggle-field"]`)!;
     const NEW_VALUE = 'batman';
 
     fieldDriver.when.change(NEW_VALUE);
 
-    toggleField.simulate('click');
+    fireEvent.click(toggleField);
 
     expect(formDriver.get.values()[TestForm.FIELD_ONE_NAME]).toBeUndefined();
 
-    toggleField.simulate('click');
+    fireEvent.click(toggleField);
 
     expect(fieldDriver.get.value()).toBe(NEW_VALUE);
   });
@@ -82,15 +87,15 @@ describe('Field interactions', async () => {
       }
     }
 
-    const wrapper = mount(<StatefulForm props={null}/>);
+    const wrapper = render(<StatefulForm props={null}/>).container;
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
-    const toggleField = wrapper.find(`[data-hook="toggle-field"]`);
+    const toggleField = wrapper.querySelector(`[data-hook="toggle-field"]`)!;
     const NEW_VALUE = 'batman';
 
     fieldDriver.when.change(NEW_VALUE);
 
-    toggleField.simulate('click');
-    toggleField.simulate('click');
+    fireEvent.click(toggleField);
+    fireEvent.click(toggleField);
 
     expect(fieldDriver.get.value()).toBe('');
   });
@@ -100,7 +105,7 @@ describe('Field interactions', async () => {
 
     expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).customState).toEqual({});
 
-    const wrapper = mount(
+    const wrapper = render(
       <TestForm>
         <Field
           name={TestForm.FIELD_ONE_NAME}
@@ -112,7 +117,7 @@ describe('Field interactions', async () => {
           }}
         />
       </TestForm>,
-    );
+    ).container;
 
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
@@ -128,11 +133,11 @@ describe('Field interactions', async () => {
     const NEW_VALUE = 'batman';
     const formController = new FormController({});
 
-    const wrapper = mount(
+    const wrapper = render(
       <TestForm controller={formController}>
         <Field name={NESTED_FIELD_NAME} adapter={InputAdapter}/>
       </TestForm>,
-    );
+    ).container;
 
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: NESTED_FIELD_NAME});
 
