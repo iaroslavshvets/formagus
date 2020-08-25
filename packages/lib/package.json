@@ -19,6 +19,7 @@
     "test:unit": "jest",
     "test:watch": "jest --watch --detectOpenHandles",
     "test:coverage": "jest --coverage",
+    "test:ci-coverage": "jest --ci --coverage",
     "posttest": "npm run test:coverage",
     "precommit": "lint-staged",
     "postcommit": "git update-index --again",
