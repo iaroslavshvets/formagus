@@ -86,7 +86,9 @@ export class FormController {
     runInAction('setInitialValuesToCurrentValues', () => {
       this.options.initialValues = this.values;
       this.fields.forEach((field: FormField) => {
-        field.meta.initialValue = utils.getValue(this.options.initialValues, field.props!.name);
+        if (field.instance) { //TODO: add test for the case when there are initialValues, but field was not mounted
+          field.meta.initialValue = utils.getValue(this.options.initialValues, field.props!.name);
+        }
       });
     });
   };
