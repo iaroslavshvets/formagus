@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const PROD = process.env.NODE_ENV === 'production';
@@ -28,15 +28,15 @@ module.exports = {
   optimization: {
     splitChunks: {
       chunks: 'all'
-    }
+    },
+    namedModules: true,
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       title: 'Formagus - magical form',
       template: 'src/index.html',
     }),
-    new webpack.NamedModulesPlugin(),
     new webpack.DefinePlugin({
       BASEPATH: JSON.stringify(PROD ? '/router' : '/'),
       LIB_VERSION: JSON.stringify(require('../lib/package.json').version),
