@@ -37,7 +37,7 @@
     "lint-staged": "^8.0.4",
     "markdown-it-mermaid": "^0.2.5",
     "mini-css-extract-plugin": "^0.4.0",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.14.1",
     "prettier": "^1.12.1",
     "react-hot-loader": "^4.1.2",
     "react-svg-loader": "^2.1.0",
