@@ -1,4 +1,4 @@
-import React from 'react';
+import {FormEvent} from 'react';
 import type {EqualityCheckFunction, FieldClass, FieldProps} from '../Field';
 
 export type FieldDictionary<T> = {[fieldName: string]: T};
@@ -16,9 +16,9 @@ export type FieldValidationState = Valid | Invalid;
 export interface FormControllerOptions {
   initialValues?: FormValues;
   onValidate?: (values: any) => Promise<FieldDictionary<Invalid> | {}>;
-  onFormat?: <T = Function>(values: FormValues) => {[P in keyof FormValues]: T[FormValues[P]]};
-  onSubmit?: (errors: FormValidationErrors, values: FormValues, submitEvent?: React.FormEvent<any>) => void;
-  onSubmitAfter?: (errors: FormValidationErrors, values: FormValues, submitEvent?: React.FormEvent<any>) => void;
+  onFormat?: (values: FormValues) => FormValues;
+  onSubmit?: (errors: FormValidationErrors, values: FormValues, submitEvent?: FormEvent<any>) => void;
+  onSubmitAfter?: (errors: FormValidationErrors, values: FormValues, submitEvent?: FormEvent<any>) => void;
 }
 
 export interface FormField {
