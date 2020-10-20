@@ -38,6 +38,11 @@ exports[`Render 1`] = `
           false
         </span>
         <span
+          data-hook="meta_isChanged"
+        >
+          false
+        </span>
+        <span
           data-hook="meta_isValidating"
         >
           false
@@ -69,6 +74,11 @@ exports[`Render 1`] = `
         </span>
         <span
           data-hook="meta_form:isTouched"
+        >
+          false
+        </span>
+        <span
+          data-hook="meta_form:isChanged"
         >
           false
         </span>
@@ -120,6 +130,11 @@ exports[`Render 1`] = `
           false
         </span>
         <span
+          data-hook="meta_isChanged"
+        >
+          false
+        </span>
+        <span
           data-hook="meta_isValidating"
         >
           false
@@ -151,6 +166,11 @@ exports[`Render 1`] = `
         </span>
         <span
           data-hook="meta_form:isTouched"
+        >
+          false
+        </span>
+        <span
+          data-hook="meta_form:isChanged"
         >
           false
         </span>

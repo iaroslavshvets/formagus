@@ -54,6 +54,28 @@ describe('Field meta', () => {
     fieldDriver.when.change('batman');
 
     expect(fieldDriver.get.meta('isDirty')).toBe('true');
+
+    fieldDriver.when.change('');
+
+    expect(fieldDriver.get.meta('isDirty')).toBe('false');
+  });
+
+  it('isChanged', () => {
+    const wrapper = render(<TestForm />).container;
+    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+
+    expect(fieldDriver.get.meta('isChanged')).toBe('false');
+
+    fieldDriver.when.focus();
+    expect(fieldDriver.get.meta('isChanged')).toBe('false');
+
+    fieldDriver.when.change('batman');
+
+    expect(fieldDriver.get.meta('isChanged')).toBe('true');
+
+    fieldDriver.when.change('');
+
+    expect(fieldDriver.get.meta('isChanged')).toBe('true');
   });
 
   it('customState', async () => {
