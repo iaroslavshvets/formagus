@@ -34,6 +34,7 @@ export interface FormFieldMeta {
   onEqualityCheck: EqualityCheckFunction;
   initialValue: any;
   isTouched: boolean;
+  isChanged: boolean;
   isActive: boolean;
   isValidating: boolean;
   isDirty: boolean;
@@ -47,6 +48,7 @@ export interface FormMeta {
   isValid: boolean;
   isDirty: boolean;
   isTouched: boolean;
+  isChanged: boolean;
 }
 
 export interface SubmitResult {

@@ -20,6 +20,7 @@ export class FieldClass extends React.Component<FieldProps & {controller?: FormC
       isActive: meta.isActive,
       isDirty: meta.isDirty,
       isTouched: meta.isTouched,
+      isChanged: meta.isChanged,
       isValidating: meta.isValidating,
       isRegistered: meta.isRegistered,
       form: {
@@ -28,6 +29,7 @@ export class FieldClass extends React.Component<FieldProps & {controller?: FormC
         isValid: controller.isValid,
         isDirty: controller.isDirty,
         isTouched: controller.isTouched,
+        isChanged: controller.isChanged,
         submitCount: controller.submitCount,
       },
     };

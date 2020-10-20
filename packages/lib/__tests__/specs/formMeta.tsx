@@ -58,6 +58,33 @@ describe('Form meta', () => {
     expect(fieldDriver.get.meta('form:isTouched')).toBe('true');
   });
 
+  it('isChanged', () => {
+    const wrapper = render(
+      <TestForm
+        initialValues={{
+          [TestForm.FIELD_ONE_NAME]: '',
+        }}
+      >
+        <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+      </TestForm>,
+    ).container;
+    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+
+    expect(fieldDriver.get.meta('form:isChanged')).toBe('false');
+
+    fieldDriver.when.focus();
+    expect(fieldDriver.get.meta('form:isChanged')).toBe('false');
+
+    fieldDriver.when.blur();
+    expect(fieldDriver.get.meta('form:isChanged')).toBe('false');
+    
+    fieldDriver.when.change('batman');
+    expect(fieldDriver.get.meta('form:isChanged')).toBe('true');
+
+    fieldDriver.when.change('');
+    expect(fieldDriver.get.meta('form:isChanged')).toBe('true');
+  });
+
   describe('isDirty', () => {
     it('using initial values', () => {
       const wrapper = render(

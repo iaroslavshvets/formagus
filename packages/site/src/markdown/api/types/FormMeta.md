@@ -6,5 +6,6 @@ interface FormMeta {
   isValid: boolean;
   isDirty: boolean;
   isTouched: boolean;
+  isChanged: boolean;
 }
 ```

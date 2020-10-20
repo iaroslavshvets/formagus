@@ -165,6 +165,7 @@ export class FormController {
         customState: observable.map(),
         initialValue: undefined,
         isTouched: false,
+        isChanged: false,
         isActive: false,
         isValidating: false,
         isRegistered: false,
@@ -278,6 +279,7 @@ export class FormController {
         isValid: this.isValid,
         isDirty: this.isDirty,
         isTouched: this.isTouched,
+        isChanged: this.isChanged,
       },
     };
   }
@@ -287,6 +289,13 @@ export class FormController {
   get isTouched(): boolean {
     const fieldValues = Array.from(this.fields.values());
     return fieldValues.some((field: FormField) => field.instance !== null && field.meta.isTouched);
+  }
+
+  //where any of the form fields ever changed
+  @computed
+  get isChanged(): boolean {
+    const fieldValues = Array.from(this.fields.values());
+    return fieldValues.some((field: FormField) => field.instance !== null && field.meta.isChanged);
   }
 
   //any of the fields have value different from the initial
@@ -323,6 +332,7 @@ export class FormController {
       this.fields.forEach((field: FormField, name: string) => {
         field.value = utils.getValue(values, name);
         field.meta.isTouched = false;
+        field.meta.isChanged = false;
       });
       this.setInitialValuesToCurrentValues();
       this.setSubmitCount(0);
@@ -377,6 +387,9 @@ export class FormController {
       this.createFieldIfDoesNotExist(fieldName);
       const field = this.fields.get(fieldName)!;
       field.value = value;
+      if (!field.meta.isChanged) {
+        field.meta.isChanged = true;
+      }
     });
   };
 
