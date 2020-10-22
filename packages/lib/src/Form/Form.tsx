@@ -1,4 +1,5 @@
-import {Observer, Provider} from 'mobx-react';
+import {Provider} from 'mobx-react';
+import {Observer} from 'mobx-react-lite';
 import React, {useState, FC} from 'react';
 import {FormController} from '../FormController';
 import {FormPart} from '../FormPart';
