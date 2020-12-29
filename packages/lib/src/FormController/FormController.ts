@@ -107,7 +107,7 @@ export class FormController {
     }
 
     return new Promise((resolve) => {
-      const errors: {[index: string]: FieldValidationState} = {};
+      const errors: Record<string, FieldValidationState> = {};
 
       Object.keys(this.fieldValidations).forEach((fieldName) => {
         const fieldMeta = this.fields.get(fieldName)!.meta;

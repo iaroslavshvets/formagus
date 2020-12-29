@@ -8,7 +8,7 @@ const unflattenValues = (formValidationErrors: FormValidationErrors) => {
   return unflatten(formValidationErrors);
 };
 
-const flattenValues = (formValidationErrors: FormValidationErrors, safe = true): {[key: string]: string[]} | null => {
+const flattenValues = (formValidationErrors: FormValidationErrors, safe = true): Record<string, string[]> | null => {
   return formValidationErrors
     ? flatten(formValidationErrors, {
         safe,

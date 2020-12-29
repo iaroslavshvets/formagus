@@ -1,7 +1,7 @@
 import React from 'react';
 import {eventually} from './eventually';
 
-export const waitFor = (wrapper: HTMLElement) => async (checkFunction: () => boolean) => {
+export const waitFor = (wrapper: Element) => async (checkFunction: () => boolean) => {
   return eventually(() => {
     if (!checkFunction()) {
       throw new Error();

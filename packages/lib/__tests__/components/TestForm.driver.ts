@@ -1,6 +1,6 @@
 import {fireEvent} from '@testing-library/react';
 
-export const createTestFormDriver = (options: {wrapper: HTMLElement}) => {
+export const createTestFormDriver = (options: {wrapper: Element}) => {
   const {wrapper} = options;
 
   const API = {

@@ -1,13 +1,11 @@
 import {FormEvent} from 'react';
 import type {EqualityCheckFunction, FieldClass, FieldProps} from '../Field';
 
-export type FieldDictionary<T> = {[fieldName: string]: T};
+export type FieldDictionary<T> = Record<string, T>;
 
 export type FormValidationErrors = FieldDictionary<Invalid> | null;
 
-export type FormValues = {
-  [key: string]: any | FormValues;
-};
+export type FormValues = any;
 
 export type Valid = null | undefined;
 export type Invalid = any;
@@ -30,7 +28,7 @@ export interface FormField {
 }
 
 export interface FormFieldMeta {
-  customState: {[key: string]: any};
+  customState: Record<string, any>;
   onEqualityCheck: EqualityCheckFunction;
   initialValue: any;
   isTouched: boolean;

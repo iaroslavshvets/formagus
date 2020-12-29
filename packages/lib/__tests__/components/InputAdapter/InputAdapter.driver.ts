@@ -1,6 +1,6 @@
 import {fireEvent} from '@testing-library/react';
 
-export const createInputAdapterDriver = (options: {wrapper: HTMLElement; dataHook: string}) => {
+export const createInputAdapterDriver = (options: {wrapper: Element; dataHook: string}) => {
   const {wrapper, dataHook} = options;
 
   const API = {

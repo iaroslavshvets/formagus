@@ -1,4 +1,4 @@
-export const createFieldValueDisplayDriver = (options: {wrapper: HTMLElement; dataHook: string}) => {
+export const createFieldValueDisplayDriver = (options: {wrapper: Element; dataHook: string}) => {
   const {wrapper, dataHook} = options;
 
   const API = {
