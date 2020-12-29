@@ -1,5 +1,3 @@
 ```typescript
-type FormValues = {
-  [key: string]: any | FormValues;
-};
+type FormValues = any;
 ```
