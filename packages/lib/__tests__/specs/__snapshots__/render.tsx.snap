@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Render 1`] = `
+exports[`Render should render 1`] = `
 <div>
   <form
     data-hook="test-form"

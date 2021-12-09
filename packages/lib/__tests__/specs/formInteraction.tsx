@@ -1,4 +1,4 @@
-import {cleanup, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from '@testing-library/react';
 import React from 'react';
 import {Field, FormController} from '../../src';
 import {InputAdapter} from '../components/InputAdapter';
@@ -41,31 +41,65 @@ describe('Form interaction', () => {
   it('Should reset to specific values, if they are passed as "resetToValues" argument, like "reset({newKey: ‘newValue’})"', async () => {
     const controller = new FormController({
       initialValues: {
-        [TestForm.FIELD_ONE_NAME]: 'batman is cool',
+        [TestForm.FIELD_ONE_NAME]: 'Batman is cool',
       },
     });
-    const wrapper = render(
-      <TestForm controller={controller}>
-        <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
-      </TestForm>,
-    ).container;
+
+    class StatefulForm extends React.Component<{}, {hiddenField: boolean}> {
+      state = {
+        hiddenField: true,
+      };
+
+      render() {
+        return (
+          <TestForm controller={controller}>
+            <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+            {!this.state.hiddenField && <Field name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} />}
+            <button
+              type="button"
+              data-hook="toggle-field"
+              onClick={() => {
+                this.setState((state) => {
+                  return {
+                    hiddenField: !state.hiddenField,
+                  };
+                });
+              }}
+            >
+              Toggle Field
+            </button>
+          </TestForm>
+        );
+      }
+    }
+
+    const wrapper = render(<StatefulForm />).container;
 
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
-    expect(fieldDriver.get.value()).toBe('batman is cool');
+    expect(fieldDriver.get.value()).toBe('Batman is cool');
 
-    fieldDriver.when.change('harvy is cool');
+    fieldDriver.when.change('Joker is cool');
 
     expect(fieldDriver.get.meta('form:isTouched')).toBe('true');
 
-    expect(fieldDriver.get.value()).toBe('harvy is cool');
+    expect(fieldDriver.get.value()).toBe('Joker is cool');
 
     controller.API.resetToValues({
-      [TestForm.FIELD_ONE_NAME]: 'batman is Bruce Wayne',
+      [TestForm.FIELD_ONE_NAME]: 'Batman is Bruce Wayne',
+      [TestForm.FIELD_TWO_NAME]: 'Wolverine is Logan',
     });
 
     expect(fieldDriver.get.meta('form:isTouched')).toBe('false');
-    expect(fieldDriver.get.value()).toBe('batman is Bruce Wayne');
+    expect(fieldDriver.get.value()).toBe('Batman is Bruce Wayne');
+
+    const toggleField = wrapper.querySelector(`[data-hook="toggle-field"]`)!;
+    fireEvent.click(toggleField);
+
+    const fieldDriver2 = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
+
+    expect(fieldDriver.get.meta('form:isTouched')).toBe('false');
+    expect(fieldDriver2.get.value()).toBe('Wolverine is Logan');
   });
 
   it('should clear values', async () => {

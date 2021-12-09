@@ -82,11 +82,11 @@ export class FormController {
     return onFormat ? onFormat(values) : values;
   }
 
-  protected setInitialValuesToCurrentValues = () => {
+  protected setInitialValuesToCurrentValues = (values: FormValues = this.values) => {
     runInAction('setInitialValuesToCurrentValues', () => {
-      this.options.initialValues = this.values;
+      this.options.initialValues = values;
       this.fields.forEach((field: FormField) => {
-        if (field.instance) { //TODO: add test for the case when there are initialValues, but field was not mounted
+        if (field.instance) {
           field.meta.initialValue = utils.getValue(this.options.initialValues, field.props!.name);
         }
       });
@@ -334,7 +334,7 @@ export class FormController {
         field.meta.isTouched = false;
         field.meta.isChanged = false;
       });
-      this.setInitialValuesToCurrentValues();
+      this.setInitialValuesToCurrentValues(values);
       this.setSubmitCount(0);
       this.updateErrorsForEveryField({});
     });

@@ -5,22 +5,24 @@ import {createTestFormDriver} from '../components/TestForm.driver';
 import {InputAdapter} from '../components/InputAdapter';
 import {Field} from '../../src';
 
-test('Render', () => {
+describe('Render', () => {
   afterEach(() => {
     return cleanup();
   });
 
-  const wrapper = render(
-    <TestForm>
-      <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
-      <Field name={TestForm.FIELD_TWO_NAME}>
-        {(props) => {
-          return <InputAdapter {...props} />;
-        }}
-      </Field>
-    </TestForm>,
-  ).container;
-  const formDriver = createTestFormDriver({wrapper});
+  it('should render', () => {
+    const wrapper = render(
+      <TestForm>
+        <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field name={TestForm.FIELD_TWO_NAME}>
+          {(props) => {
+            return <InputAdapter {...props} />;
+          }}
+        </Field>
+      </TestForm>,
+    ).container;
+    const formDriver = createTestFormDriver({wrapper});
 
-  expect(formDriver.get.serialized()).toMatchSnapshot();
+    expect(formDriver.get.serialized()).toMatchSnapshot();
+  });
 });
