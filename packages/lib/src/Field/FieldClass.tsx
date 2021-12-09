@@ -3,6 +3,7 @@ import {toJS, computed} from 'mobx';
 import {Observer} from 'mobx-react-lite';
 import type {FormController, FormField} from '../FormController';
 import type {AdapterProps, FieldMeta, FieldProps} from './Field.types';
+import {toJSCompat} from '../utils/toJSCompat';
 
 export class FieldClass extends React.Component<FieldProps & {controller?: FormController}> {
   //meta info passed to Adapter
@@ -38,9 +39,7 @@ export class FieldClass extends React.Component<FieldProps & {controller?: FormC
   //field value, passed to adapter
   @computed
   protected get value(): any {
-    return toJS(this.field.value, {
-      detectCycles: false,
-    });
+    return toJSCompat(this.field.value, false);
   }
 
   @computed

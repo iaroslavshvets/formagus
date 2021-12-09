@@ -22,4 +22,3 @@ export {Field} from './Field';
 export {Form} from './Form';
 export {FormPart} from './FormPart';
 export {useFormApi} from './useFormApi';
-export {injectFormApi} from './injectFormApi';
