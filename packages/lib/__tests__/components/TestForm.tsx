@@ -1,10 +1,9 @@
 import React from 'react';
-import {Field} from '../../src/Field';
-import {Form} from '../../src/Form';
+import {Field, Form} from '../../src/';
 import {InputAdapter} from './InputAdapter';
 import type {FormAPI, FormControllerOptions} from '../../src/FormController';
 
-export class TestForm extends React.Component<FormControllerOptions & {controller?: any;}> {
+export class TestForm extends React.Component<FormControllerOptions & {controller?: any}> {
   static FIELD_ONE_NAME = 'field_one_name';
   static FIELD_TWO_NAME = 'field_two_name';
 
