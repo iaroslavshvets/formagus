@@ -23,6 +23,11 @@ exports[`Render should render 1`] = `
           null
         </span>
         <span
+          data-hook="meta_initialValue"
+        >
+          undefined
+        </span>
+        <span
           data-hook="meta_isActive"
         >
           false
@@ -113,6 +118,11 @@ exports[`Render should render 1`] = `
           data-hook="meta_errors"
         >
           null
+        </span>
+        <span
+          data-hook="meta_initialValue"
+        >
+          undefined
         </span>
         <span
           data-hook="meta_isActive"

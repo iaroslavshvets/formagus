@@ -16,13 +16,26 @@ describe('Form props', () => {
     const wrapper = render(
       <TestForm
         initialValues={{
-          [TestForm.FIELD_ONE_NAME]: 'John Snow',
+          string: 'John Snow',
+          nested: [
+            {
+              id: 'Jaime Lannister',
+            },
+          ],
         }}
-      />,
+      >
+        <div>
+          <Field name={'string'} adapter={InputAdapter} />
+          <Field name={'nested[0].id'} adapter={InputAdapter} />
+        </div>
+      </TestForm>,
     ).container;
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
-    expect(fieldDriver.get.value()).toBe('John Snow');
+    const fieldDriverOne = createInputAdapterDriver({wrapper, dataHook: 'string'});
+    const fieldDriverNested = createInputAdapterDriver({wrapper, dataHook: 'nested[0].id'});
+
+    expect(fieldDriverOne.get.value()).toBe('John Snow');
+    expect(fieldDriverNested.get.value()).toBe('Jaime Lannister');
   });
 
   it('onSubmitAfter', async () => {
@@ -47,7 +60,6 @@ describe('Form props', () => {
     });
   });
 
-
   it('formatter (with field and arrays support)', async () => {
     const FIELD_ONE_NAME = 'array[0].field_one_name';
     const FIELD_TWO_NAME = 'array[0].field_two_name';
@@ -59,9 +71,9 @@ describe('Form props', () => {
           array: [
             {
               field_one_name: 'John Snow',
-              field_two_name: 'Ned Stark'
-            }
-          ]
+              field_two_name: 'Ned Stark',
+            },
+          ],
         }}
         onValidate={onValidate}
         onFormat={(values: any) => {
@@ -104,10 +116,12 @@ describe('Form props', () => {
     formDriver.when.submit();
 
     expect(onValidate).toBeCalledWith({
-      array: [{
-        field_one_name: 'Tyrion Lannister:formatted',
-        field_two_name: 'Arya Stark:formatted'
-      }]
+      array: [
+        {
+          field_one_name: 'Tyrion Lannister:formatted',
+          field_two_name: 'Arya Stark:formatted',
+        },
+      ],
     });
   });
 });

@@ -18,6 +18,7 @@ export class FieldClass extends React.Component<FieldProps & {controller?: FormC
     return {
       customState,
       errors: adapterErrors,
+      initialValue: meta.initialValue,
       isActive: meta.isActive,
       isDirty: meta.isDirty,
       isTouched: meta.isTouched,

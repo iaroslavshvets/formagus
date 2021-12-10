@@ -9,6 +9,7 @@ export type FieldAdapter = ((adapterProps: AdapterProps) => JSX.Element) | React
 
 export interface FieldMeta {
   errors: any | null;
+  initialValue: any;
   isDirty: boolean;
   isTouched: boolean;
   isChanged: boolean;
