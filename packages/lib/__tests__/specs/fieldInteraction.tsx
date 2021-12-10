@@ -1,8 +1,7 @@
 import React from 'react';
 import {render} from '@testing-library/react';
-import {FormController} from '../../src/FormController';
+import {FormController, Field} from '../../src';
 import {TestForm} from '../components/TestForm';
-import {Field} from '../../src/Field';
 import {InputAdapter} from '../components/InputAdapter';
 import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
 import {createTestFormDriver} from '../components/TestForm.driver';
@@ -14,6 +13,7 @@ describe('Field interactions', () => {
   afterEach(() => {
     return cleanup();
   });
+
   it('should keep value if "persist=true"', () => {
     class StatefulForm extends React.Component<{}, {hiddenField: boolean}> {
       state = {
@@ -23,7 +23,7 @@ describe('Field interactions', () => {
       render() {
         return (
           <TestForm>
-            {!this.state.hiddenField && <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist={true}/>}
+            {!this.state.hiddenField && <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist={true} />}
             <button
               type="button"
               data-hook="toggle-field"
@@ -42,7 +42,7 @@ describe('Field interactions', () => {
       }
     }
 
-    const wrapper = render(<StatefulForm/>).container;
+    const wrapper = render(<StatefulForm />).container;
     const formDriver = createTestFormDriver({wrapper});
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
     const toggleField = wrapper.querySelector(`[data-hook="toggle-field"]`)!;
@@ -68,7 +68,7 @@ describe('Field interactions', () => {
       render() {
         return (
           <TestForm>
-            {!this.state.hiddenField && <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter}/>}
+            {!this.state.hiddenField && <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />}
             <button
               type="button"
               data-hook="toggle-field"
@@ -87,7 +87,7 @@ describe('Field interactions', () => {
       }
     }
 
-    const wrapper = render(<StatefulForm props={null}/>).container;
+    const wrapper = render(<StatefulForm props={null} />).container;
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
     const toggleField = wrapper.querySelector(`[data-hook="toggle-field"]`)!;
     const NEW_VALUE = 'batman';
@@ -135,7 +135,7 @@ describe('Field interactions', () => {
 
     const wrapper = render(
       <TestForm controller={formController}>
-        <Field name={NESTED_FIELD_NAME} adapter={InputAdapter}/>
+        <Field name={NESTED_FIELD_NAME} adapter={InputAdapter} />
       </TestForm>,
     ).container;
 
@@ -146,5 +146,5 @@ describe('Field interactions', () => {
     await waitFor(wrapper)(() => {
       return formController.API.values[TestForm.FIELD_ONE_NAME][0].nested === NEW_VALUE;
     });
-  })
+  });
 });

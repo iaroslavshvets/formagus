@@ -3,7 +3,8 @@ import {isNil, noop} from 'lodash';
 import {Meta} from './Meta';
 import {Errors} from './Errors';
 import type {ChangeEvent} from 'react';
-import type {AdapterProps} from '../../../src/Field';
+import type {AdapterProps} from '../../../src';
+import {observer} from 'mobx-react';
 
 export interface InputAdapterProps extends AdapterProps {
   callback?: Function;
@@ -12,6 +13,7 @@ export interface InputAdapterProps extends AdapterProps {
   };
 }
 
+@observer
 export class InputAdapter extends React.Component<InputAdapterProps> {
   protected callback = noop;
   constructor(props: InputAdapterProps) {

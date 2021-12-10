@@ -1,5 +1,5 @@
 import React from 'react';
-import {toJS, computed} from 'mobx';
+import {computed} from 'mobx';
 import {Observer} from 'mobx-react-lite';
 import type {FormController, FormField} from '../FormController';
 import type {AdapterProps, FieldMeta, FieldProps} from './Field.types';
@@ -12,8 +12,8 @@ export class FieldClass extends React.Component<FieldProps & {controller?: FormC
     const controller = this.props.controller!;
     const {meta, errors} = this.field;
 
-    const adapterErrors = toJS(errors);
-    const customState = toJS(meta.customState);
+    const adapterErrors = toJSCompat(errors);
+    const customState = toJSCompat(meta.customState);
 
     return {
       customState,
@@ -83,9 +83,6 @@ export class FieldClass extends React.Component<FieldProps & {controller?: FormC
   protected onChange = (value: any) => {
     this.props.controller!.setFieldValue(this.props.name, value);
   };
-
-  //called when field is initialized
-  protected onInit = (callback: Function) => callback();
 
   //registers Field in FormController
   componentDidMount() {

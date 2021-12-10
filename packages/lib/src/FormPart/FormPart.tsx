@@ -1,10 +1,10 @@
-import React, {FC} from 'react';
-import {Observer} from 'mobx-react-lite';
+import React from 'react';
 import {useFormController} from '../Form';
 import type {FormProps} from '../Form';
+import {observer} from 'mobx-react-lite';
 
-export const FormPart: FC<Pick<FormProps, 'children'>> = (props) => {
+export const FormPart = observer((props: {children: FormProps['children']}) => {
   const controller = useFormController();
 
-  return <Observer>{() => props.children(controller.API)}</Observer>;
-};
+  return props.children(controller.API);
+});

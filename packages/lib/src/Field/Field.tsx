@@ -1,10 +1,10 @@
-import isEmpty from 'lodash/isEmpty';
 import React from 'react';
-import {useFormController} from '../Form';
-import {FieldClass} from './FieldClass';
 import type {FieldProps} from './Field.types';
+import {FieldClass} from './FieldClass';
+import {useFormController} from '../Form';
+import isEmpty from 'lodash/isEmpty';
 
-export const Field: React.FC<FieldProps> = (props) => {
+export const Field = (props: FieldProps) => {
   const controller = useFormController();
 
   const {
