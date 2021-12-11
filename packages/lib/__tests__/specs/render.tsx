@@ -2,8 +2,8 @@ import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {TestForm} from '../components/TestForm';
 import {createTestFormDriver} from '../components/TestForm.driver';
-import {InputAdapter} from '../components/InputAdapter';
 import {Field} from '../../src';
+import {InputAdapter} from '../components/InputAdapter';
 
 describe('Render', () => {
   afterEach(() => {

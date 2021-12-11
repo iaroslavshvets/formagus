@@ -12,6 +12,7 @@ function ComponentWithInjectedFormApi<C extends React.ComponentClass>(Component:
       return <Component {...(props as any)} formApi={controller!.API} />;
     }
   }
+  (InjectFormApiWrapper as any).displayName = 'FormagusInjectFormApiWrapper';
 
   hoistNonReactStatics(InjectFormApiWrapper, Component);
 

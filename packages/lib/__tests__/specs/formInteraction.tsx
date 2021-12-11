@@ -1,5 +1,5 @@
 import {cleanup, fireEvent, render} from '@testing-library/react';
-import React from 'react';
+import React, {useState} from 'react';
 import {Field, FormController} from '../../src';
 import {InputAdapter} from '../components/InputAdapter';
 import {TestForm} from '../components/TestForm';
@@ -45,35 +45,27 @@ describe('Form interaction', () => {
       },
     });
 
-    class StatefulForm extends React.Component<{}, {hiddenField: boolean}> {
-      state = {
-        hiddenField: true,
-      };
+    const FormWithHiddenField = () => {
+      const [hiddenField, setHiddenField] = useState(true);
 
-      render() {
-        return (
-          <TestForm controller={controller}>
-            <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
-            {!this.state.hiddenField && <Field name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} />}
-            <button
-              type="button"
-              data-hook="toggle-field"
-              onClick={() => {
-                this.setState((state) => {
-                  return {
-                    hiddenField: !state.hiddenField,
-                  };
-                });
-              }}
-            >
-              Toggle Field
-            </button>
-          </TestForm>
-        );
-      }
-    }
+      return (
+        <TestForm controller={controller}>
+          <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+          {!hiddenField && <Field name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} />}
+          <button
+            type="button"
+            data-hook="toggle-field"
+            onClick={() => {
+              setHiddenField(!hiddenField);
+            }}
+          >
+            Toggle Field
+          </button>
+        </TestForm>
+      );
+    };
 
-    const wrapper = render(<StatefulForm />).container;
+    const wrapper = render(<FormWithHiddenField />).container;
 
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 

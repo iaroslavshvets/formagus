@@ -29,3 +29,5 @@ export const Form = observer((props: FormProps) => {
     </Provider>
   );
 });
+
+Form.displayName = 'FormagusForm';

@@ -1,7 +1,7 @@
 import React from 'react';
 import {isEmpty, isObject} from 'lodash';
-import {observer} from 'mobx-react';
-import type {FieldMeta} from '../../../src/Field';
+import {observer} from 'mobx-react-lite';
+import type {FieldMeta} from '../../../src';
 
 export const Meta = observer((props: {meta: FieldMeta}) => {
   const renderMetaProperty = (meta: any, currentKey: string = ''): any => {
@@ -24,3 +24,5 @@ export const Meta = observer((props: {meta: FieldMeta}) => {
 
   return <div data-hook="meta-props">{metaFields}</div>;
 });
+
+Meta.displayName = 'Meta';

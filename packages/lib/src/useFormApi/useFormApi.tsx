@@ -1,17 +1,18 @@
 import {autorun} from 'mobx';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {useFormController} from '../Form';
 import type {FormAPI} from '../FormController';
+import {useRunOnce} from '../useField/useRunOnce';
 
 export const useFormApi = () => {
   const controller = useFormController();
   const [api, setApi] = useState<FormAPI>(() => controller.API);
 
-  useEffect(() => {
+  useRunOnce(() => {
     return autorun(() => {
       setApi(controller.API);
     });
-  }, []);
+  });
 
   return api;
 };

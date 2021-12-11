@@ -1,6 +1,6 @@
 import React from 'react';
 import {isEmpty} from 'lodash';
-import {observer} from 'mobx-react';
+import {observer} from 'mobx-react-lite';
 
 export const Errors = observer((props: {errors: any}) => {
   const {errors} = props;
@@ -16,3 +16,5 @@ export const Errors = observer((props: {errors: any}) => {
     </span>
   ) : null;
 });
+
+Errors.displayName = 'Errors';

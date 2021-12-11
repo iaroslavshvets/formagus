@@ -8,3 +8,5 @@ export const FormPart = observer((props: {children: FormProps['children']}) => {
 
   return props.children(controller.API);
 });
+
+FormPart.displayName = 'FormagusFormPart';

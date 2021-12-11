@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {render} from '@testing-library/react';
 import {FormController, Field} from '../../src';
 import {TestForm} from '../components/TestForm';
@@ -15,40 +15,31 @@ describe('Field interactions', () => {
   });
 
   it('should keep value if "persist=true"', () => {
-    class StatefulForm extends React.Component<{}, {hiddenField: boolean}> {
-      state = {
-        hiddenField: false,
-      };
+    const FormWithHiddenField = () => {
+      const [hiddenField, setHiddenField] = useState(false);
 
-      render() {
-        return (
-          <TestForm>
-            {!this.state.hiddenField && <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist={true} />}
-            <button
-              type="button"
-              data-hook="toggle-field"
-              onClick={() => {
-                this.setState((state) => {
-                  return {
-                    hiddenField: !state.hiddenField,
-                  };
-                });
-              }}
-            >
-              Toggle Field
-            </button>
-          </TestForm>
-        );
-      }
-    }
+      return (
+        <TestForm>
+          {!hiddenField && <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist={true} />}
+          <button
+            type="button"
+            data-hook="toggle-field"
+            onClick={() => {
+              setHiddenField(!hiddenField);
+            }}
+          >
+            Toggle Field
+          </button>
+        </TestForm>
+      );
+    };
 
-    const wrapper = render(<StatefulForm />).container;
+    const wrapper = render(<FormWithHiddenField />).container;
     const formDriver = createTestFormDriver({wrapper});
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
     const toggleField = wrapper.querySelector(`[data-hook="toggle-field"]`)!;
-    const NEW_VALUE = 'batman';
 
-    fieldDriver.when.change(NEW_VALUE);
+    fieldDriver.when.change('batman');
 
     fireEvent.click(toggleField);
 
@@ -56,7 +47,7 @@ describe('Field interactions', () => {
 
     fireEvent.click(toggleField);
 
-    expect(fieldDriver.get.value()).toBe(NEW_VALUE);
+    expect(fieldDriver.get.value()).toBe('batman');
   });
 
   it('should not keep value', () => {
@@ -107,15 +98,16 @@ describe('Field interactions', () => {
 
     const wrapper = render(
       <TestForm>
-        <Field
-          name={TestForm.FIELD_ONE_NAME}
-          adapter={InputAdapter}
-          adapterProps={{
-            customState: {
-              customProperty: 'custom value',
-            },
-          }}
-        />
+        <Field name={TestForm.FIELD_ONE_NAME}>
+          {(formagusProps) => (
+            <InputAdapter
+              {...formagusProps}
+              customState={{
+                customProperty: 'custom value',
+              }}
+            />
+          )}
+        </Field>
       </TestForm>,
     ).container;
 

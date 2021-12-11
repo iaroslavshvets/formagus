@@ -17,3 +17,5 @@ export const Field = (props: FieldProps) => {
 
   return <FieldClass controller={controller} onEqualityCheck={onEqualityCheck} persist={persist} {...restProps} />;
 };
+
+Field.displayName = 'FormagusField';

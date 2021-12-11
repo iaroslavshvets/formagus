@@ -107,7 +107,7 @@ export class FieldClass extends React.Component<FieldProps & {controller?: FormC
             return <></>;
           }
 
-          return this.props.adapter ? (
+          return 'adapter' in this.props ? (
             <this.props.adapter {...this.injectedAdapterProps} {...this.props.adapterProps} />
           ) : (
             this.props.children!(this.injectedAdapterProps)

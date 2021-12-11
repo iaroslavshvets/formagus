@@ -19,6 +19,7 @@ import type {
   Invalid,
 } from './FormController.types';
 import {toJSCompat} from '../utils/toJSCompat';
+import {makeObservableForMobx6} from '../utils/makeObservableForMobx6';
 
 export class FormController {
   //Form options passed through form Props or directly through new Controller(options)
@@ -249,11 +250,9 @@ export class FormController {
   };
 
   constructor(options: FormControllerOptions) {
-    if ((mobx as any).makeObservable) {
-      (mobx as any).makeObservable(this);
-    }
+    makeObservableForMobx6(this);
     runInAction(() => (this.options = options));
-    observerBatching(ReactDOM.unstable_batchedUpdates as any);
+    observerBatching(ReactDOM.unstable_batchedUpdates);
   }
 
   //form FormAPI, which will be passed to child render function or could be retrieved with API prop from controller

@@ -5,7 +5,7 @@ export type ValidationFunction =
   | ((value: any, values?: any) => FieldValidationState)
   | ((value: any, values?: any) => Promise<FieldValidationState>);
 
-export type FieldAdapter = ((adapterProps: AdapterProps) => JSX.Element) | React.ComponentClass<any> | React.SFC<any>;
+export type FieldAdapter = React.ComponentClass<AdapterProps> | React.FC<AdapterProps>;
 
 export interface FieldMeta {
   errors: any | null;
@@ -21,7 +21,7 @@ export interface FieldMeta {
 }
 
 export interface AdapterProps {
-  formagus?: {
+  formagus: {
     name: string;
     meta: FieldMeta;
     value: any;
@@ -36,15 +36,21 @@ export interface AdapterProps {
 export type FormatterFunction = (value: any) => any;
 export type EqualityCheckFunction = (newValue: any, oldValue: any) => boolean;
 
-export type FieldProps = {
+type FieldCommonProps = {
   name: string;
-  children?: (injectedAdapterProps: AdapterProps) => JSX.Element;
-  adapter?: FieldAdapter;
   defaultValue?: any;
   onValidate?: ValidationFunction;
   onFormat?: FormatterFunction;
   onEqualityCheck?: EqualityCheckFunction;
   onInit?: Function;
   persist?: boolean;
-  adapterProps?: any;
 };
+
+export type FieldProps =
+  | (FieldCommonProps & {
+      children: (injectedAdapterProps: AdapterProps) => JSX.Element;
+    })
+  | (FieldCommonProps & {
+      adapter: FieldAdapter;
+      adapterProps?: any;
+    });
