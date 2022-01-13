@@ -5,6 +5,7 @@ export type {
   FieldMeta,
   EqualityCheckFunction,
   FieldProps,
+  AdapterRenderProps,
 } from './Field';
 export type {FormProps} from './Form';
 export type {
@@ -23,3 +24,4 @@ export {Form} from './Form';
 export {FormPart} from './FormPart';
 export {injectFormApi} from './injectFormApi';
 export {useFormApi} from './useFormApi';
+export {useField} from './useField';

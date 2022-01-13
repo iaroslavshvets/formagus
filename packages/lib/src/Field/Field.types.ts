@@ -20,7 +20,9 @@ export interface FieldMeta {
   form: FormMeta;
 }
 
-export interface AdapterProps {
+export type AdapterRenderProps = Required<AdapterProps>;
+
+export type AdapterProps = {
   formagus?: {
     name: string;
     meta: FieldMeta;
@@ -31,7 +33,7 @@ export interface AdapterProps {
     onBlur: () => void;
     validate: () => void;
   };
-}
+};
 
 export type FormatterFunction = (value: any) => any;
 export type EqualityCheckFunction = (newValue: any, oldValue: any) => boolean;
@@ -46,11 +48,8 @@ type FieldCommonProps = {
   persist?: boolean;
 };
 
-export type FieldProps =
-  | (FieldCommonProps & {
-      children: (injectedAdapterProps: Required<AdapterProps>) => JSX.Element;
-    })
-  | (FieldCommonProps & {
-      adapter: React.ComponentClass<AdapterProps> | React.FC<AdapterProps>;
-      adapterProps?: any;
-    });
+export type FieldProps<T = any> = FieldCommonProps & {
+  children?: (injectedAdapterProps: AdapterRenderProps) => JSX.Element;
+  adapter?: React.ComponentClass<AdapterProps & T> | React.FC<AdapterProps & T>;
+  adapterProps?: any;
+};
