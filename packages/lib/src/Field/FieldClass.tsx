@@ -49,7 +49,7 @@ export class FieldClass extends React.Component<FieldProps & {controller?: FormC
   }
 
   @computed
-  get injectedAdapterProps(): AdapterProps {
+  get injectedAdapterProps(): Required<AdapterProps> {
     return {
       formagus: {
         name: this.props.name,

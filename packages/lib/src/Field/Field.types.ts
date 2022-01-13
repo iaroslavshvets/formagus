@@ -21,7 +21,7 @@ export interface FieldMeta {
 }
 
 export interface AdapterProps {
-  formagus: {
+  formagus?: {
     name: string;
     meta: FieldMeta;
     value: any;
@@ -48,9 +48,9 @@ type FieldCommonProps = {
 
 export type FieldProps =
   | (FieldCommonProps & {
-      children: (injectedAdapterProps: AdapterProps) => JSX.Element;
+      children: (injectedAdapterProps: Required<AdapterProps>) => JSX.Element;
     })
   | (FieldCommonProps & {
-      adapter: FieldAdapter;
+      adapter: React.ComponentClass<AdapterProps> | React.FC<AdapterProps>;
       adapterProps?: any;
     });
