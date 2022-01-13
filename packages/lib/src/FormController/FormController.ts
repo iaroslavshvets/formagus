@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {computed, extendObservable, observable, runInAction} from 'mobx';
-import * as mobx from 'mobx';
-import {observerBatching} from 'mobx-react-lite';
+import {observerBatching} from 'mobx-react';
 import {utils} from './utils';
 import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';

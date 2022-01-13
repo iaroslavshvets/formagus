@@ -1,6 +1,6 @@
 import React from 'react';
 import {computed} from 'mobx';
-import {Observer} from 'mobx-react-lite';
+import {Observer} from 'mobx-react';
 import type {FormController, FormField} from '../FormController';
 import type {AdapterProps, FieldMeta, FieldProps} from './Field.types';
 import {toJSCompat} from '../utils/toJSCompat';

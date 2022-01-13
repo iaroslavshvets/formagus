@@ -1,7 +1,7 @@
 import React from 'react';
 import {useFormController} from '../Form';
 import type {FormProps} from '../Form';
-import {observer} from 'mobx-react-lite';
+import {observer} from 'mobx-react';
 
 export const FormPart = observer((props: {children: FormProps['children']}) => {
   const controller = useFormController();
@@ -9,4 +9,4 @@ export const FormPart = observer((props: {children: FormProps['children']}) => {
   return props.children(controller.API);
 });
 
-FormPart.displayName = 'FormagusFormPart';
+(FormPart as any).displayName = 'FormagusFormPart';

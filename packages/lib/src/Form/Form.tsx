@@ -1,5 +1,4 @@
-import {Provider} from 'mobx-react';
-import {observer} from 'mobx-react-lite';
+import {Provider, observer} from 'mobx-react';
 import React, {useState} from 'react';
 import {FormController} from '../FormController';
 import {FormPart} from '../FormPart';
@@ -30,4 +29,4 @@ export const Form = observer((props: FormProps) => {
   );
 });
 
-Form.displayName = 'FormagusForm';
+(Form as any).displayName = 'FormagusForm';
