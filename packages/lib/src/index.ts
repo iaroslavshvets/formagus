@@ -21,4 +21,5 @@ export {FormController} from './FormController';
 export {Field} from './Field';
 export {Form} from './Form';
 export {FormPart} from './FormPart';
+export {injectFormApi} from './injectFormApi';
 export {useFormApi} from './useFormApi';
