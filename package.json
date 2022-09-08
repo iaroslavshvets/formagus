@@ -2,7 +2,7 @@
 	"private": true,
 	"version": "0.0.1",
 	"license": "MIT",
-	"description": "magus-form monorepo",
+	"description": "formagus monorepo",
 	"author": "iaroslav.shvets@gmail.com",
 	"scripts": {
 		"postinstall": "lerna bootstrap"
