@@ -1,21 +1,20 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import type {FieldProps} from './Field.types';
 import {FieldClass} from './FieldClass';
 import {useFormController} from '../Form';
-import isEmpty from 'lodash/isEmpty';
+import {memo} from 'react';
 
-export const Field = (props: FieldProps) => {
+export const Field = memo((props: FieldProps) => {
   const controller = useFormController();
 
-  const {
-    onEqualityCheck = (newValue: any, oldValue: any) => {
-      return newValue === oldValue || (isEmpty(newValue) && isEmpty(oldValue));
-    },
-    persist = false,
-    ...restProps
-  } = props;
+  useEffect(() => {
+    controller.registerField(props);
+    return () => {
+      controller.unRegisterField(props.name);
+    };
+  }, []);
 
-  return <FieldClass controller={controller} onEqualityCheck={onEqualityCheck} persist={persist} {...restProps} />;
-};
+  return <FieldClass controller={controller} {...props} />;
+});
 
 Field.displayName = 'FormagusField';

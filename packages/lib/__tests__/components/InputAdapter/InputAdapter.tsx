@@ -16,6 +16,7 @@ export interface InputAdapterProps extends AdapterProps {
 @observer
 export class InputAdapter extends React.Component<InputAdapterProps> {
   protected callback = noop;
+
   constructor(props: InputAdapterProps) {
     super(props);
     if (props.callback) {

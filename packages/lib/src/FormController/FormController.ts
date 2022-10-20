@@ -5,7 +5,7 @@ import {observerBatching} from 'mobx-react';
 import {utils} from './utils';
 import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
-import type {FieldClass, FieldProps, FormatterFunction, ValidationFunction} from '../Field';
+import type {FieldProps, FormatterFunction, ValidationFunction} from '../Field';
 import type {
   FieldDictionary,
   FieldValidationState,
@@ -19,6 +19,7 @@ import type {
 } from './FormController.types';
 import {toJSCompat} from '../utils/toJSCompat';
 import {makeObservableForMobx6} from '../utils/makeObservableForMobx6';
+import isEmpty from 'lodash/isEmpty';
 
 export class FormController {
   //Form options passed through form Props or directly through new Controller(options)
@@ -29,7 +30,7 @@ export class FormController {
   protected get fieldFormatters() {
     const fieldFormatters: FieldDictionary<FormatterFunction> = {};
     this.fields.forEach((field: FormField, name: string) => {
-      if (field.instance && field.props!.onFormat) {
+      if (field.meta.isRegistered && field.props!.onFormat) {
         fieldFormatters[name] = field.props!.onFormat as FormatterFunction;
       }
     });
@@ -43,7 +44,7 @@ export class FormController {
     const fieldValidations: FieldDictionary<ValidationFunction> = {};
 
     this.fields.forEach((field: FormField, name: string) => {
-      if (field.instance && field.props!.onValidate) {
+      if (field.meta.isRegistered && field.props!.onValidate) {
         fieldValidations[name] = field.props!.onValidate as ValidationFunction;
       }
     });
@@ -57,7 +58,7 @@ export class FormController {
     const values = {};
 
     this.fields.forEach((field: FormField, name: string) => {
-      if (field.instance) {
+      if (field.meta.isRegistered) {
         utils.setValue(values, name, toJSCompat(field.value, false));
       }
     });
@@ -83,7 +84,7 @@ export class FormController {
       this.options.initialValues = values;
 
       this.fields.forEach((field: FormField) => {
-        if (field.instance) {
+        if (field.meta.isRegistered) {
           field.meta.initialValue = utils.getValue(this.options.initialValues, field.props!.name);
         }
       });
@@ -158,7 +159,7 @@ export class FormController {
       const self = this;
 
       const metaProps: FormFieldMeta = {
-        onEqualityCheck: (a: any, b: any) => a === b,
+        onEqualityCheck: (a: any, b: any) => a === b || (isEmpty(a) && isEmpty(b)),
         customState: {},
         initialValue: undefined,
         isTouched: false,
@@ -175,19 +176,24 @@ export class FormController {
       const meta = extendObservable({}, metaProps);
 
       this.fields.set(name, {
-        instance: null,
         errors: null,
         value: undefined,
         props: undefined,
+        handlers: {
+          onChange: (value: any) => this.setFieldValue(name, value),
+          setCustomState: (key: string, value: any) => this.setFieldCustomState(name, key, value),
+          onFocus: () => this.changeFieldActiveState(name, true),
+          onBlur: () => this.changeFieldActiveState(name, false),
+        },
         meta,
       });
     });
   };
 
   //used for first time field creation
-  protected initializeVirtualField = (fieldInstance: FieldClass, props: FieldProps) => {
+  protected initializeVirtualField = (props: FieldProps) => {
     runInAction(() => {
-      const {name, onEqualityCheck} = props;
+      const {name, onEqualityCheck, persist = false} = props;
       const field = this.fields.get(name);
 
       const initialValue =
@@ -196,8 +202,10 @@ export class FormController {
           : props.defaultValue;
 
       merge(field, {
-        instance: fieldInstance,
-        props,
+        props: {
+          persist,
+          ...props,
+        },
         value: initialValue,
         meta: {
           onEqualityCheck,
@@ -209,24 +217,39 @@ export class FormController {
   };
 
   //used for cases when field was created, unmounted and created again
-  protected initializeAlreadyExistedField = (fieldInstance: FieldClass, props: FieldProps) => {
+  protected initializeAlreadyExistedField = (props: FieldProps) => {
     runInAction(() => {
       const field = this.fields.get(props.name)!;
-
-      field.instance = fieldInstance;
       field.props = props;
+      field.meta.isRegistered = true;
     });
   };
 
-  //general handler for registering the field upon it's mounting
-  registerField = (fieldInstance: FieldClass, props: FieldProps) => {
+  // called when field is mounted
+  registerField = (props: FieldProps) => {
     runInAction(() => {
       const {name} = props;
-      if (this.fields.has(name) && this.fields.get(name)!.meta.isRegistered) {
-        this.initializeAlreadyExistedField(fieldInstance, props);
+
+      if (this.fields.has(name)) {
+        this.initializeAlreadyExistedField(props);
       } else {
         this.addVirtualField(name);
-        this.initializeVirtualField(fieldInstance, props);
+        this.initializeVirtualField(props);
+      }
+      if (props.onInit) {
+        props.onInit();
+      }
+    });
+  };
+
+  // called when field is unmounted
+  unRegisterField = (name: string) => {
+    runInAction(() => {
+      const field = this.fields.get(name)!;
+      if (field.props!.persist) {
+        field.meta.isRegistered = false;
+      } else {
+        this.fields.delete(name);
       }
     });
   };
@@ -234,7 +257,7 @@ export class FormController {
   protected updateErrorsForEveryField = (formValidationErrors: FormValidationErrors) => {
     runInAction(() => {
       this.fields.forEach((field) => {
-        if (field.instance) {
+        if (field.meta.isRegistered) {
           const errors: FieldValidationState = formValidationErrors && formValidationErrors[field.props!.name];
 
           field.errors = errors ? errors : null;
@@ -284,21 +307,21 @@ export class FormController {
   @computed
   get isTouched(): boolean {
     const fieldValues = Array.from(this.fields.values());
-    return fieldValues.some((field: FormField) => field.instance !== null && field.meta.isTouched);
+    return fieldValues.some((field: FormField) => field.meta.isRegistered && field.meta.isTouched);
   }
 
   //where any of the form fields ever changed
   @computed
   get isChanged(): boolean {
     const fieldValues = Array.from(this.fields.values());
-    return fieldValues.some((field: FormField) => field.instance !== null && field.meta.isChanged);
+    return fieldValues.some((field: FormField) => field.meta.isRegistered && field.meta.isChanged);
   }
 
   //any of the fields have value different from the initial
   @computed
   get isDirty(): boolean {
     const fieldValues = Array.from(this.fields.values());
-    return fieldValues.some((field: FormField) => field.instance !== null && field.meta.isDirty);
+    return fieldValues.some((field: FormField) => field.meta.isRegistered && field.meta.isDirty);
   }
 
   //changed, upon form onValidate invocation
@@ -344,18 +367,6 @@ export class FormController {
   //resets the form to empty values
   clear = () => {
     return this.resetToValues({});
-  };
-
-  //called when field is unmounted
-  unRegisterField = (fieldName: string) => {
-    runInAction(() => {
-      const field = this.fields.get(fieldName)!;
-      if (field.props!.persist) {
-        field.instance = null;
-      } else {
-        this.fields.delete(fieldName);
-      }
-    });
   };
 
   //changes field active state usually based on 'blur'/'focus' events called within the adapter

@@ -5,11 +5,11 @@ import type {FormController, FormField} from '../FormController';
 import type {AdapterProps, FieldMeta, FieldProps} from './Field.types';
 import {toJSCompat} from '../utils/toJSCompat';
 
-export class FieldClass extends React.Component<FieldProps & {controller?: FormController}> {
+export class FieldClass extends React.Component<FieldProps & {controller: FormController}> {
   //meta info passed to Adapter
   @computed
   protected get meta(): FieldMeta {
-    const controller = this.props.controller!;
+    const {controller} = this.props;
     const {meta, errors} = this.field;
 
     const adapterErrors = toJSCompat(errors);
@@ -39,12 +39,12 @@ export class FieldClass extends React.Component<FieldProps & {controller?: FormC
 
   //field value, passed to adapter
   @computed
-  protected get value(): any {
+  protected get value() {
     return toJSCompat(this.field.value, false);
   }
 
   @computed
-  get field(): FormField {
+  get field() {
     return this.props.controller!.fields.get(this.props.name) as FormField;
   }
 
@@ -53,48 +53,15 @@ export class FieldClass extends React.Component<FieldProps & {controller?: FormC
     return {
       formagus: {
         name: this.props.name,
-        meta: this.meta,
         value: this.value,
-        onChange: this.onChange,
-        setCustomState: this.setCustomState,
-        onFocus: this.onFocus,
-        onBlur: this.onBlur,
+        meta: this.meta,
+        onChange: this.field.handlers.onChange,
+        setCustomState: this.field.handlers.setCustomState,
+        onFocus: this.field.handlers.onFocus,
+        onBlur: this.field.handlers.onBlur,
         validate: this.props.controller!.validate,
       },
     };
-  }
-
-  //custom state for field, passed to adapter
-  protected setCustomState = (key: string, value: any) => {
-    this.props.controller!.setFieldCustomState(this.props.name, key, value);
-  };
-
-  //focus handler, passed to adapter
-  protected onFocus = () => {
-    this.props.controller!.changeFieldActiveState(this.props.name, true);
-  };
-
-  //blur handler, passed to adapter
-  protected onBlur = () => {
-    this.props.controller!.changeFieldActiveState(this.props.name, false);
-  };
-
-  //value change handler, passed to adapter
-  protected onChange = (value: any) => {
-    this.props.controller!.setFieldValue(this.props.name, value);
-  };
-
-  //registers Field in FormController
-  componentDidMount() {
-    this.props.controller!.registerField(this, this.props);
-    if (this.props.onInit) {
-      this.props.onInit();
-    }
-  }
-
-  //unregisters Field in FormController
-  componentWillUnmount() {
-    this.props.controller!.unRegisterField(this.props.name);
   }
 
   //render the adapter passed as `adapter` prop  with optional `adapterProps` prop,
@@ -107,10 +74,10 @@ export class FieldClass extends React.Component<FieldProps & {controller?: FormC
             return <></>;
           }
 
-          const hasPassedAdapter = 'adapter' in this.props && this.props.adapter !== undefined;
+          const hasAdapterComponent = 'adapter' in this.props && this.props.adapter !== undefined;
           const Adapter: any = this.props.adapter;
 
-          return hasPassedAdapter ? (
+          return hasAdapterComponent ? (
             <Adapter {...this.injectedAdapterProps} {...this.props.adapterProps} />
           ) : (
             this.props.children!(this.injectedAdapterProps)

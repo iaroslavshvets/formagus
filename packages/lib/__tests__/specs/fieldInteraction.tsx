@@ -8,46 +8,71 @@ import {createTestFormDriver} from '../components/TestForm.driver';
 import {waitFor} from '../helpers/conditions';
 import {fireEvent} from '@testing-library/react';
 import {cleanup} from '@testing-library/react';
+import {observer} from 'mobx-react';
 
 describe('Field interactions', () => {
   afterEach(() => {
     return cleanup();
   });
 
-  it('should keep value if "persist=true"', () => {
-    const FormWithHiddenField = () => {
-      const [hiddenField, setHiddenField] = useState(false);
+  it('should keep value if "persist=true"', async () => {
+    const controller = new FormController({});
+
+    const Form = observer(() => {
+      const [isDisplayed, setIsDisplayed] = useState(false);
+      const [isSwitchedPosition, setIsSwitchedPosition] = useState(false);
 
       return (
-        <TestForm>
-          {!hiddenField && <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist={true} />}
+        <TestForm controller={controller}>
+          {isDisplayed && !isSwitchedPosition && (
+            <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist={true} />
+          )}
+          <div>
+            {isDisplayed && isSwitchedPosition && (
+              <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist={true} />
+            )}
+          </div>
           <button
             type="button"
-            data-hook="toggle-field"
+            data-hook="toggle-visibility"
             onClick={() => {
-              setHiddenField(!hiddenField);
+              setIsDisplayed(!isDisplayed);
             }}
           >
-            Toggle Field
+            Toggle Visibility
+          </button>
+          <button
+            type="button"
+            data-hook="toggle-position"
+            onClick={() => {
+              setIsSwitchedPosition(!isSwitchedPosition);
+            }}
+          >
+            Toggle Position
           </button>
         </TestForm>
       );
-    };
+    });
 
-    const wrapper = render(<FormWithHiddenField />).container;
-    const formDriver = createTestFormDriver({wrapper});
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
-    const toggleField = wrapper.querySelector(`[data-hook="toggle-field"]`)!;
+    const wrapper = render(<Form />).container;
+    const toggleVisibilityField = wrapper.querySelector(`[data-hook="toggle-visibility"]`)!;
+    const togglePositionField = wrapper.querySelector(`[data-hook="toggle-position"]`)!;
+
+    fireEvent.click(toggleVisibilityField);
+
+    let fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     fieldDriver.when.change('batman');
 
-    fireEvent.click(toggleField);
+    fireEvent.click(toggleVisibilityField);
 
-    expect(formDriver.get.values()[TestForm.FIELD_ONE_NAME]).toBeUndefined();
+    expect(controller.API.values[TestForm.FIELD_ONE_NAME]).toBe(undefined);
 
-    fireEvent.click(toggleField);
+    fireEvent.click(toggleVisibilityField);
+    fireEvent.click(togglePositionField);
 
     expect(fieldDriver.get.value()).toBe('batman');
+    expect(controller.API.values[TestForm.FIELD_ONE_NAME]).toBe('batman');
   });
 
   it('should not keep value', () => {

@@ -1,5 +1,6 @@
-import {FormEvent} from 'react';
-import type {EqualityCheckFunction, FieldClass, FieldProps} from '../Field';
+import type {FormEvent} from 'react';
+import type {EqualityCheckFunction, FieldProps} from '../Field';
+import type {FormagusProps} from '../Field';
 
 export type FieldDictionary<T> = Record<string, T>;
 
@@ -20,11 +21,11 @@ export interface FormControllerOptions {
 }
 
 export interface FormField {
-  instance: null | FieldClass;
   errors: FieldValidationState;
   meta: FormFieldMeta;
   props: undefined | FieldProps;
   value: any;
+  handlers: Pick<FormagusProps, 'onChange' | 'setCustomState' | 'onFocus' | 'onBlur'>;
 }
 
 export interface FormFieldMeta {

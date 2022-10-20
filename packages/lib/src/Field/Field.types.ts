@@ -22,17 +22,19 @@ export interface FieldMeta {
 
 export type AdapterRenderProps = Required<AdapterProps>;
 
+export type FormagusProps = {
+  name: string;
+  meta: FieldMeta;
+  value: any;
+  setCustomState: (key: string, value: any) => void;
+  onChange: (value: any) => void;
+  onFocus: () => void;
+  onBlur: () => void;
+  validate: () => void;
+};
+
 export type AdapterProps = {
-  formagus?: {
-    name: string;
-    meta: FieldMeta;
-    value: any;
-    setCustomState: (key: string, value: any) => void;
-    onChange: (value: any) => void;
-    onFocus: () => void;
-    onBlur: () => void;
-    validate: () => void;
-  };
+  formagus?: FormagusProps;
 };
 
 export type FormatterFunction = (value: any) => any;
@@ -51,5 +53,5 @@ type FieldCommonProps = {
 export type FieldProps<T = any> = FieldCommonProps & {
   children?: (injectedAdapterProps: AdapterRenderProps) => JSX.Element;
   adapter?: React.ComponentClass<AdapterProps & T> | React.FC<AdapterProps & T>;
-  adapterProps?: any;
+  adapterProps?: any; // Will be passed to adapter alongside injected formagus props
 };

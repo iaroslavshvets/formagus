@@ -15,7 +15,7 @@ export const createInputAdapterDriver = (options: {wrapper: Element; dataHook: s
         return API.get.input();
       },
       value: () => {
-        return API.get.inputNode()!.value;
+        return API.get.inputNode().value;
       },
       meta: (key: string) => {
         return API.get.root()?.querySelector(`[data-hook="meta_${key}"]`)!.textContent;
@@ -29,23 +29,23 @@ export const createInputAdapterDriver = (options: {wrapper: Element; dataHook: s
 
     when: {
       setCustomState: () => {
-        fireEvent.click(API.get.root()?.querySelector(`[data-hook="set-custom-state"]`)!);
+        return fireEvent.click(API.get.root()?.querySelector(`[data-hook="set-custom-state"]`)!);
       },
       clickOnCallback: () => {
-        fireEvent.click(API.get.root()?.querySelector(`[data-hook="callback"]`)!);
+        return fireEvent.click(API.get.root()?.querySelector(`[data-hook="callback"]`)!);
       },
       focus: () => {
-        fireEvent.focus(API.get.input());
+        return fireEvent.focus(API.get.input());
       },
       blur: () => {
-        fireEvent.blur(API.get.input());
+        return fireEvent.blur(API.get.input());
       },
       validate: () => {
-        fireEvent.click(API.get.root()?.querySelector(`[data-hook="validate"]`)!);
+        return fireEvent.click(API.get.root()?.querySelector(`[data-hook="validate"]`)!);
       },
       change: (value: string) => {
         API.when.focus();
-        fireEvent.change(API.get.input(), {target: {value}});
+        return fireEvent.change(API.get.input(), {target: {value}});
       },
     },
   };
