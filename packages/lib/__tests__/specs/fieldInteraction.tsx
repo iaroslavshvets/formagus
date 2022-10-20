@@ -57,10 +57,9 @@ describe('Field interactions', () => {
     const wrapper = render(<Form />).container;
     const toggleVisibilityField = wrapper.querySelector(`[data-hook="toggle-visibility"]`)!;
     const togglePositionField = wrapper.querySelector(`[data-hook="toggle-position"]`)!;
+    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     fireEvent.click(toggleVisibilityField);
-
-    let fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     fieldDriver.when.change('batman');
 
