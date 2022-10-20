@@ -4,7 +4,6 @@ import {FormController, Field} from '../../src';
 import {TestForm} from '../components/TestForm';
 import {InputAdapter} from '../components/InputAdapter';
 import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
-import {createTestFormDriver} from '../components/TestForm.driver';
 import {waitFor} from '../helpers/conditions';
 import {fireEvent} from '@testing-library/react';
 import {cleanup} from '@testing-library/react';
