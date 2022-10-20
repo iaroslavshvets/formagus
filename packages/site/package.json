@@ -48,7 +48,7 @@
     "uglifyjs-webpack-plugin": "^2.0.1",
     "webpack": "^5.18.0",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.3"
   },
   "dependencies": {
     "@mdx-js/mdx": "^1.6.18",
