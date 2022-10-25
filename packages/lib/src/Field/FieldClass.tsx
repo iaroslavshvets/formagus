@@ -24,7 +24,6 @@ export class FieldClass extends React.Component<FieldProps & {controller: FormCo
       isTouched: meta.isTouched,
       isChanged: meta.isChanged,
       isValidating: meta.isValidating,
-      isRegistered: meta.isRegistered,
       form: {
         isSubmitting: controller.isSubmitting,
         isValidating: controller.isValidating,

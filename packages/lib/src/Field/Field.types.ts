@@ -15,7 +15,6 @@ export interface FieldMeta {
   isChanged: boolean;
   isActive: boolean;
   isValidating: boolean;
-  isRegistered: boolean;
   customState: Record<string, any>;
   form: FormMeta;
 }

@@ -53,11 +53,6 @@ exports[`Render should render 1`] = `
           false
         </span>
         <span
-          data-hook="meta_isRegistered"
-        >
-          true
-        </span>
-        <span
           data-hook="meta_form:isSubmitting"
         >
           false
@@ -148,11 +143,6 @@ exports[`Render should render 1`] = `
           data-hook="meta_isValidating"
         >
           false
-        </span>
-        <span
-          data-hook="meta_isRegistered"
-        >
-          true
         </span>
         <span
           data-hook="meta_form:isSubmitting"

@@ -14,7 +14,7 @@ describe('Field interactions', () => {
     return cleanup();
   });
 
-  it('should keep value if "persist=true"', async () => {
+  it.only('should keep value if "persist=true"', async () => {
     const controller = new FormController({});
 
     const Form = observer(() => {
@@ -58,15 +58,19 @@ describe('Field interactions', () => {
     const togglePositionField = wrapper.querySelector(`[data-hook="toggle-position"]`)!;
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
+    // visible
     fireEvent.click(toggleVisibilityField);
 
     fieldDriver.when.change('batman');
 
+    // hidden
     fireEvent.click(toggleVisibilityField);
 
     expect(controller.API.values[TestForm.FIELD_ONE_NAME]).toBe(undefined);
 
+    // visible
     fireEvent.click(toggleVisibilityField);
+    // switched position
     fireEvent.click(togglePositionField);
 
     expect(fieldDriver.get.value()).toBe('batman');

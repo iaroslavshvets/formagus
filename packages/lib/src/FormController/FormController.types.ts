@@ -37,6 +37,7 @@ export interface FormFieldMeta {
   isActive: boolean;
   isValidating: boolean;
   isDirty: boolean;
+  isMounted: boolean;
   isRegistered: boolean;
 }
 

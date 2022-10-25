@@ -30,7 +30,7 @@ export class FormController {
   protected get fieldFormatters() {
     const fieldFormatters: FieldDictionary<FormatterFunction> = {};
     this.fields.forEach((field: FormField, name: string) => {
-      if (field.meta.isRegistered && field.props!.onFormat) {
+      if (field.meta.isMounted && field.props!.onFormat) {
         fieldFormatters[name] = field.props!.onFormat as FormatterFunction;
       }
     });
@@ -44,7 +44,7 @@ export class FormController {
     const fieldValidations: FieldDictionary<ValidationFunction> = {};
 
     this.fields.forEach((field: FormField, name: string) => {
-      if (field.meta.isRegistered && field.props!.onValidate) {
+      if (field.meta.isMounted && field.props!.onValidate) {
         fieldValidations[name] = field.props!.onValidate as ValidationFunction;
       }
     });
@@ -58,7 +58,7 @@ export class FormController {
     const values = {};
 
     this.fields.forEach((field: FormField, name: string) => {
-      if (field.meta.isRegistered) {
+      if (field.meta.isMounted) {
         utils.setValue(values, name, toJSCompat(field.value, false));
       }
     });
@@ -84,7 +84,7 @@ export class FormController {
       this.options.initialValues = values;
 
       this.fields.forEach((field: FormField) => {
-        if (field.meta.isRegistered) {
+        if (field.meta.isMounted) {
           field.meta.initialValue = utils.getValue(this.options.initialValues, field.props!.name);
         }
       });
@@ -166,6 +166,7 @@ export class FormController {
         isChanged: false,
         isActive: false,
         isValidating: false,
+        isMounted: false,
         isRegistered: false,
         get isDirty() {
           const field = self.fields.get(name)!;
@@ -210,7 +211,6 @@ export class FormController {
         meta: {
           onEqualityCheck,
           initialValue,
-          isRegistered: true,
         },
       });
     });
@@ -221,7 +221,6 @@ export class FormController {
     runInAction(() => {
       const field = this.fields.get(props.name)!;
       field.props = props;
-      field.meta.isRegistered = true;
     });
   };
 
@@ -230,12 +229,18 @@ export class FormController {
     runInAction(() => {
       const {name} = props;
 
-      if (this.fields.has(name)) {
+      if (this.fields.get(name)?.meta.isRegistered) {
         this.initializeAlreadyExistedField(props);
       } else {
         this.addVirtualField(name);
         this.initializeVirtualField(props);
       }
+
+      const field = this.fields.get(name)!;
+
+      field.meta.isMounted = true;
+      field.meta.isRegistered = true;
+
       if (props.onInit) {
         props.onInit();
       }
@@ -247,7 +252,7 @@ export class FormController {
     runInAction(() => {
       const field = this.fields.get(name)!;
       if (field.props!.persist) {
-        field.meta.isRegistered = false;
+        field.meta.isMounted = false;
       } else {
         this.fields.delete(name);
       }
@@ -257,7 +262,7 @@ export class FormController {
   protected updateErrorsForEveryField = (formValidationErrors: FormValidationErrors) => {
     runInAction(() => {
       this.fields.forEach((field) => {
-        if (field.meta.isRegistered) {
+        if (field.meta.isMounted) {
           const errors: FieldValidationState = formValidationErrors && formValidationErrors[field.props!.name];
 
           field.errors = errors ? errors : null;
@@ -307,21 +312,21 @@ export class FormController {
   @computed
   get isTouched(): boolean {
     const fieldValues = Array.from(this.fields.values());
-    return fieldValues.some((field: FormField) => field.meta.isRegistered && field.meta.isTouched);
+    return fieldValues.some((field: FormField) => field.meta.isMounted && field.meta.isTouched);
   }
 
   //where any of the form fields ever changed
   @computed
   get isChanged(): boolean {
     const fieldValues = Array.from(this.fields.values());
-    return fieldValues.some((field: FormField) => field.meta.isRegistered && field.meta.isChanged);
+    return fieldValues.some((field: FormField) => field.meta.isMounted && field.meta.isChanged);
   }
 
   //any of the fields have value different from the initial
   @computed
   get isDirty(): boolean {
     const fieldValues = Array.from(this.fields.values());
-    return fieldValues.some((field: FormField) => field.meta.isRegistered && field.meta.isDirty);
+    return fieldValues.some((field: FormField) => field.meta.isMounted && field.meta.isDirty);
   }
 
   //changed, upon form onValidate invocation

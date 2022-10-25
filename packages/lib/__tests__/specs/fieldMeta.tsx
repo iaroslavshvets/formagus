@@ -14,9 +14,9 @@ describe('Field meta', () => {
 
   it('isRegistered', () => {
     const formController = new FormController({});
-    expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).isRegistered).toEqual(false);
+    expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).isMounted).toEqual(false);
     render(<TestForm controller={formController} />);
-    expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).isRegistered).toEqual(true);
+    expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).isMounted).toEqual(true);
   });
 
   it('isActive', () => {
