@@ -151,7 +151,7 @@ export class FormController {
 
   //validates particular field by calling field level validator passed to Field as a `validate` prop
   protected validateField = (name: string) => {
-    return this.fieldValidations[name](utils.getValue(this.values, name), this.values);
+    return this.fieldValidations[name](utils.getValue(this.formattedValues, name), this.formattedValues);
   };
 
   protected addVirtualField = (name: string) => {
