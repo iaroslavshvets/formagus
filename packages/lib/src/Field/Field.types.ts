@@ -1,6 +1,10 @@
 import React from 'react';
 import type {FieldValidationState, FormMeta} from '../FormController';
 
+type ReadonlyDeep<T> = {
+  readonly [P in keyof T]: ReadonlyDeep<T[P]>;
+};
+
 export type ValidationFunction =
   | ((value: any, values?: any) => FieldValidationState)
   | ((value: any, values?: any) => Promise<FieldValidationState>);
@@ -22,14 +26,15 @@ export interface FieldMeta {
 export type AdapterRenderProps = Required<AdapterProps>;
 
 export type FormagusProps = {
-  name: string;
-  meta: FieldMeta;
+  name: Readonly<string>;
+  meta: ReadonlyDeep<FieldMeta>;
   value: any;
   setCustomState: (key: string, value: any) => void;
   onChange: (value: any) => void;
   onFocus: () => void;
   onBlur: () => void;
-  validate: () => void;
+  validate: () => Promise<void>;
+  validateField: () => Promise<void>;
 };
 
 export type AdapterProps = {

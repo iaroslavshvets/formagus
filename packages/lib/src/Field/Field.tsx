@@ -1,20 +1,19 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import type {FieldProps} from './Field.types';
-import {FieldClass} from './FieldClass';
-import {useFormController} from '../Form';
-import {memo} from 'react';
+import {observer} from 'mobx-react';
+import {useField} from './useField';
 
-export const Field = memo((props: FieldProps) => {
-  const controller = useFormController();
+export const Field = observer((props: FieldProps) => {
+  const {isReady, formagusProps} = useField(props);
 
-  useEffect(() => {
-    controller.registerField(props);
-    return () => {
-      controller.unRegisterField(props.name);
-    };
-  }, []);
+  if (!isReady) {
+    return <></>;
+  }
 
-  return <FieldClass controller={controller} {...props} />;
+  const hasAdapterComponent = 'adapter' in props && props.adapter !== undefined;
+  const Adapter: any = props.adapter;
+
+  return hasAdapterComponent ? <Adapter {...formagusProps} {...props.adapterProps} /> : props.children!(formagusProps);
 });
 
-Field.displayName = 'FormagusField';
+(Field as any).displayName = 'FormagusField';

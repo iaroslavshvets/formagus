@@ -1,7 +1,7 @@
 import React from 'react';
 import {useFormController} from '../Form';
-import type {FormProps} from '../Form';
 import {observer} from 'mobx-react';
+import type {FormProps} from '../Form';
 
 export const FormPart = observer((props: {children: FormProps['children']}) => {
   const controller = useFormController();

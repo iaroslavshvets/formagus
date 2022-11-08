@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {computed, extendObservable, observable, runInAction} from 'mobx';
+import {computed, observable, runInAction} from 'mobx';
 import {observerBatching} from 'mobx-react';
 import {utils} from './utils';
 import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
+import {toJSCompat} from '../utils/toJSCompat';
+import {makeObservableForMobx6} from '../utils/makeObservableForMobx6';
+import isEmpty from 'lodash/isEmpty';
 import type {FieldProps, FormatterFunction, ValidationFunction} from '../Field';
 import type {
   FieldDictionary,
@@ -12,20 +15,16 @@ import type {
   FormAPI,
   FormControllerOptions,
   FormField,
-  FormFieldMeta,
   FormValidationErrors,
   FormValues,
   Invalid,
 } from './FormController.types';
-import {toJSCompat} from '../utils/toJSCompat';
-import {makeObservableForMobx6} from '../utils/makeObservableForMobx6';
-import isEmpty from 'lodash/isEmpty';
 
 export class FormController {
-  //Form options passed through form Props or directly through new Controller(options)
+  // Form options passed through form Props or directly through new Controller(options)
   @observable protected options!: FormControllerOptions;
 
-  //get all field level validations
+  // get all field level validations
   @computed
   protected get fieldFormatters() {
     const fieldFormatters: FieldDictionary<FormatterFunction> = {};
@@ -38,7 +37,7 @@ export class FormController {
     return fieldFormatters;
   }
 
-  //get all field level validations
+  // get all field level validations
   @computed
   protected get fieldValidations() {
     const fieldValidations: FieldDictionary<ValidationFunction> = {};
@@ -52,7 +51,7 @@ export class FormController {
     return fieldValidations;
   }
 
-  //get all field values
+  // get all field values
   @computed
   protected get values() {
     const values = {};
@@ -66,7 +65,7 @@ export class FormController {
     return values;
   }
 
-  //used for passing safe copy of values to users form child render function
+  // used for passing safe copy of values to users form child render function
   @computed
   protected get formattedValues() {
     const {onFormat} = this.options;
@@ -91,28 +90,29 @@ export class FormController {
     });
   };
 
-  //executes general form validator passed to Form as a `onValidate` prop and returns errors
+  // executes general form validator passed to Form as a `onValidate` prop and returns errors
   protected runFormLevelValidations = (): Promise<FieldDictionary<Invalid> | {}> => {
     return this.options.onValidate ? this.options.onValidate(this.formattedValues) : Promise.resolve({});
   };
 
-  //executes all field level validators passed to Fields as a `onValidate` prop and returns errors
-  protected runFieldLevelValidations = (): Promise<FieldDictionary<FieldValidationState> | {}> => {
+  // executes all field level validators passed to Fields as a `onValidate` prop and returns errors
+  protected runFieldLevelValidations = async (): Promise<FieldDictionary<FieldValidationState> | {}> => {
     let pendingValidationCount = Object.keys(this.fieldValidations).length;
 
     if (pendingValidationCount === 0) {
-      return Promise.resolve({});
+      return {};
     }
 
     return new Promise((resolve) => {
       const errors: Record<string, FieldValidationState> = {};
 
+      // use forEach instead of async/await to run validations in parallel
       Object.keys(this.fieldValidations).forEach((fieldName) => {
         const fieldMeta = this.fields.get(fieldName)!.meta;
 
         runInAction(() => (fieldMeta.isValidating = true));
 
-        Promise.resolve(this.validateField(fieldName))
+        Promise.resolve(this.runFieldLevelValidation(fieldName))
           .then(
             (error: FieldValidationState) => {
               if (!(error === null || error === undefined)) {
@@ -136,21 +136,21 @@ export class FormController {
     });
   };
 
-  //All onValidate errors
+  // all onValidate errors
   @observable
-  protected errors: FormValidationErrors = null;
+  protected formValidationErrors: FormValidationErrors = null;
 
-  protected setErrors = (errors: FormValidationErrors) => {
+  protected setFormValidationErrors = (errors: FormValidationErrors) => {
     runInAction(() => {
-      this.errors = errors && Object.keys(errors).length ? errors : null;
+      this.formValidationErrors = errors && Object.keys(errors).length ? errors : null;
     });
   };
 
-  //all registered form fields, new field is being added when Field constructor is called
+  // all registered form fields, new field is being added when Field constructor is called
   fields = observable.map<string, FormField>();
 
-  //validates particular field by calling field level validator passed to Field as a `validate` prop
-  protected validateField = (name: string) => {
+  // runs validation for particular field
+  protected runFieldLevelValidation = (name: string) => {
     return this.fieldValidations[name](utils.getValue(this.formattedValues, name), this.formattedValues);
   };
 
@@ -158,40 +158,38 @@ export class FormController {
     runInAction(() => {
       const self = this;
 
-      const metaProps: FormFieldMeta = {
-        onEqualityCheck: (a: any, b: any) => a === b || (isEmpty(a) && isEmpty(b)),
-        customState: {},
-        initialValue: undefined,
-        isTouched: false,
-        isChanged: false,
-        isActive: false,
-        isValidating: false,
-        isMounted: false,
-        isRegistered: false,
-        get isDirty() {
-          const field = self.fields.get(name)!;
-          return !field.meta.onEqualityCheck(field.value, field.meta.initialValue);
-        },
-      };
-
-      const meta = extendObservable({}, metaProps);
-
       this.fields.set(name, {
         errors: null,
         value: undefined,
         props: undefined,
         handlers: {
+          validateField: () => this.validateField(name),
+          validate: () => this.validate(),
           onChange: (value: any) => this.setFieldValue(name, value),
           setCustomState: (key: string, value: any) => this.setFieldCustomState(name, key, value),
           onFocus: () => this.changeFieldActiveState(name, true),
           onBlur: () => this.changeFieldActiveState(name, false),
         },
-        meta,
+        meta: {
+          onEqualityCheck: (a: any, b: any) => a === b || (isEmpty(a) && isEmpty(b)),
+          customState: {},
+          initialValue: undefined,
+          isTouched: false,
+          isChanged: false,
+          isActive: false,
+          isValidating: false,
+          isMounted: false,
+          isRegistered: false,
+          get isDirty() {
+            const field = self.fields.get(name)!;
+            return !field.meta.onEqualityCheck(field.value, field.meta.initialValue);
+          },
+        },
       });
     });
   };
 
-  //used for first time field creation
+  // used for first time field creation
   protected initializeVirtualField = (props: FieldProps) => {
     runInAction(() => {
       const {name, onEqualityCheck, persist = false} = props;
@@ -216,7 +214,7 @@ export class FormController {
     });
   };
 
-  //used for cases when field was created, unmounted and created again
+  // used for cases when field was created, unmounted and created again
   protected initializeAlreadyExistedField = (props: FieldProps) => {
     runInAction(() => {
       const field = this.fields.get(props.name)!;
@@ -240,10 +238,6 @@ export class FormController {
 
       field.meta.isMounted = true;
       field.meta.isRegistered = true;
-
-      if (props.onInit) {
-        props.onInit();
-      }
     });
   };
 
@@ -259,14 +253,16 @@ export class FormController {
     });
   };
 
+  protected updateFieldErrors = (field: FormField, errors: FieldValidationState) => {
+    if (field.meta.isMounted) {
+      field.errors = errors ? errors : null;
+    }
+  };
+
   protected updateErrorsForEveryField = (formValidationErrors: FormValidationErrors) => {
     runInAction(() => {
       this.fields.forEach((field) => {
-        if (field.meta.isMounted) {
-          const errors: FieldValidationState = formValidationErrors && formValidationErrors[field.props!.name];
-
-          field.errors = errors ? errors : null;
-        }
+        this.updateFieldErrors(field, formValidationErrors && formValidationErrors[field.props!.name]);
       });
     });
   };
@@ -282,12 +278,12 @@ export class FormController {
     observerBatching(ReactDOM.unstable_batchedUpdates);
   }
 
-  //form FormAPI, which will be passed to child render function or could be retrieved with API prop from controller
+  // form FormAPI, which will be passed to child render function or could be retrieved with API prop from controller
   @computed
   get API(): FormAPI {
     return {
       values: this.formattedValues,
-      errors: this.errors,
+      errors: this.formValidationErrors,
       submit: this.submit,
       reset: this.reset,
       resetToValues: this.resetToValues,
@@ -308,49 +304,49 @@ export class FormController {
     };
   }
 
-  //where any of the form fields ever under user focus
+  // where any of the form fields ever under user focus
   @computed
   get isTouched(): boolean {
     const fieldValues = Array.from(this.fields.values());
     return fieldValues.some((field: FormField) => field.meta.isMounted && field.meta.isTouched);
   }
 
-  //where any of the form fields ever changed
+  // where any of the form fields ever changed
   @computed
   get isChanged(): boolean {
     const fieldValues = Array.from(this.fields.values());
     return fieldValues.some((field: FormField) => field.meta.isMounted && field.meta.isChanged);
   }
 
-  //any of the fields have value different from the initial
+  // any of the fields have value different from the initial
   @computed
   get isDirty(): boolean {
     const fieldValues = Array.from(this.fields.values());
     return fieldValues.some((field: FormField) => field.meta.isMounted && field.meta.isDirty);
   }
 
-  //changed, upon form onValidate invocation
+  // changed, upon form onValidate invocation
   @computed
   get isValid(): boolean {
-    return this.errors === null;
+    return this.formValidationErrors === null;
   }
 
-  //changed, when form starts/finishes validation process
+  // changed, when form starts/finishes validation process
   @observable
   isValidating: boolean = false;
   setIsValidating = (state: boolean) => runInAction(() => (this.isValidating = state));
 
-  //changed, when form starts/finishes submit process
+  // changed, when form starts/finishes submit process
   @observable
   isSubmitting: boolean = false;
   setIsSubmitting = (state: boolean) => runInAction(() => (this.isSubmitting = state));
 
-  //increments upon every submit try
+  // increments upon every submit try
   @observable
   submitCount: number = 0;
   setSubmitCount = (state: number) => runInAction(() => (this.submitCount = state));
 
-  //general handler for resetting form to specific state
+  // general handler for resetting form to specific state
   resetToValues = (values: FormValues) => {
     runInAction(() => {
       this.fields.forEach((field: FormField, name: string) => {
@@ -364,17 +360,17 @@ export class FormController {
     });
   };
 
-  //resets the form to initial values
+  // resets the form to initial values
   reset = () => {
     return this.resetToValues(this.options.initialValues || {});
   };
 
-  //resets the form to empty values
+  // resets the form to empty values
   clear = () => {
     return this.resetToValues({});
   };
 
-  //changes field active state usually based on 'blur'/'focus' events called within the adapter
+  // changes field active state usually based on 'blur'/'focus' events called within the adapter
   changeFieldActiveState = (fieldName: string, isActive: boolean) => {
     runInAction(() => {
       const field = this.fields.get(fieldName)!;
@@ -385,7 +381,7 @@ export class FormController {
     });
   };
 
-  //changes field custom state, that was set by user
+  // changes field custom state, that was set by user
   setFieldCustomState = (fieldName: string, key: string, value: any) => {
     runInAction(() => {
       this.createFieldIfDoesNotExist(fieldName);
@@ -393,7 +389,7 @@ export class FormController {
     });
   };
 
-  //changes when adapted onChange handler is called
+  // changes when adapted onChange handler is called
   setFieldValue = (fieldName: string, value: any) => {
     runInAction(() => {
       this.createFieldIfDoesNotExist(fieldName);
@@ -411,7 +407,34 @@ export class FormController {
     }
   };
 
-  //validates the form, by calling form level onValidate function combined with field level validations
+  // validates single field by calling field level validation, passed to Field as `validate` prop
+  protected validateField = async (fieldName: string) => {
+    this.setIsValidating(true);
+
+    const field = this.fields.get(fieldName)!;
+    const errors: Record<string, FieldValidationState> = {};
+    const fieldMeta = field.meta;
+
+    runInAction(() => (fieldMeta.isValidating = true));
+
+    try {
+      const result = await this.runFieldLevelValidation(fieldName);
+      if (!(result === null || result === undefined)) {
+        errors[fieldName] = result;
+      }
+    } catch (e) {
+      errors[fieldName] = e;
+    }
+
+    runInAction(() => (fieldMeta.isValidating = false));
+    this.setFormValidationErrors(merge(this.formValidationErrors, errors));
+    this.updateFieldErrors(field, errors[fieldName]);
+
+    this.setIsValidating(false);
+  };
+
+  // validates the form, by calling form level onValidate function combined with field level validations,
+  // passed to Field as `validate` prop
   validate = async () => {
     this.setIsValidating(true);
 
@@ -420,14 +443,14 @@ export class FormController {
       this.runFormLevelValidations(),
     ]);
 
-    this.setErrors(merge(fieldValidationErrors, formValidationErrors));
+    this.setFormValidationErrors(merge(fieldValidationErrors, formValidationErrors));
 
-    this.updateErrorsForEveryField(this.errors);
+    this.updateErrorsForEveryField(this.formValidationErrors);
 
     this.setIsValidating(false);
   };
 
-  //wraps submit function passed as Form `onSubmit` prop after it's being passed to child render function
+  // wraps submit function passed as Form `onSubmit` prop after it's being passed to child render function
   submit = async <E>(submitEvent?: React.FormEvent<E>) => {
     if (submitEvent) {
       submitEvent.persist();
@@ -441,7 +464,7 @@ export class FormController {
 
     await this.validate();
 
-    const errors = toJSCompat(this.errors);
+    const errors = toJSCompat(this.formValidationErrors);
     const values = toJSCompat(this.formattedValues);
 
     try {
@@ -449,7 +472,7 @@ export class FormController {
         await this.options.onSubmit(errors, values, submitEvent);
       }
 
-      if (this.errors === null) {
+      if (this.formValidationErrors === null) {
         this.setInitialValuesToCurrentValues();
       }
     } finally {

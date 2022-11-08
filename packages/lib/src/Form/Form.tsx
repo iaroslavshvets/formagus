@@ -14,12 +14,12 @@ export const Form = observer((props: FormProps) => {
           '"controller" prop and configuration passed as props, but not both',
       );
     }
-    //controller can be injected by prop and created in any place,
-    //or be created on the flight with passed configuration through props
+    // controller can be injected by prop and created in any place,
+    // or be created on the flight with passed configuration through props
     return props.controller || new FormController(restProps);
   });
 
-  //creates the provider and sets the controller, which will control all the form state
+  // creates the provider and sets the controller, which will control all the form state
   return (
     <Provider controller={controller}>
       <FormControllerContext.Provider value={controller}>

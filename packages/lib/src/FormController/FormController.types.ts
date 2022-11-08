@@ -25,7 +25,7 @@ export interface FormField {
   meta: FormFieldMeta;
   props: undefined | FieldProps;
   value: any;
-  handlers: Pick<FormagusProps, 'onChange' | 'setCustomState' | 'onFocus' | 'onBlur'>;
+  handlers: Pick<FormagusProps, 'onChange' | 'setCustomState' | 'onFocus' | 'onBlur' | 'validate' | 'validateField'>;
 }
 
 export interface FormFieldMeta {
