@@ -10,17 +10,17 @@ export const useField = (props: FieldProps) => {
   useEffect(() => {
     controller.registerField(props);
     if (props.onInit) {
-      props.onInit(fieldComputedProps.formagusProps.formagus);
+      props.onInit(fieldComputedProps.formagus!);
     }
     return () => {
       controller.unRegisterField(props.name);
     };
   }, []);
 
-  const {formagusProps, field} = fieldComputedProps;
+  const {formagus, field} = fieldComputedProps;
 
   return {
     isReady: field !== undefined,
-    formagusProps,
+    formagus,
   };
 };
