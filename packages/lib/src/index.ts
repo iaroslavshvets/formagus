@@ -19,7 +19,7 @@ export type {
 
 export {utils} from './FormController/utils';
 export {FormController} from './FormController';
-export {Field} from './Field';
+export {Field, useField} from './Field';
 export {Form} from './Form';
 export {FormPart} from './FormPart';
 export {injectFormApi} from './injectFormApi';
