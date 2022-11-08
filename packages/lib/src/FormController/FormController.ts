@@ -151,7 +151,7 @@ export class FormController {
 
   // runs validation for particular field
   protected runFieldLevelValidation = (name: string) => {
-    return this.fieldValidations[name](utils.getValue(this.formattedValues, name), this.formattedValues);
+    return this.fieldValidations[name]?.(utils.getValue(this.formattedValues, name), this.formattedValues);
   };
 
   protected addVirtualField = (name: string) => {
