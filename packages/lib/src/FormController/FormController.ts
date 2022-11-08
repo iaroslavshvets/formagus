@@ -151,7 +151,7 @@ export class FormController {
 
   // runs validation for particular field
   protected runFieldLevelValidation = (name: string) => {
-    return this.fieldValidations[name]?.(utils.getValue(this.formattedValues, name), this.formattedValues);
+    return this.fieldValidations[name](utils.getValue(this.formattedValues, name), this.formattedValues);
   };
 
   protected addVirtualField = (name: string) => {
@@ -409,6 +409,9 @@ export class FormController {
 
   // validates single field by calling field level validation, passed to Field as `validate` prop
   protected validateField = async (fieldName: string) => {
+    if (!this.fieldValidations[fieldName]) {
+      return;
+    }
     this.setIsValidating(true);
 
     const field = this.fields.get(fieldName)!;
