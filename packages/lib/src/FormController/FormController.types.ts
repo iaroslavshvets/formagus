@@ -59,7 +59,7 @@ export interface SubmitResult {
 export interface FormAPI {
   values: FormValues;
   errors: FormValidationErrors;
-  submit: (submitEvent?: React.FormEvent<any>) => Promise<SubmitResult>;
+  submit: (submitEvent?: FormEvent<any>) => Promise<SubmitResult>;
   reset: () => void;
   resetToValues: (values: FormValues) => void;
   clear: () => void;

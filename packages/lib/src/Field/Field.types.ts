@@ -50,7 +50,7 @@ type FieldCommonProps = {
   onValidate?: ValidationFunction;
   onFormat?: FormatterFunction;
   onEqualityCheck?: EqualityCheckFunction;
-  onInit?: Function;
+  onInit?: (API: FormagusProps) => void;
   persist?: boolean;
 };
 

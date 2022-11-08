@@ -10,7 +10,7 @@ export const useField = (props: FieldProps) => {
   useEffect(() => {
     controller.registerField(props);
     if (props.onInit) {
-      props.onInit();
+      props.onInit(fieldComputedProps.formagusProps.formagus);
     }
     return () => {
       controller.unRegisterField(props.name);

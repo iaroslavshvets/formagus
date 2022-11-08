@@ -253,9 +253,9 @@ export class FormController {
     });
   };
 
-  protected updateFieldErrors = (field: FormField, errors: FieldValidationState) => {
+  protected updateFieldErrors = (field: FormField, errors: FieldValidationState = null) => {
     if (field.meta.isMounted) {
-      field.errors = errors ? errors : null;
+      field.errors = errors;
     }
   };
 
@@ -412,23 +412,24 @@ export class FormController {
     this.setIsValidating(true);
 
     const field = this.fields.get(fieldName)!;
-    const errors: Record<string, FieldValidationState> = {};
     const fieldMeta = field.meta;
 
     runInAction(() => (fieldMeta.isValidating = true));
 
-    try {
-      const result = await this.runFieldLevelValidation(fieldName);
-      if (!(result === null || result === undefined)) {
-        errors[fieldName] = result;
+    const errors = await (async () => {
+      try {
+        const result = await this.runFieldLevelValidation(fieldName);
+        if (result !== undefined && result !== null) {
+          return result;
+        }
+      } catch (e) {
+        return e;
       }
-    } catch (e) {
-      errors[fieldName] = e;
-    }
+    })();
 
     runInAction(() => (fieldMeta.isValidating = false));
-    this.setFormValidationErrors(merge(this.formValidationErrors, errors));
-    this.updateFieldErrors(field, errors[fieldName]);
+    this.setFormValidationErrors(merge(this.formValidationErrors, {[fieldName]: errors}));
+    this.updateFieldErrors(field, errors);
 
     this.setIsValidating(false);
   };
