@@ -262,7 +262,7 @@ export class FormController {
   protected updateErrorsForEveryField = (formValidationErrors: FormValidationErrors) => {
     runInAction(() => {
       this.fields.forEach((field) => {
-        if (field?.props?.name) {
+        if (field.meta.isMounted) {
           this.updateFieldErrors(field, formValidationErrors && formValidationErrors[field.props.name]);
         }
       });
