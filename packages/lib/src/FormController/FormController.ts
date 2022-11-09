@@ -262,7 +262,9 @@ export class FormController {
   protected updateErrorsForEveryField = (formValidationErrors: FormValidationErrors) => {
     runInAction(() => {
       this.fields.forEach((field) => {
-        this.updateFieldErrors(field, formValidationErrors && formValidationErrors[field.props!.name]);
+        if (field?.props?.name) {
+          this.updateFieldErrors(field, formValidationErrors && formValidationErrors[field.props.name]);
+        }
       });
     });
   };
