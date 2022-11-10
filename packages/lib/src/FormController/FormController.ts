@@ -28,7 +28,7 @@ export class FormController {
   @computed
   protected get fieldFormatters() {
     const fieldFormatters: FieldDictionary<FormatterFunction> = {};
-    this.fields.forEach((field: FormField, name: string) => {
+    this.fields.forEach((field, name) => {
       if (field.meta.isMounted && field.props!.onFormat) {
         fieldFormatters[name] = field.props!.onFormat as FormatterFunction;
       }
@@ -42,7 +42,7 @@ export class FormController {
   protected get fieldValidations() {
     const fieldValidations: FieldDictionary<ValidationFunction> = {};
 
-    this.fields.forEach((field: FormField, name: string) => {
+    this.fields.forEach((field, name) => {
       if (field.meta.isMounted && field.props!.onValidate) {
         fieldValidations[name] = field.props!.onValidate as ValidationFunction;
       }
@@ -56,7 +56,7 @@ export class FormController {
   protected get values() {
     const values = {};
 
-    this.fields.forEach((field: FormField, name: string) => {
+    this.fields.forEach((field, name) => {
       if (field.meta.isMounted) {
         utils.setValue(values, name, toJSCompat(field.value, false));
       }
@@ -82,9 +82,9 @@ export class FormController {
     runInAction(() => {
       this.options.initialValues = values;
 
-      this.fields.forEach((field: FormField) => {
+      this.fields.forEach((field, name) => {
         if (field.meta.isMounted) {
-          field.meta.initialValue = utils.getValue(this.options.initialValues, field.props!.name);
+          field.meta.initialValue = utils.getValue(this.options.initialValues, name);
         }
       });
     });
@@ -261,8 +261,8 @@ export class FormController {
 
   protected updateErrorsForEveryField = (formValidationErrors: FormValidationErrors) => {
     runInAction(() => {
-      this.fields.forEach((field) => {
-        this.updateFieldErrors(field, formValidationErrors && formValidationErrors[field.props!.name]);
+      this.fields.forEach((field, name) => {
+        this.updateFieldErrors(field, formValidationErrors && formValidationErrors[name]);
       });
     });
   };
@@ -308,21 +308,21 @@ export class FormController {
   @computed
   get isTouched(): boolean {
     const fieldValues = Array.from(this.fields.values());
-    return fieldValues.some((field: FormField) => field.meta.isMounted && field.meta.isTouched);
+    return fieldValues.some((field) => field.meta.isMounted && field.meta.isTouched);
   }
 
   // where any of the form fields ever changed
   @computed
   get isChanged(): boolean {
     const fieldValues = Array.from(this.fields.values());
-    return fieldValues.some((field: FormField) => field.meta.isMounted && field.meta.isChanged);
+    return fieldValues.some((field) => field.meta.isMounted && field.meta.isChanged);
   }
 
   // any of the fields have value different from the initial
   @computed
   get isDirty(): boolean {
     const fieldValues = Array.from(this.fields.values());
-    return fieldValues.some((field: FormField) => field.meta.isMounted && field.meta.isDirty);
+    return fieldValues.some((field) => field.meta.isMounted && field.meta.isDirty);
   }
 
   // changed, upon form onValidate invocation
@@ -349,7 +349,7 @@ export class FormController {
   // general handler for resetting form to specific state
   resetToValues = (values: FormValues) => {
     runInAction(() => {
-      this.fields.forEach((field: FormField, name: string) => {
+      this.fields.forEach((field, name) => {
         field.value = utils.getValue(values, name);
         field.meta.isTouched = false;
         field.meta.isChanged = false;
@@ -409,6 +409,10 @@ export class FormController {
 
   // validates single field by calling field level validation, passed to Field as `validate` prop
   protected validateField = async (fieldName: string) => {
+    if (!this.fieldValidations[fieldName]) {
+      return;
+    }
+
     this.setIsValidating(true);
 
     const field = this.fields.get(fieldName)!;
