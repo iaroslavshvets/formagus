@@ -1,26 +1,69 @@
 import type {FieldProps} from './Field.types';
 import {useFormController} from '../Form';
-import React, {useEffect, useState} from 'react';
-import {FieldComputedProps} from './Field.ComputedProps';
+import React, {useEffect} from 'react';
+import {computed} from 'mobx';
+import {FormField} from '../FormController';
+import {AdapterProps} from './Field.types';
+import {toJSCompat} from '../utils/toJSCompat';
 
 export const useField = (props: FieldProps) => {
   const controller = useFormController();
-  const [fieldComputedProps] = useState(() => new FieldComputedProps(controller, props.name));
+
+  const field = computed(() => controller!.fields.get(props.name) as FormField);
+
+  const formagus = computed<Required<AdapterProps['formagus']>>(() => {
+    const fieldValue = field.get();
+
+    if (!fieldValue) {
+      // component is not yet registered
+      return undefined as any;
+    }
+
+    const {meta, errors} = fieldValue;
+
+    return {
+      name: props.name,
+      value: toJSCompat(fieldValue.value, false),
+      meta: {
+        customState: toJSCompat(meta.customState),
+        errors: toJSCompat(errors),
+        initialValue: meta.initialValue,
+        isActive: meta.isActive,
+        isDirty: meta.isDirty,
+        isTouched: meta.isTouched,
+        isChanged: meta.isChanged,
+        isValidating: meta.isValidating,
+        form: {
+          isSubmitting: controller.isSubmitting,
+          isValidating: controller.isValidating,
+          isValid: controller.isValid,
+          isDirty: controller.isDirty,
+          isTouched: controller.isTouched,
+          isChanged: controller.isChanged,
+          submitCount: controller.submitCount,
+        },
+      },
+      onChange: fieldValue.handlers.onChange,
+      setCustomState: fieldValue.handlers.setCustomState,
+      onFocus: fieldValue.handlers.onFocus,
+      onBlur: fieldValue.handlers.onBlur,
+      validateField: fieldValue.handlers.validateField,
+      validate: fieldValue.handlers.validate,
+    };
+  });
 
   useEffect(() => {
     controller.registerField(props);
     if (props.onInit) {
-      props.onInit(fieldComputedProps.formagus!);
+      props.onInit(formagus.get()!);
     }
     return () => {
       controller.unRegisterField(props.name);
     };
   }, []);
 
-  const {formagus, field} = fieldComputedProps;
-
   return {
-    isReady: field !== undefined,
-    formagus,
+    isReady: field.get() !== undefined,
+    formagus: formagus.get(),
   };
 };
