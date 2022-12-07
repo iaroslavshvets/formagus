@@ -1,7 +1,7 @@
 import React from 'react';
-import type {FieldProps} from './Field.types';
 import {observer} from 'mobx-react';
 import {useField} from './useField';
+import type {FieldProps} from './Field.types';
 
 export const Field = observer((props: FieldProps) => {
   const {isReady, formagus} = useField(props);

@@ -1,13 +1,12 @@
-import type {FieldProps} from './Field.types';
 import {useFormController} from '../Form';
 import React, {useEffect} from 'react';
 import {computed} from 'mobx';
 import {FormField} from '../FormController';
-import {AdapterProps} from './Field.types';
 import {toJSCompat} from '../utils/toJSCompat';
+import type {AdapterProps, FieldCommonProps} from './Field.types';
 
-export const useField = (props: FieldProps) => {
-  const controller = useFormController();
+export const useField = (props: FieldCommonProps) => {
+  const controller = useFormController(props);
 
   const field = computed(() => controller!.fields.get(props.name) as FormField);
 

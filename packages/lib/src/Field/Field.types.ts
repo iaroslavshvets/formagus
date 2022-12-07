@@ -1,4 +1,5 @@
 import React from 'react';
+import {FormController} from '../FormController';
 import type {FieldValidationState, FormMeta} from '../FormController';
 
 export type ValidationFunction =
@@ -40,7 +41,7 @@ export type AdapterProps = {
 export type FormatterFunction = (value: any) => any;
 export type EqualityCheckFunction = (newValue: any, oldValue: any) => boolean;
 
-type FieldCommonProps = {
+export type FieldCommonProps = {
   name: string;
   defaultValue?: any;
   onValidate?: ValidationFunction;
@@ -48,6 +49,7 @@ type FieldCommonProps = {
   onEqualityCheck?: EqualityCheckFunction;
   onInit?: (API: FormagusProps) => void;
   persist?: boolean;
+  controller?: FormController;
 };
 
 export type FieldProps<T = any> = FieldCommonProps & {
