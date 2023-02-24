@@ -57,7 +57,7 @@
     "glamor": "^2.20.40",
     "html-webpack-plugin": "^4.5.1",
     "markdown-it": "^12.0.4",
-    "mermaid": "^8.9.0",
+    "mermaid": "^10.0.0",
     "prismjs": "^1.23.0",
     "prop-types": "15",
     "react": "^17.0.1",
