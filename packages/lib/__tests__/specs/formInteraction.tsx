@@ -1,5 +1,5 @@
 import {cleanup, fireEvent, render} from '@testing-library/react';
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {Field, FormController} from '../../src';
 import {InputAdapter} from '../components/InputAdapter';
 import {TestForm} from '../components/TestForm';
@@ -179,9 +179,13 @@ describe('Form interaction', () => {
     const FormWithTwoFields = () => {
       return (
         <TestForm controller={controller}>
-          <Field<typeof InputAdapter> name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} adapterProps={{
-            useRenderCounter: true,
-          }}/>
+          <Field<typeof InputAdapter>
+            name={TestForm.FIELD_ONE_NAME}
+            adapter={InputAdapter}
+            adapterProps={{
+              useRenderCounter: true,
+            }}
+          />
           <Field name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} />
           <Field name={TestForm.FIELD_THREE_NAME} adapter={InputAdapter} />
           <button
@@ -216,5 +220,4 @@ describe('Form interaction', () => {
 
     expect(window.$_TEST_RENDER_COUNT_$![TestForm.FIELD_ONE_NAME]).toBe(2);
   });
-
 });

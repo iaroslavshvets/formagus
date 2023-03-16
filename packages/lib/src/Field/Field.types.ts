@@ -1,4 +1,4 @@
-import React, { JSXElementConstructor } from "react";
+import React, {JSXElementConstructor} from 'react';
 import {FormController} from '../FormController';
 import type {FieldValidationState, FormMeta} from '../FormController';
 

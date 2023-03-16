@@ -1,8 +1,9 @@
 import React from 'react';
-import {injectFormApi} from '../../../src/injectFormApi';
-import type {FormAPI} from '../../../src/FormController';
+import {injectFormApi, type FormAPI} from '../../../src';
+import {observer} from 'mobx-react';
 
-@(injectFormApi as any)
+@injectFormApi
+@observer
 export class FieldValueDisplayWithInject extends React.Component<{
   formApi?: FormAPI;
   dataHook: string;

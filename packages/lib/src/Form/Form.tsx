@@ -1,4 +1,4 @@
-import {Provider, observer} from 'mobx-react';
+import {observer} from 'mobx-react';
 import React, {useState} from 'react';
 import {FormController} from '../FormController';
 import {FormPart} from '../FormPart';
@@ -21,11 +21,9 @@ export const Form = observer((props: FormProps) => {
 
   // creates the provider and sets the controller, which will control all the form state
   return (
-    <Provider controller={controller}>
-      <FormControllerContext.Provider value={controller}>
-        <FormPart>{children}</FormPart>
-      </FormControllerContext.Provider>
-    </Provider>
+    <FormControllerContext.Provider value={controller}>
+      <FormPart>{children}</FormPart>
+    </FormControllerContext.Provider>
   );
 });
 

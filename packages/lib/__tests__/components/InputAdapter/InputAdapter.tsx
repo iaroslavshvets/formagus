@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from 'react';
 import {isNil} from 'lodash';
 import {Meta} from './Meta';
 import {Errors} from './Errors';
@@ -14,7 +14,7 @@ export interface InputAdapterProps extends AdapterProps {
   };
 }
 
-export const InputAdapter = observer((props: InputAdapterProps) =>  {
+export const InputAdapter = observer((props: InputAdapterProps) => {
   const {onFocus, onBlur, validate, name, onChange, value, meta} = props.formagus!;
   const {errors} = meta;
   const normalizedValue = isNil(value) ? '' : value;
@@ -50,9 +50,12 @@ export const InputAdapter = observer((props: InputAdapterProps) =>  {
       <Meta meta={meta} />
 
       <span data-hook="set-custom-state" onClick={setCustomState} />
-      <span data-hook="callback" onClick={() => {
-        props.callback?.()}
-      } />
+      <span
+        data-hook="callback"
+        onClick={() => {
+          props.callback?.();
+        }}
+      />
       <span data-hook="validate" onClick={validate} />
     </div>
   );
