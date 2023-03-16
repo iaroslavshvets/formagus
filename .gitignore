@@ -16,3 +16,5 @@ packages/**npm-debug.log*
 packages/**yarn-debug.log*
 packages/**yarn-error.log*
 packages/lib/coverage*
+
+.yarn/install-state.gz
