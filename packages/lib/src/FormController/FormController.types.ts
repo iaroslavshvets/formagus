@@ -14,7 +14,7 @@ export type FieldValidationState = Valid | Invalid;
 
 export interface FormControllerOptions {
   initialValues?: FormValues;
-  onValidate?: (values: any) => Promise<FieldDictionary<Invalid> | {}>;
+  onValidate?: (values: any) => Promise<FieldDictionary<Invalid> | Record<string, never>>;
   onFormat?: (values: FormValues) => FormValues;
   onSubmit?: (errors: FormValidationErrors, values: FormValues, submitEvent?: FormEvent<any>) => void;
   onSubmitAfter?: (errors: FormValidationErrors, values: FormValues, submitEvent?: FormEvent<any>) => void;

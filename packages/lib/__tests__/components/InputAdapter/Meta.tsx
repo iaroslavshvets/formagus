@@ -4,7 +4,7 @@ import {observer} from 'mobx-react-lite';
 import type {FieldMeta} from '../../../src';
 
 export const Meta = observer((props: {meta: FieldMeta}) => {
-  const renderMetaProperty = (meta: any, currentKey: string = ''): any => {
+  const renderMetaProperty = (meta: any, currentKey = ''): any => {
     return Object.keys(meta).map((key) => {
       if (!isObject(meta[key])) {
         return (

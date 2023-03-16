@@ -91,7 +91,7 @@ export class FormController {
   };
 
   // executes general form validator passed to Form as a `onValidate` prop and returns errors
-  protected runFormLevelValidations = (): Promise<FieldDictionary<Invalid> | {}> => {
+  protected runFormLevelValidations = (): Promise<FieldDictionary<Invalid> | Record<string, never>> => {
     return this.options.onValidate ? this.options.onValidate(this.formattedValues) : Promise.resolve({});
   };
 
@@ -336,17 +336,17 @@ export class FormController {
 
   // changed, when form starts/finishes validation process
   @observable
-  isValidating: boolean = false;
+  isValidating = false;
   setIsValidating = (state: boolean) => runInAction(() => (this.isValidating = state));
 
   // changed, when form starts/finishes submit process
   @observable
-  isSubmitting: boolean = false;
+  isSubmitting = false;
   setIsSubmitting = (state: boolean) => runInAction(() => (this.isSubmitting = state));
 
   // increments upon every submit try
   @observable
-  submitCount: number = 0;
+  submitCount = 0;
   setSubmitCount = (state: number) => runInAction(() => (this.submitCount = state));
 
   // general handler for resetting form to specific state
