@@ -15,6 +15,9 @@
     "upload": "yarn build && yarn prepare:upload && surge --project ./dist --domain formagus.surge.sh",
     "prepare:upload": "node ./build/fix-surge-routing"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "lint-staged": {
     "*.{ts,tsx,js,json,scss,css}": [
       "prettier --write",
