@@ -54,6 +54,6 @@ export type FieldCommonProps = {
 
 export type FieldProps<T = any, P = unknown> = FieldCommonProps & {
   children?: (injectedAdapterProps: AdapterRenderProps) => JSX.Element;
-  adapter?: React.ComponentClass<AdapterProps> | React.FC<AdapterProps>;
+  adapter?: React.ComponentClass<AdapterProps & P> | React.FC<AdapterProps & P>;
   adapterProps?: P; // Will be passed to adapter alongside injected formagus props
 };
