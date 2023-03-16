@@ -23,7 +23,10 @@ describe('useFormController', () => {
         }}
       >
         <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
-        <FieldValueDisplayWithHook dataHook={INNER_FORM_COMPONENT_DATA_HOOK} displayedFieldName={TestForm.FIELD_ONE_NAME} />
+        <FieldValueDisplayWithHook
+          dataHook={INNER_FORM_COMPONENT_DATA_HOOK}
+          displayedFieldName={TestForm.FIELD_ONE_NAME}
+        />
       </TestForm>,
     ).container;
 

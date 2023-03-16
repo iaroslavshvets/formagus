@@ -273,36 +273,39 @@ export class FormController {
   };
 
   constructor(options: FormControllerOptions) {
+    const self = this;
     makeObservableForMobx6(this);
-    runInAction(() => (this.options = options));
+    runInAction(() => {
+      this.options = options;
+      this.API = {
+        get values() {
+          return self.formattedValues;
+        },
+        errors: this.formValidationErrors,
+        submit: this.submit,
+        reset: this.reset,
+        resetToValues: this.resetToValues,
+        clear: this.clear,
+        setFieldValue: this.setFieldValue,
+        setFieldCustomState: this.setFieldCustomState,
+        validate: this.validate,
+        getFieldMeta: this.getFieldMeta,
+        meta: {
+          isValidating: this.isValidating,
+          isSubmitting: this.isSubmitting,
+          submitCount: this.submitCount,
+          isValid: this.isValid,
+          isDirty: this.isDirty,
+          isTouched: this.isTouched,
+          isChanged: this.isChanged,
+        },
+      };
+    });
     observerBatching(ReactDOM.unstable_batchedUpdates);
   }
 
   // form FormAPI, which will be passed to child render function or could be retrieved with API prop from controller
-  @computed
-  get API(): FormAPI {
-    return {
-      values: this.formattedValues,
-      errors: this.formValidationErrors,
-      submit: this.submit,
-      reset: this.reset,
-      resetToValues: this.resetToValues,
-      clear: this.clear,
-      setFieldValue: this.setFieldValue,
-      setFieldCustomState: this.setFieldCustomState,
-      validate: this.validate,
-      getFieldMeta: this.getFieldMeta,
-      meta: {
-        isValidating: this.isValidating,
-        isSubmitting: this.isSubmitting,
-        submitCount: this.submitCount,
-        isValid: this.isValid,
-        isDirty: this.isDirty,
-        isTouched: this.isTouched,
-        isChanged: this.isChanged,
-      },
-    };
-  }
+  @observable API: FormAPI = {} as any;
 
   // where any of the form fields ever under user focus
   @computed
@@ -448,11 +451,13 @@ export class FormController {
       this.runFormLevelValidations(),
     ]);
 
-    this.setFormValidationErrors(merge(fieldValidationErrors, formValidationErrors));
+    runInAction(() => {
+      this.setFormValidationErrors(merge(fieldValidationErrors, formValidationErrors));
 
-    this.updateErrorsForEveryField(this.formValidationErrors);
+      this.updateErrorsForEveryField(this.formValidationErrors);
 
-    this.setIsValidating(false);
+      this.setIsValidating(false);
+    });
   };
 
   // wraps submit function passed as Form `onSubmit` prop after it's being passed to child render function

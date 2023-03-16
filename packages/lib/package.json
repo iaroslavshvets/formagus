@@ -23,7 +23,7 @@
     "precommit": "lint-staged",
     "postcommit": "git update-index --again",
     "prepush": "yarn test",
-    "format": "prettier --write '{src,test}/**/*.{ts,tsx,js,json,scss,css}'",
+    "format": "prettier --write '{src,__tests__}/**/*.{ts,tsx,js,json,scss,css}'",
     "commit-cz": "git-cz"
   },
   "lint-staged": {

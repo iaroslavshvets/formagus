@@ -1,12 +1,9 @@
 import React from 'react';
-import {Observer} from 'mobx-react';
+import {observer, Observer} from 'mobx-react';
 import {useFormApi} from '../../../src';
 
-export const FieldValueDisplayWithHook: React.FC<{
-  dataHook: string;
-  displayedFieldName: string;
-}> = (props) => {
+export const FieldValueDisplayWithHook = observer((props: {dataHook: string; displayedFieldName: string}) => {
   const formApi = useFormApi();
 
-  return <Observer>{() => <div data-hook={props.dataHook}>{formApi.values[props.displayedFieldName]}</div>}</Observer>;
-};
+  return <div data-hook={props.dataHook}>{formApi.values[props.displayedFieldName]}</div>;
+});

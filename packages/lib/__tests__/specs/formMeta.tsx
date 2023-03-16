@@ -77,7 +77,7 @@ describe('Form meta', () => {
 
     fieldDriver.when.blur();
     expect(fieldDriver.get.meta('form:isChanged')).toBe('false');
-    
+
     fieldDriver.when.change('batman');
     expect(fieldDriver.get.meta('form:isChanged')).toBe('true');
 
@@ -149,7 +149,7 @@ describe('Form meta', () => {
 
       expect(fieldDriver.get.meta('form:isDirty')).toBe('true');
 
-      rerender(<TestComponent hideField={true}/>);
+      rerender(<TestComponent hideField={true} />);
 
       expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
     });
