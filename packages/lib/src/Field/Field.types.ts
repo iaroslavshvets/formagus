@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { JSXElementConstructor } from "react";
 import {FormController} from '../FormController';
 import type {FieldValidationState, FormMeta} from '../FormController';
 
@@ -52,8 +52,8 @@ export type FieldCommonProps = {
   controller?: FormController;
 };
 
-export type FieldProps<T = any> = FieldCommonProps & {
+export type FieldProps<T = any, P = unknown> = FieldCommonProps & {
   children?: (injectedAdapterProps: AdapterRenderProps) => JSX.Element;
-  adapter?: React.ComponentClass<AdapterProps & T> | React.FC<AdapterProps & T>;
-  adapterProps?: any; // Will be passed to adapter alongside injected formagus props
+  adapter?: React.ComponentClass<AdapterProps> | React.FC<AdapterProps>;
+  adapterProps?: P; // Will be passed to adapter alongside injected formagus props
 };

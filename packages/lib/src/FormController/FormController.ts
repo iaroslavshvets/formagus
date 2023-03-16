@@ -451,13 +451,11 @@ export class FormController {
       this.runFormLevelValidations(),
     ]);
 
-    runInAction(() => {
-      this.setFormValidationErrors(merge(fieldValidationErrors, formValidationErrors));
+    this.setFormValidationErrors(merge(fieldValidationErrors, formValidationErrors));
 
-      this.updateErrorsForEveryField(this.formValidationErrors);
+    this.updateErrorsForEveryField(this.formValidationErrors);
 
-      this.setIsValidating(false);
-    });
+    this.setIsValidating(false);
   };
 
   // wraps submit function passed as Form `onSubmit` prop after it's being passed to child render function

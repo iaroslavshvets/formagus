@@ -14,7 +14,7 @@ describe('Field interactions', () => {
     return cleanup();
   });
 
-  it.only('should keep value if "persist=true"', async () => {
+  it('should keep value if "persist=true"', async () => {
     const controller = new FormController({});
 
     const Form = observer(() => {

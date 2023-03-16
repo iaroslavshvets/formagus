@@ -6,6 +6,7 @@ import {InputAdapter} from './InputAdapter';
 export class TestForm extends React.Component<FormControllerOptions & {controller?: any}> {
   static FIELD_ONE_NAME = 'field_one_name';
   static FIELD_TWO_NAME = 'field_two_name';
+  static FIELD_THREE_NAME = 'field_three_name';
 
   render() {
     const {controller, ...formProps} = this.props;

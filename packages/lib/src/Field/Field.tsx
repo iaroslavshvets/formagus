@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { ComponentProps, JSXElementConstructor } from "react";
 import {observer} from 'mobx-react';
 import {useField} from './useField';
 import type {FieldProps} from './Field.types';
 
-export const Field = observer((props: FieldProps) => {
+export const Field = observer(<T extends JSXElementConstructor<any>>(props: FieldProps<T, ComponentProps<T>>) => {
   const {isReady, formagus} = useField(props);
 
   if (!isReady) {
