@@ -1,12 +1,20 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import {useFormController} from '../Form';
+import {observer} from 'mobx-react';
 
 function ComponentWithInjectedFormApi(WrappedComponent: any) {
-  const InjectFormApiWrapper = (props: any) => {
+  const InjectFormApiWrapper = observer((props: any) => {
     const controller = useFormController();
+    const [_, forceUpdate] = useState<{}>();
+
+    useEffect(() => {
+      forceUpdate({});
+    }, [JSON.stringify(controller!.API)]);
+
     return <WrappedComponent {...props} formApi={controller!.API} />;
-  };
+  });
+
   (InjectFormApiWrapper as any).displayName = 'FormagusInjectFormApiWrapper';
 
   hoistNonReactStatics(InjectFormApiWrapper, WrappedComponent);
