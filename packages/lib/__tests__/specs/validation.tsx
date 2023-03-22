@@ -8,9 +8,7 @@ import {createTestFormDriver} from '../components/TestForm.driver';
 import {InputAdapter} from '../components/InputAdapter';
 
 describe('Validation', () => {
-  afterEach(() => {
-    return cleanup();
-  });
+  afterEach(() => cleanup());
 
   describe('form level', () => {
     it('should be with errors', async () => {
@@ -28,9 +26,9 @@ describe('Validation', () => {
 
       formDriver.when.submit();
 
-      await waitFor(wrapper)(() => {
-        return fieldDriver.get.errors('notBatman') !== null && fieldDriver.get.errors('notBruceWayne') !== null;
-      });
+      await waitFor(
+        () => fieldDriver.get.errors('notBatman') !== null && fieldDriver.get.errors('notBruceWayne') !== null,
+      );
     });
   });
 
@@ -42,7 +40,7 @@ describe('Validation', () => {
       const wrapper = render(
         <TestForm controller={controller}>
           <Field
-            defaultValue={'Batman'}
+            defaultValue="Batman"
             name={TestForm.FIELD_ONE_NAME}
             adapter={InputAdapter}
             onValidate={(value) => {
@@ -56,9 +54,7 @@ describe('Validation', () => {
 
       formDriver.when.submit();
 
-      await waitFor(wrapper)(() => {
-        return fieldDriver.get.errors('nameError') !== null;
-      });
+      await waitFor(() => fieldDriver.get.errors('nameError') !== null);
     });
 
     it('has errors (async)', async () => {
@@ -68,7 +64,7 @@ describe('Validation', () => {
       const wrapper = render(
         <TestForm controller={controller}>
           <Field
-            defaultValue={'Batman'}
+            defaultValue="Batman"
             name={TestForm.FIELD_ONE_NAME}
             adapter={InputAdapter}
             onValidate={(value) => {
@@ -82,16 +78,12 @@ describe('Validation', () => {
 
       formDriver.when.submit();
 
-      await waitFor(wrapper)(() => {
-        return fieldDriver.get.errors('nameError') !== null;
-      });
+      await waitFor(() => fieldDriver.get.errors('nameError') !== null);
 
       fieldDriver.when.change('Bruce');
       formDriver.when.submit();
 
-      await waitFor(wrapper)(() => {
-        return fieldDriver.get.errors('nameError') === null;
-      });
+      await waitFor(() => fieldDriver.get.errors('nameError') === null);
     });
   });
 
@@ -109,7 +101,7 @@ describe('Validation', () => {
         <TestForm controller={controller}>
           <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
           <Field
-            defaultValue={'Batman'}
+            defaultValue="Batman"
             name={TestForm.FIELD_TWO_NAME}
             adapter={InputAdapter}
             onValidate={(value) => {
@@ -124,9 +116,9 @@ describe('Validation', () => {
 
       formDriver.when.submit();
 
-      await waitFor(wrapper)(() => {
-        return firstFieldDriver.get.errors('RobinHood') !== null && secondFieldDriver.get.errors('nameError') !== null;
-      });
+      await waitFor(
+        () => firstFieldDriver.get.errors('RobinHood') !== null && secondFieldDriver.get.errors('nameError') !== null,
+      );
     });
   });
 });

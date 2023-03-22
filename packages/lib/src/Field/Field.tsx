@@ -7,7 +7,7 @@ export const Field = observer(<T extends JSXElementConstructor<any>>(props: Fiel
   const {isReady, formagus} = useField(props);
 
   if (!isReady) {
-    return <></>;
+    return null;
   }
 
   const hasAdapterComponent = 'adapter' in props && props.adapter !== undefined;
@@ -15,9 +15,9 @@ export const Field = observer(<T extends JSXElementConstructor<any>>(props: Fiel
   if (hasAdapterComponent) {
     const Adapter: any = props.adapter;
     return <Adapter formagus={formagus} {...props.adapterProps} />;
-  } else {
-    return props.children!({formagus: formagus!});
   }
+
+  return props.children!({formagus: formagus!});
 });
 
 (Field as any).displayName = 'FormagusField';

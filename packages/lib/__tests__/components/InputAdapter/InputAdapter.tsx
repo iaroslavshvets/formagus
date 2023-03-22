@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
 import {isNil} from 'lodash';
+import type {ChangeEvent} from 'react';
+import {observer} from 'mobx-react';
 import {Meta} from './Meta';
 import {Errors} from './Errors';
-import type {ChangeEvent} from 'react';
 import type {AdapterProps} from '../../../src';
-import {observer} from 'mobx-react';
 
 export interface InputAdapterProps extends AdapterProps {
   callback?: Function;
@@ -27,8 +27,8 @@ export const InputAdapter = observer((props: InputAdapterProps) => {
   const setCustomState = () => {
     if (props.customState) {
       const key = Object.keys(props.customState)[0];
-      const value = props.customState[key];
-      props.formagus!.setCustomState(key, value);
+      const customState = props.customState[key];
+      props.formagus!.setCustomState(key, customState);
     }
   };
 

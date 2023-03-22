@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {action, computed, observable} from 'mobx';
 import {observerBatching} from 'mobx-react';
-import {utils} from './utils';
 import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
 import isEmpty from 'lodash/isEmpty';
+import {utils} from './utils';
 import {toJSCompat} from '../utils/toJSCompat';
 import {makeObservableForMobx6} from '../utils/makeObservableForMobx6';
 import type {FieldProps, FormatterFunction, ValidationFunction} from '../Field';
@@ -53,6 +53,7 @@ export class FormController {
 
   // get all field values
   @observable values: any = {};
+
   @action setValues = (fieldName: string, value: any) => {
     const safeValue = toJSCompat(value, false);
     utils.setValue(this.values, fieldName, safeValue);
@@ -114,7 +115,7 @@ export class FormController {
           .then(() => {
             this.updateFieldMetaIsValidating(field, false);
 
-            pendingValidationCount--;
+            pendingValidationCount = pendingValidationCount - 1;
 
             if (pendingValidationCount === 0) {
               resolve(errors);
@@ -132,6 +133,7 @@ export class FormController {
 
   // all registered form fields, new field is being added when Field constructor is called
   fields = observable.map<string, FormField>();
+
   @action updateFieldMetaIsValidating = (field: FormField, state: boolean) => {
     field.meta.isValidating = state;
   };
@@ -263,6 +265,7 @@ export class FormController {
 
   // form FormAPI, which will be passed to child render function or could be retrieved with API prop from controller
   @observable API: FormAPI = {} as any;
+
   @action createFormApi = () => {
     this.API = {
       values: {},
@@ -286,6 +289,7 @@ export class FormController {
       },
     };
   };
+
   // where any of the form fields ever under user focus
   @computed
   get isTouched(): boolean {
@@ -309,7 +313,7 @@ export class FormController {
 
   @action setIsTouched = (state: boolean) => {
     this.API.meta.isTouched = state;
-  }
+  };
 
   @action setIsValid = (state: boolean) => {
     this.API.meta.isValid = state;
@@ -401,6 +405,7 @@ export class FormController {
         if (result !== undefined && result !== null) {
           return result;
         }
+        return;
       } catch (e) {
         return e;
       }
@@ -464,5 +469,3 @@ export class FormController {
     return {errors, values};
   };
 }
-
-type State = FormController;

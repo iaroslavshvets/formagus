@@ -1,6 +1,6 @@
 import React from 'react';
 import {isEmpty, isObject} from 'lodash';
-import {observer} from 'mobx-react-lite';
+import {observer} from 'mobx-react';
 import type {FieldMeta} from '../../../src';
 
 export const Meta = observer((props: {meta: FieldMeta}) => {
@@ -8,15 +8,15 @@ export const Meta = observer((props: {meta: FieldMeta}) => {
     return Object.keys(meta).map((key) => {
       if (!isObject(meta[key])) {
         return (
-          <span key={key} data-hook={`meta_${currentKey ? currentKey + ':' : ''}${key}`}>
+          <span key={key} data-hook={`meta_${currentKey ? `${currentKey}:` : ''}${key}`}>
             {String(meta[key])}
           </span>
         );
-      } else if (!isEmpty(meta)) {
-        return renderMetaProperty(meta[key], key);
-      } else {
-        return null;
       }
+      if (!isEmpty(meta)) {
+        return renderMetaProperty(meta[key], key);
+      }
+      return null;
     });
   };
 
@@ -25,4 +25,4 @@ export const Meta = observer((props: {meta: FieldMeta}) => {
   return <div data-hook="meta-props">{metaFields}</div>;
 });
 
-Meta.displayName = 'Meta';
+(Meta as any).displayName = 'Meta';

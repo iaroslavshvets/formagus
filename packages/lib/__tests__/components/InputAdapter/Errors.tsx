@@ -1,20 +1,18 @@
 import React from 'react';
 import {isEmpty} from 'lodash';
-import {observer} from 'mobx-react-lite';
+import {observer} from 'mobx-react';
 
 export const Errors = observer((props: {errors: any}) => {
   const {errors} = props;
   return !isEmpty(errors) ? (
     <span data-hook="errors">
-      {errors.map((error: string) => {
-        return (
-          <span key={error} data-hook={`error:${error}`}>
-            {error}
-          </span>
-        );
-      })}
+      {errors.map((error: string) => (
+        <span key={error} data-hook={`error:${error}`}>
+          {error}
+        </span>
+      ))}
     </span>
   ) : null;
 });
 
-Errors.displayName = 'Errors';
+(Errors as any).displayName = 'Errors';

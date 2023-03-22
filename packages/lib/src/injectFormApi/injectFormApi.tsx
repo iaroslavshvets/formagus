@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import {useFormController} from '../Form';
 import {observer} from 'mobx-react';
+import {useFormController} from '../Form/useFormController';
 
 function ComponentWithInjectedFormApi(WrappedComponent: any) {
   const InjectFormApiWrapper = observer((props: any) => {
     const controller = useFormController();
-    const [_, forceUpdate] = useState<{}>();
+    const [, forceUpdate] = useState<unknown>();
 
     useEffect(() => {
       forceUpdate({});

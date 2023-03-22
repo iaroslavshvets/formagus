@@ -7,7 +7,7 @@ export type {
   FieldProps,
   AdapterRenderProps,
 } from './Field';
-export type {FormProps} from './Form';
+export type {FormProps} from './Form/Form.types';
 export type {
   FormAPI,
   FormValidationErrors,
@@ -20,7 +20,7 @@ export type {
 export {utils} from './FormController/utils';
 export {FormController} from './FormController';
 export {Field, useField} from './Field';
-export {Form} from './Form';
+export {Form} from './Form/Form';
 export {FormPart} from './FormPart';
 export {injectFormApi} from './injectFormApi';
 export {useFormApi} from './useFormApi';

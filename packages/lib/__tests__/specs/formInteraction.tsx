@@ -6,9 +6,7 @@ import {TestForm} from '../components/TestForm';
 import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
 
 describe('Form interaction', () => {
-  afterEach(() => {
-    return cleanup();
-  });
+  afterEach(() => cleanup());
 
   it('should reset values', async () => {
     const controller = new FormController({
@@ -45,7 +43,7 @@ describe('Form interaction', () => {
       },
     });
 
-    const FormWithHiddenField = () => {
+    function FormWithHiddenField() {
       const [hiddenField, setHiddenField] = useState(true);
 
       return (
@@ -63,7 +61,7 @@ describe('Form interaction', () => {
           </button>
         </TestForm>
       );
-    };
+    }
 
     const wrapper = render(<FormWithHiddenField />).container;
 
@@ -85,7 +83,7 @@ describe('Form interaction', () => {
     expect(fieldDriver.get.meta('form:isTouched')).toBe('false');
     expect(fieldDriver.get.value()).toBe('Batman is Bruce Wayne');
 
-    const toggleField = wrapper.querySelector(`[data-hook="toggle-field"]`)!;
+    const toggleField = wrapper.querySelector('[data-hook="toggle-field"]')!;
     fireEvent.click(toggleField);
 
     const fieldDriver2 = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
@@ -212,10 +210,10 @@ describe('Form interaction', () => {
 
     const wrapper = await render(<FormWithTwoFields />).container;
 
-    const toggleField2 = wrapper.querySelector(`[data-hook="change_field_2_value"]`)!;
+    const toggleField2 = wrapper.querySelector('[data-hook="change_field_2_value"]')!;
     fireEvent.click(toggleField2);
 
-    const toggleField3 = wrapper.querySelector(`[data-hook="change_field_3_value"]`)!;
+    const toggleField3 = wrapper.querySelector('[data-hook="change_field_3_value"]')!;
     fireEvent.click(toggleField3);
 
     expect(window.$_TEST_RENDER_COUNT_$![TestForm.FIELD_ONE_NAME]).toBe(2);

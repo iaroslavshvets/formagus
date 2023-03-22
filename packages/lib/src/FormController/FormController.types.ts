@@ -1,6 +1,5 @@
 import type {FormEvent} from 'react';
-import type {EqualityCheckFunction, FieldProps} from '../Field';
-import type {FormagusProps} from '../Field';
+import type {EqualityCheckFunction, FieldProps, FormagusProps} from '../Field';
 
 export type FieldDictionary<T> = Record<string, T>;
 

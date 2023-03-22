@@ -1,18 +1,14 @@
 import React, {useState} from 'react';
-import {render} from '@testing-library/react';
+import {render, fireEvent, cleanup} from '@testing-library/react';
+import {observer} from 'mobx-react';
 import {FormController, Field} from '../../src';
 import {TestForm} from '../components/TestForm';
 import {InputAdapter} from '../components/InputAdapter';
 import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
 import {waitFor} from '../helpers/conditions';
-import {fireEvent} from '@testing-library/react';
-import {cleanup} from '@testing-library/react';
-import {observer} from 'mobx-react';
 
 describe('Field interactions', () => {
-  afterEach(() => {
-    return cleanup();
-  });
+  afterEach(() => cleanup());
 
   it('should keep value if "persist=true"', async () => {
     const controller = new FormController({});
@@ -24,11 +20,11 @@ describe('Field interactions', () => {
       return (
         <TestForm controller={controller}>
           {isDisplayed && !isSwitchedPosition && (
-            <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist={true} />
+            <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist />
           )}
           <div>
             {isDisplayed && isSwitchedPosition && (
-              <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist={true} />
+              <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist />
             )}
           </div>
           <button
@@ -54,8 +50,8 @@ describe('Field interactions', () => {
     });
 
     const wrapper = render(<Form />).container;
-    const toggleVisibilityField = wrapper.querySelector(`[data-hook="toggle-visibility"]`)!;
-    const togglePositionField = wrapper.querySelector(`[data-hook="toggle-position"]`)!;
+    const toggleVisibilityField = wrapper.querySelector('[data-hook="toggle-visibility"]')!;
+    const togglePositionField = wrapper.querySelector('[data-hook="toggle-position"]')!;
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     // visible
@@ -78,24 +74,27 @@ describe('Field interactions', () => {
   });
 
   it('should not keep value', () => {
-    class StatefulForm extends React.Component<{props: null}, {hiddenField: boolean}> {
-      state = {
-        hiddenField: false,
-      };
+    class StatefulForm extends React.Component<{}, {hiddenField: boolean}> {
+      constructor(props: {}) {
+        super(props);
+        this.state = {
+          hiddenField: false,
+        };
+      }
 
       render() {
+        const {hiddenField} = this.state;
+
         return (
           <TestForm>
-            {!this.state.hiddenField && <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />}
+            {!hiddenField && <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />}
             <button
               type="button"
               data-hook="toggle-field"
               onClick={() => {
-                this.setState((state) => {
-                  return {
-                    hiddenField: !state.hiddenField,
-                  };
-                });
+                this.setState((state) => ({
+                  hiddenField: !state.hiddenField,
+                }));
               }}
             >
               Toggle Field
@@ -105,9 +104,9 @@ describe('Field interactions', () => {
       }
     }
 
-    const wrapper = render(<StatefulForm props={null} />).container;
+    const wrapper = render(<StatefulForm />).container;
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
-    const toggleField = wrapper.querySelector(`[data-hook="toggle-field"]`)!;
+    const toggleField = wrapper.querySelector('[data-hook="toggle-field"]')!;
     const NEW_VALUE = 'batman';
 
     fieldDriver.when.change(NEW_VALUE);
@@ -142,9 +141,7 @@ describe('Field interactions', () => {
 
     fieldDriver.when.setCustomState();
 
-    await waitFor(wrapper)(() => {
-      return fieldDriver.get.meta('customState:customProperty') === 'custom value';
-    });
+    await waitFor(() => fieldDriver.get.meta('customState:customProperty') === 'custom value');
   });
 
   it('set nested value', async () => {
@@ -162,8 +159,6 @@ describe('Field interactions', () => {
 
     fieldDriver.when.change(NEW_VALUE);
 
-    await waitFor(wrapper)(() => {
-      return formController.API.values[TestForm.FIELD_ONE_NAME][0].nested === NEW_VALUE;
-    });
+    await waitFor(() => formController.API.values[TestForm.FIELD_ONE_NAME][0].nested === NEW_VALUE);
   });
 });

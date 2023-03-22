@@ -8,9 +8,7 @@ import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.
 import {waitFor} from '../helpers/conditions';
 
 describe('Form props', () => {
-  afterEach(() => {
-    return cleanup();
-  });
+  afterEach(() => cleanup());
 
   it('initialValues', async () => {
     const wrapper = render(
@@ -25,8 +23,8 @@ describe('Form props', () => {
         }}
       >
         <div>
-          <Field name={'string'} adapter={InputAdapter} />
-          <Field name={'nested[0].id'} adapter={InputAdapter} />
+          <Field name="string" adapter={InputAdapter} />
+          <Field name="nested[0].id" adapter={InputAdapter} />
         </div>
       </TestForm>,
     ).container;
@@ -54,7 +52,7 @@ describe('Form props', () => {
     const formDriver = createTestFormDriver({wrapper});
     formDriver.when.submit();
 
-    await waitFor(wrapper)(() => {
+    await waitFor(() => {
       const [firstCall, secondCall] = callbackStack;
       return firstCall === 'onSubmit' && secondCall === 'onSubmitAfter';
     });
@@ -80,7 +78,7 @@ describe('Form props', () => {
           const formattedValues = {...values};
 
           if (formattedValues.array) {
-            formattedValues.array[0].field_one_name = formattedValues.array[0].field_one_name + ':formatted';
+            formattedValues.array[0].field_one_name = `${formattedValues.array[0].field_one_name}:formatted`;
           }
 
           return formattedValues;

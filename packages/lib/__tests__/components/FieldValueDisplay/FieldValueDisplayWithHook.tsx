@@ -1,5 +1,5 @@
 import React from 'react';
-import {observer, Observer} from 'mobx-react';
+import {observer} from 'mobx-react';
 import {useFormApi} from '../../../src';
 
 export const FieldValueDisplayWithHook = observer((props: {dataHook: string; displayedFieldName: string}) => {

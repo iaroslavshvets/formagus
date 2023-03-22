@@ -8,9 +8,7 @@ import {createTestFormDriver} from '../components/TestForm.driver';
 import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
 
 describe('Field meta', () => {
-  afterEach(() => {
-    return cleanup();
-  });
+  afterEach(() => cleanup());
 
   it('isRegistered', () => {
     const formController = new FormController({});
@@ -92,9 +90,7 @@ describe('Field meta', () => {
 
     expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).customState[CUSTOM_KEY]).toBe(CUSTOM_VALUE);
 
-    await waitFor(wrapper)(() => {
-      return fieldDriver.get.meta(`customState:${CUSTOM_KEY}`) === CUSTOM_VALUE;
-    });
+    await waitFor(() => fieldDriver.get.meta(`customState:${CUSTOM_KEY}`) === CUSTOM_VALUE);
   });
 
   it('isValidating', async () => {
@@ -113,8 +109,6 @@ describe('Field meta', () => {
 
     expect(fieldDriver.get.meta('isValidating')).toBe('true');
 
-    await waitFor(wrapper)(() => {
-      return fieldDriver.get.meta('form:isValidating') === 'false';
-    });
+    await waitFor(() => fieldDriver.get.meta('form:isValidating') === 'false');
   });
 });

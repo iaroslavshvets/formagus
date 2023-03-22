@@ -8,6 +8,7 @@ export class FieldValueDisplayWithInject extends React.Component<{
   displayedFieldName: string;
 }> {
   render() {
-    return <div data-hook={this.props.dataHook}>{this.props.formApi!.values[this.props.displayedFieldName]}</div>;
+    const {displayedFieldName, dataHook, formApi} = this.props;
+    return <div data-hook={dataHook}>{formApi!.values[displayedFieldName]}</div>;
   }
 }

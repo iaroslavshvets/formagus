@@ -6,9 +6,7 @@ import {Field} from '../../src';
 import {InputAdapter} from '../components/InputAdapter';
 
 describe('Render', () => {
-  afterEach(() => {
-    return cleanup();
-  });
+  afterEach(() => cleanup());
 
   it('should render', () => {
     const wrapper = render(

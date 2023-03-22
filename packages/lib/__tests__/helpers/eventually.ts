@@ -24,11 +24,11 @@ export const eventually = (conditionCheckFunction: ConditionCheckFunction, opts?
           throw err;
         });
 
-    const options = Object.assign({action}, defaults, opts);
+    const options = {action, ...defaults, ...opts};
 
     return trier(options).catch(() => {
       if (error !== null) {
-        error.message = `Timeout of ${options.timeout} ms with: ` + error.message;
+        error.message = `Timeout of ${options.timeout} ms with: ${error.message}`;
       }
       throw error;
     });
