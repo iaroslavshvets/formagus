@@ -89,7 +89,7 @@ describe('Form props', () => {
           name={FIELD_TWO_NAME}
           adapter={InputAdapter}
           onFormat={(value: string) => {
-            return value + ':formatted';
+            return `${value  }:formatted`;
           }}
         />
       </TestForm>,

@@ -115,7 +115,7 @@ export class FormController {
           .then(() => {
             this.updateFieldMetaIsValidating(field, false);
 
-            pendingValidationCount = pendingValidationCount - 1;
+            pendingValidationCount -= 1;
 
             if (pendingValidationCount === 0) {
               resolve(errors);
