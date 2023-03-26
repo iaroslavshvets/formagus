@@ -54,10 +54,14 @@ export class FormController {
   // get all field values
   @observable values: any = {};
 
-  @action setValues = (fieldName: string, value: any) => {
+  @action updateValues = (fieldName: string, value: any) => {
     const safeValue = toJSCompat(value, false);
     utils.setValue(this.values, fieldName, safeValue);
     this.updateFormattedValues(fieldName, safeValue);
+  };
+
+  @action setFieldMeta = (field: FormField, meta: Partial<FormField['meta']>) => {
+    Object.assign(field.meta, meta);
   };
 
   // used for passing safe copy of values to users form child render function
@@ -74,7 +78,9 @@ export class FormController {
 
     this.fields.forEach((field, name) => {
       if (field.meta.isMounted) {
-        field.meta.initialValue = utils.getValue(this.options.initialValues, name);
+        this.setFieldMeta(field, {
+          initialValue: utils.getValue(this.options.initialValues, name)
+        })
       }
     });
   };
@@ -99,7 +105,9 @@ export class FormController {
       Object.keys(this.fieldValidations).forEach((fieldName) => {
         const field = this.fields.get(fieldName)!;
 
-        this.updateFieldMetaIsValidating(field, true);
+        this.setFieldMeta(field, {
+          isValidating: true,
+        })
 
         Promise.resolve(this.runFieldLevelValidation(fieldName))
           .then(
@@ -113,7 +121,9 @@ export class FormController {
             },
           )
           .then(() => {
-            this.updateFieldMetaIsValidating(field, false);
+            this.setFieldMeta(field, {
+              isValidating: false,
+            })
 
             pendingValidationCount -= 1;
 
@@ -125,17 +135,13 @@ export class FormController {
     });
   };
 
+  // all registered form fields, new field is being added when Field constructor is called
+  fields = observable.map<string, FormField>();
+
   // all onValidate errors
   @action protected setFormValidationErrors = (errors: FormValidationErrors) => {
     this.API.errors = errors && Object.keys(errors).length ? errors : null;
     this.setIsValid(this.API.errors === null);
-  };
-
-  // all registered form fields, new field is being added when Field constructor is called
-  fields = observable.map<string, FormField>();
-
-  @action updateFieldMetaIsValidating = (field: FormField, state: boolean) => {
-    field.meta.isValidating = state;
   };
 
   // runs validation for particular field
@@ -168,10 +174,7 @@ export class FormController {
         isValidating: false,
         isMounted: false,
         isRegistered: false,
-        get isDirty() {
-          const field = self.fields.get(name)!;
-          return !field.meta.onEqualityCheck(field.value, field.meta.initialValue);
-        },
+        isDirty: false,
       },
     });
   };
@@ -198,7 +201,7 @@ export class FormController {
       },
     });
 
-    this.setValues(name, initialValue);
+    this.updateValues(name, initialValue);
   };
 
   // used for cases when field was created, unmounted and created again
@@ -220,21 +223,29 @@ export class FormController {
 
     const field = this.fields.get(name)!;
 
-    field.meta.isMounted = true;
-    field.meta.isRegistered = true;
+    this.setFieldMeta(field, {
+      isMounted: true,
+      isRegistered: true,
+    });
 
-    this.setValues(name, field.value);
+    this.updateValues(name, field.value);
   };
 
   // called when field is unmounted
   @action unRegisterField = (name: string) => {
     const field = this.fields.get(name)!;
     if (field.props!.persist) {
-      field.meta.isMounted = false;
+      this.setFieldMeta(field, {
+        isMounted: false,
+      })
+
+      this.updateIsDirtyBasedOnFields();
     } else {
+      this.updateIsDirtyBasedOnFields();
       this.fields.delete(name);
     }
-    this.setValues(name, undefined);
+
+    this.updateValues(name, undefined);
   };
 
   protected updateFieldErrors = (field: FormField, errors: FieldValidationState = null) => {
@@ -283,47 +294,44 @@ export class FormController {
         isSubmitting: false,
         submitCount: 0,
         isValid: true,
-        isDirty: this.isDirty,
-        isTouched: this.isTouched,
-        isChanged: this.isChanged,
+        isDirty: false,
+        isTouched: false,
+        isChanged: false,
       },
     };
   };
 
-  // where any of the form fields ever under user focus
-  @computed
-  get isTouched(): boolean {
+  @action protected updateIsDirtyBasedOnFields = () => {
     const fields = Array.from(this.fields.values());
-    return fields.some((field) => field.meta.isMounted && field.meta.isTouched);
-  }
+    this.setIsDirty(fields.some((field) => field.meta.isMounted && field.meta.isDirty))
+  };
 
-  // where any of the form fields ever changed
-  @computed
-  get isChanged(): boolean {
-    const fields = Array.from(this.fields.values());
-    return fields.some((field) => field.meta.isMounted && field.meta.isChanged);
-  }
+  @action protected setIsDirty = (state: boolean) => {
+    this.API.meta.isDirty = state;
+  };
 
-  // any of the fields have value different from the initial
-  @computed
-  get isDirty(): boolean {
-    const fields = Array.from(this.fields.values());
-    return fields.some((field) => field.meta.isMounted && field.meta.isDirty);
-  }
-
-  @action setIsTouched = (state: boolean) => {
+  @action protected setIsTouched = (state: boolean) => {
     this.API.meta.isTouched = state;
   };
 
-  @action setIsValid = (state: boolean) => {
+  @action protected updateIsChangedBasedOnFields = () => {
+    const fields = Array.from(this.fields.values());
+    this.setIsChanged(fields.some((field) => field.meta.isMounted && field.meta.isChanged))
+  };
+
+  @action protected setIsChanged = (state: boolean) => {
+    this.API.meta.isChanged = state;
+  }
+
+  @action protected setIsValid = (state: boolean) => {
     this.API.meta.isValid = state;
   };
 
-  @action setIsValidating = (state: boolean) => {
+  @action protected setIsValidating = (state: boolean) => {
     this.API.meta.isValidating = state;
   };
 
-  @action setIsSubmitting = (state: boolean) => {
+  @action protected setIsSubmitting = (state: boolean) => {
     this.API.meta.isSubmitting = state;
   };
 
@@ -338,10 +346,16 @@ export class FormController {
       const newValue = utils.getValue(values, name);
       const fieldName = field.props?.name!;
       field.value = newValue;
-      field.meta.isTouched = false;
-      field.meta.isChanged = false;
-      this.setValues(fieldName, newValue);
+      this.setFieldMeta(field, {
+        isTouched: false,
+        isChanged: false,
+        isDirty: false,
+      });
+      this.updateValues(fieldName, newValue);
     });
+    this.setIsTouched(false);
+    this.setIsDirty(false);
+    this.setIsChanged(false);
     this.setInitialValuesToCurrentValues(values);
     this.setSubmitCount(0);
     this.updateErrorsForEveryField({});
@@ -361,9 +375,14 @@ export class FormController {
   @action changeFieldActiveState = (fieldName: string, isActive: boolean) => {
     const field = this.fields.get(fieldName)!;
     if (isActive) {
-      field.meta.isTouched = true;
+      this.setFieldMeta(field, {
+        isTouched: true,
+      })
+      this.setIsTouched(true);
     }
-    field.meta.isActive = isActive;
+    this.setFieldMeta(field, {
+      isActive,
+    })
   };
 
   // changes field custom state, that was set by user
@@ -376,9 +395,18 @@ export class FormController {
   @action setFieldValue = (fieldName: string, value: any) => {
     this.createFieldIfDoesNotExist(fieldName);
     const field = this.fields.get(fieldName)!;
+
     field.value = value;
-    field.meta.isChanged = true;
-    this.setValues(fieldName, value);
+
+    this.setFieldMeta(field, {
+      isChanged: true,
+      isDirty: !field.meta.onEqualityCheck(field.value, field.meta.initialValue)
+    });
+
+    this.updateIsChangedBasedOnFields();
+    this.updateIsDirtyBasedOnFields();
+
+    this.updateValues(fieldName, value);
   };
 
   protected createFieldIfDoesNotExist = (fieldName: string) => {
@@ -397,7 +425,9 @@ export class FormController {
 
     const field = this.fields.get(fieldName)!;
 
-    this.updateFieldMetaIsValidating(field, true);
+    this.setFieldMeta(field, {
+      isValidating: true,
+    })
 
     const errors = await (async () => {
       try {
@@ -411,7 +441,9 @@ export class FormController {
       }
     })();
 
-    this.updateFieldMetaIsValidating(field, false);
+    this.setFieldMeta(field, {
+      isValidating: false,
+    })
     this.setFormValidationErrors(merge(this.API.errors, {[fieldName]: errors}));
     this.updateFieldErrors(field, errors);
 
