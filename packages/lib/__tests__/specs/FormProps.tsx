@@ -5,7 +5,6 @@ import {InputAdapter} from '../components/InputAdapter';
 import {Field} from '../../src';
 import {createTestFormDriver} from '../components/TestForm.driver';
 import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
-import {waitFor} from '../helpers/conditions';
 
 describe('Form props', () => {
   afterEach(() => cleanup());
@@ -34,28 +33,6 @@ describe('Form props', () => {
 
     expect(fieldDriverOne.get.value()).toBe('John Snow');
     expect(fieldDriverNested.get.value()).toBe('Jaime Lannister');
-  });
-
-  it('onSubmitAfter', async () => {
-    const callbackStack: string[] = [];
-
-    const wrapper = render(
-      <TestForm
-        initialValues={{
-          [TestForm.FIELD_ONE_NAME]: 'John Snow',
-        }}
-        onSubmit={() => callbackStack.push('onSubmit')}
-        onSubmitAfter={() => callbackStack.push('onSubmitAfter')}
-      />,
-    ).container;
-
-    const formDriver = createTestFormDriver({wrapper});
-    formDriver.when.submit();
-
-    await waitFor(() => {
-      const [firstCall, secondCall] = callbackStack;
-      return firstCall === 'onSubmit' && secondCall === 'onSubmitAfter';
-    });
   });
 
   it('formatter (with field and arrays support)', async () => {
@@ -89,7 +66,7 @@ describe('Form props', () => {
           name={FIELD_TWO_NAME}
           adapter={InputAdapter}
           onFormat={(value: string) => {
-            return `${value  }:formatted`;
+            return `${value}:formatted`;
           }}
         />
       </TestForm>,

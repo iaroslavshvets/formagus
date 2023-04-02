@@ -67,8 +67,11 @@ describe('Validation', () => {
             defaultValue="Batman"
             name={TestForm.FIELD_ONE_NAME}
             adapter={InputAdapter}
-            onValidate={(value) => {
-              return value === 'Bruce' ? Promise.resolve() : Promise.reject(['nameError']);
+            onValidate={async (value) => {
+              if (value === 'Bruce') {
+                return undefined;
+              }
+              return ['nameError'];
             }}
           />
         </TestForm>,
@@ -104,8 +107,11 @@ describe('Validation', () => {
             defaultValue="Batman"
             name={TestForm.FIELD_TWO_NAME}
             adapter={InputAdapter}
-            onValidate={(value) => {
-              return value === 'Bruce' ? Promise.resolve() : Promise.reject(['nameError']);
+            onValidate={async (value) => {
+              if (value === 'Bruce') {
+                return undefined;
+              }
+              return ['nameError'];
             }}
           />
         </TestForm>,

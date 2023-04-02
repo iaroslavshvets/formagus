@@ -52,6 +52,7 @@ export type FieldCommonProps = {
   controller?: FormController;
 };
 
+// eslint-disable-next-line  @typescript-eslint/no-unused-vars
 export type FieldProps<T = any, P = unknown> = FieldCommonProps & {
   children?: (injectedAdapterProps: AdapterRenderProps) => JSX.Element;
   adapter?: React.ComponentClass<AdapterProps & P> | React.FC<AdapterProps & P>;

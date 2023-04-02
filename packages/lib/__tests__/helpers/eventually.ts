@@ -30,6 +30,7 @@ export const eventually = (conditionCheckFunction: ConditionCheckFunction, opts?
       if (error !== null) {
         error.message = `Timeout of ${options.timeout} ms with: ${error.message}`;
       }
+      // eslint-disable-next-line @typescript-eslint/no-throw-literal
       throw error;
     });
   });
