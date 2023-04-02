@@ -5,9 +5,9 @@ import {observerBatching} from 'mobx-react';
 import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
 import isEmpty from 'lodash/isEmpty';
+import * as mobx from 'mobx';
 import {utils} from './utils';
 import {toJSCompat} from '../utils/toJSCompat';
-import {makeObservableForMobx6} from '../utils/makeObservableForMobx6';
 import type {FieldProps, FormatterFunction, ValidationFunction} from '../Field';
 import type {
   FieldDictionary,
@@ -18,6 +18,7 @@ import type {
   FormValidationErrors,
   FormValues,
 } from './FormController.types';
+import {isMobx6} from '../utils/isMobx6';
 
 export class FormController {
   // Form options passed through form Props or directly through new Controller(options)
@@ -263,7 +264,9 @@ export class FormController {
   constructor(options: FormControllerOptions) {
     observerBatching(ReactDOM.unstable_batchedUpdates);
 
-    makeObservableForMobx6(this);
+    if (isMobx6()) {
+      mobx.makeObservable(this);
+    }
 
     this.options = options;
     this.createFormApi();
