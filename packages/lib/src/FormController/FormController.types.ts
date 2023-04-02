@@ -18,6 +18,7 @@ export interface FormControllerOptions {
   onFormat?: (values: FormValues) => FormValues;
   onSubmit?: (errors: FormValidationErrors, values: FormValues, submitEvent?: FormEvent<any>) => void;
   onSubmitAfter?: (errors: FormValidationErrors, values: FormValues, submitEvent?: FormEvent<any>) => void;
+  onSubmitBefore?: (submitEvent?: FormEvent<any>) => void;
 }
 
 export interface FormField {

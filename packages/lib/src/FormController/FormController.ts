@@ -462,6 +462,10 @@ export class FormController {
       submitEvent.preventDefault();
     }
 
+    if (this.options.onSubmitBefore) {
+      this.options.onSubmitBefore(submitEvent);
+    }
+
     runInAction(() => {
       this.setSubmitCount(this.submitCount + 1);
       this.setIsSubmitting(true);

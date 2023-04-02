@@ -60,6 +60,28 @@ describe('Form props', () => {
     });
   });
 
+  it('onSubmitBefore', async () => {
+    const callbackStack: string[] = [];
+
+    const wrapper = render(
+      <TestForm
+        initialValues={{
+          [TestForm.FIELD_ONE_NAME]: 'John Snow',
+        }}
+        onSubmit={() => callbackStack.push('onSubmit')}
+        onSubmitBefore={() => callbackStack.push('onSubmitBefore')}
+      />,
+    ).container;
+
+    const formDriver = createTestFormDriver({wrapper});
+    formDriver.when.submit();
+
+    await waitFor(wrapper)(() => {
+      const [firstCall, secondCall] = callbackStack;
+      return firstCall === 'onSubmitBefore' && secondCall === 'onSubmit';
+    });
+  });
+
   it('formatter (with field and arrays support)', async () => {
     const FIELD_ONE_NAME = 'array[0].field_one_name';
     const FIELD_TWO_NAME = 'array[0].field_two_name';
