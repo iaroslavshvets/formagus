@@ -15,7 +15,7 @@ export const useField = (props: FieldCommonProps) => {
 
     if (!fieldValue) {
       // component is not yet registered
-      return undefined as any;
+      return undefined;
     }
 
     const {meta, errors} = fieldValue;
@@ -42,12 +42,7 @@ export const useField = (props: FieldCommonProps) => {
           submitCount: controller.API.meta.submitCount,
         },
       },
-      onChange: fieldValue.handlers.onChange,
-      setCustomState: fieldValue.handlers.setCustomState,
-      onFocus: fieldValue.handlers.onFocus,
-      onBlur: fieldValue.handlers.onBlur,
-      validateField: fieldValue.handlers.validateField,
-      validate: fieldValue.handlers.validate,
+      ...fieldValue.handlers,
     };
   });
 
