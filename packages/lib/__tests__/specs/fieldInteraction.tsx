@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {render, fireEvent, cleanup} from '@testing-library/react';
 import {observer} from 'mobx-react';
-import {FormController, Field} from '../../src';
+import {Field, createFormController} from '../../src';
 import {TestForm} from '../components/TestForm';
 import {InputAdapter} from '../components/InputAdapter';
 import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
@@ -11,7 +11,7 @@ describe('Field interactions', () => {
   afterEach(() => cleanup());
 
   it('should keep value if "persist=true"', async () => {
-    const controller = new FormController({});
+    const controller = createFormController({});
 
     const Form = observer(() => {
       const [isDisplayed, setIsDisplayed] = useState(false);
@@ -118,7 +118,7 @@ describe('Field interactions', () => {
   });
 
   it('set custom state', async () => {
-    const formController = new FormController({});
+    const formController = createFormController({});
 
     expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).customState).toEqual({});
 
@@ -147,7 +147,7 @@ describe('Field interactions', () => {
   it('set nested value', async () => {
     const NESTED_FIELD_NAME = `${TestForm.FIELD_ONE_NAME}[0].nested`;
     const NEW_VALUE = 'batman';
-    const formController = new FormController({});
+    const formController = createFormController({});
 
     const wrapper = render(
       <TestForm controller={formController}>

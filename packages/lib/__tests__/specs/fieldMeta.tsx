@@ -1,6 +1,6 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
-import {FormController, Field} from '../../src';
+import {Field, createFormController} from '../../src';
 import {TestForm} from '../components/TestForm';
 import {waitFor} from '../helpers/conditions';
 import {InputAdapter} from '../components/InputAdapter';
@@ -11,7 +11,7 @@ describe('Field meta', () => {
   afterEach(() => cleanup());
 
   it('isRegistered', () => {
-    const formController = new FormController({});
+    const formController = createFormController({});
     expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).isMounted).toEqual(false);
     render(<TestForm controller={formController} />);
     expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).isMounted).toEqual(true);
@@ -77,7 +77,7 @@ describe('Field meta', () => {
   });
 
   it('customState', async () => {
-    const formController = new FormController({});
+    const formController = createFormController({});
 
     expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).customState).toEqual({});
 

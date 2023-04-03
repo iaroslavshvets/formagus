@@ -1,6 +1,6 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
-import {FormController, Field} from '../../src';
+import {Field, createFormController} from '../../src';
 import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
 import {TestForm} from '../components/TestForm';
 import {waitFor} from '../helpers/conditions';
@@ -12,7 +12,7 @@ describe('Validation', () => {
 
   describe('form level', () => {
     it('should be with errors', async () => {
-      const controller = new FormController({
+      const controller = createFormController({
         onSubmit: jest.fn(),
         onValidate: async () => {
           return {
@@ -34,7 +34,7 @@ describe('Validation', () => {
 
   describe('field level', () => {
     it('has errors', async () => {
-      const controller = new FormController({
+      const controller = createFormController({
         onSubmit: jest.fn(),
       });
       const wrapper = render(
@@ -58,7 +58,7 @@ describe('Validation', () => {
     });
 
     it('has errors (async)', async () => {
-      const controller = new FormController({
+      const controller = createFormController({
         onSubmit: jest.fn(),
       });
       const wrapper = render(
@@ -92,7 +92,7 @@ describe('Validation', () => {
 
   describe('form & field level combined', () => {
     it('should be with errors', async () => {
-      const controller = new FormController({
+      const controller = createFormController({
         onSubmit: jest.fn(),
         onValidate: async () => {
           return {

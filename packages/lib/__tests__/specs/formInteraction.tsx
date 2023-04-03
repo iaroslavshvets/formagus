@@ -1,6 +1,6 @@
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import React, {useState} from 'react';
-import {Field, FormController} from '../../src';
+import {createFormController, Field} from '../../src';
 import {InputAdapter} from '../components/InputAdapter';
 import {TestForm} from '../components/TestForm';
 import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
@@ -9,7 +9,7 @@ describe('Form interaction', () => {
   afterEach(() => cleanup());
 
   it('should reset values', async () => {
-    const controller = new FormController({
+    const controller = createFormController({
       initialValues: {
         [TestForm.FIELD_ONE_NAME]: 'batman is cool',
       },
@@ -37,7 +37,7 @@ describe('Form interaction', () => {
   });
 
   it('should reset to specific values, if they are passed as "resetToValues" argument, like "reset({newKey: ‘newValue’})"', async () => {
-    const controller = new FormController({
+    const controller = createFormController({
       initialValues: {
         [TestForm.FIELD_ONE_NAME]: 'Batman is cool',
       },
@@ -93,7 +93,7 @@ describe('Form interaction', () => {
   });
 
   it('should clear values', async () => {
-    const controller = new FormController({
+    const controller = createFormController({
       initialValues: {
         [TestForm.FIELD_ONE_NAME]: 'batman is cool',
       },
@@ -116,7 +116,7 @@ describe('Form interaction', () => {
   });
 
   it('should update field value', async () => {
-    const controller = new FormController({
+    const controller = createFormController({
       initialValues: {
         [TestForm.FIELD_ONE_NAME]: 'batman is cool',
       },
@@ -139,7 +139,7 @@ describe('Form interaction', () => {
   });
 
   it('should submit form with fields info', async () => {
-    const controller = new FormController({
+    const controller = createFormController({
       onValidate: async () => {
         return {
           [TestForm.FIELD_ONE_NAME]: ['nameError'],
@@ -167,7 +167,7 @@ describe('Form interaction', () => {
   });
 
   it('should not re-render field in case other one changed', async () => {
-    const controller = new FormController({
+    const controller = createFormController({
       initialValues: {
         [TestForm.FIELD_ONE_NAME]: '1: initial',
         [TestForm.FIELD_TWO_NAME]: '2: initial',

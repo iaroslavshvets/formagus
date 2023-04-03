@@ -12,6 +12,7 @@ export type {FormAPI, FormValidationErrors, FormValues, FieldErrors, FormField} 
 
 export {utils} from './FormController/utils';
 export {FormController} from './FormController';
+export {createFormController} from './FormController/createFormController';
 export {Field, useField} from './Field';
 export {Form} from './Form/Form';
 export {FormPart} from './FormPart';
