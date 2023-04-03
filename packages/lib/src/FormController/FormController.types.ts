@@ -1,17 +1,16 @@
 import type {FormEvent} from 'react';
 import type {EqualityCheckFunction, FieldProps, FormagusProps} from '../Field';
 
-export type FieldName = string;
 export type FormValues = any;
-export type FieldDictionary<T = unknown> = Record<FieldName, T>;
+export type FieldDictionary<T = unknown> = Record<string, T>;
 export type FormValidationErrors = FieldDictionary | null | undefined;
 export type FieldErrors = any;
 
 export interface FormControllerOptions {
   initialValues?: FormValues;
   onValidate?: (values: any) => Promise<any>;
-  onFormat?: (values: FormValues) => FormValues;
-  onSubmit?: (errors: FormValidationErrors, values: FormValues, submitEvent?: FormEvent<any>) => void;
+  onFormat?: <T = FormValues, K = any>(values: T) => K;
+  onSubmit?: (errors: FormValidationErrors, values: FormValues, submitEvent?: FormEvent<HTMLElement>) => void;
 }
 
 export interface FormField {

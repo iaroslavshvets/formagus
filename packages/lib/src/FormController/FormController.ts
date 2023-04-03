@@ -472,7 +472,7 @@ export class FormController {
   };
 
   // wraps submit function passed as Form `onSubmit` prop after it's being passed to child render function
-  @action submit = async <E>(submitEvent?: React.FormEvent<E>) => {
+  @action submit = async <E extends HTMLElement>(submitEvent?: React.FormEvent<E>) => {
     if (submitEvent) {
       submitEvent.persist();
       submitEvent.preventDefault();

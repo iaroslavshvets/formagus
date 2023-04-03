@@ -23,8 +23,9 @@
     "precommit": "lint-staged",
     "postcommit": "git update-index --again",
     "prepush": "yarn test",
+    "lint": "yarn es-lint && yarn format",
     "format": "prettier --write '{src,__tests__}/**/*.{ts,tsx,js,json,scss,css}'",
-    "lint": "eslint --fix '{src,__tests__}/**/*.{ts,tsx}'",
+    "es-lint": "eslint --fix '{src,__tests__}/**/*.{ts,tsx}'",
     "commit-cz": "git-cz"
   },
   "lint-staged": {
