@@ -52,21 +52,21 @@ export class FormController {
   }
 
   // get all field values
-  @observable values: any = {};
+  @observable protected values: any = {};
 
-  @action updateValues = (fieldName: string, value: any) => {
+  @action protected updateValues = (fieldName: string, value: any) => {
     const safeValue = toJSCompat(value, false);
     utils.setValue(this.values, fieldName, safeValue);
     this.updateFormattedValues(fieldName, safeValue);
   };
 
   // eslint-disable-next-line class-methods-use-this
-  @action setFieldMeta = (field: FormField, meta: Partial<FormField['meta']>) => {
+  @action protected setFieldMeta = (field: FormField, meta: Partial<FormField['meta']>) => {
     Object.assign(field.meta, meta);
   };
 
   // used for passing safe copy of values to users form child render function
-  @action private updateFormattedValues = (fieldName: string, value: any) => {
+  @action protected updateFormattedValues = (fieldName: string, value: any) => {
     const baseValues = cloneDeep(this.values);
     const {onFormat} = this.options;
     const fieldFormatter = this.fieldFormatters[fieldName];
@@ -275,14 +275,14 @@ export class FormController {
   // form FormAPI, which will be passed to child render function or could be retrieved with API prop from controller
   @observable API: FormAPI = {} as any;
 
-  @action createFormApi = () => {
+  @action protected createFormApi = () => {
     this.API = {
       values: {},
       errors: {},
       submit: this.submit,
-      reset: this.reset,
       resetToValues: this.resetToValues,
-      clear: this.clear,
+      reset: () => this.resetToValues(this.options.initialValues || {}),
+      clear: () => this.resetToValues({}),
       setFieldValue: this.setFieldValue,
       setFieldCustomState: this.setFieldCustomState,
       validate: this.validate,
@@ -334,12 +334,12 @@ export class FormController {
   };
 
   // increments upon every submit try
-  @action setSubmitCount = (state: number) => {
+  @action protected setSubmitCount = (state: number) => {
     this.API.meta.submitCount = state;
   };
 
   // general handler for resetting form to specific state
-  @action resetToValues = (values: FormValues) => {
+  @action protected resetToValues = (values: FormValues) => {
     this.fields.forEach((field, name) => {
       const newValue = utils.getValue(values, name);
       const fieldName = field.props?.name!;
@@ -360,18 +360,8 @@ export class FormController {
     this.updateErrorsForEveryField({});
   };
 
-  // resets the form to initial values
-  reset = () => {
-    return this.resetToValues(this.options.initialValues || {});
-  };
-
-  // resets the form to empty values
-  clear = () => {
-    return this.resetToValues({});
-  };
-
   // changes field active state usually based on 'blur'/'focus' events called within the adapter
-  @action changeFieldActiveState = (fieldName: string, isActive: boolean) => {
+  @action protected changeFieldActiveState = (fieldName: string, isActive: boolean) => {
     const field = this.fields.get(fieldName)!;
     if (isActive) {
       this.setFieldMeta(field, {
@@ -385,13 +375,13 @@ export class FormController {
   };
 
   // changes field custom state, that was set by user
-  @action setFieldCustomState = (fieldName: string, key: string, value: any) => {
+  @action protected setFieldCustomState = (fieldName: string, key: string, value: any) => {
     this.createFieldIfDoesNotExist(fieldName);
     this.fields.get(fieldName)!.meta.customState[key] = value;
   };
 
   // changes when adapter onChange handler is called
-  @action setFieldValue = (fieldName: string, value: any) => {
+  @action protected setFieldValue = (fieldName: string, value: any) => {
     this.createFieldIfDoesNotExist(fieldName);
     const field = this.fields.get(fieldName)!;
 
@@ -456,7 +446,7 @@ export class FormController {
 
   // validates the form, by calling form level onValidate function combined with field level validations,
   // passed to Field as `validate` prop
-  validate = async () => {
+  protected validate = async () => {
     this.setIsValidating(true);
 
     const [fieldValidationErrors, formValidationErrors] = await Promise.all([
@@ -472,7 +462,7 @@ export class FormController {
   };
 
   // wraps submit function passed as Form `onSubmit` prop after it's being passed to child render function
-  @action submit = async <E extends HTMLElement>(submitEvent?: React.FormEvent<E>) => {
+  @action protected submit = async <E extends HTMLElement>(submitEvent?: React.FormEvent<E>) => {
     if (submitEvent) {
       submitEvent.persist();
       submitEvent.preventDefault();

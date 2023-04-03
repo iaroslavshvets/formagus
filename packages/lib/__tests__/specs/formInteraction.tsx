@@ -190,7 +190,7 @@ describe('Form interaction', () => {
             type="button"
             data-hook="change_field_2_value"
             onClick={() => {
-              controller.setFieldValue(TestForm.FIELD_TWO_NAME, '2: changed');
+              controller.API.setFieldValue(TestForm.FIELD_TWO_NAME, '2: changed');
             }}
           >
             {`Change value of ${TestForm.FIELD_TWO_NAME}`}
@@ -199,7 +199,7 @@ describe('Form interaction', () => {
             type="button"
             data-hook="change_field_3_value"
             onClick={() => {
-              controller.setFieldValue(TestForm.FIELD_THREE_NAME, '3: changed');
+              controller.API.setFieldValue(TestForm.FIELD_THREE_NAME, '3: changed');
             }}
           >
             {`Change value of ${TestForm.FIELD_THREE_NAME}`}
