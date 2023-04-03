@@ -8,14 +8,7 @@ export type {
   AdapterRenderProps,
 } from './Field';
 export type {FormProps} from './Form/Form.types';
-export type {
-  FormAPI,
-  FormValidationErrors,
-  FormValues,
-  FieldValidationState,
-  FormField,
-  FormFieldMeta,
-} from './FormController';
+export type {FormAPI, FormValidationErrors, FormValues, FieldErrors, FormField} from './FormController';
 
 export {utils} from './FormController/utils';
 export {FormController} from './FormController';

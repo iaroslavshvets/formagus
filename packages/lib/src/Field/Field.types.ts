@@ -1,10 +1,10 @@
 import React from 'react';
 import {FormController} from '../FormController';
-import type {FieldValidationState, FormMeta} from '../FormController';
+import type {FieldErrors, FormMeta} from '../FormController';
 
 export type ValidationFunction =
-  | ((value: any, values?: any) => FieldValidationState)
-  | ((value: any, values?: any) => Promise<FieldValidationState>);
+  | ((value: any, values?: any) => FieldErrors)
+  | ((value: any, values?: any) => Promise<FieldErrors>);
 
 export type FieldAdapter = React.ComponentClass<AdapterProps> | React.FC<AdapterProps>;
 

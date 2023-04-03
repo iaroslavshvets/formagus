@@ -10,7 +10,7 @@ import {toJSCompat} from '../utils/toJSCompat';
 import type {FieldProps, FormatterFunction, ValidationFunction} from '../Field';
 import type {
   FieldDictionary,
-  FieldValidationState,
+  FieldErrors,
   FormAPI,
   FormControllerOptions,
   FormField,
@@ -99,7 +99,7 @@ export class FormController {
       return null;
     }
 
-    const errors: Record<string, FieldValidationState> = {};
+    const errors: Record<string, FieldErrors> = {};
 
     return new Promise<typeof errors>((resolve) => {
       // use forEach instead of async/await to run validations in parallel
@@ -112,7 +112,7 @@ export class FormController {
 
         Promise.resolve(this.runFieldLevelValidation(fieldName))
           .then(
-            (error: FieldValidationState) => {
+            (error: FieldErrors) => {
               if (!(error === null || error === undefined)) {
                 errors[fieldName] = error;
               }
@@ -140,7 +140,7 @@ export class FormController {
   fields = observable.map<string, FormField>();
 
   // eslint-disable-next-line class-methods-use-this
-  @action protected setFieldErrors = (field: FormField, errors?: FieldValidationState) => {
+  @action protected setFieldErrors = (field: FormField, errors?: FieldErrors) => {
     // eslint-disable-next-line no-param-reassign
     field.errors = errors;
   };
@@ -152,22 +152,22 @@ export class FormController {
   };
 
   // runs validation for particular field
-  protected runFieldLevelValidation = (name: string) => {
-    return this.fieldValidations[name](utils.getValue(this.API.values, name), this.API.values);
+  protected runFieldLevelValidation = (fieldName: string) => {
+    return this.fieldValidations[fieldName](utils.getValue(this.API.values, fieldName), this.API.values);
   };
 
-  @action protected addVirtualField = (name: string) => {
-    this.fields.set(name, {
+  @action protected addVirtualField = (fieldName: string) => {
+    this.fields.set(fieldName, {
       errors: null,
       value: undefined,
       props: undefined,
       handlers: {
-        validateField: () => this.validateField(name),
+        validateField: () => this.validateField(fieldName),
         validate: () => this.validate(),
-        onChange: (value: any) => this.setFieldValue(name, value),
-        setCustomState: (key: string, value: any) => this.setFieldCustomState(name, key, value),
-        onFocus: () => this.changeFieldActiveState(name, true),
-        onBlur: () => this.changeFieldActiveState(name, false),
+        onChange: (value: any) => this.setFieldValue(fieldName, value),
+        setCustomState: (key: string, value: any) => this.setFieldCustomState(fieldName, key, value),
+        onFocus: () => this.changeFieldActiveState(fieldName, true),
+        onBlur: () => this.changeFieldActiveState(fieldName, false),
       },
       meta: {
         onEqualityCheck: (a: any, b: any) => a === b || (isEmpty(a) && isEmpty(b)),
@@ -232,8 +232,8 @@ export class FormController {
   };
 
   // called when field is unmounted
-  @action unRegisterField = (name: string) => {
-    const field = this.fields.get(name)!;
+  @action unRegisterField = (fieldName: string) => {
+    const field = this.fields.get(fieldName)!;
     if (field.props!.persist) {
       this.setFieldMeta(field, {
         isMounted: false,
@@ -242,16 +242,16 @@ export class FormController {
       this.updateIsDirtyBasedOnFields();
     } else {
       this.updateIsDirtyBasedOnFields();
-      this.fields.delete(name);
+      this.fields.delete(fieldName);
     }
 
-    this.updateValues(name, undefined);
+    this.updateValues(fieldName, undefined);
   };
 
   @action protected updateErrorsForEveryField = (formValidationErrors: FormValidationErrors) => {
     this.fields.forEach((field, name) => {
       if (field.meta.isMounted) {
-        this.setFieldErrors(field, formValidationErrors && formValidationErrors[name]);
+        this.setFieldErrors(field, formValidationErrors ? (formValidationErrors[name] as FieldErrors) : undefined);
       }
     });
   };
@@ -428,7 +428,7 @@ export class FormController {
       });
     });
 
-    const errors = await (async () => {
+    const errors = (await (async () => {
       try {
         const result = await this.runFieldLevelValidation(fieldName);
         if (result !== undefined && result !== null) {
@@ -438,7 +438,7 @@ export class FormController {
       } catch (e) {
         return e;
       }
-    })();
+    })()) as FieldErrors;
 
     runInAction(() => {
       const field = this.fields.get(fieldName)!;

@@ -1,32 +1,30 @@
 import type {FormEvent} from 'react';
 import type {EqualityCheckFunction, FieldProps, FormagusProps} from '../Field';
 
-export type FieldDictionary<T> = Record<string, T>;
-
-export type FormValidationErrors = FieldDictionary<Invalid> | null;
-
+export type FieldName = string;
 export type FormValues = any;
+export type FieldDictionary<T = unknown> = Record<FieldName, T>;
+export type FormValidationErrors = FieldDictionary | null | undefined;
+export type FieldErrors = any;
 
-export type Valid = null | undefined;
-export type Invalid = any;
-export type FieldValidationState = Valid | Invalid;
+type Tagged<K, T> = K & {__$tag: T};
 
 export interface FormControllerOptions {
   initialValues?: FormValues;
-  onValidate?: (values: any) => Promise<FieldDictionary<Invalid> | undefined>;
+  onValidate?: (values: any) => Promise<any>;
   onFormat?: (values: FormValues) => FormValues;
   onSubmit?: (errors: FormValidationErrors, values: FormValues, submitEvent?: FormEvent<any>) => void;
 }
 
 export interface FormField {
-  errors: FieldValidationState;
-  meta: FormFieldMeta;
-  props: undefined | FieldProps;
+  errors: FieldErrors;
+  meta: FieldMeta;
+  props?: FieldProps;
   value: any;
   handlers: Pick<FormagusProps, 'onChange' | 'setCustomState' | 'onFocus' | 'onBlur' | 'validate' | 'validateField'>;
 }
 
-export interface FormFieldMeta {
+export interface FieldMeta {
   customState: Record<string, any>;
   onEqualityCheck: EqualityCheckFunction;
   initialValue: any;
@@ -64,6 +62,6 @@ export interface FormAPI {
   setFieldValue: (fieldName: string, value: any) => void;
   setFieldCustomState: (fieldName: string, key: string, value: any) => void;
   validate: () => void;
-  getFieldMeta: (fieldName: string) => FormFieldMeta;
+  getFieldMeta: (fieldName: string) => FieldMeta;
   meta: FormMeta;
 }
