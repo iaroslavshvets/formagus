@@ -4,7 +4,6 @@ import {action, computed, observable, runInAction} from 'mobx';
 import {observerBatching} from 'mobx-react';
 import merge from 'lodash/merge';
 import cloneDeep from 'lodash/cloneDeep';
-import isEmpty from 'lodash/isEmpty';
 import * as mobx from 'mobx';
 import {utils} from './utils';
 import {toJSCompat} from '../utils/toJSCompat';
@@ -19,6 +18,7 @@ import type {
   FormValues,
 } from './FormController.types';
 import {isMobx6} from '../utils/isMobx6';
+import {isEmpty} from '../utils/isEmpty';
 
 export class FormController {
   // Form options passed through form Props or directly through new Controller(options)
