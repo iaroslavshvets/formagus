@@ -7,8 +7,6 @@ export type FieldDictionary<T = unknown> = Record<FieldName, T>;
 export type FormValidationErrors = FieldDictionary | null | undefined;
 export type FieldErrors = any;
 
-type Tagged<K, T> = K & {__$tag: T};
-
 export interface FormControllerOptions {
   initialValues?: FormValues;
   onValidate?: (values: any) => Promise<any>;
