@@ -281,8 +281,8 @@ export class FormController {
       errors: {},
       submit: this.submit,
       resetToValues: this.resetToValues,
-      reset: () => this.resetToValues(this.options.initialValues || {}),
-      clear: () => this.resetToValues({}),
+      reset: () => this.resetToValues(this.options.initialValues || {}), // resets the form to initial values
+      clear: () => this.resetToValues({}), // resets the form to empty values
       setFieldValue: this.setFieldValue,
       setFieldCustomState: this.setFieldCustomState,
       validate: this.validate,
