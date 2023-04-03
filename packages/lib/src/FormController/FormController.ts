@@ -113,7 +113,7 @@ export class FormController {
         Promise.resolve(this.runFieldLevelValidation(fieldName))
           .then(
             (error: FieldErrors) => {
-              if (!(error === null || error === undefined)) {
+              if (!isEmpty(error)) {
                 errors[fieldName] = error;
               }
             },
@@ -148,7 +148,7 @@ export class FormController {
   // all onValidate errors
   @action protected setFormValidationErrors = (errors: FormValidationErrors) => {
     this.API.errors = errors && Object.keys(errors).length ? errors : null;
-    this.setIsValid(this.API.errors === null);
+    this.setIsValid(isEmpty(this.API.errors));
   };
 
   // runs validation for particular field
@@ -493,7 +493,7 @@ export class FormController {
         await this.options.onSubmit(errors, values, submitEvent);
       }
 
-      if (this.API.errors === null) {
+      if (isEmpty(this.API.errors)) {
         runInAction(() => {
           this.setInitialValuesToCurrentValues();
           this.setIsSubmitting(false);
