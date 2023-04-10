@@ -375,7 +375,14 @@ export class FormController {
   // changes field custom state, that was set by user
   @action protected setFieldCustomState = (fieldName: string, key: string, value: any) => {
     this.createFieldIfDoesNotExist(fieldName);
-    this.fields.get(fieldName)!.meta.customState[key] = value;
+    const field = this.fields.get(fieldName)!;
+
+    this.setFieldMeta(field, {
+      customState: {
+        ...field.meta.customState,
+        [key]: value,
+      },
+    });
   };
 
   // changes when adapter onChange handler is called
