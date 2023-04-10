@@ -8,21 +8,21 @@ import type {AdapterProps, FieldCommonProps} from './Field.types';
 export const useField = (props: FieldCommonProps) => {
   const controller = useFormController(props);
 
-  const field = computed(() => controller!.fields.get(props.name) as FormField);
+  const computedField = computed(() => controller!.fields.get(props.name) as FormField);
+  const field = computedField.get();
 
   const formagus = computed<Required<AdapterProps['formagus']>>(() => {
-    const fieldValue = field.get();
 
-    if (!fieldValue) {
+    if (!field) {
       // component is not yet registered
       return undefined;
     }
 
-    const {meta, errors} = fieldValue;
+    const {meta, errors} = field;
 
     return {
       name: props.name,
-      value: toJSCompat(fieldValue.value, false),
+      value: toJSCompat(field.value, false),
       meta: {
         customState: toJSCompat(meta.customState),
         errors: toJSCompat(errors),
@@ -42,7 +42,7 @@ export const useField = (props: FieldCommonProps) => {
           submitCount: controller.API.meta.submitCount,
         },
       },
-      ...fieldValue.handlers,
+      ...field.handlers,
     };
   });
 
@@ -57,7 +57,7 @@ export const useField = (props: FieldCommonProps) => {
   }, []);
 
   return {
-    isReady: field.get() !== undefined,
+    isReady: field !== undefined,
     formagus: formagus.get(),
   };
 };
