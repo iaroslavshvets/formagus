@@ -258,7 +258,9 @@ export class FormController {
   };
 
   constructor(options: FormControllerOptions) {
-    observerBatching(ReactDOM.unstable_batchedUpdates);
+    if (observerBatching) {
+      observerBatching(ReactDOM.unstable_batchedUpdates);
+    }
 
     if (isMobx6()) {
       mobx.makeObservable(this);
