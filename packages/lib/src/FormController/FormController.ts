@@ -24,9 +24,8 @@ export class FormController {
   // Form options passed through form Props or directly through new Controller(options)
   protected options!: FormControllerOptions;
 
-  // get all field level validations
   @computed
-  protected get fieldValidations() {
+  protected get fieldLevelValidations() {
     const fieldValidations: FieldDictionary<ValidationFunction> = {};
 
     this.fields.forEach((field, name) => {
@@ -89,7 +88,7 @@ export class FormController {
 
   // executes all field level validators passed to Fields as a `onValidate` prop and returns errors
   protected runFieldLevelValidations = () => {
-    let pendingValidationCount = Object.keys(this.fieldValidations).length;
+    let pendingValidationCount = Object.keys(this.fieldLevelValidations).length;
 
     if (pendingValidationCount === 0) {
       return null;
@@ -99,7 +98,7 @@ export class FormController {
 
     return new Promise<typeof errors>((resolve) => {
       // use forEach instead of async/await to run validations in parallel
-      Object.keys(this.fieldValidations).forEach((fieldName) => {
+      Object.keys(this.fieldLevelValidations).forEach((fieldName) => {
         const field = this.fields.get(fieldName)!;
 
         this.setFieldMeta(field, {
@@ -141,15 +140,14 @@ export class FormController {
     field.errors = errors;
   };
 
-  // all onValidate errors
-  @action protected setFormValidationErrors = (errors: FormValidationErrors) => {
+  @action protected updateErrors = (errors: FormValidationErrors) => {
     this.API.errors = errors && Object.keys(errors).length ? errors : null;
     this.setIsValid(isEmpty(this.API.errors));
   };
 
   // runs validation for particular field
   protected runFieldLevelValidation = (fieldName: string) => {
-    return this.fieldValidations[fieldName](utils.getValue(this.API.values, fieldName), this.API.values);
+    return this.fieldLevelValidations[fieldName](utils.getValue(this.API.values, fieldName), this.API.values);
   };
 
   @action protected addVirtualField = (fieldName: string) => {
@@ -411,7 +409,7 @@ export class FormController {
 
   // validates single field by calling field level validation, passed to Field as `validate` prop
   protected validateField = async (fieldName: string) => {
-    if (!this.fieldValidations[fieldName]) {
+    if (!this.fieldLevelValidations[fieldName]) {
       return;
     }
 
@@ -440,7 +438,7 @@ export class FormController {
       this.setFieldMeta(field, {
         isValidating: false,
       });
-      this.setFormValidationErrors(merge(this.API.errors, {[fieldName]: errors}));
+      this.updateErrors(merge(this.API.errors, {[fieldName]: errors}));
       if (field.meta.isMounted) {
         this.setFieldErrors(field, errors);
       }
@@ -460,7 +458,7 @@ export class FormController {
     ]);
 
     runInAction(() => {
-      this.setFormValidationErrors(merge(fieldValidationErrors, formValidationErrors));
+      this.updateErrors(merge(fieldValidationErrors, formValidationErrors));
       this.updateErrorsForEveryField(this.API.errors);
       this.setIsValidating(false);
     });
