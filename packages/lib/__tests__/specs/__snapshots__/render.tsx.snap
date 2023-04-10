@@ -53,14 +53,19 @@ exports[`Render should render 1`] = `
           false
         </span>
         <span
+          data-hook="meta_form:isValidating"
+        >
+          false
+        </span>
+        <span
           data-hook="meta_form:isSubmitting"
         >
           false
         </span>
         <span
-          data-hook="meta_form:isValidating"
+          data-hook="meta_form:submitCount"
         >
-          false
+          0
         </span>
         <span
           data-hook="meta_form:isValid"
@@ -81,11 +86,6 @@ exports[`Render should render 1`] = `
           data-hook="meta_form:isChanged"
         >
           false
-        </span>
-        <span
-          data-hook="meta_form:submitCount"
-        >
-          0
         </span>
       </div>
       <span
@@ -145,14 +145,19 @@ exports[`Render should render 1`] = `
           false
         </span>
         <span
+          data-hook="meta_form:isValidating"
+        >
+          false
+        </span>
+        <span
           data-hook="meta_form:isSubmitting"
         >
           false
         </span>
         <span
-          data-hook="meta_form:isValidating"
+          data-hook="meta_form:submitCount"
         >
-          false
+          0
         </span>
         <span
           data-hook="meta_form:isValid"
@@ -173,11 +178,6 @@ exports[`Render should render 1`] = `
           data-hook="meta_form:isChanged"
         >
           false
-        </span>
-        <span
-          data-hook="meta_form:submitCount"
-        >
-          0
         </span>
       </div>
       <span

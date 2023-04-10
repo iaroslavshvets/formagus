@@ -32,15 +32,7 @@ export const useField = (props: FieldCommonProps) => {
         isTouched: meta.isTouched,
         isChanged: meta.isChanged,
         isValidating: meta.isValidating,
-        form: {
-          isSubmitting: controller.API.meta.isSubmitting,
-          isValidating: controller.API.meta.isValidating,
-          isValid: controller.API.meta.isValid,
-          isDirty: controller.API.meta.isDirty,
-          isTouched: controller.API.meta.isTouched,
-          isChanged: controller.API.meta.isChanged,
-          submitCount: controller.API.meta.submitCount,
-        },
+        form: controller.API.meta,
       },
       ...field.handlers,
     };
