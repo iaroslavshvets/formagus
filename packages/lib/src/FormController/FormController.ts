@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 import {action, computed, observable, runInAction} from 'mobx';
 import {observerBatching} from 'mobx-react';
 import merge from 'lodash/merge';
-import cloneDeep from 'lodash/cloneDeep';
 import * as mobx from 'mobx';
+import cloneDeep from 'lodash/cloneDeep';
 import {utils} from './utils';
 import {toJSCompat} from '../utils/toJSCompat';
-import type {FieldProps, FormatterFunction, ValidationFunction} from '../Field';
+import type {FieldProps, ValidationFunction} from '../Field';
 import type {
   FieldDictionary,
   FieldErrors,
@@ -26,19 +26,6 @@ export class FormController {
 
   // get all field level validations
   @computed
-  protected get fieldFormatters() {
-    const fieldFormatters: FieldDictionary<FormatterFunction> = {};
-    this.fields.forEach((field, name) => {
-      if (field.meta.isMounted && field.props!.onFormat) {
-        fieldFormatters[name] = field.props!.onFormat as FormatterFunction;
-      }
-    });
-
-    return fieldFormatters;
-  }
-
-  // get all field level validations
-  @computed
   protected get fieldValidations() {
     const fieldValidations: FieldDictionary<ValidationFunction> = {};
 
@@ -51,13 +38,26 @@ export class FormController {
     return fieldValidations;
   }
 
-  // get all field values
-  @observable protected values: any = {};
+  protected safeApiValuesCopy: FormValues = {};
 
-  @action protected updateValues = (fieldName: string, value: any) => {
-    const safeValue = toJSCompat(value, false);
-    utils.setValue(this.values, fieldName, safeValue);
-    this.updateFormattedValues(fieldName, safeValue);
+  @action protected updateAPIValues = (fieldName: string, value: any) => {
+    const dereferencedValue = toJSCompat(value, false);
+    const {onFormat} = this.options;
+    const field = this.fields.get(fieldName);
+
+    utils.setValue(
+      this.safeApiValuesCopy,
+      fieldName,
+      field && field.props?.onFormat && field.meta.isMounted
+        ? field.props.onFormat(dereferencedValue)
+        : dereferencedValue,
+    );
+
+    if (onFormat) {
+      this.safeApiValuesCopy = onFormat(this.safeApiValuesCopy);
+    }
+
+    this.API.values = cloneDeep(this.safeApiValuesCopy);
   };
 
   // eslint-disable-next-line class-methods-use-this
@@ -65,20 +65,16 @@ export class FormController {
     Object.assign(field.meta, meta);
   };
 
-  // used for passing safe copy of values to users form child render function
-  @action protected updateFormattedValues = (fieldName: string, value: any) => {
-    const baseValues = cloneDeep(this.values);
-    const {onFormat} = this.options;
-    const fieldFormatter = this.fieldFormatters[fieldName];
-    utils.setValue(baseValues, fieldName, fieldFormatter ? fieldFormatter(value) : value);
-    this.API.values = onFormat ? onFormat(baseValues) : baseValues;
-  };
-
-  @action protected setInitialValuesToCurrentValues = (values: FormValues = this.values) => {
-    this.options.initialValues = values;
+  @action protected updateInitialValues = (values?: FormValues) => {
+    if (values) {
+      this.options.initialValues = values;
+    }
 
     this.fields.forEach((field, name) => {
       if (field.meta.isMounted) {
+        if (!values) {
+          utils.setValue(this.options.initialValues, name, field.value);
+        }
         this.setFieldMeta(field, {
           initialValue: utils.getValue(this.options.initialValues, name),
         });
@@ -206,7 +202,7 @@ export class FormController {
       },
     });
 
-    this.updateValues(name, initialValue);
+    this.updateAPIValues(name, initialValue);
   };
 
   // called when field is mounted
@@ -228,7 +224,7 @@ export class FormController {
       isRegistered: true,
     });
 
-    this.updateValues(name, field.value);
+    this.updateAPIValues(name, field.value);
   };
 
   // called when field is unmounted
@@ -245,7 +241,7 @@ export class FormController {
       this.fields.delete(fieldName);
     }
 
-    this.updateValues(fieldName, undefined);
+    this.updateAPIValues(fieldName, undefined);
   };
 
   @action protected updateErrorsForEveryField = (formValidationErrors: FormValidationErrors) => {
@@ -350,12 +346,12 @@ export class FormController {
         isChanged: false,
         isDirty: false,
       });
-      this.updateValues(fieldName, newValue);
+      this.updateAPIValues(fieldName, newValue);
     });
     this.setIsTouched(false);
     this.setIsDirty(false);
     this.setIsChanged(false);
-    this.setInitialValuesToCurrentValues(values);
+    this.updateInitialValues(values);
     this.setSubmitCount(0);
     this.updateErrorsForEveryField({});
   };
@@ -395,7 +391,7 @@ export class FormController {
     this.updateIsChangedBasedOnFields();
     this.updateIsDirtyBasedOnFields();
 
-    this.updateValues(fieldName, value);
+    this.updateAPIValues(fieldName, value);
   };
 
   protected createFieldIfDoesNotExist = (fieldName: string) => {
@@ -483,12 +479,12 @@ export class FormController {
         await this.options.onSubmit(errors, values, submitEvent);
       }
 
-      if (isEmpty(this.API.errors)) {
-        runInAction(() => {
-          this.setInitialValuesToCurrentValues();
-          this.setIsSubmitting(false);
-        });
-      }
+      runInAction(() => {
+        if (isEmpty(this.API.errors)) {
+          this.updateInitialValues();
+        }
+        this.setIsSubmitting(false);
+      });
     } catch {
       this.setIsSubmitting(false);
     }

@@ -55,7 +55,8 @@ describe('Form props', () => {
           const formattedValues = {...values};
 
           if (formattedValues.array) {
-            formattedValues.array[0].field_one_name = `${formattedValues.array[0].field_one_name}:formatted`;
+            const value = formattedValues.array[0].field_one_name;
+            formattedValues.array[0].field_one_name = value?.endsWith(':formatted') ? value : `${value}:formatted`;
           }
 
           return formattedValues;
@@ -66,7 +67,7 @@ describe('Form props', () => {
           name={FIELD_TWO_NAME}
           adapter={InputAdapter}
           onFormat={(value: string) => {
-            return `${value}:formatted`;
+            return value?.endsWith(':formatted') ? value : `${value}:formatted`;
           }}
         />
       </TestForm>,
