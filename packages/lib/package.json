@@ -13,7 +13,7 @@
     "node": ">=16"
   },
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "build": "rollup --config",
     "test": "jest",
     "test:unit": "jest",
     "test:watch": "jest --watch --detectOpenHandles",
@@ -37,13 +37,17 @@
       "eslint --fix"
     ]
   },
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/src/index.d.ts",
   "files": [
     "/dist/src",
+    "/dist/index.cjs",
     "/dist/index.js"
   ],
   "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.1",
+    "@rollup/plugin-typescript": "^11.1.0",
     "@testing-library/react": "^12.1.5",
     "@types/flat": "^5.0.2",
     "@types/hoist-non-react-statics": "^3.3.1",
@@ -60,6 +64,11 @@
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "latest",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^4.2.1",
     "husky": "^7.0.4",
     "jest": "^27.5.1",
     "jest-cli": "^27.5.1",
@@ -69,25 +78,18 @@
     "prettier": "^2.8.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "terser-webpack-plugin": "^5.3.7",
+    "rollup": "^3.20.2",
     "trier-promise": "^1.0.1",
     "ts-jest": "^27.1.5",
     "tslib": "^2.5.0",
     "typescript": "^5.0.2",
-    "webpack": "^5.78.0",
-    "webpack-cli": "^4.10.0"
-  },
-  "dependencies": {
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-jsx-a11y": "^6.7.1",
-    "eslint-plugin-prettier": "^4.2.1",
-    "flat": "^4.1.1",
-    "hoist-non-react-statics": "^3.3.2",
-    "lodash": "^4.17.21",
     "prettier-eslint": "^15.0.1",
     "ts-loader": "^9.4.2"
+  },
+  "dependencies": {
+    "flat": "^4.1.1",
+    "hoist-non-react-statics": "^3.3.2",
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
     "mobx": "*",
