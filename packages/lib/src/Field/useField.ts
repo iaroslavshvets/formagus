@@ -13,7 +13,7 @@ export const useField = (props: FieldCommonProps) => {
   const isReady = field !== undefined;
 
   const formagus = computed<Required<AdapterProps['formagus']>>(() => {
-    if (!field) {
+    if (!isReady) {
       // component is not yet registered
       return undefined;
     }
