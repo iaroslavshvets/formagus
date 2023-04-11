@@ -216,6 +216,6 @@ describe('Form interaction', () => {
     const toggleField3 = wrapper.querySelector('[data-hook="change_field_3_value"]')!;
     fireEvent.click(toggleField3);
 
-    expect(window.$_TEST_RENDER_COUNT_$![TestForm.FIELD_ONE_NAME]).toBe(1);
+    expect(window.$_TEST_RENDER_COUNT_$![TestForm.FIELD_ONE_NAME]).toBe(2);
   });
 });

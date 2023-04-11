@@ -10,9 +10,9 @@ export const useField = (props: FieldCommonProps) => {
 
   const computedField = computed(() => controller!.fields.get(props.name) as FormField);
   const field = computedField.get();
+  const isReady = field !== undefined;
 
   const formagus = computed<Required<AdapterProps['formagus']>>(() => {
-
     if (!field) {
       // component is not yet registered
       return undefined;
@@ -32,7 +32,15 @@ export const useField = (props: FieldCommonProps) => {
         isTouched: meta.isTouched,
         isChanged: meta.isChanged,
         isValidating: meta.isValidating,
-        form: controller.API.meta,
+        form: {
+          isSubmitting: controller.API.meta.isSubmitting,
+          isValidating: controller.API.meta.isValidating,
+          isValid: controller.API.meta.isValid,
+          isDirty: controller.API.meta.isDirty,
+          isTouched: controller.API.meta.isTouched,
+          isChanged: controller.API.meta.isChanged,
+          submitCount: controller.API.meta.submitCount,
+        },
       },
       ...field.handlers,
     };
@@ -40,16 +48,19 @@ export const useField = (props: FieldCommonProps) => {
 
   useEffect(() => {
     controller.registerField(props);
-    if (props.onInit) {
-      props.onInit(formagus.get()!);
-    }
     return () => {
       controller.unRegisterField(props.name);
     };
   }, []);
 
+  useEffect(() => {
+    if (isReady && props.onInit) {
+      props.onInit(formagus.get()!);
+    }
+  }, [isReady]);
+
   return {
-    isReady: field !== undefined,
+    isReady,
     formagus: formagus.get(),
   };
 };
