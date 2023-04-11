@@ -1,6 +1,6 @@
-import React, { ComponentProps, JSXElementConstructor } from "react";
-import {FormController} from '../FormController';
-import type {FieldErrors, FormMeta} from '../FormController';
+import React from 'react';
+import type {ComponentProps, JSXElementConstructor} from 'react';
+import type {FormController, FieldErrors, FormMeta} from '../FormController';
 
 export type ValidationFunction =
   | ((value: any, values?: any) => FieldErrors)

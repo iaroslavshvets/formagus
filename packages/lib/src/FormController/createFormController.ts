@@ -1,4 +1,4 @@
-import {FormControllerOptions} from './FormController.types';
+import type {FormControllerOptions} from './FormController.types';
 import {FormController} from './FormController';
 
 export const createFormController = (options: FormControllerOptions) => {

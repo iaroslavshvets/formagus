@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import {computed} from 'mobx';
 import {useFormController} from '../Form/useFormController';
-import {FormField} from '../FormController';
+import type {FormField} from '../FormController';
 import {toJSCompat} from '../utils/toJSCompat';
 import type {AdapterProps, FieldCommonProps} from './Field.types';
 

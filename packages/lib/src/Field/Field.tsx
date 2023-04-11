@@ -1,5 +1,6 @@
-import React, {ComponentProps, JSXElementConstructor} from 'react';
+import React from 'react';
 import {observer} from 'mobx-react';
+import type {JSXElementConstructor} from 'react';
 import {useField} from './useField';
 import type {FieldProps} from './Field.types';
 
