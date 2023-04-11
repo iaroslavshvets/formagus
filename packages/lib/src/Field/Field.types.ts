@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentProps, JSXElementConstructor } from "react";
 import {FormController} from '../FormController';
 import type {FieldErrors, FormMeta} from '../FormController';
 
@@ -53,8 +53,8 @@ export type FieldCommonProps = {
 };
 
 // eslint-disable-next-line  @typescript-eslint/no-unused-vars
-export type FieldProps<T = any, P = unknown> = FieldCommonProps & {
+export type FieldProps<T extends JSXElementConstructor<any> = any> = FieldCommonProps & {
   children?: (injectedAdapterProps: AdapterRenderProps) => JSX.Element;
-  adapter?: React.ComponentClass<AdapterProps & P> | React.FC<AdapterProps & P>;
-  adapterProps?: P; // Will be passed to adapter alongside injected formagus props
+  adapter?: React.ComponentClass<AdapterProps & ComponentProps<T>> | React.FC<AdapterProps & ComponentProps<T>>;
+  adapterProps?: ComponentProps<T>; // Will be passed to adapter alongside injected formagus props
 };

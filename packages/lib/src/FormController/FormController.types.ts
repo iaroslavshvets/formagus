@@ -2,7 +2,7 @@ import type {FormEvent} from 'react';
 import type {EqualityCheckFunction, FieldProps, FormagusProps} from '../Field';
 
 export type FormValues = any;
-export type FieldDictionary<T = unknown> = Record<string, T>;
+export type FieldDictionary<T = any> = Record<string, T>;
 export type FormValidationErrors = FieldDictionary | null | undefined;
 export type FieldErrors = any;
 
