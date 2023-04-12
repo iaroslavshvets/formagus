@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import {action, computed, observable, runInAction} from 'mobx';
 import {observerBatching} from 'mobx-react';
 import merge from 'lodash/merge';
-import * as mobx from 'mobx';
 import cloneDeep from 'lodash/cloneDeep';
 import {utils} from './utils';
 import {toJSCompat} from '../utils/toJSCompat';
@@ -19,6 +18,7 @@ import type {
 } from './FormController.types';
 import {isMobx6} from '../utils/isMobx6';
 import {isEmpty} from '../utils/isEmpty';
+const {makeObservable} = require('mobx');
 
 export class FormController {
   // Form options passed through form Props or directly through new Controller(options)
@@ -260,8 +260,9 @@ export class FormController {
       observerBatching(ReactDOM.unstable_batchedUpdates);
     }
 
-    if (isMobx6()) {
-      mobx.makeObservable(this);
+    // need this check because of mobx 5 compatibility, it can't be simplified because of bundlers in userland
+    if (isMobx6() && makeObservable) {
+      makeObservable(this);
     }
 
     this.options = options;

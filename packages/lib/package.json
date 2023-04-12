@@ -1,6 +1,6 @@
 {
   "name": "formagus",
-  "version": "1.35.7-9",
+  "version": "1.35.7-10",
   "license": "MIT",
   "sideEffects": false,
   "authors": [
@@ -87,7 +87,7 @@
     "typescript": "^5.0.2"
   },
   "dependencies": {
-    "flat": "^4.1.1",
+    "flat": "^5.0.2",
     "hoist-non-react-statics": "^3.3.2",
     "lodash": "^4.17.21"
   },
