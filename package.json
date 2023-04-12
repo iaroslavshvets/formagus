@@ -7,7 +7,7 @@
 	"workspaces": {
 		"packages": [
 			"packages/lib",
-			"packages/site"
+			"packages/docs"
 		]
 	},
 	"husky": {
