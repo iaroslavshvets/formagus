@@ -3,7 +3,7 @@ import {FormController} from './FormController';
 
 export const createFormController = (options: FormControllerOptions, ControllerClass = FormController) => {
   return new ControllerClass(options) as Omit<
-    InstanceType<typeof FormController>,
+    InstanceType<typeof ControllerClass>,
     'fields' | 'registerField' | 'unRegisterField'
   >;
 };
