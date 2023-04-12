@@ -72,7 +72,7 @@
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
-    "flat": "^4.1.1",
+    "flat": "^5.0.1",
     "hoist-non-react-statics": "^3.3.2",
     "lodash": "^4.17.21",
     "ts-loader": "^9.4.2"
