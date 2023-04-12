@@ -18,7 +18,7 @@ import type {
 } from './FormController.types';
 import {isMobx6} from '../utils/isMobx6';
 import {isEmpty} from '../utils/isEmpty';
-const {makeObservable} = require('mobx');
+const {makeObservable} = require('mobx'); // require as import might not work in case of mobx5 bundling in userland
 
 export class FormController {
   // Form options passed through form Props or directly through new Controller(options)
@@ -260,8 +260,7 @@ export class FormController {
       observerBatching(ReactDOM.unstable_batchedUpdates);
     }
 
-    // need this check because of mobx 5 compatibility, it can't be simplified because of bundlers in userland
-    if (isMobx6() && makeObservable) {
+    if (isMobx6()) {
       makeObservable(this);
     }
 
