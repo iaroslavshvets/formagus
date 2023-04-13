@@ -74,8 +74,10 @@ export class FormController {
         if (!values) {
           utils.setValue(this.options.initialValues, name, field.value);
         }
+        const initialValue = utils.getValue(this.options.initialValues, name);
         this.setFieldMeta(field, {
-          initialValue: utils.getValue(this.options.initialValues, name),
+          initialValue,
+          isDirty: !field.meta.onEqualityCheck(field.value, initialValue),
         });
       }
     });
@@ -489,6 +491,7 @@ export class FormController {
       runInAction(() => {
         if (isEmpty(this.API.errors)) {
           this.updateInitialValues();
+          this.updateIsDirtyBasedOnFields();
         }
         this.setIsSubmitting(false);
       });
