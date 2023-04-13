@@ -1,11 +1,10 @@
 # This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
 # For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
 
-name: Node.js Package
+name: formagus tests
 
 on:
-  release:
-    types: [created]
+  push
 
 jobs:
   build:
@@ -15,12 +14,14 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+      - name: Install dependencies
       - uses: borales/actions-yarn@v4
         with:
           cmd: install
-      - name: Test the app
+      - name: Test library
         uses: borales/actions-yarn@v4
         with:
           cmd: test:ci-coverage
+      - name: Upload coverage to Codecov
       - run: npx codecov
       - run: codecov --token=:3eda0bdf-2301-4bad-8fcf-0ec45b6e61fa
