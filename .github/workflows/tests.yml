@@ -22,6 +22,7 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           cmd: test:ci-coverage
+      - name: Install codecov
+        run: npx codecov
       - name: Upload coverage to Codecov
-      - run: npx codecov
-      - run: codecov --token=:3eda0bdf-2301-4bad-8fcf-0ec45b6e61fa
+        run: codecov --token=:3eda0bdf-2301-4bad-8fcf-0ec45b6e61fa
