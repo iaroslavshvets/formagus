@@ -2,8 +2,7 @@
 > Forms with a drip of magic
 
 [![NPM Version][npm-image]][npm-url]
-[![Build status](https://github.com/iaroslavshvets/formagus/actions/workflows/tests.yml/badge.svg)](https://github.com/iaroslavshvets/formagus/actions/workflows/tests.yml)
-![Coverage Status][codecov-image]
+[![build](https://github.com/iaroslavshvets/formagus/actions/workflows/push.yml/badge.svg)](https://github.com/iaroslavshvets/formagus/actions/workflows/push.yml)![Coverage Status][codecov-image]
  [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) ![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
 
 ## DOCS: https://formagus.surge.sh
