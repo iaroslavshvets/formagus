@@ -10,12 +10,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install node
+        uses: actions/setup-node@v3
         with:
           node-version: 16
       - name: Install dependencies
-      - uses: borales/actions-yarn@v4
+        uses: borales/actions-yarn@v4
         with:
           cmd: install
       - name: Test library
