@@ -1,7 +1,9 @@
 # Formagus
 > Forms with a drip of magic
 
-[![NPM Version][npm-image]][npm-url] [![Build Status](https://travis-ci.org/iaroslavshvets/formagus.svg?branch=master)](https://travis-ci.org/iaroslavshvets/formagus) ![Coverage Status][codecov-image]
+[![NPM Version][npm-image]][npm-url]
+[![Build status](https://github.com/iaroslavshvets/formagus/actions/workflows/tests.yml/badge.svg)](https://github.com/iaroslavshvets/formagus/actions/workflows/tests.yml)
+![Coverage Status][codecov-image]
  [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) ![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
 
 ## DOCS: https://formagus.surge.sh
