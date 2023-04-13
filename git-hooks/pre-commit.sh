@@ -14,4 +14,4 @@ run_precommit_hook () {
 }
 
 run_precommit_hook packages/lib
-run_precommit_hook packages/site
+run_precommit_hook packages/docs

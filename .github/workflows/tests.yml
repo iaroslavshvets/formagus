@@ -23,10 +23,12 @@ jobs:
       - name: Build library
         uses: borales/actions-yarn@v4
         with:
+          dir: packages/library
           cmd: build
       - name: Test library
         uses: borales/actions-yarn@v4
         with:
+          dir: packages/library
           cmd: test:ci-coverage
       - uses: codecov/codecov-action@v3
         with:

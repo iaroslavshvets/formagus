@@ -14,4 +14,4 @@ run_postcommit_hook () {
 }
 
 run_postcommit_hook packages/lib
-run_postcommit_hook packages/site
+run_postcommit_hook packages/docs
