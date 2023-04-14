@@ -480,8 +480,7 @@ export class FormController {
 
     await this.validate();
 
-    const errors = toJSCompat(this.API.errors);
-    const values = toJSCompat(this.API.values);
+    const [errors, values] = toJSCompat([this.API.errors, this.API.values]);
 
     try {
       if (this.options.onSubmit) {
