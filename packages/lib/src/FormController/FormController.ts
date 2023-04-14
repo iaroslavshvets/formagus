@@ -16,7 +16,7 @@ import type {
   FormValidationErrors,
   FormValues,
 } from './FormController.types';
-import {isMobx6} from '../utils/isMobx6';
+import {isMobx6Used} from '../utils/isMobx6Used';
 import {isEmpty} from '../utils/isEmpty';
 const {makeObservable} = require('mobx'); // require as import might not work in case of mobx5 bundling in userland
 
@@ -262,7 +262,7 @@ export class FormController {
       observerBatching(ReactDOM.unstable_batchedUpdates);
     }
 
-    if (isMobx6()) {
+    if (isMobx6Used()) {
       makeObservable(this);
     }
 
