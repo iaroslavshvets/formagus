@@ -1,4 +1,4 @@
-import {flatten} from 'flat';
+import * as flat from 'flat';
 import type {FormValidationErrors} from '../FormController';
 
 export const flattenValues = (
@@ -6,7 +6,7 @@ export const flattenValues = (
   safe = true,
 ): Record<string, string[]> | null => {
   return formValidationErrors
-    ? flatten(formValidationErrors, {
+    ? flat.flatten(formValidationErrors, {
         safe,
       })
     : null;

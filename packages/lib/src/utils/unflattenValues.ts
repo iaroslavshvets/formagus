@@ -1,6 +1,6 @@
-import {unflatten} from 'flat';
+import * as flat from 'flat';
 import type {FormValidationErrors} from '../FormController';
 
 export const unflattenValues = (formValidationErrors: FormValidationErrors) => {
-  return unflatten(formValidationErrors);
+  return flat.unflatten(formValidationErrors);
 };

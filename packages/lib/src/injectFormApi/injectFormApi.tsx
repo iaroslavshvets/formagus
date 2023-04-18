@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import hoistNonReactStatics from 'hoist-non-react-statics';
+import * as hoistNonReactStatics from 'hoist-non-react-statics';
 import {observer} from 'mobx-react';
 import {useFormController} from '../Form/useFormController';
 
@@ -17,7 +17,7 @@ function ComponentWithInjectedFormApi(WrappedComponent: any) {
 
   (InjectFormApiWrapper as any).displayName = 'FormagusInjectFormApiWrapper';
 
-  hoistNonReactStatics(InjectFormApiWrapper, WrappedComponent);
+  hoistNonReactStatics.default(InjectFormApiWrapper, WrappedComponent);
 
   return InjectFormApiWrapper;
 }
