@@ -10,7 +10,6 @@ export type {
 export type {FormProps} from './Form/Form.types';
 export type {FormAPI, FormValidationErrors, FormValues, FieldErrors, FormField} from './FormController';
 
-export {utils} from './FormController/utils';
 /** inner implementation, use createFormController to create controllers */
 export {FormController} from './FormController';
 export {createFormController} from './FormController/createFormController';

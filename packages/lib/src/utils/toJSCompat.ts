@@ -6,5 +6,5 @@ export const toJSCompat = (() => {
 
   return <T>(value: T, detectCycles?: boolean): T => {
     return isMobx6 ? toJS(value, detectCycles) : toJS(value, {detectCycles});
-  }
+  };
 })();

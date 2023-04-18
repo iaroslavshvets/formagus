@@ -11,6 +11,10 @@ export interface FormControllerOptions {
   onValidate?: (values: any) => Promise<any>;
   onFormat?: <T = FormValues, K = any>(values: T) => K;
   onSubmit?: (errors: FormValidationErrors, values: FormValues, submitEvent?: FormEvent<HTMLElement>) => void;
+  fieldValueToFormValuesConverter?: {
+    set: (values: any, fieldName: string, value: any) => any;
+    get: (values: any, fieldName: string) => any;
+  };
 }
 
 export interface FormField {
