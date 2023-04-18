@@ -53,7 +53,7 @@ export class FormController {
 
     this.fields.forEach((field, name) => {
       if (field.meta.isMounted && field.props!.onValidate) {
-        fieldValidations[name] = field.props!.onValidate as ValidationFunction;
+        fieldValidations[name] = field.props!.onValidate;
       }
     });
 
@@ -353,7 +353,7 @@ export class FormController {
   // general handler for resetting form to specific state
   @action protected resetToValues = (values: FormValues) => {
     this.fields.forEach((field, name) => {
-      const newValue = this.options.fieldValueToFormValuesConverter!.get(values, name);
+      const newValue = this.options.fieldValueToFormValuesConverter.get(values, name);
       const fieldName = field.props?.name!;
       // eslint-disable-next-line no-param-reassign
       field.value = newValue;
