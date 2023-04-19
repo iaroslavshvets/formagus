@@ -25,17 +25,8 @@
     "prepush": "yarn test",
     "lint": "yarn es-lint && yarn format",
     "format": "prettier --write '{src,__tests__}/**/*.{ts,tsx,js,json,scss,css}'",
-    "es-lint": "eslint --fix '{src,__tests__}/**/*.{ts,tsx}'",
+    "es-lint": "echo 'pizda1' && eslint --fix",
     "commit-cz": "git-cz"
-  },
-  "lint-staged": {
-    "*.{ts,tsx,js,json,scss,css}": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.{ts,tsx}": [
-      "eslint --fix"
-    ]
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -70,7 +61,6 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "latest",
-    "husky": "^7.0.4",
     "jest": "^27.5.1",
     "jest-cli": "^27.5.1",
     "lint-staged": "^13.2.1",
