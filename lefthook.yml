@@ -15,7 +15,7 @@
 pre-commit:
   commands:
     eslint:
-      glob: "*.{js,ts,jsx,tsx}"
+      glob: "packages/lib/**/*.{js,ts,jsx,tsx}"
       root: "packages/lib"
       run: yarn lint && git add {staged_files}
       skip:
