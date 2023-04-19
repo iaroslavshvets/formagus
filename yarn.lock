@@ -2960,6 +2960,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mdx-js/react@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "@mdx-js/react@npm:2.3.0"
+  dependencies:
+    "@types/mdx": ^2.0.0
+    "@types/react": ">=16"
+  peerDependencies:
+    react: ">=16"
+  checksum: 6d647115703dbe258f7fe372499fa8c6fe17a053ff0f2a208111c9973a71ae738a0ed376770445d39194d217e00e1a015644b24f32c2f7cb4f57988de0649b15
+  languageName: node
+  linkType: hard
+
 "@mdx-js/util@npm:1.6.22":
   version: 1.6.22
   resolution: "@mdx-js/util@npm:1.6.22"
@@ -4147,6 +4159,13 @@ __metadata:
   dependencies:
     "@types/unist": "*"
   checksum: 375f08b3910505291b2815d9edf55dca63c6c4ec58dd33c866521e68905fd4e8fe83b397e167af2cdd3799b851a7e02817d58610cfb814aee20bf3c52d87be9b
+  languageName: node
+  linkType: hard
+
+"@types/mdx@npm:^2.0.0":
+  version: 2.0.4
+  resolution: "@types/mdx@npm:2.0.4"
+  checksum: f7c960dfb971ad1efe7fa9402ef7fb6368951c1e95e0a2acb2a422bf61a482e3c4bbbbaca1079fa850aad803ad44a7edcfcd79da9d18a5472c3dba78411e2e8d
   languageName: node
   linkType: hard
 
@@ -14041,7 +14060,7 @@ __metadata:
     "@docusaurus/module-type-aliases": 2.4.0
     "@docusaurus/preset-classic": 2.4.0
     "@docusaurus/theme-mermaid": ^2.4.0
-    "@mdx-js/react": ^1.6.22
+    "@mdx-js/react": ^2.3.0
     "@tsconfig/docusaurus": ^1.0.7
     clsx: ^1.2.1
     prism-react-renderer: ^1.3.5
