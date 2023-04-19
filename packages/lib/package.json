@@ -69,7 +69,7 @@
     "tslint-config-wix": "^1.0.31",
     "typescript": "^4.9.5",
     "webpack": "^5.78.0",
-    "webpack-cli": "^4.10.0"
+    "webpack-cli": "^5.0.1"
   },
   "dependencies": {
     "flat": "^4.1.1",
