@@ -25,7 +25,7 @@
     "prepush": "yarn test",
     "lint": "yarn es-lint && yarn format",
     "format": "prettier --write '{src,__tests__}/**/*.{ts,tsx,js,json,scss,css}'",
-    "es-lint": "echo 'pizda' && eslint --fix '{src,__tests__}/**/*.{ts,tsx}'",
+    "es-lint": "eslint --fix '{src,__tests__}/**/*.{ts,tsx}'",
     "commit-cz": "git-cz"
   },
   "main": "./dist/index.cjs",
