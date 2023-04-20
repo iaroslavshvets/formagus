@@ -3,7 +3,7 @@ import {computed} from 'mobx';
 import {useFormController} from '../Form/useFormController';
 import type {FormField} from '../FormController';
 import {toJSCompat} from '../utils/toJSCompat';
-import type {AdapterProps, FieldCommonProps} from './Field.types';
+import type {FieldCommonProps, FormagusProps} from './Field.types';
 
 export const useField = (props: FieldCommonProps) => {
   const controller = useFormController(props);
@@ -12,7 +12,7 @@ export const useField = (props: FieldCommonProps) => {
   const field = computedField.get();
   const isReady = field !== undefined;
 
-  const formagus = computed<Required<AdapterProps['formagus']>>(() => {
+  const formagus = computed<Required<FormagusProps> | undefined>(() => {
     if (!isReady) {
       // component is not yet registered
       return undefined;

@@ -6,9 +6,9 @@ import type {FieldProps} from './Field.types';
 import {FieldContextProvider} from './FieldContext';
 
 export const Field = observer(<T extends JSXElementConstructor<any>>(props: FieldProps<T>) => {
-  const {isReady, formagus} = useField(props);
+  const {formagus} = useField(props);
 
-  if (!isReady) {
+  if (!formagus) {
     return null;
   }
 

@@ -11,7 +11,7 @@ export interface InputAdapterProps extends AdapterProps {
   callback?: Function;
   useRenderCounter?: boolean;
   useHook?: boolean;
-  customState?: Record<string, any>
+  customState?: Record<string, any>;
 }
 
 export const InputAdapter = observer((props: InputAdapterProps) => {
