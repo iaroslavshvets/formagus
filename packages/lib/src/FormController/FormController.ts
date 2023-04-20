@@ -4,8 +4,7 @@ import {action, computed, observable, runInAction} from 'mobx';
 import {observerBatching} from 'mobx-react';
 import _merge from 'lodash/merge';
 import _cloneDeep from 'lodash/cloneDeep';
-import _set from 'lodash/set';
-import _get from 'lodash/get';
+import {utils} from "../utils/utils";
 import {toJSCompat} from '../utils/toJSCompat';
 import type {FieldProps, ValidationFunction} from '../Field';
 import type {
@@ -39,8 +38,8 @@ export class FormController {
     this.options = {
       ...options,
       fieldValueToFormValuesConverter: options.fieldValueToFormValuesConverter || {
-        get: (values, name) => _get(values, name),
-        set: (values, name, value) => _set(values, name, value),
+        get: (values, name) => utils.getValue(values, name),
+        set: (values, name, value) => utils.setValue(values, name, value),
       },
     };
 

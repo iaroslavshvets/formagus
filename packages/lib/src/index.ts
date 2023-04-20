@@ -18,3 +18,4 @@ export {Form} from './Form/Form';
 export {FormPart} from './FormPart';
 export {injectFormApi} from './injectFormApi';
 export {useFormApi} from './useFormApi';
+export {utils} from './utils/utils';
