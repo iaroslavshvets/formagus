@@ -54,7 +54,8 @@ export type FieldCommonProps = {
 
 // eslint-disable-next-line  @typescript-eslint/no-unused-vars
 export type FieldProps<T extends JSXElementConstructor<any> = any> = FieldCommonProps & {
-  children?: (injectedAdapterProps: AdapterRenderProps) => JSX.Element;
+  children?: JSX.Element;
+  render?: (injectedAdapterProps: AdapterRenderProps) => JSX.Element;
   adapter?: React.ComponentClass<AdapterProps & ComponentProps<T>> | React.FC<AdapterProps & ComponentProps<T>>;
   adapterProps?: ComponentProps<T>; // Will be passed to adapter alongside injected formagus props
 };

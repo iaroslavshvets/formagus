@@ -124,8 +124,9 @@ describe('Field interactions', () => {
 
     const wrapper = render(
       <TestForm>
-        <Field name={TestForm.FIELD_ONE_NAME}>
-          {(formagusProps) => (
+        <Field
+          name={TestForm.FIELD_ONE_NAME}
+          render={(formagusProps) => (
             <InputAdapter
               {...formagusProps}
               customState={{
@@ -133,7 +134,7 @@ describe('Field interactions', () => {
               }}
             />
           )}
-        </Field>
+        />
       </TestForm>,
     ).container;
 

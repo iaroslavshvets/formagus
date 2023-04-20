@@ -5,30 +5,35 @@ import {observer} from 'mobx-react';
 import {Meta} from './Meta';
 import {Errors} from './Errors';
 import type {AdapterProps} from '../../../src';
+import {useFormField} from '../../../src';
 
 export interface InputAdapterProps extends AdapterProps {
   callback?: Function;
   useRenderCounter?: boolean;
-  customState?: {
-    [key: string]: string;
-  };
+  useHook?: boolean;
+  customState?: Record<string, any>
 }
 
 export const InputAdapter = observer((props: InputAdapterProps) => {
-  const {onFocus, onBlur, validate, name, onChange, value, meta} = props.formagus!;
+  const formagusHook = useFormField();
+  const {useHook = true, useRenderCounter} = props;
+  const {onFocus, onBlur, validate, name, setCustomState, onChange, value, meta} = useHook
+    ? formagusHook
+    : props.formagus!;
   const {errors} = meta;
   const normalizedValue = isNil(value) ? '' : value;
 
   useEffect(() => {
-    if (props.useRenderCounter) {
+    if (useRenderCounter) {
       window.$_TEST_RENDER_COUNT_$![name] = window.$_TEST_RENDER_COUNT_$![name] + 1 || 1;
     }
   });
-  const setCustomState = () => {
+
+  const onSetCustomState = () => {
     if (props.customState) {
       const key = Object.keys(props.customState)[0];
       const customState = props.customState[key];
-      props.formagus!.setCustomState(key, customState);
+      setCustomState(key, customState);
     }
   };
 
@@ -49,7 +54,7 @@ export const InputAdapter = observer((props: InputAdapterProps) => {
 
       <Meta meta={meta} />
 
-      <span data-hook="set-custom-state" onClick={setCustomState} />
+      <span data-hook="set-custom-state" onClick={onSetCustomState} />
       <span
         data-hook="callback"
         onClick={() => {

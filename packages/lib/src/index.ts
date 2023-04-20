@@ -13,7 +13,7 @@ export type {FormAPI, FormValidationErrors, FormValues, FieldErrors, FormField} 
 /** inner implementation, use createFormController to create controllers */
 export {FormController} from './FormController';
 export {createFormController} from './FormController/createFormController';
-export {Field, useField} from './Field';
+export {Field, useField, useFormField} from './Field';
 export {Form} from './Form/Form';
 export {FormPart} from './FormPart';
 export {injectFormApi} from './injectFormApi';

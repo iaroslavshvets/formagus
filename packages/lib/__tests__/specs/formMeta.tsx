@@ -130,7 +130,9 @@ describe('Form meta', () => {
         return (
           <TestForm>
             <Field defaultValue="" name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
-            {!hideField && <Field defaultValue="" name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} persist />}
+            {!hideField && (
+              <Field defaultValue="" name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} persist={true} />
+            )}
           </TestForm>
         );
       }

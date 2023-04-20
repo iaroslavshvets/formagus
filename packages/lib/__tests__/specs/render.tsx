@@ -12,10 +12,14 @@ describe('Render', () => {
     const wrapper = render(
       <TestForm>
         <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
-        <Field name={TestForm.FIELD_TWO_NAME}>
-          {(props) => {
-            return <InputAdapter {...props} />;
+        <Field
+          name={TestForm.FIELD_TWO_NAME}
+          render={(props) => {
+            return <InputAdapter {...props} useHook={false} />;
           }}
+        />
+        <Field name={TestForm.FIELD_THREE_NAME}>
+          <InputAdapter />
         </Field>
       </TestForm>,
     ).container;
