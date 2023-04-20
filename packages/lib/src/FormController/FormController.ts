@@ -24,7 +24,7 @@ const {makeObservable} = require('mobx'); // require as import might not work in
 
 export class FormController {
   // Form options passed through form Props or directly through new Controller(options)
-  protected options!: WithRequiredProperty<FormControllerOptions, 'fieldValueToFormValuesConverter'>;
+  protected options: WithRequiredProperty<FormControllerOptions, 'fieldValueToFormValuesConverter'>;
 
   constructor(options: FormControllerOptions) {
     if (observerBatching) {
@@ -38,8 +38,8 @@ export class FormController {
     this.options = {
       ...options,
       fieldValueToFormValuesConverter: options.fieldValueToFormValuesConverter || {
-        get: (values, name) => utils.getValue(values, name),
-        set: (values, name, value) => utils.setValue(values, name, value),
+        get: utils.getValue,
+        set: utils.setValue,
       },
     };
 
