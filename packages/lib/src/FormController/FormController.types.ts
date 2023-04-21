@@ -12,7 +12,7 @@ export type CreateFormController = ReturnType<typeof createFormController>;
 export interface FormControllerOptions {
   initialValues?: FormValues;
   onValidate?: (values: any) => Promise<any>;
-  onFormat?: <T = FormValues>(values: T) => any;
+  onFormat?: (values: FormValues) => any;
   onSubmit?: (errors: FormValidationErrors, values: FormValues, submitEvent?: FormEvent<HTMLElement>) => void;
   fieldValueToFormValuesConverter?: {
     set: (values: any, fieldName: string, value: any) => any;
