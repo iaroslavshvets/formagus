@@ -1,6 +1,6 @@
 import React from 'react';
 import type {ComponentProps, JSXElementConstructor} from 'react';
-import type {FormController, FieldErrors, FormMeta} from '../FormController';
+import type {FormController, FieldErrors, FormMeta, CreateFormController} from '../FormController';
 
 export type ValidationFunction =
   | ((value: any, values?: any) => FieldErrors)
@@ -53,7 +53,8 @@ export type FieldCommonProps = {
 };
 
 // eslint-disable-next-line  @typescript-eslint/no-unused-vars
-export type FieldProps<T extends JSXElementConstructor<any> = any> = FieldCommonProps & {
+export type FieldProps<T extends JSXElementConstructor<any> = any> = Omit<FieldCommonProps, 'controller'> & {
+  controller?: CreateFormController;
   children?: JSX.Element;
   render?: (injectedAdapterProps: AdapterRenderProps) => JSX.Element;
   adapter?: React.ComponentClass<AdapterProps & ComponentProps<T>> | React.FC<AdapterProps & ComponentProps<T>>;
