@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import {FormController} from '../FormController';
 import {FormPart} from '../FormPart';
 import {FormControllerContext} from './FormControllerContext';
+import {createFormController} from '../FormController/createFormController';
 import type {FormProps} from './Form.types';
 
 export const Form = observer((props: FormProps) => {
@@ -16,12 +17,12 @@ export const Form = observer((props: FormProps) => {
     }
     // controller can be injected by prop and created in any place,
     // or be created on the flight with passed configuration through props
-    return props.controller || new FormController(restProps);
+    return props.controller || createFormController(restProps);
   });
 
   // creates the provider and sets the controller, which will control all the form state
   return (
-    <FormControllerContext.Provider value={controller}>
+    <FormControllerContext.Provider value={controller as FormController}>
       <FormPart>{children}</FormPart>
     </FormControllerContext.Provider>
   );
