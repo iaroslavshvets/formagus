@@ -1,8 +1,8 @@
 import React from 'react';
 import {observer} from 'mobx-react';
+import type {JSXElementConstructor} from 'react';
 import {useField} from './useField';
 import {FieldContextProvider} from './FieldContext';
-import type {JSXElementConstructor} from 'react';
 import type {FieldProps} from './Field.types';
 
 export const Field = observer(<T extends JSXElementConstructor<any>>(props: FieldProps<T>) => {

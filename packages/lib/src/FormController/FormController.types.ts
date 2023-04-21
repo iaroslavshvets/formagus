@@ -1,10 +1,13 @@
 import type {FormEvent} from 'react';
 import type {EqualityCheckFunction, FieldProps, FormagusProps} from '../Field';
+import {createFormController} from './createFormController';
 
 export type FormValues = any;
 export type FieldDictionary<T = any> = Record<string, T>;
 export type FormValidationErrors = FieldDictionary | null | undefined;
 export type FieldErrors = any;
+
+export type CreateFormController = ReturnType<typeof createFormController>;
 
 export interface FormControllerOptions {
   initialValues?: FormValues;
