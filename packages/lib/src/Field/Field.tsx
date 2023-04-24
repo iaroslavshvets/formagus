@@ -1,12 +1,12 @@
 import React from 'react';
 import {observer} from 'mobx-react';
 import type {JSXElementConstructor} from 'react';
-import {useField} from './useField';
+import {useRegisterField} from './useRegisterField';
 import {FieldContextProvider} from './FieldContext';
 import type {FieldProps} from './Field.types';
 
 export const Field = observer(<T extends JSXElementConstructor<any>>(props: FieldProps<T>) => {
-  const {formagus} = useField(props as Omit<FieldProps<T>, 'controller'>);
+  const {formagus} = useRegisterField(props as Omit<FieldProps<T>, 'controller'>);
 
   if (!formagus) {
     return null;

@@ -195,7 +195,7 @@ const InputAdapter = (props) => {
 graph TD
 A(`Form` render)
 A -->|1-st render //`Field` | B(`Field` is returning null)
-B -->|useEffect //`useField`| C(`Field` registers itself in `FormController`)
+B -->|useEffect //`useRegisterField`| C(`Field` registers itself in `FormController`)
 C --> |2-nd render // `Field` receives value and other meta-data from `FormController`| D(`Field` renders props.adapter and passing data as `formagus` prop)
 D --> |1-st render // `InputAdapter` | E(Actual input is being rendered)
 ```

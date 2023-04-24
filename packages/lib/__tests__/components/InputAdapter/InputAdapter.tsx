@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 import {Meta} from './Meta';
 import {Errors} from './Errors';
 import type {AdapterProps} from '../../../src';
-import {useFormField} from '../../../src';
+import {useField} from '../../../src';
 
 export interface InputAdapterProps extends AdapterProps {
   callback?: Function;
@@ -15,7 +15,7 @@ export interface InputAdapterProps extends AdapterProps {
 }
 
 export const InputAdapter = observer((props: InputAdapterProps) => {
-  const formagusHook = useFormField();
+  const formagusHook = useField();
   const {useHook = true, useRenderCounter} = props;
   const {onFocus, onBlur, validate, name, setCustomState, onChange, value, meta} = useHook
     ? formagusHook

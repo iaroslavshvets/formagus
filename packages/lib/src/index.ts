@@ -20,7 +20,7 @@ export type {
 /** inner implementation, use createFormController to create controllers */
 export {FormController} from './FormController';
 export {createFormController} from './FormController/createFormController';
-export {Field, useField, useFormField} from './Field';
+export {Field, useRegisterField, useField} from './Field';
 export {Form} from './Form/Form';
 export {FormPart} from './FormPart';
 export {injectFormApi} from './injectFormApi';

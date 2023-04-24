@@ -5,7 +5,7 @@ import type {FormField} from '../FormController';
 import {toJSCompat} from '../utils/toJSCompat';
 import type {FieldCommonProps, FormagusProps} from './Field.types';
 
-export const useField = (props: FieldCommonProps) => {
+export const useRegisterField = (props: FieldCommonProps) => {
   const controller = useFormController(props);
 
   const computedField = computed(() => controller!.fields.get(props.name) as FormField);

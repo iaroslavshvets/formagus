@@ -298,6 +298,7 @@ export class FormController {
       setFieldCustomState: this.setFieldCustomState,
       validate: this.validate,
       getFieldMeta: this.getFieldMeta,
+      rawFields: this.fields,
       meta: {
         isValidating: false,
         isSubmitting: false,

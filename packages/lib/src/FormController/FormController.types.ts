@@ -1,4 +1,5 @@
 import type {FormEvent} from 'react';
+import {ObservableMap} from 'mobx';
 import type {EqualityCheckFunction, FieldProps, FormagusProps} from '../Field';
 import {createFormController} from './createFormController';
 
@@ -68,4 +69,5 @@ export interface FormAPI {
   validate: () => void;
   getFieldMeta: (fieldName: string) => FieldMeta;
   meta: FormMeta;
+  rawFields: ObservableMap<string, FormField>;
 }
