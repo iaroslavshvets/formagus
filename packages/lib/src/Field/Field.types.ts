@@ -1,6 +1,8 @@
 import React from 'react';
 import type {ComponentProps, JSXElementConstructor} from 'react';
-import type {FormController, FieldErrors, FormMeta, CreateFormController} from '../FormController';
+import type {FieldErrors, FormMeta} from '../FormController/FormController.types';
+import type {FormController} from '../createFormController/createFormController.types';
+import type {FormControllerClass} from '../FormController/FormControllerClass';
 
 export type ValidationFunction =
   | ((value: any, values?: any) => FieldErrors)
@@ -49,12 +51,12 @@ export type FieldCommonProps = {
   onEqualityCheck?: EqualityCheckFunction;
   onInit?: (API: FormagusProps) => void;
   persist?: boolean;
-  controller?: FormController;
+  controller?: FormControllerClass;
 };
 
 // eslint-disable-next-line  @typescript-eslint/no-unused-vars
 export type FieldProps<T extends JSXElementConstructor<any> = any> = Omit<FieldCommonProps, 'controller'> & {
-  controller?: CreateFormController;
+  controller?: FormController;
   children?: JSX.Element;
   render?: (injectedAdapterProps: AdapterRenderProps) => JSX.Element;
   adapter?: React.ComponentClass<AdapterProps & ComponentProps<T>> | React.FC<AdapterProps & ComponentProps<T>>;

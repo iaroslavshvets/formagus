@@ -22,7 +22,7 @@ import {isEmpty} from '../utils/isEmpty';
 
 const {makeObservable} = require('mobx'); // require as import might not work in case of mobx5 bundling in userland
 
-export class FormController {
+export class FormControllerClass {
   // Form options passed through form Props or directly through new Controller(options)
   protected options: WithRequiredProperty<FormControllerOptions, 'fieldValueToFormValuesConverter'>;
 

@@ -14,12 +14,12 @@ export type {
   FormValues,
   FieldErrors,
   FormField,
-  CreateFormController,
-} from './FormController';
+} from './FormController/FormController.types';
+export type {FormController} from './createFormController/createFormController.types';
 
 /** inner implementation, use createFormController to create controllers */
-export {FormController} from './FormController';
-export {createFormController} from './FormController/createFormController';
+export {FormControllerClass} from './FormController/FormControllerClass';
+export {createFormController} from './createFormController/createFormController';
 export {Field, useRegisterField, useField} from './Field';
 export {Form} from './Form/Form';
 export {FormPart} from './FormPart';
