@@ -1,14 +1,14 @@
 import React from 'react';
-import {injectFormApi} from '../../../src/injectFormApi';
-import type {FormAPI} from '../../../src/FormController';
+import {injectFormApi, type FormAPI} from '../../../src';
 
-@(injectFormApi as any)
+@injectFormApi
 export class FieldValueDisplayWithInject extends React.Component<{
   formApi?: FormAPI;
   dataHook: string;
   displayedFieldName: string;
 }> {
   render() {
-    return <div data-hook={this.props.dataHook}>{this.props.formApi!.values[this.props.displayedFieldName]}</div>;
+    const {displayedFieldName, dataHook, formApi} = this.props;
+    return <div data-hook={dataHook}>{formApi!.values[displayedFieldName]}</div>;
   }
 }

@@ -1,6 +1,6 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
-import {FormController, Field} from '../../src';
+import {Field, createFormController} from '../../src';
 import {TestForm} from '../components/TestForm';
 import {waitFor} from '../helpers/conditions';
 import {InputAdapter} from '../components/InputAdapter';
@@ -8,12 +8,10 @@ import {createTestFormDriver} from '../components/TestForm.driver';
 import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
 
 describe('Field meta', () => {
-  afterEach(() => {
-    return cleanup();
-  });
+  afterEach(() => cleanup());
 
   it('isRegistered', () => {
-    const formController = new FormController({});
+    const formController = createFormController({});
     expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).isMounted).toEqual(false);
     render(<TestForm controller={formController} />);
     expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).isMounted).toEqual(true);
@@ -79,7 +77,7 @@ describe('Field meta', () => {
   });
 
   it('customState', async () => {
-    const formController = new FormController({});
+    const formController = createFormController({});
 
     expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).customState).toEqual({});
 
@@ -92,9 +90,7 @@ describe('Field meta', () => {
 
     expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).customState[CUSTOM_KEY]).toBe(CUSTOM_VALUE);
 
-    await waitFor(wrapper)(() => {
-      return fieldDriver.get.meta(`customState:${CUSTOM_KEY}`) === CUSTOM_VALUE;
-    });
+    await waitFor(() => fieldDriver.get.meta(`customState:${CUSTOM_KEY}`) === CUSTOM_VALUE);
   });
 
   it('isValidating', async () => {
@@ -113,8 +109,6 @@ describe('Field meta', () => {
 
     expect(fieldDriver.get.meta('isValidating')).toBe('true');
 
-    await waitFor(wrapper)(() => {
-      return fieldDriver.get.meta('form:isValidating') === 'false';
-    });
+    await waitFor(() => fieldDriver.get.meta('form:isValidating') === 'false');
   });
 });

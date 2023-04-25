@@ -1,0 +1,12 @@
+#   Refer for explanation to following link:
+#   https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md
+
+pre-commit:
+  commands:
+    eslint:
+      glob: "packages/lib/**/*.{js,ts,jsx,tsx}"
+      root: "packages/lib"
+      run: yarn build && yarn lint && git add {staged_files}
+      skip:
+        - merge
+        - rebase

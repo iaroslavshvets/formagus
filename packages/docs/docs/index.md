@@ -81,7 +81,7 @@ Adapter – is a component, which will receive all available state as `props.for
 are injected by the `<Field/>`. Now, back to school:
 
 ```jsx
-import {Form, Field} from 'formagus';
+import {Form, Field, useField} from 'formagus';
 
 const onSubmit = (errors, values) => {
     if (errors === null) {
@@ -92,8 +92,8 @@ const onSubmit = (errors, values) => {
     }
 };
 
-const InputAdapter = (props) => {
-  const {formagus} = props;
+const InputAdapter = () => {
+  const formagus = useField();
   return (
     <input
       value={formagus.value}
@@ -122,14 +122,14 @@ Much better, now everything works. So, as you see, basic usage is pretty simple.
 
 ## Advanced usage
 
-There are cases, when you need to interact with the form from outside of it. `FormController` hurries to the rescue.
+There are cases, when you need to interact with the form from outside of it. `createFormController` hurries to the rescue.
 
 1. in any place in the code
 
 ```jsx
-import {FormController} from 'formagus';
+import {createFormController} from 'formagus';
 
-const formController = new FormController({
+const formController = createFormController({
   onSubmit: (errors, values) => {
     if (errors === null) {
       console.log(`Submitted values: ${values}`);
@@ -139,7 +139,7 @@ const formController = new FormController({
   }
 });
 
-export {formController}
+export { formController }
 ```
 
 2. later in React Component
@@ -155,7 +155,9 @@ const Formagus = (props) => (
     {({submit}) => {
       return (
         <form onSubmit={submit}>
-          <Field name="form_field_1" adapter={InputAdapter}>
+          <Field name="form_field_1">
+            <InputAdapter />
+          </Field>
           <button type="submit">Submit</button>
         </form>
       )
@@ -172,7 +174,7 @@ then no other props should be passed to the `Form` and all the options should be
 ### Most simple form
 ```tsx
 const InputAdapter = (props) => {
-  const {formagus} = props;
+  const formagus = useField();
   return (
     <input
       value={formagus.value}
@@ -184,9 +186,11 @@ const InputAdapter = (props) => {
 }
 
 <Form>
-	{() => {
-		<Field name="formagus_user" adapter={InputAdapter} />
-	}}
+  {() => {
+    <Field name="formagus_user">
+      <InputAdapter />
+    </Field>
+  }}
 </Form>
 ```
 
@@ -195,7 +199,7 @@ const InputAdapter = (props) => {
 graph TD
 A(`Form` render)
 A -->|1-st render //`Field` | B(`Field` is returning null)
-B -->|useEffect //`useField`| C(`Field` registers itself in `FormController`)
+B -->|useEffect //`useRegisterField`| C(`Field` registers itself in `FormController`)
 C --> |2-nd render // `Field` receives value and other meta-data from `FormController`| D(`Field` renders props.adapter and passing data as `formagus` prop)
 D --> |1-st render // `InputAdapter` | E(Actual input is being rendered)
 ```

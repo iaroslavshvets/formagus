@@ -1,17 +1,15 @@
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import React, {useState} from 'react';
-import {Field, FormController} from '../../src';
+import {createFormController, Field} from '../../src';
 import {InputAdapter} from '../components/InputAdapter';
 import {TestForm} from '../components/TestForm';
 import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
 
 describe('Form interaction', () => {
-  afterEach(() => {
-    return cleanup();
-  });
+  afterEach(() => cleanup());
 
   it('should reset values', async () => {
-    const controller = new FormController({
+    const controller = createFormController({
       initialValues: {
         [TestForm.FIELD_ONE_NAME]: 'batman is cool',
       },
@@ -38,14 +36,14 @@ describe('Form interaction', () => {
     expect(fieldDriver.get.value()).toBe('batman is cool');
   });
 
-  it('Should reset to specific values, if they are passed as "resetToValues" argument, like "reset({newKey: ‘newValue’})"', async () => {
-    const controller = new FormController({
+  it('should reset to specific values, if they are passed as "resetToValues" argument, like "reset({newKey: ‘newValue’})"', async () => {
+    const controller = createFormController({
       initialValues: {
         [TestForm.FIELD_ONE_NAME]: 'Batman is cool',
       },
     });
 
-    const FormWithHiddenField = () => {
+    function FormWithHiddenField() {
       const [hiddenField, setHiddenField] = useState(true);
 
       return (
@@ -63,7 +61,7 @@ describe('Form interaction', () => {
           </button>
         </TestForm>
       );
-    };
+    }
 
     const wrapper = render(<FormWithHiddenField />).container;
 
@@ -85,7 +83,7 @@ describe('Form interaction', () => {
     expect(fieldDriver.get.meta('form:isTouched')).toBe('false');
     expect(fieldDriver.get.value()).toBe('Batman is Bruce Wayne');
 
-    const toggleField = wrapper.querySelector(`[data-hook="toggle-field"]`)!;
+    const toggleField = wrapper.querySelector('[data-hook="toggle-field"]')!;
     fireEvent.click(toggleField);
 
     const fieldDriver2 = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
@@ -95,7 +93,7 @@ describe('Form interaction', () => {
   });
 
   it('should clear values', async () => {
-    const controller = new FormController({
+    const controller = createFormController({
       initialValues: {
         [TestForm.FIELD_ONE_NAME]: 'batman is cool',
       },
@@ -118,7 +116,7 @@ describe('Form interaction', () => {
   });
 
   it('should update field value', async () => {
-    const controller = new FormController({
+    const controller = createFormController({
       initialValues: {
         [TestForm.FIELD_ONE_NAME]: 'batman is cool',
       },
@@ -141,7 +139,7 @@ describe('Form interaction', () => {
   });
 
   it('should submit form with fields info', async () => {
-    const controller = new FormController({
+    const controller = createFormController({
       onValidate: async () => {
         return {
           [TestForm.FIELD_ONE_NAME]: ['nameError'],
@@ -166,5 +164,58 @@ describe('Form interaction', () => {
     expect(values).toEqual({
       [TestForm.FIELD_ONE_NAME]: 'batman is cool',
     });
+  });
+
+  it('should not re-render field in case other one changed', async () => {
+    const controller = createFormController({
+      initialValues: {
+        [TestForm.FIELD_ONE_NAME]: '1: initial',
+        [TestForm.FIELD_TWO_NAME]: '2: initial',
+      },
+    });
+
+    const FormWithTwoFields = () => {
+      return (
+        <TestForm controller={controller}>
+          <Field<typeof InputAdapter>
+            name={TestForm.FIELD_ONE_NAME}
+            adapter={InputAdapter}
+            adapterProps={{
+              useRenderCounter: true,
+            }}
+          />
+          <Field name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} />
+          <Field name={TestForm.FIELD_THREE_NAME} adapter={InputAdapter} />
+          <button
+            type="button"
+            data-hook="change_field_2_value"
+            onClick={() => {
+              controller.API.setFieldValue(TestForm.FIELD_TWO_NAME, '2: changed');
+            }}
+          >
+            {`Change value of ${TestForm.FIELD_TWO_NAME}`}
+          </button>
+          <button
+            type="button"
+            data-hook="change_field_3_value"
+            onClick={() => {
+              controller.API.setFieldValue(TestForm.FIELD_THREE_NAME, '3: changed');
+            }}
+          >
+            {`Change value of ${TestForm.FIELD_THREE_NAME}`}
+          </button>
+        </TestForm>
+      );
+    };
+
+    const wrapper = await render(<FormWithTwoFields />).container;
+
+    const toggleField2 = wrapper.querySelector('[data-hook="change_field_2_value"]')!;
+    fireEvent.click(toggleField2);
+
+    const toggleField3 = wrapper.querySelector('[data-hook="change_field_3_value"]')!;
+    fireEvent.click(toggleField3);
+
+    expect(window.$_TEST_RENDER_COUNT_$![TestForm.FIELD_ONE_NAME]).toBe(2);
   });
 });

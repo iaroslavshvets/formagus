@@ -1,4 +1,4 @@
 import React from 'react';
-import type {FormController} from '../FormController';
+import type {FormControllerClass} from '../FormController/FormControllerClass';
 
-export const FormControllerContext: React.Context<FormController> = React.createContext(null as any);
+export const FormControllerContext: React.Context<FormControllerClass> = React.createContext(null as any);

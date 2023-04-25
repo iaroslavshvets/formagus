@@ -7,9 +7,7 @@ import {FieldValueDisplayWithHook, createFieldValueDisplayDriver} from '../compo
 import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
 
 describe('useFormController', () => {
-  afterEach(() => {
-    return cleanup();
-  });
+  afterEach(() => cleanup());
 
   const TEST_INITIAL_VALUE = 'testtest';
   const NEW_VALUE = 'new-value';
@@ -23,7 +21,10 @@ describe('useFormController', () => {
         }}
       >
         <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
-        <FieldValueDisplayWithHook dataHook={INNER_FORM_COMPONENT_DATA_HOOK} displayedFieldName={TestForm.FIELD_ONE_NAME} />
+        <FieldValueDisplayWithHook
+          dataHook={INNER_FORM_COMPONENT_DATA_HOOK}
+          displayedFieldName={TestForm.FIELD_ONE_NAME}
+        />
       </TestForm>,
     ).container;
 

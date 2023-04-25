@@ -7,20 +7,22 @@ export type {
   FieldProps,
   AdapterRenderProps,
 } from './Field';
-export type {FormProps} from './Form';
+export type {FormProps} from './Form/Form.types';
 export type {
   FormAPI,
   FormValidationErrors,
   FormValues,
-  FieldValidationState,
+  FieldErrors,
   FormField,
-  FormFieldMeta,
-} from './FormController';
+} from './FormController/FormController.types';
+export type {FormController} from './createFormController/createFormController.types';
 
-export {utils} from './FormController/utils';
-export {FormController} from './FormController';
-export {Field, useField} from './Field';
-export {Form} from './Form';
+/** inner implementation, use createFormController to create controllers */
+export {FormControllerClass} from './FormController/FormControllerClass';
+export {createFormController} from './createFormController/createFormController';
+export {Field, useRegisterField, useField} from './Field';
+export {Form} from './Form/Form';
 export {FormPart} from './FormPart';
 export {injectFormApi} from './injectFormApi';
 export {useFormApi} from './useFormApi';
+export {utils} from './utils/utils';

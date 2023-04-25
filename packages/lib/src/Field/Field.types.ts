@@ -1,10 +1,12 @@
 import React from 'react';
-import {FormController} from '../FormController';
-import type {FieldValidationState, FormMeta} from '../FormController';
+import type {ComponentProps, JSXElementConstructor} from 'react';
+import type {FieldErrors, FormMeta} from '../FormController/FormController.types';
+import type {FormController} from '../createFormController/createFormController.types';
+import type {FormControllerClass} from '../FormController/FormControllerClass';
 
 export type ValidationFunction =
-  | ((value: any, values?: any) => FieldValidationState)
-  | ((value: any, values?: any) => Promise<FieldValidationState>);
+  | ((value: any, values?: any) => FieldErrors)
+  | ((value: any, values?: any) => Promise<FieldErrors>);
 
 export type FieldAdapter = React.ComponentClass<AdapterProps> | React.FC<AdapterProps>;
 
@@ -49,11 +51,14 @@ export type FieldCommonProps = {
   onEqualityCheck?: EqualityCheckFunction;
   onInit?: (API: FormagusProps) => void;
   persist?: boolean;
-  controller?: FormController;
+  controller?: FormControllerClass;
 };
 
-export type FieldProps<T = any> = FieldCommonProps & {
-  children?: (injectedAdapterProps: AdapterRenderProps) => JSX.Element;
-  adapter?: React.ComponentClass<AdapterProps & T> | React.FC<AdapterProps & T>;
-  adapterProps?: any; // Will be passed to adapter alongside injected formagus props
+// eslint-disable-next-line  @typescript-eslint/no-unused-vars
+export type FieldProps<T extends JSXElementConstructor<any> = any> = Omit<FieldCommonProps, 'controller'> & {
+  controller?: FormController;
+  children?: JSX.Element;
+  render?: (injectedAdapterProps: AdapterRenderProps) => JSX.Element;
+  adapter?: React.ComponentClass<AdapterProps & ComponentProps<T>> | React.FC<AdapterProps & ComponentProps<T>>;
+  adapterProps?: ComponentProps<T>; // Will be passed to adapter alongside injected formagus props
 };

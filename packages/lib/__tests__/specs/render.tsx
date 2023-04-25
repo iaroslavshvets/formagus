@@ -6,18 +6,20 @@ import {Field} from '../../src';
 import {InputAdapter} from '../components/InputAdapter';
 
 describe('Render', () => {
-  afterEach(() => {
-    return cleanup();
-  });
+  afterEach(() => cleanup());
 
   it('should render', () => {
     const wrapper = render(
       <TestForm>
         <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
-        <Field name={TestForm.FIELD_TWO_NAME}>
-          {(props) => {
-            return <InputAdapter {...props} />;
+        <Field
+          name={TestForm.FIELD_TWO_NAME}
+          render={(props) => {
+            return <InputAdapter {...props} useHook={false} />;
           }}
+        />
+        <Field name={TestForm.FIELD_THREE_NAME}>
+          <InputAdapter />
         </Field>
       </TestForm>,
     ).container;

@@ -1,16 +1,10 @@
 import {toJS} from 'mobx';
+import {isMobx6Used} from './isMobx6Used';
 
 export const toJSCompat = (() => {
-  try {
-    // Mobx < 6 has different signature of function and doesn't provide its version in runtime explicitly.
-    toJS({}, {detectCycles: true});
-    return (value: any, detectCycles?: boolean) => {
-      return toJS(value, {detectCycles});
-    };
-  } catch (e) {
-    // Mobx >= 6
-    return (value: any) => {
-      return toJS(value);
-    };
-  }
+  const isMobx6 = isMobx6Used();
+
+  return <T>(value: T, detectCycles?: boolean): T => {
+    return isMobx6 ? toJS(value, detectCycles) : toJS(value, {detectCycles});
+  };
 })();

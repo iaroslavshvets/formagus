@@ -1,23 +1,31 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import {useField} from './useField';
+import type {JSXElementConstructor} from 'react';
+import {useRegisterField} from './useRegisterField';
+import {FieldContextProvider} from './FieldContext';
 import type {FieldProps} from './Field.types';
 
-export const Field = observer((props: FieldProps) => {
-  const {isReady, formagus} = useField(props);
+export const Field = observer(<T extends JSXElementConstructor<any>>(props: FieldProps<T>) => {
+  const {formagus} = useRegisterField(props as Omit<FieldProps<T>, 'controller'>);
 
-  if (!isReady) {
-    return <></>;
+  if (!formagus) {
+    return null;
   }
 
-  const hasAdapterComponent = 'adapter' in props && props.adapter !== undefined;
-
-  if (hasAdapterComponent) {
+  if (props.adapter) {
     const Adapter: any = props.adapter;
-    return <Adapter formagus={formagus} {...props.adapterProps} />;
-  } else {
-    return props.children!({formagus: formagus!});
+    return (
+      <FieldContextProvider value={formagus}>
+        <Adapter formagus={formagus} {...props.adapterProps} />
+      </FieldContextProvider>
+    );
   }
+
+  if (props.render) {
+    return <FieldContextProvider value={formagus}>{props.render({formagus: formagus!})}</FieldContextProvider>;
+  }
+
+  return <FieldContextProvider value={formagus}>{props.children}</FieldContextProvider>;
 });
 
 (Field as any).displayName = 'FormagusField';

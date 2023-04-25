@@ -8,6 +8,26 @@ module.exports = {
       ignoreCoverageForAllDecorators: true,
     },
   },
+  transform: {
+    '^.+\\.(ts|tsx)$': [
+      '@swc/jest',
+      {
+        sourceMaps: true,
+        jsc: {
+          parser: {
+            syntax: 'typescript',
+            tsx: true,
+            decorators: true,
+          },
+          transform: {
+            react: {
+              runtime: 'automatic',
+            },
+          },
+        },
+      },
+    ],
+  },
   testRegex: '/__tests__/specs/.*\\.(ts|tsx)$',
   testPathIgnorePatterns: ['/__tests__/specs/.*\\.d.ts$'],
   moduleFileExtensions: ['js', 'json', 'ts', 'tsx'],

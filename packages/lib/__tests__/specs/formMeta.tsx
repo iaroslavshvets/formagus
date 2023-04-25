@@ -8,9 +8,7 @@ import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.
 import {createTestFormDriver} from '../components/TestForm.driver';
 
 describe('Form meta', () => {
-  afterEach(() => {
-    return cleanup();
-  });
+  afterEach(() => cleanup());
 
   it('isValid', async () => {
     const wrapper = render(
@@ -19,11 +17,10 @@ describe('Form meta', () => {
         onValidate={async (values) => {
           if (values[TestForm.FIELD_ONE_NAME] === 'batman') {
             return {};
-          } else {
-            return {
-              [TestForm.FIELD_ONE_NAME]: ['notBatman', 'notBruceWayne'],
-            };
           }
+          return {
+            [TestForm.FIELD_ONE_NAME]: ['notBatman', 'notBruceWayne'],
+          };
         }}
       />,
     ).container;
@@ -34,15 +31,15 @@ describe('Form meta', () => {
 
     fieldDriver.when.change('harvy');
     formDriver.when.submit();
-    await waitFor(wrapper)(() => fieldDriver.get.meta('form:isValid') === 'false');
+    await waitFor(() => fieldDriver.get.meta('form:isValid') === 'false');
 
     fieldDriver.when.change('batman');
     formDriver.when.submit();
-    await waitFor(wrapper)(() => fieldDriver.get.meta('form:isValid') === 'true');
+    await waitFor(() => fieldDriver.get.meta('form:isValid') === 'true');
 
     fieldDriver.when.change('joker');
     fieldDriver.when.validate();
-    await waitFor(wrapper)(() => fieldDriver.get.meta('form:isValid') === 'false');
+    await waitFor(() => fieldDriver.get.meta('form:isValid') === 'false');
   });
 
   it('isTouched', () => {
@@ -77,7 +74,7 @@ describe('Form meta', () => {
 
     fieldDriver.when.blur();
     expect(fieldDriver.get.meta('form:isChanged')).toBe('false');
-    
+
     fieldDriver.when.change('batman');
     expect(fieldDriver.get.meta('form:isChanged')).toBe('true');
 
@@ -112,7 +109,7 @@ describe('Form meta', () => {
     it('using initial field default value', () => {
       const wrapper = render(
         <TestForm>
-          <Field defaultValue={''} name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+          <Field defaultValue="" name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
         </TestForm>,
       ).container;
       const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
@@ -129,14 +126,16 @@ describe('Form meta', () => {
     });
 
     it('should ignore unmounted fields when calculating form isDirty', () => {
-      const TestComponent = ({hideField = false}) => (
-        <TestForm>
-          <Field defaultValue={''} name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
-          {!hideField && (
-            <Field defaultValue={''} name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} persist={true} />
-          )}
-        </TestForm>
-      );
+      function TestComponent({hideField = false}) {
+        return (
+          <TestForm>
+            <Field defaultValue="" name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+            {!hideField && (
+              <Field defaultValue="" name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} persist={true} />
+            )}
+          </TestForm>
+        );
+      }
 
       const {container, rerender} = render(<TestComponent />);
       const wrapper = container;
@@ -149,7 +148,7 @@ describe('Form meta', () => {
 
       expect(fieldDriver.get.meta('form:isDirty')).toBe('true');
 
-      rerender(<TestComponent hideField={true}/>);
+      rerender(<TestComponent hideField={true} />);
 
       expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
     });
@@ -168,13 +167,7 @@ describe('Form meta', () => {
   });
 
   it('isSubmitting', async () => {
-    const wrapper = render(
-      <TestForm
-        onValidate={() => {
-          return Promise.resolve({});
-        }}
-      />,
-    ).container;
+    const wrapper = render(<TestForm onValidate={() => Promise.resolve({})} />).container;
     const formDriver = createTestFormDriver({wrapper});
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
@@ -184,9 +177,7 @@ describe('Form meta', () => {
 
     expect(fieldDriver.get.meta('form:isSubmitting')).toBe('true');
 
-    await waitFor(wrapper)(() => {
-      return fieldDriver.get.meta('form:isSubmitting') === 'false';
-    });
+    await waitFor(() => fieldDriver.get.meta('form:isSubmitting') === 'false');
   });
 
   it('isValidating', async () => {
@@ -207,8 +198,6 @@ describe('Form meta', () => {
 
     expect(fieldDriver.get.meta('form:isValidating')).toBe('true');
 
-    await waitFor(wrapper)(() => {
-      return fieldDriver.get.meta('form:isValidating') === 'false';
-    });
+    await waitFor(() => fieldDriver.get.meta('form:isValidating') === 'false');
   });
 });

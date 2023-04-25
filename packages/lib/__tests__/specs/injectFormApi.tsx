@@ -1,16 +1,13 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {TestForm} from '../components/TestForm';
-import {Field} from '../../src/Field';
+import {Field} from '../../src';
 import {InputAdapter} from '../components/InputAdapter';
 import {FieldValueDisplayWithInject, createFieldValueDisplayDriver} from '../components/FieldValueDisplay';
 import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
-import {injectFormApi} from '../../src/injectFormApi';
 
 describe('injectFormApi', () => {
-  afterEach(() => {
-    return cleanup();
-  });
+  afterEach(() => cleanup());
 
   const TEST_INITIAL_VALUE = 'testtest';
   const NEW_VALUE = 'new-value';
@@ -24,7 +21,10 @@ describe('injectFormApi', () => {
         }}
       >
         <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
-        <FieldValueDisplayWithInject dataHook={INNER_FORM_COMPONENT_DATA_HOOK} displayedFieldName={TestForm.FIELD_ONE_NAME} />
+        <FieldValueDisplayWithInject
+          dataHook={INNER_FORM_COMPONENT_DATA_HOOK}
+          displayedFieldName={TestForm.FIELD_ONE_NAME}
+        />
       </TestForm>,
     ).container;
 

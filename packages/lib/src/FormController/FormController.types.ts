@@ -1,34 +1,32 @@
 import type {FormEvent} from 'react';
-import type {EqualityCheckFunction, FieldProps} from '../Field';
-import type {FormagusProps} from '../Field';
-
-export type FieldDictionary<T> = Record<string, T>;
-
-export type FormValidationErrors = FieldDictionary<Invalid> | null;
+import {ObservableMap} from 'mobx';
+import type {EqualityCheckFunction, FieldProps, FormagusProps} from '../Field';
 
 export type FormValues = any;
-
-export type Valid = null | undefined;
-export type Invalid = any;
-export type FieldValidationState = Valid | Invalid;
+export type FieldDictionary<T = any> = Record<string, T>;
+export type FormValidationErrors = FieldDictionary | null | undefined;
+export type FieldErrors = any;
 
 export interface FormControllerOptions {
   initialValues?: FormValues;
-  onValidate?: (values: any) => Promise<FieldDictionary<Invalid> | {}>;
-  onFormat?: (values: FormValues) => FormValues;
-  onSubmit?: (errors: FormValidationErrors, values: FormValues, submitEvent?: FormEvent<any>) => void;
-  onSubmitAfter?: (errors: FormValidationErrors, values: FormValues, submitEvent?: FormEvent<any>) => void;
+  onValidate?: (values: any) => Promise<any>;
+  onFormat?: (values: FormValues) => any;
+  onSubmit?: (errors: FormValidationErrors, values: FormValues, submitEvent?: FormEvent<HTMLElement>) => void;
+  fieldValueToFormValuesConverter?: {
+    set: (values: any, fieldName: string, value: any) => any;
+    get: (values: any, fieldName: string) => any;
+  };
 }
 
 export interface FormField {
-  errors: FieldValidationState;
-  meta: FormFieldMeta;
-  props: undefined | FieldProps;
+  errors: FieldErrors;
+  meta: FieldMeta;
+  props?: FieldProps;
   value: any;
   handlers: Pick<FormagusProps, 'onChange' | 'setCustomState' | 'onFocus' | 'onBlur' | 'validate' | 'validateField'>;
 }
 
-export interface FormFieldMeta {
+export interface FieldMeta {
   customState: Record<string, any>;
   onEqualityCheck: EqualityCheckFunction;
   initialValue: any;
@@ -66,6 +64,7 @@ export interface FormAPI {
   setFieldValue: (fieldName: string, value: any) => void;
   setFieldCustomState: (fieldName: string, key: string, value: any) => void;
   validate: () => void;
-  getFieldMeta: (fieldName: string) => FormFieldMeta;
+  getFieldMeta: (fieldName: string) => FieldMeta;
   meta: FormMeta;
+  rawFields: ObservableMap<string, FormField>;
 }

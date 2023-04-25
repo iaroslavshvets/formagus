@@ -1,14 +1,17 @@
 import React from 'react';
-import type {FormAPI, FormControllerOptions} from '../../src/FormController';
-import {Field, Form} from '../../src/';
+import type {FormAPI, FormControllerOptions} from '../../src/FormController/FormController.types';
+import {Field, Form} from '../../src';
 import {InputAdapter} from './InputAdapter';
 
 export class TestForm extends React.Component<FormControllerOptions & {controller?: any}> {
   static FIELD_ONE_NAME = 'field_one_name';
+
   static FIELD_TWO_NAME = 'field_two_name';
 
+  static FIELD_THREE_NAME = 'field_three_name';
+
   render() {
-    const {controller, ...formProps} = this.props;
+    const {controller, children, ...formProps} = this.props;
     const props = controller ? {controller} : formProps;
 
     return (
@@ -18,9 +21,7 @@ export class TestForm extends React.Component<FormControllerOptions & {controlle
 
           return (
             <form onSubmit={submit} noValidate data-hook="test-form">
-              {this.props.children ? (
-                this.props.children
-              ) : (
+              {children || (
                 <div>
                   <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
                   <Field name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} />

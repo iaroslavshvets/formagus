@@ -5,12 +5,9 @@ import {InputAdapter} from '../components/InputAdapter';
 import {Field} from '../../src';
 import {createTestFormDriver} from '../components/TestForm.driver';
 import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
-import {waitFor} from '../helpers/conditions';
 
 describe('Form props', () => {
-  afterEach(() => {
-    return cleanup();
-  });
+  afterEach(() => cleanup());
 
   it('initialValues', async () => {
     const wrapper = render(
@@ -25,8 +22,8 @@ describe('Form props', () => {
         }}
       >
         <div>
-          <Field name={'string'} adapter={InputAdapter} />
-          <Field name={'nested[0].id'} adapter={InputAdapter} />
+          <Field name="string" adapter={InputAdapter} />
+          <Field name="nested[0].id" adapter={InputAdapter} />
         </div>
       </TestForm>,
     ).container;
@@ -36,28 +33,6 @@ describe('Form props', () => {
 
     expect(fieldDriverOne.get.value()).toBe('John Snow');
     expect(fieldDriverNested.get.value()).toBe('Jaime Lannister');
-  });
-
-  it('onSubmitAfter', async () => {
-    const callbackStack: string[] = [];
-
-    const wrapper = render(
-      <TestForm
-        initialValues={{
-          [TestForm.FIELD_ONE_NAME]: 'John Snow',
-        }}
-        onSubmit={() => callbackStack.push('onSubmit')}
-        onSubmitAfter={() => callbackStack.push('onSubmitAfter')}
-      />,
-    ).container;
-
-    const formDriver = createTestFormDriver({wrapper});
-    formDriver.when.submit();
-
-    await waitFor(wrapper)(() => {
-      const [firstCall, secondCall] = callbackStack;
-      return firstCall === 'onSubmit' && secondCall === 'onSubmitAfter';
-    });
   });
 
   it('formatter (with field and arrays support)', async () => {
@@ -80,7 +55,8 @@ describe('Form props', () => {
           const formattedValues = {...values};
 
           if (formattedValues.array) {
-            formattedValues.array[0].field_one_name = formattedValues.array[0].field_one_name + ':formatted';
+            const value = formattedValues.array[0].field_one_name;
+            formattedValues.array[0].field_one_name = value?.endsWith(':formatted') ? value : `${value}:formatted`;
           }
 
           return formattedValues;
@@ -91,7 +67,7 @@ describe('Form props', () => {
           name={FIELD_TWO_NAME}
           adapter={InputAdapter}
           onFormat={(value: string) => {
-            return value + ':formatted';
+            return value?.endsWith(':formatted') ? value : `${value}:formatted`;
           }}
         />
       </TestForm>,

@@ -1,31 +1,33 @@
-import {Provider, observer} from 'mobx-react';
+import {observer} from 'mobx-react';
 import React, {useState} from 'react';
-import {FormController} from '../FormController';
 import {FormPart} from '../FormPart';
 import {FormControllerContext} from './FormControllerContext';
+import {createFormController} from '../createFormController/createFormController';
 import type {FormProps} from './Form.types';
+import type {FormControllerClass} from '../FormController/FormControllerClass';
 
 export const Form = observer((props: FormProps) => {
-  const {children, ...restProps} = props;
-  const [controller] = useState(() => {
-    if (restProps.controller && Object.keys(restProps).length > 1) {
+  const {children, controller, ...restProps} = props;
+  const [controllerInstance] = useState(() => {
+    if (controller && Object.keys(restProps).length > 0) {
       throw new Error(
         'Form should have either "controller" prop with configured Controller instance or no ' +
           '"controller" prop and configuration passed as props, but not both',
       );
     }
     // controller can be injected by prop and created in any place,
+    if (controller) {
+      return controller;
+    }
     // or be created on the flight with passed configuration through props
-    return props.controller || new FormController(restProps);
+    return createFormController(restProps);
   });
 
   // creates the provider and sets the controller, which will control all the form state
   return (
-    <Provider controller={controller}>
-      <FormControllerContext.Provider value={controller}>
-        <FormPart>{children}</FormPart>
-      </FormControllerContext.Provider>
-    </Provider>
+    <FormControllerContext.Provider value={controllerInstance as FormControllerClass}>
+      <FormPart>{children}</FormPart>
+    </FormControllerContext.Provider>
   );
 });
 
