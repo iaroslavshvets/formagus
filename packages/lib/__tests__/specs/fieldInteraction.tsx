@@ -20,7 +20,7 @@ describe('Field interactions', () => {
       return (
         <TestForm controller={controller}>
           {isDisplayed && !isSwitchedPosition && (
-            <Field name={TestForm.FIELD_ONE_NAME} persist>
+            <Field name={TestForm.FIELD_ONE_NAME} persist={true}>
               <Input />
             </Field>
           )}
