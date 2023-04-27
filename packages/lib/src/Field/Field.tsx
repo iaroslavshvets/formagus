@@ -16,7 +16,7 @@ export const Field = observer(<T extends JSXElementConstructor<any>>(props: Fiel
     if (props.children || props.render) {
       throw new Error('You cannot use both adapter and render or children prop');
     }
-    const Adapter: any = props.adapter;
+    const Adapter: React.ElementType<any> = props.adapter;
     return (
       <FieldContextProvider value={formagus}>
         <Adapter formagus={formagus} {...props.adapterProps} />
