@@ -2,8 +2,8 @@ import React, {useEffect} from 'react';
 import {isNil} from 'lodash';
 import type {ChangeEvent} from 'react';
 import {observer} from 'mobx-react';
-import {Meta} from './Meta';
-import {Errors} from './Errors';
+import {InputMeta} from './Input.meta';
+import {InputErrors} from './Input.errors';
 import type {AdapterProps} from '../../../src';
 import {useField} from '../../../src';
 
@@ -50,9 +50,9 @@ export const Input = observer((props: InputAdapterProps) => {
         onBlur={onBlur}
       />
 
-      <Errors errors={errors} />
+      <InputErrors errors={errors} />
 
-      <Meta meta={meta} />
+      <InputMeta meta={meta} />
 
       <span data-hook="set-custom-state" onClick={onSetCustomState} />
       <span

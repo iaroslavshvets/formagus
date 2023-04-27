@@ -3,7 +3,7 @@ import {isEmpty, isObject} from 'lodash';
 import {observer} from 'mobx-react';
 import type {FieldMeta} from '../../../src';
 
-export const Meta = observer((props: {meta: FieldMeta}) => {
+export const InputMeta = observer((props: {meta: FieldMeta}) => {
   const renderMetaProperty = (meta: any, currentKey = ''): any => {
     return Object.keys(meta).map((key) => {
       if (!isObject(meta[key])) {
@@ -25,4 +25,4 @@ export const Meta = observer((props: {meta: FieldMeta}) => {
   return <div data-hook="meta-props">{metaFields}</div>;
 });
 
-(Meta as any).displayName = 'Meta';
+(InputMeta as any).displayName = 'InputMeta';
