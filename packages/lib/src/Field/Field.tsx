@@ -28,7 +28,7 @@ export const Field = observer(<T extends JSXElementConstructor<any>>(props: Fiel
     if (props.children) {
       throw new Error('You cannot use both render and children prop');
     }
-    return <FieldContextProvider value={formagus}>{props.render({formagus: formagus!})}</FieldContextProvider>;
+    return <FieldContextProvider value={formagus}>{props.render({formagus})}</FieldContextProvider>;
   }
 
   return <FieldContextProvider value={formagus}>{props.children}</FieldContextProvider>;
