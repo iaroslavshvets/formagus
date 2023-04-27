@@ -18,6 +18,7 @@ export type FieldMeta = Readonly<{
   isChanged: boolean;
   isActive: boolean;
   isValidating: boolean;
+  hasValidation: boolean;
   customState: Record<string, any>;
   form: FormMeta;
 }>;

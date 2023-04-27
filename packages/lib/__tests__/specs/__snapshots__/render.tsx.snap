@@ -53,6 +53,11 @@ exports[`Render should render 1`] = `
           false
         </span>
         <span
+          data-hook="meta_hasValidation"
+        >
+          false
+        </span>
+        <span
           data-hook="meta_form:isSubmitting"
         >
           false
@@ -145,6 +150,11 @@ exports[`Render should render 1`] = `
           false
         </span>
         <span
+          data-hook="meta_hasValidation"
+        >
+          false
+        </span>
+        <span
           data-hook="meta_form:isSubmitting"
         >
           false
@@ -233,6 +243,11 @@ exports[`Render should render 1`] = `
         </span>
         <span
           data-hook="meta_isValidating"
+        >
+          false
+        </span>
+        <span
+          data-hook="meta_hasValidation"
         >
           false
         </span>

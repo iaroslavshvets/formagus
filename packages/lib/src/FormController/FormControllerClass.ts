@@ -47,7 +47,7 @@ export class FormControllerClass {
   }
 
   @computed
-  protected get fieldLevelValidations() {
+  get fieldLevelValidations() {
     const fieldValidations: FieldDictionary<ValidationFunction> = {};
 
     this.fields.forEach((field, name) => {
