@@ -1,7 +1,8 @@
-import {useFormController} from '../Form/useFormController';
+import {useFormControllerClass} from '../Form/useFormControllerClass';
 
+/** @deprecated */
 export const useFormApi = () => {
-  const controller = useFormController();
+  const controller = useFormControllerClass();
 
   return controller.API;
 };

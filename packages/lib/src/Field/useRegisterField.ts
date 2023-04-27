@@ -1,17 +1,15 @@
 import {useEffect} from 'react';
 import {computed} from 'mobx';
-import {useFormController} from '../Form/useFormController';
+import {useFormControllerClass} from '../Form/useFormControllerClass';
 import {toJSCompat} from '../utils/toJSCompat';
 import type {FieldCommonProps, FormagusProps} from './Field.types';
 
 export const useRegisterField = (props: FieldCommonProps) => {
-  const controller = useFormController(props);
+  const controller = useFormControllerClass(props);
 
   const computedField = computed(() => controller!.fields.get(props.name));
-  const computedValidation = computed(() => controller!.fieldLevelValidations[props.name]);
 
   const field = computedField.get();
-  const hasValidation = computedValidation.get() !== undefined;
   const isReady = field !== undefined;
 
   const formagus = computed<Required<FormagusProps> | undefined>(() => {
@@ -21,6 +19,7 @@ export const useRegisterField = (props: FieldCommonProps) => {
     }
 
     const {meta, errors} = field;
+    const hasValidation = meta.isMounted && field.props?.onValidate !== undefined;
 
     return {
       name: props.name,

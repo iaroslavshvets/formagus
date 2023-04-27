@@ -1,11 +1,12 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {TestForm} from '../components/TestForm';
-import {Field} from '../../src/Field';
+import {Field} from '../../src/Field/Field';
 import {InputAdapter} from '../components/InputAdapter';
 import {FieldValueDisplayWithHook, createFieldValueDisplayDriver} from '../components/FieldValueDisplay';
 import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
 
+// TODO: fix this test
 describe('useFormController', () => {
   afterEach(() => cleanup());
 
@@ -20,7 +21,9 @@ describe('useFormController', () => {
           [TestForm.FIELD_ONE_NAME]: TEST_INITIAL_VALUE,
         }}
       >
-        <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field name={TestForm.FIELD_ONE_NAME}>
+          <InputAdapter />
+        </Field>
         <FieldValueDisplayWithHook
           dataHook={INNER_FORM_COMPONENT_DATA_HOOK}
           displayedFieldName={TestForm.FIELD_ONE_NAME}

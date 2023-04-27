@@ -20,7 +20,9 @@ describe('injectFormApi', () => {
           [TestForm.FIELD_ONE_NAME]: TEST_INITIAL_VALUE,
         }}
       >
-        <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field name={TestForm.FIELD_ONE_NAME}>
+          <InputAdapter />
+        </Field>
         <FieldValueDisplayWithInject
           dataHook={INNER_FORM_COMPONENT_DATA_HOOK}
           displayedFieldName={TestForm.FIELD_ONE_NAME}

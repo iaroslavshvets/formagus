@@ -20,11 +20,15 @@ describe('Field interactions', () => {
       return (
         <TestForm controller={controller}>
           {isDisplayed && !isSwitchedPosition && (
-            <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist />
+            <Field name={TestForm.FIELD_ONE_NAME} persist>
+              <InputAdapter />
+            </Field>
           )}
           <div>
             {isDisplayed && isSwitchedPosition && (
-              <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist />
+              <Field name={TestForm.FIELD_ONE_NAME} persist={true}>
+                <InputAdapter />
+              </Field>
             )}
           </div>
           <button
@@ -87,7 +91,11 @@ describe('Field interactions', () => {
 
         return (
           <TestForm>
-            {!hiddenField && <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />}
+            {!hiddenField && (
+              <Field name={TestForm.FIELD_ONE_NAME}>
+                <InputAdapter />
+              </Field>
+            )}
             <button
               type="button"
               data-hook="toggle-field"
@@ -152,7 +160,9 @@ describe('Field interactions', () => {
 
     const wrapper = render(
       <TestForm controller={formController}>
-        <Field name={NESTED_FIELD_NAME} adapter={InputAdapter} />
+        <Field name={NESTED_FIELD_NAME}>
+          <InputAdapter />
+        </Field>
       </TestForm>,
     ).container;
 

@@ -30,6 +30,33 @@ describe('Field meta', () => {
     expect(fieldDriver.get.meta('isActive')).not.toBe('true');
   });
 
+  describe('hasValidation', () => {
+    it('true', () => {
+      const wrapper = render(
+        <TestForm>
+          <Field onValidate={jest.fn()} name={TestForm.FIELD_ONE_NAME}>
+            <InputAdapter />
+          </Field>
+        </TestForm>,
+      ).container;
+      const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+
+      expect(fieldDriver.get.meta('hasValidation')).toBe('true');
+    });
+    it('false', () => {
+      const wrapper = render(
+        <TestForm>
+          <Field name={TestForm.FIELD_ONE_NAME}>
+            <InputAdapter />
+          </Field>
+        </TestForm>,
+      ).container;
+      const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+
+      expect(fieldDriver.get.meta('hasValidation')).toBe('false');
+    });
+  });
+
   it('isTouched', () => {
     const wrapper = render(<TestForm />).container;
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
@@ -96,7 +123,9 @@ describe('Field meta', () => {
   it('isValidating', async () => {
     const wrapper = render(
       <TestForm>
-        <Field onValidate={jest.fn()} name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field onValidate={jest.fn()} name={TestForm.FIELD_ONE_NAME}>
+          <InputAdapter />
+        </Field>
       </TestForm>,
     ).container;
 

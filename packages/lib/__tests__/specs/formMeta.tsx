@@ -62,7 +62,9 @@ describe('Form meta', () => {
           [TestForm.FIELD_ONE_NAME]: '',
         }}
       >
-        <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field name={TestForm.FIELD_ONE_NAME}>
+          <InputAdapter />
+        </Field>
       </TestForm>,
     ).container;
     const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
@@ -90,7 +92,9 @@ describe('Form meta', () => {
             [TestForm.FIELD_ONE_NAME]: '',
           }}
         >
-          <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+          <Field name={TestForm.FIELD_ONE_NAME}>
+            <InputAdapter />
+          </Field>
         </TestForm>,
       ).container;
       const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
@@ -109,7 +113,9 @@ describe('Form meta', () => {
     it('using initial field default value', () => {
       const wrapper = render(
         <TestForm>
-          <Field defaultValue="" name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+          <Field defaultValue="" name={TestForm.FIELD_ONE_NAME}>
+            <InputAdapter />
+          </Field>
         </TestForm>,
       ).container;
       const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
@@ -129,9 +135,13 @@ describe('Form meta', () => {
       function TestComponent({hideField = false}) {
         return (
           <TestForm>
-            <Field defaultValue="" name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+            <Field defaultValue="" name={TestForm.FIELD_ONE_NAME}>
+              <InputAdapter />
+            </Field>
             {!hideField && (
-              <Field defaultValue="" name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} persist={true} />
+              <Field defaultValue="" name={TestForm.FIELD_TWO_NAME} persist={true}>
+                <InputAdapter />
+              </Field>
             )}
           </TestForm>
         );

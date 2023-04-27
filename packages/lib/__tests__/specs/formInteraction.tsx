@@ -16,7 +16,9 @@ describe('Form interaction', () => {
     });
     const wrapper = render(
       <TestForm controller={controller}>
-        <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field name={TestForm.FIELD_ONE_NAME}>
+          <InputAdapter />
+        </Field>
       </TestForm>,
     ).container;
 
@@ -48,8 +50,14 @@ describe('Form interaction', () => {
 
       return (
         <TestForm controller={controller}>
-          <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
-          {!hiddenField && <Field name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} />}
+          <Field name={TestForm.FIELD_ONE_NAME}>
+            <InputAdapter />
+          </Field>
+          {!hiddenField && (
+            <Field name={TestForm.FIELD_TWO_NAME}>
+              <InputAdapter />
+            </Field>
+          )}
           <button
             type="button"
             data-hook="toggle-field"
@@ -100,7 +108,9 @@ describe('Form interaction', () => {
     });
     const wrapper = render(
       <TestForm controller={controller}>
-        <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field name={TestForm.FIELD_ONE_NAME}>
+          <InputAdapter />
+        </Field>
       </TestForm>,
     ).container;
 
@@ -123,7 +133,9 @@ describe('Form interaction', () => {
     });
     const wrapper = render(
       <TestForm controller={controller}>
-        <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field name={TestForm.FIELD_ONE_NAME}>
+          <InputAdapter />
+        </Field>
       </TestForm>,
     ).container;
 
@@ -149,7 +161,9 @@ describe('Form interaction', () => {
 
     render(
       <TestForm controller={controller}>
-        <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field name={TestForm.FIELD_ONE_NAME}>
+          <InputAdapter />
+        </Field>
       </TestForm>,
     );
 
@@ -177,15 +191,15 @@ describe('Form interaction', () => {
     const FormWithTwoFields = () => {
       return (
         <TestForm controller={controller}>
-          <Field<typeof InputAdapter>
-            name={TestForm.FIELD_ONE_NAME}
-            adapter={InputAdapter}
-            adapterProps={{
-              useRenderCounter: true,
-            }}
-          />
-          <Field name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} />
-          <Field name={TestForm.FIELD_THREE_NAME} adapter={InputAdapter} />
+          <Field name={TestForm.FIELD_ONE_NAME}>
+            <InputAdapter useRenderCounter={true} />
+          </Field>
+          <Field name={TestForm.FIELD_TWO_NAME}>
+            <InputAdapter />
+          </Field>
+          <Field name={TestForm.FIELD_THREE_NAME}>
+            <InputAdapter />
+          </Field>
           <button
             type="button"
             data-hook="change_field_2_value"

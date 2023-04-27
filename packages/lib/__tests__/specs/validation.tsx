@@ -42,11 +42,12 @@ describe('Validation', () => {
           <Field
             defaultValue="Batman"
             name={TestForm.FIELD_ONE_NAME}
-            adapter={InputAdapter}
             onValidate={(value) => {
               return value === 'Bruce' ? null : ['nameError'];
             }}
-          />
+          >
+            <InputAdapter />
+          </Field>
         </TestForm>,
       ).container;
       const formDriver = createTestFormDriver({wrapper});
@@ -66,14 +67,15 @@ describe('Validation', () => {
           <Field
             defaultValue="Batman"
             name={TestForm.FIELD_ONE_NAME}
-            adapter={InputAdapter}
             onValidate={async (value) => {
               if (value === 'Bruce') {
                 return undefined;
               }
               return ['nameError'];
             }}
-          />
+          >
+            <InputAdapter />
+          </Field>
         </TestForm>,
       ).container;
       const formDriver = createTestFormDriver({wrapper});
@@ -102,18 +104,21 @@ describe('Validation', () => {
       });
       const wrapper = render(
         <TestForm controller={controller}>
-          <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+          <Field name={TestForm.FIELD_ONE_NAME}>
+            <InputAdapter />
+          </Field>
           <Field
             defaultValue="Batman"
             name={TestForm.FIELD_TWO_NAME}
-            adapter={InputAdapter}
             onValidate={async (value) => {
               if (value === 'Bruce') {
                 return undefined;
               }
               return ['nameError'];
             }}
-          />
+          >
+            <InputAdapter />
+          </Field>
         </TestForm>,
       ).container;
       const formDriver = createTestFormDriver({wrapper});

@@ -23,8 +23,12 @@ export class TestForm extends React.Component<FormControllerOptions & {controlle
             <form onSubmit={submit} noValidate data-hook="test-form">
               {children || (
                 <div>
-                  <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
-                  <Field name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} />
+                  <Field name={TestForm.FIELD_ONE_NAME}>
+                    <InputAdapter/>
+                  </Field>
+                  <Field name={TestForm.FIELD_TWO_NAME}>
+                    <InputAdapter/>
+                  </Field>
                 </div>
               )}
 

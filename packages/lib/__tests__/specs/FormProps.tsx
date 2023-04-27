@@ -22,8 +22,12 @@ describe('Form props', () => {
         }}
       >
         <div>
-          <Field name="string" adapter={InputAdapter} />
-          <Field name="nested[0].id" adapter={InputAdapter} />
+          <Field name="string">
+            <InputAdapter />
+          </Field>
+          <Field name="nested[0].id">
+            <InputAdapter />
+          </Field>
         </div>
       </TestForm>,
     ).container;
@@ -62,14 +66,17 @@ describe('Form props', () => {
           return formattedValues;
         }}
       >
-        <Field name={FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field name={FIELD_ONE_NAME}>
+          <InputAdapter />
+        </Field>
         <Field
           name={FIELD_TWO_NAME}
-          adapter={InputAdapter}
           onFormat={(value: string) => {
             return value?.endsWith(':formatted') ? value : `${value}:formatted`;
           }}
-        />
+        >
+          <InputAdapter />
+        </Field>
       </TestForm>,
     ).container;
 
