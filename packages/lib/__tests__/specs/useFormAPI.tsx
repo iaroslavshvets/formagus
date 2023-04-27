@@ -4,7 +4,7 @@ import {TestForm} from '../components/TestForm';
 import {Field} from '../../src/Field/Field';
 import {Input} from '../components/Input';
 import {FieldValueDisplayWithHook, createFieldValueDisplayDriver} from '../components/FieldValueDisplay';
-import {createInputAdapterDriver} from '../components/Input/InputAdapter.driver';
+import {createInputDriver} from '../components/Input/createInputDriver';
 
 // TODO: fix this test
 describe('useFormController', () => {
@@ -31,7 +31,7 @@ describe('useFormController', () => {
       </TestForm>,
     ).container;
 
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
     const FieldValueDisplayDriver = createFieldValueDisplayDriver({
       wrapper,
       dataHook: INNER_FORM_COMPONENT_DATA_HOOK,

@@ -4,7 +4,7 @@ import {TestForm} from '../components/TestForm';
 import {Field} from '../../src';
 import {Input} from '../components/Input';
 import {FieldValueDisplayWithInject, createFieldValueDisplayDriver} from '../components/FieldValueDisplay';
-import {createInputAdapterDriver} from '../components/Input/InputAdapter.driver';
+import {createInputDriver} from '../components/Input/createInputDriver';
 
 describe('injectFormApi', () => {
   afterEach(() => cleanup());
@@ -30,7 +30,7 @@ describe('injectFormApi', () => {
       </TestForm>,
     ).container;
 
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
     const FieldValueDisplayDriver = createFieldValueDisplayDriver({
       wrapper,
       dataHook: INNER_FORM_COMPONENT_DATA_HOOK,

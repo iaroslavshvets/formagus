@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {createFormController, Field} from '../../src';
 import {Input} from '../components/Input';
 import {TestForm} from '../components/TestForm';
-import {createInputAdapterDriver} from '../components/Input/InputAdapter.driver';
+import {createInputDriver} from '../components/Input/createInputDriver';
 
 describe('Form interaction', () => {
   afterEach(() => cleanup());
@@ -22,7 +22,7 @@ describe('Form interaction', () => {
       </TestForm>,
     ).container;
 
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.value()).toBe('batman is cool');
 
@@ -73,7 +73,7 @@ describe('Form interaction', () => {
 
     const wrapper = render(<FormWithHiddenField />).container;
 
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.value()).toBe('Batman is cool');
 
@@ -94,7 +94,7 @@ describe('Form interaction', () => {
     const toggleField = wrapper.querySelector('[data-hook="toggle-field"]')!;
     fireEvent.click(toggleField);
 
-    const fieldDriver2 = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
+    const fieldDriver2 = createInputDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
 
     expect(fieldDriver.get.meta('form:isTouched')).toBe('false');
     expect(fieldDriver2.get.value()).toBe('Wolverine is Logan');
@@ -114,7 +114,7 @@ describe('Form interaction', () => {
       </TestForm>,
     ).container;
 
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.value()).toBe('batman is cool');
 
@@ -139,7 +139,7 @@ describe('Form interaction', () => {
       </TestForm>,
     ).container;
 
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.value()).toBe('batman is cool');
 

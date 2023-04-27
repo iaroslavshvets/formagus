@@ -4,7 +4,7 @@ import {Field} from '../../src';
 import {Input} from '../components/Input';
 import {TestForm} from '../components/TestForm';
 import {waitFor} from '../helpers/conditions';
-import {createInputAdapterDriver} from '../components/Input/InputAdapter.driver';
+import {createInputDriver} from '../components/Input/createInputDriver';
 import {createTestFormDriver} from '../components/TestForm.driver';
 
 describe('Form meta', () => {
@@ -25,7 +25,7 @@ describe('Form meta', () => {
       />,
     ).container;
     const formDriver = createTestFormDriver({wrapper});
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.meta('form:isValid')).toBe('true');
 
@@ -44,7 +44,7 @@ describe('Form meta', () => {
 
   it('isTouched', () => {
     const wrapper = render(<TestForm />).container;
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.meta('form:isTouched')).toBe('false');
 
@@ -67,7 +67,7 @@ describe('Form meta', () => {
         </Field>
       </TestForm>,
     ).container;
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.meta('form:isChanged')).toBe('false');
 
@@ -97,7 +97,7 @@ describe('Form meta', () => {
           </Field>
         </TestForm>,
       ).container;
-      const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+      const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
       expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
 
@@ -118,7 +118,7 @@ describe('Form meta', () => {
           </Field>
         </TestForm>,
       ).container;
-      const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+      const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
       expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
 
@@ -149,8 +149,8 @@ describe('Form meta', () => {
 
       const {container, rerender} = render(<TestComponent />);
       const wrapper = container;
-      const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
-      const secondFieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
+      const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+      const secondFieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
 
       expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
 
@@ -167,7 +167,7 @@ describe('Form meta', () => {
   it('submitCount', () => {
     const wrapper = render(<TestForm />).container;
     const formDriver = createTestFormDriver({wrapper});
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.meta('form:submitCount')).toBe('0');
 
@@ -179,7 +179,7 @@ describe('Form meta', () => {
   it('isSubmitting', async () => {
     const wrapper = render(<TestForm onValidate={() => Promise.resolve({})} />).container;
     const formDriver = createTestFormDriver({wrapper});
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.meta('form:isSubmitting')).toBe('false');
 
@@ -200,7 +200,7 @@ describe('Form meta', () => {
       />,
     ).container;
     const formDriver = createTestFormDriver({wrapper});
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.meta('form:isValidating')).toBe('false');
 

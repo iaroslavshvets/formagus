@@ -1,7 +1,7 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {Field, createFormController} from '../../src';
-import {createInputAdapterDriver} from '../components/Input/InputAdapter.driver';
+import {createInputDriver} from '../components/Input/createInputDriver';
 import {TestForm} from '../components/TestForm';
 import {waitFor} from '../helpers/conditions';
 import {createTestFormDriver} from '../components/TestForm.driver';
@@ -22,7 +22,7 @@ describe('Validation', () => {
       });
       const wrapper = render(<TestForm controller={controller} />).container;
       const formDriver = createTestFormDriver({wrapper});
-      const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+      const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
       formDriver.when.submit();
 
@@ -51,7 +51,7 @@ describe('Validation', () => {
         </TestForm>,
       ).container;
       const formDriver = createTestFormDriver({wrapper});
-      const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+      const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
       formDriver.when.submit();
 
@@ -79,7 +79,7 @@ describe('Validation', () => {
         </TestForm>,
       ).container;
       const formDriver = createTestFormDriver({wrapper});
-      const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+      const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
       formDriver.when.submit();
 
@@ -122,8 +122,8 @@ describe('Validation', () => {
         </TestForm>,
       ).container;
       const formDriver = createTestFormDriver({wrapper});
-      const firstFieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
-      const secondFieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
+      const firstFieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+      const secondFieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
 
       formDriver.when.submit();
 

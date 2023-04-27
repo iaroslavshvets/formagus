@@ -4,7 +4,7 @@ import {observer} from 'mobx-react';
 import {Field, createFormController} from '../../src';
 import {TestForm} from '../components/TestForm';
 import {Input} from '../components/Input';
-import {createInputAdapterDriver} from '../components/Input/InputAdapter.driver';
+import {createInputDriver} from '../components/Input/createInputDriver';
 import {waitFor} from '../helpers/conditions';
 
 describe('Field interactions', () => {
@@ -56,7 +56,7 @@ describe('Field interactions', () => {
     const wrapper = render(<Form />).container;
     const toggleVisibilityField = wrapper.querySelector('[data-hook="toggle-visibility"]')!;
     const togglePositionField = wrapper.querySelector('[data-hook="toggle-position"]')!;
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     // visible
     fireEvent.click(toggleVisibilityField);
@@ -113,7 +113,7 @@ describe('Field interactions', () => {
     }
 
     const wrapper = render(<StatefulForm />).container;
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
     const toggleField = wrapper.querySelector('[data-hook="toggle-field"]')!;
     const NEW_VALUE = 'batman';
 
@@ -146,7 +146,7 @@ describe('Field interactions', () => {
       </TestForm>,
     ).container;
 
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     fieldDriver.when.setCustomState();
 
@@ -166,7 +166,7 @@ describe('Field interactions', () => {
       </TestForm>,
     ).container;
 
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: NESTED_FIELD_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: NESTED_FIELD_NAME});
 
     fieldDriver.when.change(NEW_VALUE);
 

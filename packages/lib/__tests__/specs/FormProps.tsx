@@ -4,7 +4,7 @@ import {TestForm} from '../components/TestForm';
 import {Input} from '../components/Input';
 import {Field} from '../../src';
 import {createTestFormDriver} from '../components/TestForm.driver';
-import {createInputAdapterDriver} from '../components/Input/InputAdapter.driver';
+import {createInputDriver} from '../components/Input/createInputDriver';
 
 describe('Form props', () => {
   afterEach(() => cleanup());
@@ -32,8 +32,8 @@ describe('Form props', () => {
       </TestForm>,
     ).container;
 
-    const fieldDriverOne = createInputAdapterDriver({wrapper, dataHook: 'string'});
-    const fieldDriverNested = createInputAdapterDriver({wrapper, dataHook: 'nested[0].id'});
+    const fieldDriverOne = createInputDriver({wrapper, dataHook: 'string'});
+    const fieldDriverNested = createInputDriver({wrapper, dataHook: 'nested[0].id'});
 
     expect(fieldDriverOne.get.value()).toBe('John Snow');
     expect(fieldDriverNested.get.value()).toBe('Jaime Lannister');
@@ -81,8 +81,8 @@ describe('Form props', () => {
     ).container;
 
     const formDriver = createTestFormDriver({wrapper});
-    const fieldOneDriver = createInputAdapterDriver({wrapper, dataHook: FIELD_ONE_NAME});
-    const fieldTwoDriver = createInputAdapterDriver({wrapper, dataHook: FIELD_TWO_NAME});
+    const fieldOneDriver = createInputDriver({wrapper, dataHook: FIELD_ONE_NAME});
+    const fieldTwoDriver = createInputDriver({wrapper, dataHook: FIELD_TWO_NAME});
 
     const getFirstFieldValue = () => formDriver.get.values().array[0].field_one_name;
     const getSecondFieldValue = () => formDriver.get.values().array[0].field_two_name;
