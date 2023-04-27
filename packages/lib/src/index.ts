@@ -1,10 +1,12 @@
-export type {ValidationFunction, AdapterProps, FieldMeta, EqualityCheckFunction, FieldProps} from './Field/Field.types';
+export type {ValidationFunction, FieldMeta, EqualityCheckFunction, FieldProps} from './Field/Field.types';
 export type {FormProps} from './Form/Form.types';
 export type {
   FormAPI,
+  // stop export in next version: begin
   FormValidationErrors,
   FormValues,
   FieldErrors,
+  // stop export in next version: end
   FormField,
 } from './FormController/FormController.types';
 export type {FormController} from './createFormController/createFormController.types';
@@ -23,6 +25,7 @@ export {useForm} from './Form/useForm';
 export {utils} from './utils/utils';
 
 // deprecated
+export type {AdapterProps} from './Field/Field.types';
 export {FormPart} from './FormPart';
 export {injectFormApi} from './injectFormApi';
 export {useFormApi} from './useFormApi';

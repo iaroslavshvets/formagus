@@ -1,7 +1,7 @@
 import React from 'react';
 import type {FormAPI, FormControllerOptions} from '../../src/FormController/FormController.types';
 import {Field, Form} from '../../src';
-import {InputAdapter} from './InputAdapter';
+import {Input} from './Input';
 
 export class TestForm extends React.Component<FormControllerOptions & {controller?: any}> {
   static FIELD_ONE_NAME = 'field_one_name';
@@ -24,10 +24,10 @@ export class TestForm extends React.Component<FormControllerOptions & {controlle
               {children || (
                 <div>
                   <Field name={TestForm.FIELD_ONE_NAME}>
-                    <InputAdapter/>
+                    <Input />
                   </Field>
                   <Field name={TestForm.FIELD_TWO_NAME}>
-                    <InputAdapter/>
+                    <Input />
                   </Field>
                 </div>
               )}

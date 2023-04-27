@@ -1,10 +1,10 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {TestForm} from '../components/TestForm';
-import {InputAdapter} from '../components/InputAdapter';
+import {Input} from '../components/Input';
 import {Field} from '../../src';
 import {createTestFormDriver} from '../components/TestForm.driver';
-import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {createInputAdapterDriver} from '../components/Input/InputAdapter.driver';
 
 describe('Form props', () => {
   afterEach(() => cleanup());
@@ -23,10 +23,10 @@ describe('Form props', () => {
       >
         <div>
           <Field name="string">
-            <InputAdapter />
+            <Input />
           </Field>
           <Field name="nested[0].id">
-            <InputAdapter />
+            <Input />
           </Field>
         </div>
       </TestForm>,
@@ -67,7 +67,7 @@ describe('Form props', () => {
         }}
       >
         <Field name={FIELD_ONE_NAME}>
-          <InputAdapter />
+          <Input />
         </Field>
         <Field
           name={FIELD_TWO_NAME}
@@ -75,7 +75,7 @@ describe('Form props', () => {
             return value?.endsWith(':formatted') ? value : `${value}:formatted`;
           }}
         >
-          <InputAdapter />
+          <Input />
         </Field>
       </TestForm>,
     ).container;

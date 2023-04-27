@@ -3,9 +3,9 @@ import React from 'react';
 import {Field, createFormController} from '../../src';
 import {TestForm} from '../components/TestForm';
 import {waitFor} from '../helpers/conditions';
-import {InputAdapter} from '../components/InputAdapter';
+import {Input} from '../components/Input';
 import {createTestFormDriver} from '../components/TestForm.driver';
-import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {createInputAdapterDriver} from '../components/Input/InputAdapter.driver';
 
 describe('Field meta', () => {
   afterEach(() => cleanup());
@@ -35,7 +35,7 @@ describe('Field meta', () => {
       const wrapper = render(
         <TestForm>
           <Field onValidate={jest.fn()} name={TestForm.FIELD_ONE_NAME}>
-            <InputAdapter />
+            <Input />
           </Field>
         </TestForm>,
       ).container;
@@ -47,7 +47,7 @@ describe('Field meta', () => {
       const wrapper = render(
         <TestForm>
           <Field name={TestForm.FIELD_ONE_NAME}>
-            <InputAdapter />
+            <Input />
           </Field>
         </TestForm>,
       ).container;
@@ -124,7 +124,7 @@ describe('Field meta', () => {
     const wrapper = render(
       <TestForm>
         <Field onValidate={jest.fn()} name={TestForm.FIELD_ONE_NAME}>
-          <InputAdapter />
+          <Input />
         </Field>
       </TestForm>,
     ).container;

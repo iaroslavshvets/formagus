@@ -1,11 +1,11 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {Field, createFormController} from '../../src';
-import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {createInputAdapterDriver} from '../components/Input/InputAdapter.driver';
 import {TestForm} from '../components/TestForm';
 import {waitFor} from '../helpers/conditions';
 import {createTestFormDriver} from '../components/TestForm.driver';
-import {InputAdapter} from '../components/InputAdapter';
+import {Input} from '../components/Input';
 
 describe('Validation', () => {
   afterEach(() => cleanup());
@@ -46,7 +46,7 @@ describe('Validation', () => {
               return value === 'Bruce' ? null : ['nameError'];
             }}
           >
-            <InputAdapter />
+            <Input />
           </Field>
         </TestForm>,
       ).container;
@@ -74,7 +74,7 @@ describe('Validation', () => {
               return ['nameError'];
             }}
           >
-            <InputAdapter />
+            <Input />
           </Field>
         </TestForm>,
       ).container;
@@ -105,7 +105,7 @@ describe('Validation', () => {
       const wrapper = render(
         <TestForm controller={controller}>
           <Field name={TestForm.FIELD_ONE_NAME}>
-            <InputAdapter />
+            <Input />
           </Field>
           <Field
             defaultValue="Batman"
@@ -117,7 +117,7 @@ describe('Validation', () => {
               return ['nameError'];
             }}
           >
-            <InputAdapter />
+            <Input />
           </Field>
         </TestForm>,
       ).container;

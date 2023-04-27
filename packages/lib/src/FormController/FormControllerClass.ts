@@ -6,7 +6,7 @@ import _merge from 'lodash/merge';
 import _cloneDeep from 'lodash/cloneDeep';
 import {utils} from '../utils/utils';
 import {toJSCompat} from '../utils/toJSCompat';
-import type {FieldProps, ValidationFunction} from '../Field';
+import type {FieldProps, ValidationFunction} from '../Field/Field.types';
 import type {
   FieldDictionary,
   FieldErrors,

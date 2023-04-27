@@ -21,8 +21,6 @@ export type FieldMeta = Readonly<{
   form: FormMeta;
 }>;
 
-export type AdapterRenderProps = Required<AdapterProps>;
-
 export type FormagusProps = Readonly<{
   name: string;
   meta: FieldMeta;
@@ -35,6 +33,7 @@ export type FormagusProps = Readonly<{
   validateField: () => Promise<void>;
 }>;
 
+/** @deprecated */
 export type AdapterProps = {
   formagus?: FormagusProps;
 };
@@ -57,7 +56,7 @@ export type FieldCommonProps = {
 export type FieldProps<T extends JSXElementConstructor<any> = any> = Omit<FieldCommonProps, 'controller'> & {
   controller?: FormController;
   children?: JSX.Element;
-  render?: (injectedAdapterProps: AdapterRenderProps) => JSX.Element;
+  render?: (injectedFieldDisplayProps: {formagus: FormagusProps}) => JSX.Element;
   /** @deprecated pass children and useField hook inside instead, or at least render prop */
   adapter?: React.ComponentClass<AdapterProps & ComponentProps<T>> | React.FC<AdapterProps & ComponentProps<T>>;
   /** @deprecated */

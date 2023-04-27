@@ -14,7 +14,7 @@ export interface InputAdapterProps extends AdapterProps {
   customState?: Record<string, any>;
 }
 
-export const InputAdapter = observer((props: InputAdapterProps) => {
+export const Input = observer((props: InputAdapterProps) => {
   const formagusHook = useField();
   const {useHook = true, useRenderCounter} = props;
   const {onFocus, onBlur, validate, name, setCustomState, onChange, value, meta} = useHook

@@ -1,9 +1,9 @@
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import React, {useState} from 'react';
 import {createFormController, Field} from '../../src';
-import {InputAdapter} from '../components/InputAdapter';
+import {Input} from '../components/Input';
 import {TestForm} from '../components/TestForm';
-import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {createInputAdapterDriver} from '../components/Input/InputAdapter.driver';
 
 describe('Form interaction', () => {
   afterEach(() => cleanup());
@@ -17,7 +17,7 @@ describe('Form interaction', () => {
     const wrapper = render(
       <TestForm controller={controller}>
         <Field name={TestForm.FIELD_ONE_NAME}>
-          <InputAdapter />
+          <Input />
         </Field>
       </TestForm>,
     ).container;
@@ -51,11 +51,11 @@ describe('Form interaction', () => {
       return (
         <TestForm controller={controller}>
           <Field name={TestForm.FIELD_ONE_NAME}>
-            <InputAdapter />
+            <Input />
           </Field>
           {!hiddenField && (
             <Field name={TestForm.FIELD_TWO_NAME}>
-              <InputAdapter />
+              <Input />
             </Field>
           )}
           <button
@@ -109,7 +109,7 @@ describe('Form interaction', () => {
     const wrapper = render(
       <TestForm controller={controller}>
         <Field name={TestForm.FIELD_ONE_NAME}>
-          <InputAdapter />
+          <Input />
         </Field>
       </TestForm>,
     ).container;
@@ -134,7 +134,7 @@ describe('Form interaction', () => {
     const wrapper = render(
       <TestForm controller={controller}>
         <Field name={TestForm.FIELD_ONE_NAME}>
-          <InputAdapter />
+          <Input />
         </Field>
       </TestForm>,
     ).container;
@@ -162,7 +162,7 @@ describe('Form interaction', () => {
     render(
       <TestForm controller={controller}>
         <Field name={TestForm.FIELD_ONE_NAME}>
-          <InputAdapter />
+          <Input />
         </Field>
       </TestForm>,
     );
@@ -192,13 +192,13 @@ describe('Form interaction', () => {
       return (
         <TestForm controller={controller}>
           <Field name={TestForm.FIELD_ONE_NAME}>
-            <InputAdapter useRenderCounter={true} />
+            <Input useRenderCounter={true} />
           </Field>
           <Field name={TestForm.FIELD_TWO_NAME}>
-            <InputAdapter />
+            <Input />
           </Field>
           <Field name={TestForm.FIELD_THREE_NAME}>
-            <InputAdapter />
+            <Input />
           </Field>
           <button
             type="button"

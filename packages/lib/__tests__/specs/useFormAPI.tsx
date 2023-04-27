@@ -2,9 +2,9 @@ import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {TestForm} from '../components/TestForm';
 import {Field} from '../../src/Field/Field';
-import {InputAdapter} from '../components/InputAdapter';
+import {Input} from '../components/Input';
 import {FieldValueDisplayWithHook, createFieldValueDisplayDriver} from '../components/FieldValueDisplay';
-import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {createInputAdapterDriver} from '../components/Input/InputAdapter.driver';
 
 // TODO: fix this test
 describe('useFormController', () => {
@@ -22,7 +22,7 @@ describe('useFormController', () => {
         }}
       >
         <Field name={TestForm.FIELD_ONE_NAME}>
-          <InputAdapter />
+          <Input />
         </Field>
         <FieldValueDisplayWithHook
           dataHook={INNER_FORM_COMPONENT_DATA_HOOK}

@@ -3,8 +3,8 @@ import {render, fireEvent, cleanup} from '@testing-library/react';
 import {observer} from 'mobx-react';
 import {Field, createFormController} from '../../src';
 import {TestForm} from '../components/TestForm';
-import {InputAdapter} from '../components/InputAdapter';
-import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {Input} from '../components/Input';
+import {createInputAdapterDriver} from '../components/Input/InputAdapter.driver';
 import {waitFor} from '../helpers/conditions';
 
 describe('Field interactions', () => {
@@ -21,13 +21,13 @@ describe('Field interactions', () => {
         <TestForm controller={controller}>
           {isDisplayed && !isSwitchedPosition && (
             <Field name={TestForm.FIELD_ONE_NAME} persist>
-              <InputAdapter />
+              <Input />
             </Field>
           )}
           <div>
             {isDisplayed && isSwitchedPosition && (
               <Field name={TestForm.FIELD_ONE_NAME} persist={true}>
-                <InputAdapter />
+                <Input />
               </Field>
             )}
           </div>
@@ -93,7 +93,7 @@ describe('Field interactions', () => {
           <TestForm>
             {!hiddenField && (
               <Field name={TestForm.FIELD_ONE_NAME}>
-                <InputAdapter />
+                <Input />
               </Field>
             )}
             <button
@@ -135,7 +135,7 @@ describe('Field interactions', () => {
         <Field
           name={TestForm.FIELD_ONE_NAME}
           render={(formagusProps) => (
-            <InputAdapter
+            <Input
               {...formagusProps}
               customState={{
                 customProperty: 'custom value',
@@ -161,7 +161,7 @@ describe('Field interactions', () => {
     const wrapper = render(
       <TestForm controller={formController}>
         <Field name={NESTED_FIELD_NAME}>
-          <InputAdapter />
+          <Input />
         </Field>
       </TestForm>,
     ).container;

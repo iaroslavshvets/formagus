@@ -1,6 +1,6 @@
 import type {FormEvent} from 'react';
 import {ObservableMap} from 'mobx';
-import type {EqualityCheckFunction, FieldProps, FormagusProps} from '../Field';
+import type {EqualityCheckFunction, FieldProps, FormagusProps} from '../Field/Field.types';
 
 export type FormValues = any;
 export type FieldDictionary<T = any> = Record<string, T>;

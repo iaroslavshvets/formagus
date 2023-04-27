@@ -1,10 +1,10 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {Field} from '../../src';
-import {InputAdapter} from '../components/InputAdapter';
+import {Input} from '../components/Input';
 import {TestForm} from '../components/TestForm';
 import {waitFor} from '../helpers/conditions';
-import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {createInputAdapterDriver} from '../components/Input/InputAdapter.driver';
 import {createTestFormDriver} from '../components/TestForm.driver';
 
 describe('Form meta', () => {
@@ -63,7 +63,7 @@ describe('Form meta', () => {
         }}
       >
         <Field name={TestForm.FIELD_ONE_NAME}>
-          <InputAdapter />
+          <Input />
         </Field>
       </TestForm>,
     ).container;
@@ -93,7 +93,7 @@ describe('Form meta', () => {
           }}
         >
           <Field name={TestForm.FIELD_ONE_NAME}>
-            <InputAdapter />
+            <Input />
           </Field>
         </TestForm>,
       ).container;
@@ -114,7 +114,7 @@ describe('Form meta', () => {
       const wrapper = render(
         <TestForm>
           <Field defaultValue="" name={TestForm.FIELD_ONE_NAME}>
-            <InputAdapter />
+            <Input />
           </Field>
         </TestForm>,
       ).container;
@@ -136,11 +136,11 @@ describe('Form meta', () => {
         return (
           <TestForm>
             <Field defaultValue="" name={TestForm.FIELD_ONE_NAME}>
-              <InputAdapter />
+              <Input />
             </Field>
             {!hideField && (
               <Field defaultValue="" name={TestForm.FIELD_TWO_NAME} persist={true}>
-                <InputAdapter />
+                <Input />
               </Field>
             )}
           </TestForm>
