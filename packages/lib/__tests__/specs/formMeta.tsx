@@ -5,7 +5,7 @@ import {Input} from '../components/Input';
 import {TestForm} from '../components/TestForm';
 import {waitFor} from '../helpers/conditions';
 import {createInputDriver} from '../components/Input/createInputDriver';
-import {createTestFormDriver} from '../components/TestForm.driver';
+import {createTestFormDriver} from '../components/createTestFormDriver';
 
 describe('Form meta', () => {
   afterEach(() => cleanup());

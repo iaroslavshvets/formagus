@@ -1,7 +1,7 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {TestForm} from '../components/TestForm';
-import {createTestFormDriver} from '../components/TestForm.driver';
+import {createTestFormDriver} from '../components/createTestFormDriver';
 import {Field} from '../../src';
 import {Input} from '../components/Input';
 

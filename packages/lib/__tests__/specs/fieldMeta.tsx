@@ -4,7 +4,7 @@ import {Field, createFormController} from '../../src';
 import {TestForm} from '../components/TestForm';
 import {waitFor} from '../helpers/conditions';
 import {Input} from '../components/Input';
-import {createTestFormDriver} from '../components/TestForm.driver';
+import {createTestFormDriver} from '../components/createTestFormDriver';
 import {createInputDriver} from '../components/Input/createInputDriver';
 
 describe('Field meta', () => {

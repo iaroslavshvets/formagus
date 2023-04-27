@@ -3,7 +3,7 @@ import React from 'react';
 import {TestForm} from '../components/TestForm';
 import {Input} from '../components/Input';
 import {Field} from '../../src';
-import {createTestFormDriver} from '../components/TestForm.driver';
+import {createTestFormDriver} from '../components/createTestFormDriver';
 import {createInputDriver} from '../components/Input/createInputDriver';
 
 describe('Form props', () => {

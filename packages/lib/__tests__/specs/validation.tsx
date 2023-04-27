@@ -4,7 +4,7 @@ import {Field, createFormController} from '../../src';
 import {createInputDriver} from '../components/Input/createInputDriver';
 import {TestForm} from '../components/TestForm';
 import {waitFor} from '../helpers/conditions';
-import {createTestFormDriver} from '../components/TestForm.driver';
+import {createTestFormDriver} from '../components/createTestFormDriver';
 import {Input} from '../components/Input';
 
 describe('Validation', () => {
