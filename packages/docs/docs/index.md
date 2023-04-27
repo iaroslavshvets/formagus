@@ -47,7 +47,7 @@ const SimpleAsHellForm = () => (
 )
 ```
 
-Now lets add the Formagus into the mix:
+Now let's add the Formagus into the mix:
 
 ```jsx
 import {Form} from 'formagus';
@@ -92,7 +92,7 @@ const onSubmit = (errors, values) => {
     }
 };
 
-const InputAdapter = () => {
+const Input = () => {
   const formagus = useField();
   return (
     <input
@@ -109,7 +109,9 @@ const Formagus = (props) => (
     {({submit}) => {
       return (
        <form onSubmit={submit}>
-          <Field name="form_field_1" adapter={InputAdapter}>
+          <Field name="form_field_1">
+            <Input />
+          </Field>
           <button type="submit">Submit</button>
        </form>
       )
@@ -148,7 +150,7 @@ export { formController }
 import * as React from 'react';
 import {Form, Field} from 'formagus';
 import {formController} from './formController';
-import {InputAdapter} from './InputAdapter';
+import {Input} from './Input';
 
 const Formagus = (props) => (
   <Form controller={formController}>
@@ -156,7 +158,7 @@ const Formagus = (props) => (
       return (
         <form onSubmit={submit}>
           <Field name="form_field_1">
-            <InputAdapter />
+            <Input />
           </Field>
           <button type="submit">Submit</button>
         </form>
@@ -173,7 +175,7 @@ then no other props should be passed to the `Form` and all the options should be
 
 ### Most simple form
 ```tsx
-const InputAdapter = (props) => {
+const Input = (props) => {
   const formagus = useField();
   return (
     <input
@@ -188,7 +190,7 @@ const InputAdapter = (props) => {
 <Form>
   {() => {
     <Field name="formagus_user">
-      <InputAdapter />
+      <Input />
     </Field>
   }}
 </Form>
@@ -201,7 +203,7 @@ A(`Form` render)
 A -->|1-st render //`Field` | B(`Field` is returning null)
 B -->|useEffect //`useRegisterField`| C(`Field` registers itself in `FormController`)
 C --> |2-nd render // `Field` receives value and other meta-data from `FormController`| D(`Field` renders props.adapter and passing data as `formagus` prop)
-D --> |1-st render // `InputAdapter` | E(Actual input is being rendered)
+D --> |1-st render // `Input` | E(Actual input is being rendered)
 ```
 
 
