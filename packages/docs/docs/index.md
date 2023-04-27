@@ -6,8 +6,8 @@ sidebar_label: Introduction
 # Introduction
 
 Formagus is your trusty helping wizard, that helps deal with forms. You don't have to worry about form and field states (dirty, touched, submit count, up to date values, errors and so on). Formagus is on the side of light magic, that won't hang
-a noose over your neck, binding your to the structure of the form or components chosen by library and not you. It's completely indifferent to your html, no auto bindings and fighting with them. So to balance the scales you need to provide your own "adapters", which are responsible for the displaying of form state.
-Formagus doesn't have any adapters by default, but you can find some examples in `Recipes` section.
+a noose over your neck, binding your to the structure of the form or components chosen by library and not you. It's completely indifferent to your html, no auto bindings and fighting with them. So to balance the scales you need to provide your own components, which are responsible for the displaying of form state.
+Formagus doesn't have any built-in form components, but you can find examples of wiring in `Recipes` section.
 
 Formagus is compatible with React 16+ and is powered by `Mobx`.
 
@@ -22,15 +22,15 @@ Formagus is compatible with React 16+ and is powered by `Mobx`.
  passing it as a prop
 * simple, yet powerful form API, which allows you to model any form interactions (mobx `reaction`, `autorun`, etc.)
 * written in typescript, fully typed
-* own adapters allow you easily use `ANY` 3rd-party components or write your own, basically there is not difference in usage, you choose - you the boss!
+* `useField` allows you easily use `ANY` 3rd-party components or write your own, basically there is not difference in usage, you choose - you the boss!
 
 ## Basic concept
 
 `<Form/>` injects all available props to your component by passing them to its child render function.
 When you render `<Field/>` component with `name` prop (supports nesting like `name="someProps.nestedProp"`, and change the value to
-`nestedPropValue` will result into having form values like `{someProps: {nestedProps: nestedPropValue}}`. `<Field/>` also
-have to receive `adapter` property, or `child render function`, which will render actual `<input />` or whatever element you want.
-`<Field/>` injects form and it's own state to the adapter in any case, passing it as a prop.
+`nestedPropValue` will result into having form values like `{someProps: {nestedProps: nestedPropValue}}`. `<Field/>` can
+have children which will use `useField` hook, or `render` function callback, which will receive `<Field/>` state and render actual `<input />` or whichever element you want.
+`useField` will return combined nearest `<Form/>` and `<Field/>` state.
 
 ## Step by step guide
 
@@ -76,9 +76,9 @@ const Formagus = () => (
 ```
 
 Hm... Looks legit. But. It will not work. We missing the crucial player in the game – Mr. `Field`, which is the bridge
-between Formagus and your components. In order to set it up, you need to pass an Adapter.
-Adapter – is a component, which will receive all available state as `props.formagus`, which
-are injected by the `<Field/>`. Now, back to school:
+between Formagus and your displayed components. Field doesn't display anything by itself. In order to set it up, you need create
+a component, that will render actual `<input/>` or any other component, which you want to wire up with form.
+Now use `useField` hook, which will receive state of the `<Field/>`. Now, back to school:
 
 ```jsx
 import {Form, Field, useField} from 'formagus';
@@ -202,7 +202,7 @@ graph TD
 A(`Form` render)
 A -->|1-st render //`Field` | B(`Field` is returning null)
 B -->|useEffect //`useRegisterField`| C(`Field` registers itself in `FormController`)
-C --> |2-nd render // `Field` receives value and other meta-data from `FormController`| D(`Field` renders props.adapter and passing data as `formagus` prop)
+C --> |2-nd render // `Field` receives value and other meta-data from `FormController`| D(`Field` renders children or calls `render` function and passed data as `formagus` prop)
 D --> |1-st render // `Input` | E(Actual input is being rendered)
 ```
 
