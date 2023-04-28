@@ -1,4 +1,4 @@
-export type {ValidationFunction, FieldMeta, EqualityCheckFunction, FieldProps} from './Field/Field.types';
+export type {ValidationFunction, FieldMeta, EqualityCheckFunction, FieldProps, FieldFormagusProps} from './Field/Field.types';
 export type {FormProps} from './Form/Form.types';
 export type {
   FormAPI,

@@ -38,6 +38,10 @@ export type AdapterProps = {
   formagus?: FormagusProps;
 };
 
+export type FieldRenderProps = {
+  formagus: FormagusProps;
+};
+
 export type FormatterFunction = (value: any) => any;
 export type EqualityCheckFunction = (newValue: any, oldValue: any) => boolean;
 
@@ -56,7 +60,7 @@ export type FieldCommonProps = {
 export type FieldProps<T extends JSXElementConstructor<any> = any> = Omit<FieldCommonProps, 'controller'> & {
   controller?: FormController;
   children?: JSX.Element;
-  render?: (injectedFieldDisplayProps: {formagus: FormagusProps}) => JSX.Element;
+  render?: (injectedFieldDisplayProps: FieldRenderProps) => JSX.Element;
   /** @deprecated pass children and useField hook inside instead, or at least render prop */
   adapter?: React.ComponentClass<AdapterProps & ComponentProps<T>> | React.FC<AdapterProps & ComponentProps<T>>;
   /** @deprecated */
