@@ -3,7 +3,7 @@ export type {
   FieldMeta,
   EqualityCheckFunction,
   FieldProps,
-  FieldFormagusProps,
+  FieldRenderProps,
 } from './Field/Field.types';
 export type {FormProps} from './Form/Form.types';
 export type {
