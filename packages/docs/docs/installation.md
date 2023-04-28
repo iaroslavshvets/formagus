@@ -13,7 +13,7 @@ npm install formagus
 yarn add formagus
 ```
 
-Also Formagus has a dependency on mobx, if it's not installed, please do
+Formagus has a dependency on mobx, if it's not installed, please do
 
 ```sh
 npm install mobx mobx-react

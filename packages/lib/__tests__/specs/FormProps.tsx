@@ -1,10 +1,10 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {TestForm} from '../components/TestForm';
-import {InputAdapter} from '../components/InputAdapter';
+import {Input} from '../components/Input';
 import {Field} from '../../src';
-import {createTestFormDriver} from '../components/TestForm.driver';
-import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {createTestFormDriver} from '../components/createTestFormDriver';
+import {createInputDriver} from '../components/Input/createInputDriver';
 
 describe('Form props', () => {
   afterEach(() => cleanup());
@@ -22,14 +22,18 @@ describe('Form props', () => {
         }}
       >
         <div>
-          <Field name="string" adapter={InputAdapter} />
-          <Field name="nested[0].id" adapter={InputAdapter} />
+          <Field name="string">
+            <Input />
+          </Field>
+          <Field name="nested[0].id">
+            <Input />
+          </Field>
         </div>
       </TestForm>,
     ).container;
 
-    const fieldDriverOne = createInputAdapterDriver({wrapper, dataHook: 'string'});
-    const fieldDriverNested = createInputAdapterDriver({wrapper, dataHook: 'nested[0].id'});
+    const fieldDriverOne = createInputDriver({wrapper, dataHook: 'string'});
+    const fieldDriverNested = createInputDriver({wrapper, dataHook: 'nested[0].id'});
 
     expect(fieldDriverOne.get.value()).toBe('John Snow');
     expect(fieldDriverNested.get.value()).toBe('Jaime Lannister');
@@ -62,20 +66,23 @@ describe('Form props', () => {
           return formattedValues;
         }}
       >
-        <Field name={FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field name={FIELD_ONE_NAME}>
+          <Input />
+        </Field>
         <Field
           name={FIELD_TWO_NAME}
-          adapter={InputAdapter}
           onFormat={(value: string) => {
             return value?.endsWith(':formatted') ? value : `${value}:formatted`;
           }}
-        />
+        >
+          <Input />
+        </Field>
       </TestForm>,
     ).container;
 
     const formDriver = createTestFormDriver({wrapper});
-    const fieldOneDriver = createInputAdapterDriver({wrapper, dataHook: FIELD_ONE_NAME});
-    const fieldTwoDriver = createInputAdapterDriver({wrapper, dataHook: FIELD_TWO_NAME});
+    const fieldOneDriver = createInputDriver({wrapper, dataHook: FIELD_ONE_NAME});
+    const fieldTwoDriver = createInputDriver({wrapper, dataHook: FIELD_TWO_NAME});
 
     const getFirstFieldValue = () => formDriver.get.values().array[0].field_one_name;
     const getSecondFieldValue = () => formDriver.get.values().array[0].field_two_name;

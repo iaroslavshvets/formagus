@@ -1,1 +1,0 @@
-export {InputAdapter} from './InputAdapter';

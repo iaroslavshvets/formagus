@@ -3,9 +3,9 @@ import React from 'react';
 import {Field, createFormController} from '../../src';
 import {TestForm} from '../components/TestForm';
 import {waitFor} from '../helpers/conditions';
-import {InputAdapter} from '../components/InputAdapter';
-import {createTestFormDriver} from '../components/TestForm.driver';
-import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {Input} from '../components/Input';
+import {createTestFormDriver} from '../components/createTestFormDriver';
+import {createInputDriver} from '../components/Input/createInputDriver';
 
 describe('Field meta', () => {
   afterEach(() => cleanup());
@@ -19,7 +19,7 @@ describe('Field meta', () => {
 
   it('isActive', () => {
     const wrapper = render(<TestForm />).container;
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.meta('isActive')).not.toBe('true');
 
@@ -30,9 +30,27 @@ describe('Field meta', () => {
     expect(fieldDriver.get.meta('isActive')).not.toBe('true');
   });
 
+  it('hasValidation', () => {
+    const wrapper = render(
+      <TestForm>
+        <Field onValidate={jest.fn()} name={TestForm.FIELD_ONE_NAME}>
+          <Input />
+        </Field>
+        <Field name={TestForm.FIELD_TWO_NAME}>
+          <Input />
+        </Field>
+      </TestForm>,
+    ).container;
+    const fieldOneDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldTwoDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
+
+    expect(fieldOneDriver.get.meta('hasValidation')).toBe('true');
+    expect(fieldTwoDriver.get.meta('hasValidation')).toBe('false');
+  });
+
   it('isTouched', () => {
     const wrapper = render(<TestForm />).container;
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.meta('isTouched')).not.toBe('true');
 
@@ -45,7 +63,7 @@ describe('Field meta', () => {
 
   it('isDirty', () => {
     const wrapper = render(<TestForm />).container;
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.meta('isDirty')).toBe('false');
 
@@ -60,7 +78,7 @@ describe('Field meta', () => {
 
   it('isChanged', () => {
     const wrapper = render(<TestForm />).container;
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.meta('isChanged')).toBe('false');
 
@@ -82,7 +100,7 @@ describe('Field meta', () => {
     expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).customState).toEqual({});
 
     const wrapper = render(<TestForm controller={formController} />).container;
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
     const CUSTOM_KEY = 'CUSTOM_KEY';
     const CUSTOM_VALUE = 'CUSTOM_VALUE';
 
@@ -96,12 +114,14 @@ describe('Field meta', () => {
   it('isValidating', async () => {
     const wrapper = render(
       <TestForm>
-        <Field onValidate={jest.fn()} name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field onValidate={jest.fn()} name={TestForm.FIELD_ONE_NAME}>
+          <Input />
+        </Field>
       </TestForm>,
     ).container;
 
     const formDriver = createTestFormDriver({wrapper});
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.meta('isValidating')).not.toBe('true');
 

@@ -1,11 +1,11 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {Field, createFormController} from '../../src';
-import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {createInputDriver} from '../components/Input/createInputDriver';
 import {TestForm} from '../components/TestForm';
 import {waitFor} from '../helpers/conditions';
-import {createTestFormDriver} from '../components/TestForm.driver';
-import {InputAdapter} from '../components/InputAdapter';
+import {createTestFormDriver} from '../components/createTestFormDriver';
+import {Input} from '../components/Input';
 
 describe('Validation', () => {
   afterEach(() => cleanup());
@@ -22,7 +22,7 @@ describe('Validation', () => {
       });
       const wrapper = render(<TestForm controller={controller} />).container;
       const formDriver = createTestFormDriver({wrapper});
-      const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+      const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
       formDriver.when.submit();
 
@@ -42,15 +42,16 @@ describe('Validation', () => {
           <Field
             defaultValue="Batman"
             name={TestForm.FIELD_ONE_NAME}
-            adapter={InputAdapter}
             onValidate={(value) => {
               return value === 'Bruce' ? null : ['nameError'];
             }}
-          />
+          >
+            <Input />
+          </Field>
         </TestForm>,
       ).container;
       const formDriver = createTestFormDriver({wrapper});
-      const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+      const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
       formDriver.when.submit();
 
@@ -66,18 +67,19 @@ describe('Validation', () => {
           <Field
             defaultValue="Batman"
             name={TestForm.FIELD_ONE_NAME}
-            adapter={InputAdapter}
             onValidate={async (value) => {
               if (value === 'Bruce') {
                 return undefined;
               }
               return ['nameError'];
             }}
-          />
+          >
+            <Input />
+          </Field>
         </TestForm>,
       ).container;
       const formDriver = createTestFormDriver({wrapper});
-      const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+      const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
       formDriver.when.submit();
 
@@ -102,23 +104,26 @@ describe('Validation', () => {
       });
       const wrapper = render(
         <TestForm controller={controller}>
-          <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+          <Field name={TestForm.FIELD_ONE_NAME}>
+            <Input />
+          </Field>
           <Field
             defaultValue="Batman"
             name={TestForm.FIELD_TWO_NAME}
-            adapter={InputAdapter}
             onValidate={async (value) => {
               if (value === 'Bruce') {
                 return undefined;
               }
               return ['nameError'];
             }}
-          />
+          >
+            <Input />
+          </Field>
         </TestForm>,
       ).container;
       const formDriver = createTestFormDriver({wrapper});
-      const firstFieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
-      const secondFieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
+      const firstFieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+      const secondFieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
 
       formDriver.when.submit();
 

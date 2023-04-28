@@ -2,9 +2,9 @@ import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {TestForm} from '../components/TestForm';
 import {Field} from '../../src';
-import {InputAdapter} from '../components/InputAdapter';
+import {Input} from '../components/Input';
 import {FieldValueDisplayWithInject, createFieldValueDisplayDriver} from '../components/FieldValueDisplay';
-import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {createInputDriver} from '../components/Input/createInputDriver';
 
 describe('injectFormApi', () => {
   afterEach(() => cleanup());
@@ -20,7 +20,9 @@ describe('injectFormApi', () => {
           [TestForm.FIELD_ONE_NAME]: TEST_INITIAL_VALUE,
         }}
       >
-        <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field name={TestForm.FIELD_ONE_NAME}>
+          <Input />
+        </Field>
         <FieldValueDisplayWithInject
           dataHook={INNER_FORM_COMPONENT_DATA_HOOK}
           displayedFieldName={TestForm.FIELD_ONE_NAME}
@@ -28,7 +30,7 @@ describe('injectFormApi', () => {
       </TestForm>,
     ).container;
 
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
     const FieldValueDisplayDriver = createFieldValueDisplayDriver({
       wrapper,
       dataHook: INNER_FORM_COMPONENT_DATA_HOOK,

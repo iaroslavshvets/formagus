@@ -3,8 +3,8 @@ import {render, fireEvent, cleanup} from '@testing-library/react';
 import {observer} from 'mobx-react';
 import {Field, createFormController} from '../../src';
 import {TestForm} from '../components/TestForm';
-import {InputAdapter} from '../components/InputAdapter';
-import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {Input} from '../components/Input';
+import {createInputDriver} from '../components/Input/createInputDriver';
 import {waitFor} from '../helpers/conditions';
 
 describe('Field interactions', () => {
@@ -20,11 +20,15 @@ describe('Field interactions', () => {
       return (
         <TestForm controller={controller}>
           {isDisplayed && !isSwitchedPosition && (
-            <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist />
+            <Field name={TestForm.FIELD_ONE_NAME} persist={true}>
+              <Input />
+            </Field>
           )}
           <div>
             {isDisplayed && isSwitchedPosition && (
-              <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} persist />
+              <Field name={TestForm.FIELD_ONE_NAME} persist={true}>
+                <Input />
+              </Field>
             )}
           </div>
           <button
@@ -52,7 +56,7 @@ describe('Field interactions', () => {
     const wrapper = render(<Form />).container;
     const toggleVisibilityField = wrapper.querySelector('[data-hook="toggle-visibility"]')!;
     const togglePositionField = wrapper.querySelector('[data-hook="toggle-position"]')!;
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     // visible
     fireEvent.click(toggleVisibilityField);
@@ -87,7 +91,11 @@ describe('Field interactions', () => {
 
         return (
           <TestForm>
-            {!hiddenField && <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />}
+            {!hiddenField && (
+              <Field name={TestForm.FIELD_ONE_NAME}>
+                <Input />
+              </Field>
+            )}
             <button
               type="button"
               data-hook="toggle-field"
@@ -105,7 +113,7 @@ describe('Field interactions', () => {
     }
 
     const wrapper = render(<StatefulForm />).container;
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
     const toggleField = wrapper.querySelector('[data-hook="toggle-field"]')!;
     const NEW_VALUE = 'batman';
 
@@ -127,7 +135,7 @@ describe('Field interactions', () => {
         <Field
           name={TestForm.FIELD_ONE_NAME}
           render={(formagusProps) => (
-            <InputAdapter
+            <Input
               {...formagusProps}
               customState={{
                 customProperty: 'custom value',
@@ -138,7 +146,7 @@ describe('Field interactions', () => {
       </TestForm>,
     ).container;
 
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     fieldDriver.when.setCustomState();
 
@@ -152,11 +160,13 @@ describe('Field interactions', () => {
 
     const wrapper = render(
       <TestForm controller={formController}>
-        <Field name={NESTED_FIELD_NAME} adapter={InputAdapter} />
+        <Field name={NESTED_FIELD_NAME}>
+          <Input />
+        </Field>
       </TestForm>,
     ).container;
 
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: NESTED_FIELD_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: NESTED_FIELD_NAME});
 
     fieldDriver.when.change(NEW_VALUE);
 

@@ -4,6 +4,7 @@ import type {JSXElementConstructor} from 'react';
 import {useRegisterField} from './useRegisterField';
 import {FieldContextProvider} from './FieldContext';
 import type {FieldProps} from './Field.types';
+import {invariant} from '../utils/invariant';
 
 export const Field = observer(<T extends JSXElementConstructor<any>>(props: FieldProps<T>) => {
   const {formagus} = useRegisterField(props as Omit<FieldProps<T>, 'controller'>);
@@ -13,7 +14,12 @@ export const Field = observer(<T extends JSXElementConstructor<any>>(props: Fiel
   }
 
   if (props.adapter) {
-    const Adapter: any = props.adapter;
+    invariant(
+      props.children === undefined && props.render === undefined,
+      'You cannot use both adapter and render or children prop',
+    );
+
+    const Adapter: React.ElementType<any> = props.adapter;
     return (
       <FieldContextProvider value={formagus}>
         <Adapter formagus={formagus} {...props.adapterProps} />
@@ -22,7 +28,9 @@ export const Field = observer(<T extends JSXElementConstructor<any>>(props: Fiel
   }
 
   if (props.render) {
-    return <FieldContextProvider value={formagus}>{props.render({formagus: formagus!})}</FieldContextProvider>;
+    invariant(props.children === undefined, 'You cannot use both render and children prop');
+
+    return <FieldContextProvider value={formagus}>{props.render({formagus})}</FieldContextProvider>;
   }
 
   return <FieldContextProvider value={formagus}>{props.children}</FieldContextProvider>;

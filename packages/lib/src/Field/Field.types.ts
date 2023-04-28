@@ -8,8 +8,6 @@ export type ValidationFunction =
   | ((value: any, values?: any) => FieldErrors)
   | ((value: any, values?: any) => Promise<FieldErrors>);
 
-export type FieldAdapter = React.ComponentClass<AdapterProps> | React.FC<AdapterProps>;
-
 export type FieldMeta = Readonly<{
   errors: any | null;
   initialValue: any;
@@ -18,11 +16,10 @@ export type FieldMeta = Readonly<{
   isChanged: boolean;
   isActive: boolean;
   isValidating: boolean;
+  hasValidation: boolean;
   customState: Record<string, any>;
   form: FormMeta;
 }>;
-
-export type AdapterRenderProps = Required<AdapterProps>;
 
 export type FormagusProps = Readonly<{
   name: string;
@@ -36,8 +33,13 @@ export type FormagusProps = Readonly<{
   validateField: () => Promise<void>;
 }>;
 
+/** @deprecated */
 export type AdapterProps = {
   formagus?: FormagusProps;
+};
+
+export type FieldRenderProps = {
+  formagus: FormagusProps;
 };
 
 export type FormatterFunction = (value: any) => any;
@@ -58,7 +60,9 @@ export type FieldCommonProps = {
 export type FieldProps<T extends JSXElementConstructor<any> = any> = Omit<FieldCommonProps, 'controller'> & {
   controller?: FormController;
   children?: JSX.Element;
-  render?: (injectedAdapterProps: AdapterRenderProps) => JSX.Element;
+  render?: (injectedFieldDisplayProps: FieldRenderProps) => JSX.Element;
+  /** @deprecated pass children and useField hook inside instead, or at least render prop */
   adapter?: React.ComponentClass<AdapterProps & ComponentProps<T>> | React.FC<AdapterProps & ComponentProps<T>>;
+  /** @deprecated */
   adapterProps?: ComponentProps<T>; // Will be passed to adapter alongside injected formagus props
 };

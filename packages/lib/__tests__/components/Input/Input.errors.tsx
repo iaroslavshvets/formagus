@@ -2,7 +2,7 @@ import React from 'react';
 import {isEmpty} from 'lodash';
 import {observer} from 'mobx-react';
 
-export const Errors = observer((props: {errors: any}) => {
+export const InputErrors = observer((props: {errors: any}) => {
   const {errors} = props;
   return !isEmpty(errors) ? (
     <span data-hook="errors">
@@ -15,4 +15,4 @@ export const Errors = observer((props: {errors: any}) => {
   ) : null;
 });
 
-(Errors as any).displayName = 'Errors';
+(InputErrors as any).displayName = 'InputErrors';

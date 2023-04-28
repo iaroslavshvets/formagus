@@ -1,9 +1,9 @@
 import {cleanup, fireEvent, render} from '@testing-library/react';
 import React, {useState} from 'react';
 import {createFormController, Field} from '../../src';
-import {InputAdapter} from '../components/InputAdapter';
+import {Input} from '../components/Input';
 import {TestForm} from '../components/TestForm';
-import {createInputAdapterDriver} from '../components/InputAdapter/InputAdapter.driver';
+import {createInputDriver} from '../components/Input/createInputDriver';
 
 describe('Form interaction', () => {
   afterEach(() => cleanup());
@@ -16,11 +16,13 @@ describe('Form interaction', () => {
     });
     const wrapper = render(
       <TestForm controller={controller}>
-        <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field name={TestForm.FIELD_ONE_NAME}>
+          <Input />
+        </Field>
       </TestForm>,
     ).container;
 
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.value()).toBe('batman is cool');
 
@@ -48,8 +50,14 @@ describe('Form interaction', () => {
 
       return (
         <TestForm controller={controller}>
-          <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
-          {!hiddenField && <Field name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} />}
+          <Field name={TestForm.FIELD_ONE_NAME}>
+            <Input />
+          </Field>
+          {!hiddenField && (
+            <Field name={TestForm.FIELD_TWO_NAME}>
+              <Input />
+            </Field>
+          )}
           <button
             type="button"
             data-hook="toggle-field"
@@ -65,7 +73,7 @@ describe('Form interaction', () => {
 
     const wrapper = render(<FormWithHiddenField />).container;
 
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.value()).toBe('Batman is cool');
 
@@ -86,7 +94,7 @@ describe('Form interaction', () => {
     const toggleField = wrapper.querySelector('[data-hook="toggle-field"]')!;
     fireEvent.click(toggleField);
 
-    const fieldDriver2 = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
+    const fieldDriver2 = createInputDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
 
     expect(fieldDriver.get.meta('form:isTouched')).toBe('false');
     expect(fieldDriver2.get.value()).toBe('Wolverine is Logan');
@@ -100,11 +108,13 @@ describe('Form interaction', () => {
     });
     const wrapper = render(
       <TestForm controller={controller}>
-        <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field name={TestForm.FIELD_ONE_NAME}>
+          <Input />
+        </Field>
       </TestForm>,
     ).container;
 
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.value()).toBe('batman is cool');
 
@@ -123,11 +133,13 @@ describe('Form interaction', () => {
     });
     const wrapper = render(
       <TestForm controller={controller}>
-        <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field name={TestForm.FIELD_ONE_NAME}>
+          <Input />
+        </Field>
       </TestForm>,
     ).container;
 
-    const fieldDriver = createInputAdapterDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
     expect(fieldDriver.get.value()).toBe('batman is cool');
 
@@ -149,7 +161,9 @@ describe('Form interaction', () => {
 
     render(
       <TestForm controller={controller}>
-        <Field name={TestForm.FIELD_ONE_NAME} adapter={InputAdapter} />
+        <Field name={TestForm.FIELD_ONE_NAME}>
+          <Input />
+        </Field>
       </TestForm>,
     );
 
@@ -177,15 +191,15 @@ describe('Form interaction', () => {
     const FormWithTwoFields = () => {
       return (
         <TestForm controller={controller}>
-          <Field<typeof InputAdapter>
-            name={TestForm.FIELD_ONE_NAME}
-            adapter={InputAdapter}
-            adapterProps={{
-              useRenderCounter: true,
-            }}
-          />
-          <Field name={TestForm.FIELD_TWO_NAME} adapter={InputAdapter} />
-          <Field name={TestForm.FIELD_THREE_NAME} adapter={InputAdapter} />
+          <Field name={TestForm.FIELD_ONE_NAME}>
+            <Input useRenderCounter={true} />
+          </Field>
+          <Field name={TestForm.FIELD_TWO_NAME}>
+            <Input />
+          </Field>
+          <Field name={TestForm.FIELD_THREE_NAME}>
+            <Input />
+          </Field>
           <button
             type="button"
             data-hook="change_field_2_value"
