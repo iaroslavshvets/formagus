@@ -11,7 +11,7 @@ export const Form = observer((props: FormProps) => {
   const {children, controller, ...restProps} = props;
   const [controllerInstance] = useState(() => {
     invariant(
-      controller && Object.keys(restProps).length > 0,
+      controller && Object.keys(restProps).length === 0,
       `Form should have either "controller" prop with configured FormController instance or no ` +
         `"controller" prop and configuration passed as props, but not both`,
     );

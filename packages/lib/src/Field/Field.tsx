@@ -14,7 +14,10 @@ export const Field = observer(<T extends JSXElementConstructor<any>>(props: Fiel
   }
 
   if (props.adapter) {
-    invariant(props.children || props.render, 'You cannot use both adapter and render or children prop');
+    invariant(
+      props.children === undefined && props.render === undefined,
+      'You cannot use both adapter and render or children prop',
+    );
 
     const Adapter: React.ElementType<any> = props.adapter;
     return (
@@ -25,7 +28,7 @@ export const Field = observer(<T extends JSXElementConstructor<any>>(props: Fiel
   }
 
   if (props.render) {
-    invariant(props.children, 'You cannot use both render and children prop');
+    invariant(props.children === undefined, 'You cannot use both render and children prop');
 
     return <FieldContextProvider value={formagus}>{props.render({formagus})}</FieldContextProvider>;
   }
