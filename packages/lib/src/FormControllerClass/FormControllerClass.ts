@@ -454,10 +454,11 @@ export class FormControllerClass {
       this.setFieldMeta(field, {
         isValidating: false,
       });
-      this.updateErrors({
-        ...this.API.errors,
-        [fieldName]: errors,
-      });
+
+      this.options.fieldValueToFormValuesConverter.set(this.API.errors, fieldName, errors);
+
+      this.updateErrors(this.API.errors);
+
       if (field.meta.isMounted) {
         this.setFieldErrors(field, errors);
       }
