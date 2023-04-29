@@ -1,7 +1,8 @@
-import _set from 'lodash/set';
-import _get from 'lodash/get';
+import set from 'lodash/set';
+import get from 'lodash/get';
 
+/** @deprecated */
 export const utils = {
-  getValue: _get,
-  setValue: _set,
+  getValue: get,
+  setValue: set,
 };

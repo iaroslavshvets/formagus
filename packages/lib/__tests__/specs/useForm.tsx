@@ -3,11 +3,10 @@ import React from 'react';
 import {TestForm} from '../components/TestForm';
 import {Field} from '../../src/Field/Field';
 import {Input} from '../components/Input';
-import {FieldValueDisplayWithHook, createFieldValueDisplayDriver} from '../components/FieldValueDisplay';
+import {createFieldValueDisplayDriver, FieldValueDisplayWithHook} from '../components/FieldValueDisplay';
 import {createInputDriver} from '../components/Input/createInputDriver';
 
-// TODO: fix this test
-describe('useFormController', () => {
+describe('useForm', () => {
   afterEach(() => cleanup());
 
   const TEST_INITIAL_VALUE = 'testtest';

@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {action, computed, observable, runInAction} from 'mobx';
 import {observerBatching} from 'mobx-react';
-import _merge from 'lodash/merge';
 import _cloneDeep from 'lodash/cloneDeep';
-import {utils} from '../utils/utils';
+import _set from 'lodash/set';
+import _get from 'lodash/get';
 import {toJSCompat} from '../utils/toJSCompat';
 import type {FieldProps, ValidationFunction} from '../Field/Field.types';
 import type {
@@ -15,10 +15,11 @@ import type {
   FormField,
   FormValidationErrors,
   FormValues,
-} from './FormController.types';
+} from './FormControllerClass.types';
 import type {WithRequiredProperty} from '../utils/types/withRequiredProperty';
 import {isMobx6Used} from '../utils/isMobx6Used';
 import {isEmpty} from '../utils/isEmpty';
+import {mergeDeep} from '../utils/mergeDeep';
 
 const {makeObservable} = require('mobx'); // require as import might not work in case of mobx5 bundling in userland
 
@@ -38,8 +39,8 @@ export class FormControllerClass {
     this.options = {
       ...options,
       fieldValueToFormValuesConverter: options.fieldValueToFormValuesConverter || {
-        get: utils.getValue,
-        set: utils.setValue,
+        get: _get,
+        set: _set,
       },
     };
 
@@ -211,21 +212,20 @@ export class FormControllerClass {
   @action protected initializeVirtualField = (props: FieldProps) => {
     const {name, onEqualityCheck, persist = false} = props;
     const {get} = this.options.fieldValueToFormValuesConverter;
-    const field = this.fields.get(name);
+    const field = this.fields.get(name)!;
 
     const initialValue =
       get(this.options.initialValues, name) !== undefined ? get(this.options.initialValues, name) : props.defaultValue;
 
-    _merge(field, {
-      props: {
-        persist,
-        ...props,
-      },
-      value: initialValue,
-      meta: {
-        onEqualityCheck,
-        initialValue,
-      },
+    field.props = {
+      ...props,
+      persist,
+    };
+    field.value = initialValue;
+
+    this.setFieldMeta(field, {
+      initialValue,
+      ...(onEqualityCheck && {onEqualityCheck}),
     });
 
     this.updateAPIValues(name, initialValue);
@@ -237,7 +237,7 @@ export class FormControllerClass {
 
     // used for cases when field was created, unmounted and created again
     if (this.fields.get(name)?.meta.isRegistered) {
-      this.fields.get(props.name)!.props = props;
+      this.fields.get(name)!.props = props;
     } else {
       this.addVirtualField(name);
       this.initializeVirtualField(props);
@@ -454,7 +454,10 @@ export class FormControllerClass {
       this.setFieldMeta(field, {
         isValidating: false,
       });
-      this.updateErrors(_merge(this.API.errors, {[fieldName]: errors}));
+      this.updateErrors({
+        ...this.API.errors,
+        [fieldName]: errors,
+      });
       if (field.meta.isMounted) {
         this.setFieldErrors(field, errors);
       }
@@ -474,7 +477,7 @@ export class FormControllerClass {
     ]);
 
     runInAction(() => {
-      this.updateErrors(_merge(fieldValidationErrors, formValidationErrors));
+      this.updateErrors(mergeDeep(fieldValidationErrors, formValidationErrors));
       this.updateErrorsForEveryField(this.API.errors);
       this.setIsValidating(false);
     });
