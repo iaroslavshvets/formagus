@@ -1,5 +1,5 @@
 import React from 'react';
-import type {FormAPI, FormControllerOptions} from '../../src/FormController/FormController.types';
+import type {FormAPI, FormControllerOptions} from '../../src/FormControllerClass/FormControllerClass.types';
 import {Field, Form, FormController} from '../../src';
 import {Input} from './Input';
 

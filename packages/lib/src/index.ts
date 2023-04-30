@@ -14,11 +14,11 @@ export type {
   FieldErrors,
   // don't export in next version: end
   FormField,
-} from './FormController/FormController.types';
+} from './FormControllerClass/FormControllerClass.types';
 export type {FormController} from './createFormController/createFormController.types';
 
 /** inner implementation, use createFormController to create controllers, unless you want to extend from base class */
-export {FormControllerClass} from './FormController/FormControllerClass';
+export {FormControllerClass} from './FormControllerClass/FormControllerClass';
 
 export {createFormController} from './createFormController/createFormController';
 
@@ -28,8 +28,6 @@ export {useField} from './Field/useField';
 export {Form} from './Form/Form';
 export {useForm} from './Form/useForm';
 
-export {utils} from './utils/utils';
-
 // don't export in next version
 export {FormPart} from './FormPart';
 
@@ -37,3 +35,4 @@ export {FormPart} from './FormPart';
 export type {AdapterProps} from './Field/Field.types';
 export {injectFormApi} from './injectFormApi';
 export {useFormApi} from './useFormApi';
+export {utils} from './utils/utils';

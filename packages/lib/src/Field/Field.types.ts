@@ -1,8 +1,8 @@
 import React from 'react';
 import type {ComponentProps, JSXElementConstructor} from 'react';
-import type {FieldErrors, FormMeta} from '../FormController/FormController.types';
+import type {FieldErrors, FormMeta} from '../FormControllerClass/FormControllerClass.types';
 import type {FormController} from '../createFormController/createFormController.types';
-import type {FormControllerClass} from '../FormController/FormControllerClass';
+import type {FormControllerClass} from '../FormControllerClass/FormControllerClass';
 
 export type ValidationFunction =
   | ((value: any, values?: any) => FieldErrors)

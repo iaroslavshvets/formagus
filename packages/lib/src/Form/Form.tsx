@@ -4,7 +4,7 @@ import {FormPart} from '../FormPart';
 import {FormControllerContext} from './FormControllerContext';
 import {createFormController} from '../createFormController/createFormController';
 import type {FormProps} from './Form.types';
-import type {FormControllerClass} from '../FormController/FormControllerClass';
+import type {FormControllerClass} from '../FormControllerClass/FormControllerClass';
 import {invariant} from '../utils/invariant';
 
 export const Form = observer((props: FormProps) => {

@@ -62,18 +62,38 @@ describe('Field meta', () => {
   });
 
   it('isDirty', () => {
-    const wrapper = render(<TestForm />).container;
-    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const wrapper = render(
+      <TestForm>
+        <Field name={TestForm.FIELD_ONE_NAME}>
+          <Input />
+        </Field>
+        <Field
+          name={TestForm.FIELD_TWO_NAME}
+          defaultValue={10}
+          onEqualityCheck={(a, b) => {
+            return Number(b) > Number(a);
+          }}
+        >
+          <Input />
+        </Field>
+      </TestForm>,
+    ).container;
+    const fieldOneDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    const fieldTwoDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
 
-    expect(fieldDriver.get.meta('isDirty')).toBe('false');
+    expect(fieldOneDriver.get.meta('isDirty')).toBe('false');
 
-    fieldDriver.when.change('batman');
+    fieldOneDriver.when.change('batman');
+    expect(fieldOneDriver.get.meta('isDirty')).toBe('true');
 
-    expect(fieldDriver.get.meta('isDirty')).toBe('true');
+    fieldOneDriver.when.change('');
+    expect(fieldOneDriver.get.meta('isDirty')).toBe('false');
 
-    fieldDriver.when.change('');
+    fieldTwoDriver.when.change('5');
+    expect(fieldTwoDriver.get.meta('isDirty')).toBe('false');
 
-    expect(fieldDriver.get.meta('isDirty')).toBe('false');
+    fieldTwoDriver.when.change('15');
+    expect(fieldTwoDriver.get.meta('isDirty')).toBe('true');
   });
 
   it('isChanged', () => {
