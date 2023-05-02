@@ -6,7 +6,7 @@ import _cloneDeep from 'lodash/cloneDeep';
 import _set from 'lodash/set';
 import _get from 'lodash/get';
 import {toJSCompat} from '../utils/toJSCompat';
-import type {FieldProps, ValidationFunction} from '../Field/Field.types';
+import type {FieldProps, OnValidateFunction} from '../Field/Field.types';
 import type {
   FieldDictionary,
   FieldErrors,
@@ -49,7 +49,7 @@ export class FormControllerClass {
 
   @computed
   get fieldLevelValidations() {
-    const fieldValidations: FieldDictionary<ValidationFunction> = {};
+    const fieldValidations: FieldDictionary<OnValidateFunction> = {};
 
     this.fields.forEach((field, name) => {
       if (field.meta.isMounted && field.props!.onValidate) {

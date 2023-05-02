@@ -1,5 +1,7 @@
+import type {OnValidateFunction} from './Field/Field.types';
+
 export type {
-  ValidationFunction,
+  OnValidateFunction,
   FieldMeta,
   EqualityCheckFunction,
   FieldProps,
@@ -36,3 +38,4 @@ export type {AdapterProps} from './Field/Field.types';
 export {injectFormApi} from './injectFormApi';
 export {useFormApi} from './useFormApi';
 export {utils} from './utils/utils';
+export type ValidationFunction = OnValidateFunction;

@@ -4,7 +4,7 @@ import type {FieldErrors, FormMeta} from '../FormControllerClass/FormControllerC
 import type {FormController} from '../createFormController/createFormController.types';
 import type {FormControllerClass} from '../FormControllerClass/FormControllerClass';
 
-export type ValidationFunction =
+export type OnValidateFunction =
   | ((value: any, values?: any) => FieldErrors)
   | ((value: any, values?: any) => Promise<FieldErrors>);
 
@@ -48,7 +48,7 @@ export type EqualityCheckFunction = (newValue: any, oldValue: any) => boolean;
 export type FieldCommonProps = {
   name: string;
   defaultValue?: any;
-  onValidate?: ValidationFunction;
+  onValidate?: OnValidateFunction;
   onFormat?: FormatterFunction;
   onEqualityCheck?: EqualityCheckFunction;
   onInit?: (API: FormagusProps) => void;
