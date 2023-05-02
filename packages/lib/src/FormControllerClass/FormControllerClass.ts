@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {action, computed, observable, runInAction} from 'mobx';
+import {action, observable, runInAction} from 'mobx';
 import {observerBatching} from 'mobx-react';
 import _cloneDeep from 'lodash/cloneDeep';
 import _set from 'lodash/set';
@@ -47,18 +47,15 @@ export class FormControllerClass {
     this.createFormApi();
   }
 
-  @computed
-  get fieldLevelValidations() {
-    const fieldValidations: FieldDictionary<OnValidateFunction> = {};
+  @observable protected fieldLevelValidations: FieldDictionary<OnValidateFunction> = {};
 
-    this.fields.forEach((field, name) => {
-      if (field.meta.isMounted && field.props!.onValidate) {
-        fieldValidations[name] = field.props!.onValidate;
-      }
-    });
+  @action protected addFieldLevelValidation = (fieldName: string, onValidateFunction: OnValidateFunction) => {
+    this.fieldLevelValidations[fieldName] = onValidateFunction;
+  };
 
-    return fieldValidations;
-  }
+  @action removeFieldLevelValidation = (fieldName: string) => {
+    delete this.fieldLevelValidations[fieldName];
+  };
 
   protected safeApiValuesCopy: FormValues = {};
 
@@ -110,7 +107,7 @@ export class FormControllerClass {
 
   // executes general form validator passed to Form as a `onValidate` prop and returns errors
   protected runFormLevelValidations = () => {
-    return this.options.onValidate ? this.options.onValidate(this.API.values) : null;
+    return this.options.onValidate ? this.options.onValidate(toJSCompat(this.API.values)) : undefined;
   };
 
   // executes all field level validators passed to Fields as a `onValidate` prop and returns errors
@@ -118,7 +115,7 @@ export class FormControllerClass {
     let pendingValidationCount = Object.keys(this.fieldLevelValidations).length;
 
     if (pendingValidationCount === 0) {
-      return null;
+      return undefined;
     }
 
     const errors: Record<string, FieldErrors> = {};
@@ -168,7 +165,7 @@ export class FormControllerClass {
   };
 
   @action protected updateErrors = (errors: FormValidationErrors) => {
-    this.API.errors = errors && Object.keys(errors).length ? errors : null;
+    this.API.errors = errors && Object.keys(errors).length ? errors : undefined;
     this.setIsValid(isEmpty(this.API.errors));
   };
 
@@ -182,7 +179,7 @@ export class FormControllerClass {
 
   @action protected addVirtualField = (fieldName: string) => {
     this.fields.set(fieldName, {
-      errors: null,
+      errors: undefined,
       value: undefined,
       props: undefined,
       handlers: {
@@ -233,7 +230,7 @@ export class FormControllerClass {
 
   // called when field is mounted
   @action registerField = (props: FieldProps) => {
-    const {name} = props;
+    const {name, onValidate} = props;
 
     // used for cases when field was created, unmounted and created again
     if (this.fields.get(name)?.meta.isRegistered) {
@@ -250,6 +247,10 @@ export class FormControllerClass {
       isRegistered: true,
     });
 
+    if (onValidate) {
+      this.addFieldLevelValidation(name, onValidate);
+    }
+
     this.updateAPIValues(name, field.value);
   };
 
@@ -262,6 +263,7 @@ export class FormControllerClass {
       });
 
       this.updateIsDirtyBasedOnFields();
+      this.removeFieldLevelValidation(fieldName);
     } else {
       this.updateIsDirtyBasedOnFields();
       this.fields.delete(fieldName);
@@ -468,7 +470,7 @@ export class FormControllerClass {
   };
 
   // validates the form, by calling form level onValidate function combined with field level validations,
-  // passed to Field as `validate` prop
+  // passed to Field as `onValidate` prop
   protected validate = async () => {
     this.setIsValidating(true);
 
@@ -506,7 +508,7 @@ export class FormControllerClass {
       }
 
       runInAction(() => {
-        if (isEmpty(this.API.errors)) {
+        if (isEmpty(errors)) {
           this.updateInitialValues();
           this.updateIsDirtyBasedOnFields();
         }

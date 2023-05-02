@@ -12,7 +12,7 @@ export const useRegisterField = (props: FieldCommonProps) => {
   const field = computedField.get();
   const isReady = field !== undefined;
 
-  const formagus = computed<Required<FormagusProps> | undefined>(() => {
+  const formagus = computed<FormagusProps | undefined>(() => {
     if (!isReady) {
       // component is not yet registered
       return undefined;
