@@ -123,12 +123,12 @@ export class FormControllerClass {
 
         Promise.resolve(this.runFieldLevelValidation(fieldName))
           .then((error) => {
-            if (!isEmpty(error)) {
-              errors[fieldName] = error;
+            if (error !== undefined && error !== null) {
+              this.options.fieldValueToFormValuesConverter.set(errors, fieldName, error);
             }
           })
           .catch((error) => {
-            errors[fieldName] = error;
+            this.options.fieldValueToFormValuesConverter.set(errors, fieldName, error);
           })
           .then(() => {
             this.setFieldMeta(field, {
@@ -154,9 +154,9 @@ export class FormControllerClass {
     field.errors = errors;
   };
 
-  @action protected updateErrors = (errors: any) => {
-    this.API.errors = errors && Object.keys(errors).length ? errors : undefined;
-    this.setIsValid(isEmpty(this.API.errors));
+  @action protected updateErrors = (errors: Record<string, any> = {}) => {
+    this.API.errors = errors;
+    this.setIsValid(Object.keys(this.API.errors).length === 0);
   };
 
   // runs validation for particular field
