@@ -5,7 +5,7 @@ import {useFormControllerClass} from '../Form/useFormControllerClass';
 
 function ComponentWithInjectedFormApi(WrappedComponent: any) {
   const InjectFormApiWrapper = observer((props: any) => {
-    const controller = useFormControllerClass();
+    const controller = useFormControllerClass(props);
     const [, forceUpdate] = useState<unknown>();
 
     useEffect(() => {
