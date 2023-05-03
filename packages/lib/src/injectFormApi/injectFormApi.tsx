@@ -3,7 +3,8 @@ import * as hoistNonReactStatics from 'hoist-non-react-statics';
 import {observer} from 'mobx-react';
 import {useFormControllerClass} from '../Form/useFormControllerClass';
 
-function ComponentWithInjectedFormApi(WrappedComponent: any) {
+/** @deprecated */
+export const injectFormApi: any = <C extends React.ComponentClass>(WrappedComponent: C) => {
   const InjectFormApiWrapper = observer((props: any) => {
     const controller = useFormControllerClass(props);
     const [, forceUpdate] = useState<unknown>();
@@ -20,8 +21,4 @@ function ComponentWithInjectedFormApi(WrappedComponent: any) {
   hoistNonReactStatics.default(InjectFormApiWrapper, WrappedComponent);
 
   return InjectFormApiWrapper;
-}
-
-/** @deprecated */
-export const injectFormApi: any = <C extends React.ComponentClass>(Component: C) =>
-  ComponentWithInjectedFormApi(Component);
+};
