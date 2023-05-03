@@ -7,15 +7,7 @@ import _set from 'lodash/set';
 import _get from 'lodash/get';
 import {toJSCompat} from '../utils/toJSCompat';
 import type {FieldProps, OnValidateFunction} from '../Field/Field.types';
-import type {
-  FieldDictionary,
-  FieldErrors,
-  FormAPI,
-  FormControllerOptions,
-  FormField,
-  FormValidationErrors,
-  FormValues,
-} from './FormControllerClass.types';
+import type {FormAPI, FormControllerOptions, FormField} from './FormControllerClass.types';
 import type {WithRequiredProperty} from '../utils/types/withRequiredProperty';
 import {isMobx6Used} from '../utils/isMobx6Used';
 import {isEmpty} from '../utils/isEmpty';
@@ -47,7 +39,7 @@ export class FormControllerClass {
     this.createFormApi();
   }
 
-  @observable protected fieldLevelValidations: FieldDictionary<OnValidateFunction> = {};
+  @observable protected fieldLevelValidations: Record<string, OnValidateFunction> = {};
 
   @action protected addFieldLevelValidation = (fieldName: string, onValidateFunction: OnValidateFunction) => {
     this.fieldLevelValidations[fieldName] = onValidateFunction;
@@ -57,7 +49,7 @@ export class FormControllerClass {
     delete this.fieldLevelValidations[fieldName];
   };
 
-  protected safeApiValuesCopy: FormValues = {};
+  protected safeApiValuesCopy: Record<string, any> = {};
 
   @action protected updateAPIValues = (fieldName: string, value: any) => {
     const dereferencedValue = toJSCompat(value, false);
@@ -84,7 +76,7 @@ export class FormControllerClass {
     Object.assign(field.meta, meta);
   };
 
-  @action protected updateInitialValues = (values?: FormValues) => {
+  @action protected updateInitialValues = (values?: any) => {
     if (values) {
       this.options.initialValues = values;
     }
@@ -118,7 +110,7 @@ export class FormControllerClass {
       return undefined;
     }
 
-    const errors: Record<string, FieldErrors> = {};
+    const errors: Record<string, any> = {};
 
     return new Promise<typeof errors>((resolve) => {
       // use forEach instead of async/await to run validations in parallel
@@ -131,7 +123,7 @@ export class FormControllerClass {
 
         Promise.resolve(this.runFieldLevelValidation(fieldName))
           .then(
-            (error: FieldErrors) => {
+            (error) => {
               if (!isEmpty(error)) {
                 errors[fieldName] = error;
               }
@@ -159,12 +151,12 @@ export class FormControllerClass {
   fields = observable.map<string, FormField>();
 
   // eslint-disable-next-line class-methods-use-this
-  @action protected setFieldErrors = (field: FormField, errors?: FieldErrors) => {
+  @action protected setFieldErrors = (field: FormField, errors?: any) => {
     // eslint-disable-next-line no-param-reassign
     field.errors = errors;
   };
 
-  @action protected updateErrors = (errors: FormValidationErrors) => {
+  @action protected updateErrors = (errors: any) => {
     this.API.errors = errors && Object.keys(errors).length ? errors : undefined;
     this.setIsValid(isEmpty(this.API.errors));
   };
@@ -186,6 +178,7 @@ export class FormControllerClass {
         validateField: () => this.validateField(fieldName),
         validate: () => this.validate(),
         onChange: (value: any) => this.setFieldValue(fieldName, value),
+        /** @deprecated */
         setCustomState: (key: string, value: any) => this.setFieldCustomState(fieldName, key, value),
         onFocus: () => this.changeFieldActiveState(fieldName, true),
         onBlur: () => this.changeFieldActiveState(fieldName, false),
@@ -272,10 +265,10 @@ export class FormControllerClass {
     this.updateAPIValues(fieldName, undefined);
   };
 
-  @action protected updateErrorsForEveryField = (formValidationErrors: FormValidationErrors) => {
+  @action protected updateErrorsForEveryField = (formValidationErrors: any) => {
     this.fields.forEach((field, name) => {
       if (field.meta.isMounted) {
-        this.setFieldErrors(field, formValidationErrors ? (formValidationErrors[name] as FieldErrors) : undefined);
+        this.setFieldErrors(field, formValidationErrors ? formValidationErrors[name] : undefined);
       }
     });
   };
@@ -353,7 +346,7 @@ export class FormControllerClass {
   };
 
   // general handler for resetting form to specific state
-  @action protected resetToValues = (values: FormValues) => {
+  @action protected resetToValues = (values: any) => {
     this.fields.forEach((field, name) => {
       const newValue = this.options.fieldValueToFormValuesConverter.get(values, name);
       const fieldName = field.props?.name!;
@@ -389,6 +382,7 @@ export class FormControllerClass {
   };
 
   // changes field custom state, that was set by user
+  /** @deprecated */
   @action protected setFieldCustomState = (fieldName: string, key: string, value: any) => {
     this.createFieldIfDoesNotExist(fieldName);
     const field = this.fields.get(fieldName)!;
@@ -431,28 +425,30 @@ export class FormControllerClass {
       return;
     }
 
+    const field = this.fields.get(fieldName)!;
+
     runInAction(() => {
       this.setIsValidating(true);
-      const field = this.fields.get(fieldName)!;
       this.setFieldMeta(field, {
         isValidating: true,
       });
     });
 
-    const errors = (await (async () => {
-      try {
-        const result = await this.runFieldLevelValidation(fieldName);
-        if (result !== undefined && result !== null) {
-          return result;
-        }
-        return undefined;
-      } catch (e) {
-        return e;
-      }
-    })()) as FieldErrors;
+    const errors = await new Promise((resolve) => {
+      this.runFieldLevelValidation(fieldName)
+        .then((result: unknown) => {
+          if (result !== undefined && result !== null) {
+            resolve(result);
+          } else {
+            resolve(undefined);
+          }
+        })
+        .catch((e: Error) => {
+          return resolve(e);
+        });
+    });
 
     runInAction(() => {
-      const field = this.fields.get(fieldName)!;
       this.setFieldMeta(field, {
         isValidating: false,
       });

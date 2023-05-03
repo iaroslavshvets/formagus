@@ -1,12 +1,10 @@
 import React from 'react';
 import type {ComponentProps, JSXElementConstructor} from 'react';
-import type {FieldErrors, FormMeta} from '../FormControllerClass/FormControllerClass.types';
+import type {FormMeta} from '../FormControllerClass/FormControllerClass.types';
 import type {FormController} from '../createFormController/createFormController.types';
 import type {FormControllerClass} from '../FormControllerClass/FormControllerClass';
 
-export type OnValidateFunction =
-  | ((value: any, values?: any) => FieldErrors)
-  | ((value: any, values?: any) => Promise<FieldErrors>);
+export type OnValidateFunction = ((value: any, values?: any) => any) | ((value: any, values?: any) => Promise<any>);
 
 export type FieldMeta = Readonly<{
   errors: any | null;
@@ -25,6 +23,7 @@ export type FormagusProps = Readonly<{
   name: string;
   meta: FieldMeta;
   value: any;
+  /** @deprecated */
   setCustomState: (key: string, value: any) => void;
   onChange: (value: any) => void;
   onFocus: () => void;
@@ -32,11 +31,6 @@ export type FormagusProps = Readonly<{
   validate: () => Promise<void>;
   validateField: () => Promise<void>;
 }>;
-
-/** @deprecated */
-export type AdapterProps = {
-  formagus?: FormagusProps;
-};
 
 export type FieldRenderProps = {
   formagus: FormagusProps;
@@ -62,7 +56,9 @@ export type FieldProps<T extends JSXElementConstructor<any> = any> = Omit<FieldC
   children?: JSX.Element;
   render?: (injectedFieldDisplayProps: FieldRenderProps) => JSX.Element;
   /** @deprecated pass children and useField hook inside instead, or at least render prop */
-  adapter?: React.ComponentClass<AdapterProps & ComponentProps<T>> | React.FC<AdapterProps & ComponentProps<T>>;
+  adapter?:
+    | React.ComponentClass<Partial<FieldRenderProps> & ComponentProps<T>>
+    | React.FC<Partial<FieldRenderProps> & ComponentProps<T>>;
   /** @deprecated */
   adapterProps?: ComponentProps<T>; // Will be passed to adapter alongside injected formagus props
 };
