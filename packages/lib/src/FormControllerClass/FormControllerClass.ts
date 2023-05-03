@@ -122,16 +122,14 @@ export class FormControllerClass {
         });
 
         Promise.resolve(this.runFieldLevelValidation(fieldName))
-          .then(
-            (error) => {
-              if (!isEmpty(error)) {
-                errors[fieldName] = error;
-              }
-            },
-            (error) => {
+          .then((error) => {
+            if (!isEmpty(error)) {
               errors[fieldName] = error;
-            },
-          )
+            }
+          })
+          .catch((error) => {
+            errors[fieldName] = error;
+          })
           .then(() => {
             this.setFieldMeta(field, {
               isValidating: false,
@@ -435,7 +433,7 @@ export class FormControllerClass {
     });
 
     const errors = await new Promise((resolve) => {
-      this.runFieldLevelValidation(fieldName)
+      Promise.resolve(this.runFieldLevelValidation(fieldName))
         .then((result: unknown) => {
           if (result !== undefined && result !== null) {
             resolve(result);
