@@ -37,14 +37,14 @@ export type FieldRenderProps = {
 };
 
 export type FormatterFunction = (value: any) => any;
-export type EqualityCheckFunction = (newValue: any, oldValue: any) => boolean;
+export type OnEqualityCheckFunction = (newValue: any, oldValue: any) => boolean;
 
 export type FieldCommonProps = {
   name: string;
   defaultValue?: any;
   onValidate?: OnValidateFunction;
   onFormat?: FormatterFunction;
-  onEqualityCheck?: EqualityCheckFunction;
+  onEqualityCheck?: OnEqualityCheckFunction;
   onInit?: (API: FormagusProps) => void;
   persist?: boolean;
   controller?: FormControllerClass;

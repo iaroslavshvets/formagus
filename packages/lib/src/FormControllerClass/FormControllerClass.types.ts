@@ -1,6 +1,6 @@
 import type {FormEvent} from 'react';
 import {ObservableMap} from 'mobx';
-import type {EqualityCheckFunction, FieldProps, FormagusProps} from '../Field/Field.types';
+import type {OnEqualityCheckFunction, FieldProps, FormagusProps} from '../Field/Field.types';
 
 export interface FormControllerOptions {
   initialValues?: any;
@@ -23,7 +23,7 @@ export interface FormField {
 
 export interface FieldMeta {
   customState: Record<string, any>;
-  onEqualityCheck: EqualityCheckFunction;
+  onEqualityCheck: OnEqualityCheckFunction;
   initialValue: any;
   isTouched: boolean;
   isChanged: boolean;

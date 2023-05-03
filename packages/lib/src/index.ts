@@ -1,7 +1,7 @@
 export type {
   OnValidateFunction,
+  OnEqualityCheckFunction,
   FieldMeta,
-  EqualityCheckFunction,
   FieldProps,
   FieldRenderProps,
 } from './Field/Field.types';
@@ -20,5 +20,5 @@ export {useField} from './Field/useField';
 export {Form} from './Form/Form';
 export {useForm} from './Form/useForm';
 
-// deprecated
+// deprecated, but still may be used with React class components
 export {injectFormApi} from './injectFormApi';
