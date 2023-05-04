@@ -197,7 +197,7 @@ describe('Form interaction', () => {
           <Field name={TestForm.FIELD_TWO_NAME}>
             <Input />
           </Field>
-          <Field name={TestForm.FIELD_THREE_NAME}>
+          <Field name={TestForm.FIELD_NESTED_NAME}>
             <Input />
           </Field>
           <button
@@ -213,10 +213,10 @@ describe('Form interaction', () => {
             type="button"
             data-hook="change_field_3_value"
             onClick={() => {
-              controller.API.setFieldValue(TestForm.FIELD_THREE_NAME, '3: changed');
+              controller.API.setFieldValue(TestForm.FIELD_NESTED_NAME, '3: changed');
             }}
           >
-            {`Change value of ${TestForm.FIELD_THREE_NAME}`}
+            {`Change value of ${TestForm.FIELD_NESTED_NAME}`}
           </button>
         </TestForm>
       );

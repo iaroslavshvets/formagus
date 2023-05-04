@@ -1,7 +1,6 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
-import {observer} from 'mobx-react';
-import {Field, createFormController, useField} from '../../src';
+import {Field, createFormController} from '../../src';
 import {createInputDriver} from '../components/Input/createInputDriver';
 import {TestForm} from '../components/TestForm';
 import {createTestFormDriver} from '../components/createTestFormDriver';
@@ -52,6 +51,7 @@ describe('Validation', () => {
           </Field>
         </TestForm>,
       ).container;
+
       const formDriver = createTestFormDriver({wrapper});
       const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
@@ -140,36 +140,37 @@ describe('Validation', () => {
       const formController = createFormController({});
       const formLevelValidation = jest.fn();
       const fieldLevelValidation = jest.fn((value) => {
-        return value === 'valid' ? [] : ['invalid'];
+        return value === 'valid' ? undefined : ['invalid'];
       });
 
       const wrapper = render(
         <TestForm onValidate={formLevelValidation} controller={formController}>
-          <Field onValidate={fieldLevelValidation} name={TestForm.FIELD_ONE_NAME}>
+          <Field onValidate={fieldLevelValidation} name={TestForm.FIELD_NESTED_NAME}>
             <Input />
           </Field>
         </TestForm>,
       ).container;
 
-      const fieldOneDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+      const fieldOneDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_NESTED_NAME});
 
       expect(formController.API.errors).toEqual({});
-      expect(formController.fields.get(TestForm.FIELD_ONE_NAME)!.errors).toBe(undefined);
+      expect(fieldOneDriver.get.errors()).toBe(null);
 
-      await fieldOneDriver.when.validate();
+      fieldOneDriver.when.validateField();
 
       await eventually(() => {
-        expect(formController.API.errors).toEqual({[TestForm.FIELD_ONE_NAME]: ['invalid']});
-        expect(formController.fields.get(TestForm.FIELD_ONE_NAME)!.errors).toEqual(['invalid']);
+        expect(formController.API.errors).toEqual({
+          [TestForm.FIELD_NESTED_NAME]: ['invalid'],
+        });
+        expect(fieldOneDriver.get.errors('invalid')).not.toBe(null);
       });
 
       fieldOneDriver.when.change('valid');
-      await fieldOneDriver.when.validate();
+      fieldOneDriver.when.validateField();
 
       await eventually(() => {
-        // save as before validations
         expect(formController.API.errors).toEqual({});
-        expect(formController.fields.get(TestForm.FIELD_ONE_NAME)!.errors).toBe(undefined);
+        expect(fieldOneDriver.get.errors()).toBe(null);
       });
 
       expect(fieldLevelValidation).toBeCalled();

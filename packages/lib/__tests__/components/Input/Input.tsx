@@ -17,10 +17,8 @@ export interface InputAdapterProps extends Partial<FieldRenderProps> {
 export const Input = observer((props: InputAdapterProps) => {
   const formagusHook = useField();
   const {useHook = true, useRenderCounter} = props;
-  const {fieldProps, onFocus, onBlur, validate, validateField, name, setCustomState, onChange, value, meta} = useHook
-    ? formagusHook
-    : props.formagus!;
-  const {errors} = meta;
+  const {fieldProps, onFocus, onBlur, validate, validateField, name, setCustomState, onChange, value, errors, meta} =
+    useHook ? formagusHook : props.formagus!;
   const normalizedValue = isNil(value) ? '' : value;
 
   useEffect(() => {
@@ -61,7 +59,8 @@ export const Input = observer((props: InputAdapterProps) => {
           props.callback?.();
         }}
       />
-      <span data-hook="validate" onClick={fieldProps.onValidate ? validateField : validate} />
+      <span data-hook="validate-field" onClick={fieldProps.onValidate ? validateField : validate} />
+      <span data-hook="validate" onClick={validate} />
     </div>
   );
 });

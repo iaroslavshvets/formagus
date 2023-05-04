@@ -18,7 +18,7 @@ describe('Render', () => {
             return <Input {...props} useHook={false} />;
           }}
         />
-        <Field name={TestForm.FIELD_THREE_NAME}>
+        <Field name={TestForm.FIELD_NESTED_NAME}>
           <Input />
         </Field>
       </TestForm>,

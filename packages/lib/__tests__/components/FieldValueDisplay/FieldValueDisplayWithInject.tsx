@@ -1,4 +1,5 @@
 import React from 'react';
+import {get} from 'lodash';
 import {injectFormApi, type FormAPI} from '../../../src';
 
 @injectFormApi
@@ -9,6 +10,6 @@ export class FieldValueDisplayWithInject extends React.Component<{
 }> {
   render() {
     const {displayedFieldName, dataHook, formApi} = this.props;
-    return <div data-hook={dataHook}>{formApi!.values[displayedFieldName]}</div>;
+    return <div data-hook={dataHook}>{get(formApi!.values, displayedFieldName)}</div>;
   }
 }

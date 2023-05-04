@@ -20,10 +20,19 @@ export const createInputDriver = (options: {wrapper: Element; dataHook: string})
       meta: (key: string) => {
         return API.get.root()?.querySelector(`[data-hook="meta_${key}"]`)!.textContent;
       },
-      errors: (key: string) => {
-        const error = API.get.root()?.querySelector(`[data-hook="error:${key}"]`);
+      errors: (key?: string) => {
+        if (key) {
+          const error = API.get.root()?.querySelector(`[data-hook="error:${key}"]`);
 
-        return error ? error.textContent : null;
+          return error ? error.textContent : null;
+        }
+        const errors = Array.from(API.get.root()?.querySelectorAll(`[data-hook^="error:"]`)!);
+
+        return errors.length
+          ? errors.map((error) => {
+              return error.textContent;
+            })
+          : null;
       },
     },
 
@@ -42,6 +51,9 @@ export const createInputDriver = (options: {wrapper: Element; dataHook: string})
       },
       validate: () => {
         return fireEvent.click(API.get.root()?.querySelector(`[data-hook="validate"]`)!);
+      },
+      validateField: () => {
+        return fireEvent.click(API.get.root()?.querySelector(`[data-hook="validate-field"]`)!);
       },
       change: (value: string) => {
         API.when.focus();
@@ -63,6 +75,7 @@ export const createInputDriver = (options: {wrapper: Element; dataHook: string})
       blur: API.when.blur,
       validate: API.when.validate,
       change: API.when.change,
+      validateField: API.when.validateField,
     },
   };
 };

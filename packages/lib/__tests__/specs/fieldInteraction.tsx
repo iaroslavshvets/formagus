@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {render, fireEvent, cleanup} from '@testing-library/react';
 import {observer} from 'mobx-react';
+import {get} from 'lodash';
 import {Field, createFormController} from '../../src';
 import {TestForm} from '../components/TestForm';
 import {Input} from '../components/Input';
@@ -156,7 +157,7 @@ describe('Field interactions', () => {
   });
 
   it('set nested value', async () => {
-    const NESTED_FIELD_NAME = `${TestForm.FIELD_ONE_NAME}[0].nested`;
+    const NESTED_FIELD_NAME = `${TestForm.FIELD_NESTED_NAME}[0].nested`;
     const NEW_VALUE = 'batman';
     const formController = createFormController({});
 
@@ -173,7 +174,7 @@ describe('Field interactions', () => {
     fieldDriver.when.change(NEW_VALUE);
 
     await eventually(() => {
-      expect(formController.API.values[TestForm.FIELD_ONE_NAME][0].nested).toBe(NEW_VALUE);
+      expect(get(formController.API.values, `${TestForm.FIELD_NESTED_NAME}[0].nested`)).toBe(NEW_VALUE);
     });
   });
 });

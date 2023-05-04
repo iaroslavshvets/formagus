@@ -81,14 +81,12 @@ export class FormControllerClass {
       this.options.initialValues = values;
     }
 
-    const {get, set} = this.options.fieldValueToFormValuesConverter;
-
     this.fields.forEach((field, name) => {
       if (field.meta.isMounted) {
         if (!values) {
-          set(this.options.initialValues, name, field.value);
+          this.options.fieldValueToFormValuesConverter.set(this.options.initialValues, name, field.value);
         }
-        const initialValue = get(this.options.initialValues, name);
+        const initialValue = this.options.fieldValueToFormValuesConverter.get(this.options.initialValues, name);
         this.setFieldMeta(field, {
           initialValue,
           isDirty: !field.meta.onEqualityCheck(field.value, initialValue),
@@ -124,11 +122,11 @@ export class FormControllerClass {
         Promise.resolve(this.runFieldLevelValidation(fieldName))
           .then((error) => {
             if (error !== undefined && error !== null) {
-              this.options.fieldValueToFormValuesConverter.set(errors, fieldName, error);
+              errors[fieldName] = error;
             }
           })
           .catch((error) => {
-            this.options.fieldValueToFormValuesConverter.set(errors, fieldName, error);
+            errors[fieldName] = error;
           })
           .then(() => {
             this.setFieldMeta(field, {
@@ -266,7 +264,14 @@ export class FormControllerClass {
   @action protected updateErrorsForEveryField = (formValidationErrors: any) => {
     this.fields.forEach((field, name) => {
       if (field.meta.isMounted) {
-        this.setFieldErrors(field, formValidationErrors ? formValidationErrors[name] : undefined);
+        const errors = (() => {
+          if (!formValidationErrors) {
+            return undefined;
+          }
+          return this.options.fieldValueToFormValuesConverter.get(formValidationErrors, name);
+        })();
+
+        this.setFieldErrors(field, errors);
       }
     });
   };
@@ -454,7 +459,7 @@ export class FormControllerClass {
         isValidating: false,
       });
 
-      this.options.fieldValueToFormValuesConverter.set(this.API.errors, fieldName, errors);
+      this.API.errors[fieldName] = errors;
 
       this.updateErrors(this.API.errors);
 
@@ -477,6 +482,7 @@ export class FormControllerClass {
     ]);
 
     const combinedErrors = mergeDeep(fieldValidationErrors, formValidationErrors);
+
     runInAction(() => {
       this.updateErrors(combinedErrors);
       this.updateErrorsForEveryField(this.API.errors);
