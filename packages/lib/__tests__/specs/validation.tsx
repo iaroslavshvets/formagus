@@ -1,6 +1,7 @@
 import {cleanup, render} from '@testing-library/react';
 import React from 'react';
-import {Field, createFormController} from '../../src';
+import {observer} from 'mobx-react';
+import {Field, createFormController, useField} from '../../src';
 import {createInputDriver} from '../components/Input/createInputDriver';
 import {TestForm} from '../components/TestForm';
 import {waitFor} from '../helpers/conditions';
@@ -93,6 +94,42 @@ describe('Validation', () => {
   });
 
   describe('form & field level combined', () => {
+    it('run field level validation only if both form and field level validations are defined', () => {
+      const formLevelValidation = jest.fn();
+      const fieldLevelValidation = jest.fn();
+
+      const FieldInput = observer(() => {
+        const {fieldProps, name, meta, validateField} = useField();
+
+        const validate = () => {
+          if (meta.isMounted && fieldProps.onValidate) {
+            validateField();
+          }
+        };
+
+        return (
+          <span data-hook={name}>
+            <span data-hook="validate" onClick={validate} />
+          </span>
+        );
+      });
+
+      const wrapper = render(
+        <TestForm onValidate={formLevelValidation}>
+          <Field onValidate={fieldLevelValidation} name={TestForm.FIELD_ONE_NAME}>
+            <FieldInput />
+          </Field>
+        </TestForm>,
+      ).container;
+
+      const fieldOneDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+
+      fieldOneDriver.when.validate();
+
+      expect(fieldLevelValidation).toBeCalled();
+      expect(formLevelValidation).not.toBeCalled();
+    });
+
     it('should be with errors', async () => {
       const controller = createFormController({
         onSubmit: jest.fn(),

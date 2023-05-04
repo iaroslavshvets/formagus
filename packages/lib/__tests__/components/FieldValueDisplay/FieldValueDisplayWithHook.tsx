@@ -5,5 +5,5 @@ import {useForm} from '../../../src';
 export const FieldValueDisplayWithHook = observer((props: {dataHook: string; displayedFieldName: string}) => {
   const form = useForm();
 
-  return <div data-hook={props.dataHook}>{form.API.values[props.displayedFieldName]}</div>;
+  return <div data-hook={props.dataHook}>{form.values[props.displayedFieldName]}</div>;
 });

@@ -1,6 +1,5 @@
 import {observer} from 'mobx-react';
 import React, {useState} from 'react';
-import {FormPart} from '../FormPart';
 import {FormControllerContext} from './FormControllerContext';
 import {createFormController} from '../createFormController/createFormController';
 import type {FormProps} from './Form.types';
@@ -26,7 +25,7 @@ export const Form = observer((props: FormProps) => {
   // creates the provider and sets the controller, which will control all the form state
   return (
     <FormControllerContext.Provider value={controllerInstance as FormControllerClass}>
-      <FormPart>{children}</FormPart>
+      {children(controllerInstance.API)}
     </FormControllerContext.Provider>
   );
 });

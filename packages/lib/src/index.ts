@@ -15,10 +15,10 @@ export {FormControllerClass} from './FormControllerClass/FormControllerClass';
 export {createFormController} from './createFormController/createFormController';
 
 export {Field} from './Field/Field';
-export {useField} from './Field/useField';
+export {useField} from './useField';
 
 export {Form} from './Form/Form';
-export {useForm} from './Form/useForm';
+export {useForm} from './useForm';
 
 // deprecated, but still may be used with React class components
 export {injectFormApi} from './injectFormApi';

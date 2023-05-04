@@ -14,10 +14,10 @@ export interface FormControllerOptions {
 }
 
 export interface FormField {
-  errors: any;
   meta: FieldMeta;
   props?: FieldProps;
   value: any;
+  errors: any;
   handlers: Pick<FormagusProps, 'onChange' | 'setCustomState' | 'onFocus' | 'onBlur' | 'validate' | 'validateField'>;
 }
 
@@ -59,7 +59,10 @@ export interface FormAPI {
   setFieldValue: (fieldName: string, value: any) => void;
   /** @deprecated don't use */
   setFieldCustomState: (fieldName: string, key: string, value: any) => void;
-  validate: () => void;
+  validate: () => any;
+  validateField: (fieldName: string) => any;
+  hasField: (fieldName: string) => boolean;
+  /** @deprecated don't use */
   getFieldMeta: (fieldName: string) => FieldMeta;
   meta: FormMeta;
   rawFields: ObservableMap<string, FormField>;

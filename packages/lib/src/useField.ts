@@ -1,6 +1,6 @@
 import {useContext} from 'react';
-import {FieldContext} from './FieldContext';
-import type {FormagusProps} from './Field.types';
+import {FieldContext} from './Field/FieldContext';
+import type {FormagusProps} from './Field/Field.types';
 
 export const useField = () => {
   return useContext(FieldContext) as FormagusProps;

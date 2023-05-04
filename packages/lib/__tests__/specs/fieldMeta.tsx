@@ -30,24 +30,6 @@ describe('Field meta', () => {
     expect(fieldDriver.get.meta('isActive')).not.toBe('true');
   });
 
-  it('hasValidation', () => {
-    const wrapper = render(
-      <TestForm>
-        <Field onValidate={jest.fn()} name={TestForm.FIELD_ONE_NAME}>
-          <Input />
-        </Field>
-        <Field name={TestForm.FIELD_TWO_NAME}>
-          <Input />
-        </Field>
-      </TestForm>,
-    ).container;
-    const fieldOneDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
-    const fieldTwoDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
-
-    expect(fieldOneDriver.get.meta('hasValidation')).toBe('true');
-    expect(fieldTwoDriver.get.meta('hasValidation')).toBe('false');
-  });
-
   it('isTouched', () => {
     const wrapper = render(<TestForm />).container;
     const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});

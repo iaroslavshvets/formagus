@@ -4,10 +4,10 @@ import type {ChangeEvent} from 'react';
 import {observer} from 'mobx-react';
 import {InputMeta} from './Input.meta';
 import {InputErrors} from './Input.errors';
-import type {AdapterProps} from '../../../src';
+import type {FieldRenderProps} from '../../../src';
 import {useField} from '../../../src';
 
-export interface InputAdapterProps extends AdapterProps {
+export interface InputAdapterProps extends Partial<FieldRenderProps> {
   callback?: Function;
   useRenderCounter?: boolean;
   useHook?: boolean;

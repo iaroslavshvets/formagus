@@ -276,6 +276,11 @@ export class FormControllerClass {
     return toJSCompat(this.fields.get(fieldName)!.meta);
   };
 
+  protected hasField = (fieldName: string) => {
+    const field = this.fields.get(fieldName);
+    return (field && field.meta.isMounted) || false;
+  };
+
   // form FormAPI, which will be passed to child render function or could be retrieved with API prop from controller
   @observable API: FormAPI = {} as any;
 
@@ -285,11 +290,13 @@ export class FormControllerClass {
       errors: {},
       submit: this.submit,
       resetToValues: this.resetToValues,
+      hasField: this.hasField,
       reset: () => this.resetToValues(this.options.initialValues || {}), // resets the form to initial values
       clear: () => this.resetToValues({}), // resets the form to empty values
       setFieldValue: this.setFieldValue,
       setFieldCustomState: this.setFieldCustomState,
       validate: this.validate,
+      validateField: this.validateField,
       getFieldMeta: this.getFieldMeta,
       rawFields: this.fields,
       meta: {
@@ -473,11 +480,14 @@ export class FormControllerClass {
       this.runFormLevelValidations(),
     ]);
 
+    const combinedErrors = mergeDeep(fieldValidationErrors, formValidationErrors);
     runInAction(() => {
-      this.updateErrors(mergeDeep(fieldValidationErrors, formValidationErrors));
+      this.updateErrors(combinedErrors);
       this.updateErrorsForEveryField(this.API.errors);
       this.setIsValidating(false);
     });
+
+    return combinedErrors;
   };
 
   // wraps submit function passed as Form `onSubmit` prop after it's being passed to child render function

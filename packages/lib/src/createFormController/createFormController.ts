@@ -2,8 +2,5 @@ import type {FormControllerOptions} from '../FormControllerClass/FormControllerC
 import {FormControllerClass} from '../FormControllerClass/FormControllerClass';
 
 export const createFormController = (options: FormControllerOptions, ControllerClass = FormControllerClass) => {
-  return new ControllerClass(options) as Omit<
-    InstanceType<typeof ControllerClass>,
-    'registerField' | 'unRegisterField'
-  >;
+  return new ControllerClass(options) as Pick<InstanceType<typeof ControllerClass>, 'API'>;
 };

@@ -19,13 +19,15 @@ export const useRegisterField = (props: FieldCommonProps) => {
     }
 
     const {meta, errors} = field;
-    const hasValidation = meta.isMounted && field.props?.onValidate !== undefined;
 
     return {
       name: props.name,
       value: toJSCompat(field.value, false),
+      errors: toJSCompat(errors),
+      fieldProps: props,
       meta: {
         customState: toJSCompat(meta.customState),
+        /** @deprecated use errors from higher level */
         errors: toJSCompat(errors),
         initialValue: meta.initialValue,
         isActive: meta.isActive,
@@ -33,7 +35,8 @@ export const useRegisterField = (props: FieldCommonProps) => {
         isTouched: meta.isTouched,
         isChanged: meta.isChanged,
         isValidating: meta.isValidating,
-        hasValidation,
+        isMounted: meta.isMounted,
+        /** @deprecated use useForm hook */
         form: {
           isSubmitting: controller.API.meta.isSubmitting,
           isValidating: controller.API.meta.isValidating,

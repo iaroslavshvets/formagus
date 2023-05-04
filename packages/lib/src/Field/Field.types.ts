@@ -1,12 +1,12 @@
 import React from 'react';
 import type {ComponentProps, JSXElementConstructor} from 'react';
-import type {FormMeta} from '../FormControllerClass/FormControllerClass.types';
 import type {FormController} from '../createFormController/createFormController.types';
 import type {FormControllerClass} from '../FormControllerClass/FormControllerClass';
 
 export type OnValidateFunction = ((value: any, values?: any) => any) | ((value: any, values?: any) => Promise<any>);
 
 export type FieldMeta = Readonly<{
+  /** @deprecated */
   errors: any | null;
   initialValue: any;
   isDirty: boolean;
@@ -14,22 +14,24 @@ export type FieldMeta = Readonly<{
   isChanged: boolean;
   isActive: boolean;
   isValidating: boolean;
-  hasValidation: boolean;
+  isMounted: boolean;
+  /** @deprecated */
   customState: Record<string, any>;
-  form: FormMeta;
 }>;
 
 export type FormagusProps = Readonly<{
   name: string;
   meta: FieldMeta;
   value: any;
+  errors: any;
   /** @deprecated */
   setCustomState: (key: string, value: any) => void;
   onChange: (value: any) => void;
   onFocus: () => void;
   onBlur: () => void;
-  validate: () => Promise<void>;
-  validateField: () => Promise<void>;
+  validate: () => Promise<any>;
+  validateField: () => Promise<any>;
+  fieldProps: FieldProps;
 }>;
 
 export type FieldRenderProps = {
