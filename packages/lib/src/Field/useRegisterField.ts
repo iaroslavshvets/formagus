@@ -20,15 +20,19 @@ export const useRegisterField = (props: FieldCommonProps) => {
 
     const {meta, errors} = field;
 
+    const safeErrors = toJSCompat(errors);
+    const safeValue = toJSCompat(field.value, false);
+    const safeCustomState = toJSCompat(meta.customState);
+
     return {
       name: props.name,
-      value: toJSCompat(field.value, false),
-      errors: toJSCompat(errors),
+      value: safeValue,
+      errors: safeErrors,
       fieldProps: props,
       meta: {
-        customState: toJSCompat(meta.customState),
+        customState: safeCustomState,
         /** @deprecated use errors from higher level */
-        errors: toJSCompat(errors),
+        errors: safeErrors,
         initialValue: meta.initialValue,
         isActive: meta.isActive,
         isDirty: meta.isDirty,

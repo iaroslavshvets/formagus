@@ -442,11 +442,7 @@ export class FormControllerClass {
     const errors = await new Promise((resolve) => {
       Promise.resolve(this.runFieldLevelValidation(fieldName))
         .then((result: unknown) => {
-          if (result !== undefined && result !== null) {
-            resolve(result);
-          } else {
-            resolve(undefined);
-          }
+          resolve(result);
         })
         .catch((e: Error) => {
           return resolve(e);
