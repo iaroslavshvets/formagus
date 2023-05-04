@@ -5,7 +5,7 @@ import {Field, createFormController} from '../../src';
 import {TestForm} from '../components/TestForm';
 import {Input} from '../components/Input';
 import {createInputDriver} from '../components/Input/createInputDriver';
-import {waitFor} from '../helpers/conditions';
+import {eventually} from '../helpers/eventually';
 
 describe('Field interactions', () => {
   afterEach(() => cleanup());
@@ -150,7 +150,9 @@ describe('Field interactions', () => {
 
     fieldDriver.when.setCustomState();
 
-    await waitFor(() => fieldDriver.get.meta('customState:customProperty') === 'custom value');
+    await eventually(() => {
+      expect(fieldDriver.get.meta('customState:customProperty')).toBe('custom value');
+    });
   });
 
   it('set nested value', async () => {
@@ -170,6 +172,8 @@ describe('Field interactions', () => {
 
     fieldDriver.when.change(NEW_VALUE);
 
-    await waitFor(() => formController.API.values[TestForm.FIELD_ONE_NAME][0].nested === NEW_VALUE);
+    await eventually(() => {
+      expect(formController.API.values[TestForm.FIELD_ONE_NAME][0].nested).toBe(NEW_VALUE);
+    });
   });
 });

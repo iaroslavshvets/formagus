@@ -4,10 +4,9 @@ import {observer} from 'mobx-react';
 import {Field, createFormController, useField} from '../../src';
 import {createInputDriver} from '../components/Input/createInputDriver';
 import {TestForm} from '../components/TestForm';
-import {waitFor} from '../helpers/conditions';
 import {createTestFormDriver} from '../components/createTestFormDriver';
 import {Input} from '../components/Input';
-import { eventually } from "../helpers/eventually";
+import {eventually} from '../helpers/eventually';
 
 describe('Validation', () => {
   afterEach(() => cleanup());
@@ -28,9 +27,10 @@ describe('Validation', () => {
 
       formDriver.when.submit();
 
-      await waitFor(
-        () => fieldDriver.get.errors('notBatman') !== null && fieldDriver.get.errors('notBruceWayne') !== null,
-      );
+      await eventually(() => {
+        expect(fieldDriver.get.errors('notBatman')).not.toBe(null);
+        expect(fieldDriver.get.errors('notBruceWayne')).not.toBe(null);
+      });
     });
   });
 
@@ -57,7 +57,9 @@ describe('Validation', () => {
 
       formDriver.when.submit();
 
-      await waitFor(() => fieldDriver.get.errors('nameError') !== null);
+      await eventually(() => {
+        expect(fieldDriver.get.errors('nameError')).not.toBe(null);
+      });
     });
 
     it('has errors (async)', async () => {
@@ -85,12 +87,16 @@ describe('Validation', () => {
 
       formDriver.when.submit();
 
-      await waitFor(() => fieldDriver.get.errors('nameError') !== null);
+      await eventually(() => {
+        expect(fieldDriver.get.errors('nameError')).not.toBe(null);
+      });
 
       fieldDriver.when.change('Bruce');
       formDriver.when.submit();
 
-      await waitFor(() => fieldDriver.get.errors('nameError') === null);
+      await eventually(() => {
+        expect(fieldDriver.get.errors('nameError')).toBe(null);
+      });
     });
 
     it('clear errors', async () => {
@@ -201,9 +207,10 @@ describe('Validation', () => {
 
       formDriver.when.submit();
 
-      await waitFor(
-        () => firstFieldDriver.get.errors('RobinHood') !== null && secondFieldDriver.get.errors('nameError') !== null,
-      );
+      await eventually(() => {
+        expect(firstFieldDriver.get.errors('RobinHood')).not.toBe(null);
+        expect(secondFieldDriver.get.errors('nameError')).not.toBe(null);
+      });
     });
   });
 });

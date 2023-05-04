@@ -2,10 +2,10 @@ import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {Field, createFormController} from '../../src';
 import {TestForm} from '../components/TestForm';
-import {waitFor} from '../helpers/conditions';
 import {Input} from '../components/Input';
 import {createTestFormDriver} from '../components/createTestFormDriver';
 import {createInputDriver} from '../components/Input/createInputDriver';
+import {eventually} from '../helpers/eventually';
 
 describe('Field meta', () => {
   afterEach(() => cleanup());
@@ -110,7 +110,9 @@ describe('Field meta', () => {
 
     expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).customState[CUSTOM_KEY]).toBe(CUSTOM_VALUE);
 
-    await waitFor(() => fieldDriver.get.meta(`customState:${CUSTOM_KEY}`) === CUSTOM_VALUE);
+    await eventually(() => {
+      expect(fieldDriver.get.meta(`customState:${CUSTOM_KEY}`)).toBe(CUSTOM_VALUE);
+    });
   });
 
   it('isValidating', async () => {
@@ -131,6 +133,8 @@ describe('Field meta', () => {
 
     expect(fieldDriver.get.meta('isValidating')).toBe('true');
 
-    await waitFor(() => fieldDriver.get.meta('form:isValidating') === 'false');
+    await eventually(() => {
+      expect(fieldDriver.get.meta('form:isValidating')).toBe('false');
+    });
   });
 });

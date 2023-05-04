@@ -3,9 +3,9 @@ import React from 'react';
 import {Field} from '../../src';
 import {Input} from '../components/Input';
 import {TestForm} from '../components/TestForm';
-import {waitFor} from '../helpers/conditions';
 import {createInputDriver} from '../components/Input/createInputDriver';
 import {createTestFormDriver} from '../components/createTestFormDriver';
+import {eventually} from '../helpers/eventually';
 
 describe('Form meta', () => {
   afterEach(() => cleanup());
@@ -31,15 +31,21 @@ describe('Form meta', () => {
 
     fieldDriver.when.change('harvy');
     formDriver.when.submit();
-    await waitFor(() => fieldDriver.get.meta('form:isValid') === 'false');
+    await eventually(() => {
+      expect(fieldDriver.get.meta('form:isValid')).toBe('false');
+    });
 
     fieldDriver.when.change('batman');
     formDriver.when.submit();
-    await waitFor(() => fieldDriver.get.meta('form:isValid') === 'true');
+    await eventually(() => {
+      expect(fieldDriver.get.meta('form:isValid')).toBe('true');
+    });
 
     fieldDriver.when.change('joker');
     fieldDriver.when.validate();
-    await waitFor(() => fieldDriver.get.meta('form:isValid') === 'false');
+    await eventually(() => {
+      expect(fieldDriver.get.meta('form:isValid')).toBe('false');
+    });
   });
 
   it('isTouched', () => {
@@ -187,7 +193,9 @@ describe('Form meta', () => {
 
     expect(fieldDriver.get.meta('form:isSubmitting')).toBe('true');
 
-    await waitFor(() => fieldDriver.get.meta('form:isSubmitting') === 'false');
+    await eventually(() => {
+      expect(fieldDriver.get.meta('form:isSubmitting')).toBe('false');
+    });
   });
 
   it('isValidating', async () => {
@@ -208,6 +216,8 @@ describe('Form meta', () => {
 
     expect(fieldDriver.get.meta('form:isValidating')).toBe('true');
 
-    await waitFor(() => fieldDriver.get.meta('form:isValidating') === 'false');
+    await eventually(() => {
+      expect(fieldDriver.get.meta('form:isValidating')).toBe('false');
+    });
   });
 });
