@@ -7,6 +7,7 @@ import {TestForm} from '../components/TestForm';
 import {waitFor} from '../helpers/conditions';
 import {createTestFormDriver} from '../components/createTestFormDriver';
 import {Input} from '../components/Input';
+import { eventually } from "../helpers/eventually";
 
 describe('Validation', () => {
   afterEach(() => cleanup());
@@ -91,6 +92,41 @@ describe('Validation', () => {
 
       await waitFor(() => fieldDriver.get.errors('nameError') === null);
     });
+
+    it('clear errors', async () => {
+      const controller = createFormController({
+        onSubmit: jest.fn(),
+      });
+
+      const wrapper = render(
+        <TestForm controller={controller}>
+          <Field
+            defaultValue="Batman"
+            name={TestForm.FIELD_ONE_NAME}
+            onValidate={(value) => {
+              return value === 'Bruce' ? null : ['nameError'];
+            }}
+          >
+            <Input />
+          </Field>
+        </TestForm>,
+      ).container;
+      const formDriver = createTestFormDriver({wrapper});
+      const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+
+      formDriver.when.submit();
+
+      await eventually(() => {
+        expect(fieldDriver.get.errors('nameError')).not.toBe(null);
+      });
+
+      fieldDriver.when.change('Bruce');
+      formDriver.when.submit();
+
+      await eventually(() => {
+        expect(fieldDriver.get.errors('nameError')).toBe(null);
+      });
+    });
   });
 
   describe('form & field level combined', () => {
@@ -158,6 +194,7 @@ describe('Validation', () => {
           </Field>
         </TestForm>,
       ).container;
+
       const formDriver = createTestFormDriver({wrapper});
       const firstFieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
       const secondFieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
