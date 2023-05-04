@@ -41,6 +41,6 @@ export const TestForm = (
   );
 };
 
-TestForm.FIELD_ONE_NAME = 'field_one_name';
-TestForm.FIELD_TWO_NAME = 'field_two_name';
-TestForm.FIELD_THREE_NAME = 'field_three_name';
+TestForm.FIELD_ONE_NAME = 'root.field.one_name';
+TestForm.FIELD_TWO_NAME = 'root.field.two_name';
+TestForm.FIELD_THREE_NAME = 'root.field.three_name';

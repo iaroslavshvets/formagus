@@ -136,37 +136,41 @@ describe('Validation', () => {
   });
 
   describe('form & field level combined', () => {
-    it('run field level validation only if both form and field level validations are defined', () => {
+    it.only('run only field level validation', async () => {
+      const formController = createFormController({});
       const formLevelValidation = jest.fn();
-      const fieldLevelValidation = jest.fn();
-
-      const FieldInput = observer(() => {
-        const {fieldProps, name, meta, validateField} = useField();
-
-        const validate = () => {
-          if (meta.isMounted && fieldProps.onValidate) {
-            validateField();
-          }
-        };
-
-        return (
-          <span data-hook={name}>
-            <span data-hook="validate" onClick={validate} />
-          </span>
-        );
+      const fieldLevelValidation = jest.fn((value) => {
+        return value === 'valid' ? [] : ['invalid'];
       });
 
       const wrapper = render(
-        <TestForm onValidate={formLevelValidation}>
+        <TestForm onValidate={formLevelValidation} controller={formController}>
           <Field onValidate={fieldLevelValidation} name={TestForm.FIELD_ONE_NAME}>
-            <FieldInput />
+            <Input />
           </Field>
         </TestForm>,
       ).container;
 
       const fieldOneDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
-      fieldOneDriver.when.validate();
+      expect(formController.API.errors).toEqual({});
+      expect(formController.fields.get(TestForm.FIELD_ONE_NAME)!.errors).toBe(undefined);
+
+      await fieldOneDriver.when.validate();
+
+      await eventually(() => {
+        expect(formController.API.errors).toEqual({[TestForm.FIELD_ONE_NAME]: ['invalid']});
+        expect(formController.fields.get(TestForm.FIELD_ONE_NAME)!.errors).toEqual(['invalid']);
+      });
+
+      fieldOneDriver.when.change('valid');
+      await fieldOneDriver.when.validate();
+
+      await eventually(() => {
+        // save as before validations
+        expect(formController.API.errors).toEqual({});
+        expect(formController.fields.get(TestForm.FIELD_ONE_NAME)!.errors).toBe(undefined);
+      });
 
       expect(fieldLevelValidation).toBeCalled();
       expect(formLevelValidation).not.toBeCalled();
