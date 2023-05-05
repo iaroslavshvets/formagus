@@ -469,6 +469,8 @@ export class FormControllerClass {
 
       this.setIsValidating(false);
     });
+
+    return errors;
   };
 
   // validates the form, by calling form level onValidate function combined with field level validations,
