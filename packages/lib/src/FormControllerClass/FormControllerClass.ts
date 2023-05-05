@@ -59,9 +59,7 @@ export class FormControllerClass {
     this.options.fieldValueToFormValuesConverter.set(
       this.safeApiValuesCopy,
       fieldName,
-      field && field.props?.onFormat && field.meta.isMounted
-        ? field.props.onFormat(safeValue)
-        : safeValue,
+      field && field.props?.onFormat && field.meta.isMounted ? field.props.onFormat(safeValue) : safeValue,
     );
 
     if (onFormat) {
@@ -487,7 +485,10 @@ export class FormControllerClass {
       this.runFormLevelValidations(),
     ]);
 
-    const combinedErrors = mergeDeep(fieldValidationErrors, formValidationErrors);
+    const combinedErrors =
+      fieldValidationErrors || formValidationErrors
+        ? mergeDeep(fieldValidationErrors, formValidationErrors)
+        : undefined;
 
     runInAction(() => {
       this.updateErrors(combinedErrors);
