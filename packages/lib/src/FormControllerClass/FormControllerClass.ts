@@ -152,7 +152,7 @@ export class FormControllerClass {
     field.errors = errors;
   };
 
-  @action protected updateErrors = (errors: Record<string, unknown> = {}) => {
+  @action protected updateErrors = (errors: unknown) => {
     this.API.errors = errors;
     this.setIsValid(Object.keys(this.API.errors).length === 0);
   };
@@ -513,10 +513,11 @@ export class FormControllerClass {
     await this.validate();
 
     const [errors, values] = toJSCompat([this.API.errors, this.API.values]);
+    const hasErrors = isEmpty(errors);
 
     try {
       if (this.options.onSubmit) {
-        await this.options.onSubmit(errors, values, submitEvent);
+        await this.options.onSubmit({errors, values, hasErrors, event: submitEvent});
       }
 
       runInAction(() => {

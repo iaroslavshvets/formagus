@@ -6,7 +6,7 @@ export interface FormControllerOptions {
   initialValues?: any;
   onValidate?: (values: any) => Promise<any>;
   onFormat?: (values: any) => any;
-  onSubmit?: (errors: any, values: any, submitEvent?: FormEvent<HTMLElement>) => void;
+  onSubmit?: (params: {errors: any; values: any; hasErrors: boolean; event?: FormEvent<HTMLElement>}) => void;
   fieldValueToFormValuesConverter?: {
     set: (values: any, fieldName: string, value: any) => any;
     get: (values: any, fieldName: string) => any;
