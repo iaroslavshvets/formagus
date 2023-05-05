@@ -11,7 +11,13 @@ export const injectFormApi: any = <C extends React.ComponentClass>(WrappedCompon
 
     useEffect(() => {
       forceUpdate({});
-    }, [JSON.stringify(controller!.API)]);
+    }, [
+      JSON.stringify({
+        values: controller!.API.values,
+        errors: controller!.API.errors,
+        ...controller.API.meta,
+      }),
+    ]);
 
     return <WrappedComponent {...props} formApi={controller!.API} />;
   });
