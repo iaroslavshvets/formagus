@@ -432,7 +432,7 @@ export class FormControllerClass {
   // validates single field by calling field level validation, passed to Field as `validate` prop
   protected validateField = async (fieldName: string) => {
     if (!this.fieldLevelValidations[fieldName]) {
-      return;
+      return undefined;
     }
 
     const field = this.fields.get(fieldName)!;
@@ -459,7 +459,11 @@ export class FormControllerClass {
         isValidating: false,
       });
 
-      this.API.errors[fieldName] = errors;
+      if (isEmpty(errors)) {
+        delete this.API.errors[fieldName];
+      } else {
+        this.API.errors[fieldName] = errors;
+      }
 
       this.updateErrors(this.API.errors);
 
