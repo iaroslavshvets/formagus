@@ -49,9 +49,9 @@ export class FormControllerClass {
     delete this.fieldLevelValidations[fieldName];
   };
 
-  protected safeApiValuesCopy: Record<string, any> = {};
+  protected safeApiValuesCopy: Record<string, unknown> = {};
 
-  @action protected updateAPIValues = (fieldName: string, value: any) => {
+  @action protected updateAPIValues = (fieldName: string, value: unknown) => {
     const dereferencedValue = toJSCompat(value, false);
     const {onFormat} = this.options;
     const field = this.fields.get(fieldName);
@@ -76,7 +76,7 @@ export class FormControllerClass {
     Object.assign(field.meta, meta);
   };
 
-  @action protected updateInitialValues = (values?: any) => {
+  @action protected updateInitialValues = (values?: unknown) => {
     if (values) {
       this.options.initialValues = values;
     }
@@ -108,7 +108,7 @@ export class FormControllerClass {
       return undefined;
     }
 
-    const errors: Record<string, any> = {};
+    const errors: Record<string, unknown> = {};
 
     return new Promise<typeof errors>((resolve) => {
       // use forEach instead of async/await to run validations in parallel
@@ -147,12 +147,12 @@ export class FormControllerClass {
   fields = observable.map<string, FormField>();
 
   // eslint-disable-next-line class-methods-use-this
-  @action protected setFieldErrors = (field: FormField, errors?: any) => {
+  @action protected setFieldErrors = (field: FormField, errors?: unknown) => {
     // eslint-disable-next-line no-param-reassign
     field.errors = errors;
   };
 
-  @action protected updateErrors = (errors: Record<string, any> = {}) => {
+  @action protected updateErrors = (errors: Record<string, unknown> = {}) => {
     this.API.errors = errors;
     this.setIsValid(Object.keys(this.API.errors).length === 0);
   };
@@ -173,14 +173,14 @@ export class FormControllerClass {
       handlers: {
         validateField: () => this.validateField(fieldName),
         validate: () => this.validate(),
-        onChange: (value: any) => this.setFieldValue(fieldName, value),
+        onChange: (value: unknown) => this.setFieldValue(fieldName, value),
         /** @deprecated */
-        setCustomState: (key: string, value: any) => this.setFieldCustomState(fieldName, key, value),
+        setCustomState: (key: string, value: unknown) => this.setFieldCustomState(fieldName, key, value),
         onFocus: () => this.changeFieldActiveState(fieldName, true),
         onBlur: () => this.changeFieldActiveState(fieldName, false),
       },
       meta: {
-        onEqualityCheck: (a: any, b: any) => a === b || (isEmpty(a) && isEmpty(b)),
+        onEqualityCheck: (a: unknown, b: unknown) => a === b || (isEmpty(a) && isEmpty(b)),
         customState: {},
         initialValue: undefined,
         isTouched: false,
@@ -261,7 +261,7 @@ export class FormControllerClass {
     this.updateAPIValues(fieldName, undefined);
   };
 
-  @action protected updateErrorsForEveryField = (formValidationErrors: any) => {
+  @action protected updateErrorsForEveryField = (formValidationErrors: unknown) => {
     this.fields.forEach((field, name) => {
       if (field.meta.isMounted) {
         const errors = (() => {
@@ -356,7 +356,7 @@ export class FormControllerClass {
   };
 
   // general handler for resetting form to specific state
-  @action protected resetToValues = (values: any) => {
+  @action protected resetToValues = (values: unknown) => {
     this.fields.forEach((field, name) => {
       const newValue = this.options.fieldValueToFormValuesConverter.get(values, name);
       const fieldName = field.props?.name!;
@@ -393,7 +393,7 @@ export class FormControllerClass {
 
   // changes field custom state, that was set by user
   /** @deprecated */
-  @action protected setFieldCustomState = (fieldName: string, key: string, value: any) => {
+  @action protected setFieldCustomState = (fieldName: string, key: string, value: unknown) => {
     this.createFieldIfDoesNotExist(fieldName);
     const field = this.fields.get(fieldName)!;
 
@@ -406,7 +406,7 @@ export class FormControllerClass {
   };
 
   // changes when adapter onChange handler is called
-  @action protected setFieldValue = (fieldName: string, value: any) => {
+  @action protected setFieldValue = (fieldName: string, value: unknown) => {
     this.createFieldIfDoesNotExist(fieldName);
     const field = this.fields.get(fieldName)!;
 
