@@ -136,7 +136,7 @@ describe('Validation', () => {
   });
 
   describe('form & field level combined', () => {
-    it.only('run only field level validation', async () => {
+    it('run only field level validation', async () => {
       const formController = createFormController({});
       const formLevelValidation = jest.fn();
       const fieldLevelValidation = jest.fn((value) => {
