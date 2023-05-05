@@ -52,7 +52,7 @@ export class FormControllerClass {
   protected safeApiValuesCopy: Record<string, unknown> = {};
 
   @action protected updateAPIValues = (fieldName: string, value: unknown) => {
-    const dereferencedValue = toJSCompat(value, false);
+    const safeValue = toJSCompat(value, false);
     const {onFormat} = this.options;
     const field = this.fields.get(fieldName);
 
@@ -60,8 +60,8 @@ export class FormControllerClass {
       this.safeApiValuesCopy,
       fieldName,
       field && field.props?.onFormat && field.meta.isMounted
-        ? field.props.onFormat(dereferencedValue)
-        : dereferencedValue,
+        ? field.props.onFormat(safeValue)
+        : safeValue,
     );
 
     if (onFormat) {
