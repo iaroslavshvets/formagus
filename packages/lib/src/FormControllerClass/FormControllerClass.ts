@@ -513,11 +513,11 @@ export class FormControllerClass {
     await this.validate();
 
     const [errors, values] = toJSCompat([this.API.errors, this.API.values]);
-    const hasErrors = isEmpty(errors);
+    const isSuccess = isEmpty(errors);
 
     try {
       if (this.options.onSubmit) {
-        await this.options.onSubmit({errors, values, hasErrors, event: submitEvent});
+        await this.options.onSubmit({errors, values, isSuccess, event: submitEvent});
       }
 
       runInAction(() => {
