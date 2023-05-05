@@ -30,6 +30,7 @@ export const useRegisterField = (props: FieldCommonProps) => {
       errors: safeErrors,
       fieldProps: props,
       meta: {
+        /** @deprecated don't use */
         customState: safeCustomState,
         /** @deprecated use errors from higher level */
         errors: safeErrors,
