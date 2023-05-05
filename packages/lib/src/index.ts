@@ -1,4 +1,3 @@
-import {FormAPI} from './FormControllerClass/FormControllerClass.types';
 export type {
   OnValidateFunction,
   OnEqualityCheckFunction,
@@ -22,7 +21,5 @@ export {Form} from './Form/Form';
 export {useForm} from './useForm';
 
 // deprecated, but still may be used with React class components
-export {injectFormApi} from './injectFormApi';
-export type InjectedFormAPI = {
-  formApi: FormAPI;
-};
+export {injectFormApi} from './injectFormApi/injectFormApi';
+export {InjectedFormAPI} from './injectFormApi/injectFormApi.types';
