@@ -485,10 +485,7 @@ export class FormControllerClass {
       this.runFormLevelValidations(),
     ]);
 
-    const combinedErrors =
-      fieldValidationErrors || formValidationErrors
-        ? mergeDeep(fieldValidationErrors, formValidationErrors)
-        : undefined;
+    const combinedErrors = mergeDeep(fieldValidationErrors, formValidationErrors);
 
     runInAction(() => {
       this.updateErrors(combinedErrors);
