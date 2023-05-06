@@ -271,12 +271,10 @@ export class FormControllerClass {
   @action protected updateErrorsForEveryField = (formValidationErrors: unknown) => {
     this.fields.forEach((field, name) => {
       if (field.meta.isMounted) {
-        const errors = (() => {
-          if (typeof formValidationErrors === 'object' && formValidationErrors !== null) {
-            return this.options.fieldValueToFormValuesConverter.get(formValidationErrors, name);
-          }
-          return undefined;
-        })();
+        const errors =
+          typeof formValidationErrors === 'object' && formValidationErrors !== null
+            ? formValidationErrors[name as keyof typeof formValidationErrors]
+            : undefined;
 
         this.setFieldErrors(field, errors);
       }
