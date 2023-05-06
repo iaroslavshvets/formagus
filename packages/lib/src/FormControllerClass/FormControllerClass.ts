@@ -272,10 +272,10 @@ export class FormControllerClass {
     this.fields.forEach((field, name) => {
       if (field.meta.isMounted) {
         const errors = (() => {
-          if (!formValidationErrors) {
-            return undefined;
+          if (typeof formValidationErrors === 'object' && formValidationErrors !== null) {
+            return this.options.fieldValueToFormValuesConverter.get(formValidationErrors, name);
           }
-          return this.options.fieldValueToFormValuesConverter.get(formValidationErrors, name);
+          return undefined;
         })();
 
         this.setFieldErrors(field, errors);
@@ -381,7 +381,7 @@ export class FormControllerClass {
     this.setIsChanged(false);
     this.updateInitialValues(values);
     this.setSubmitCount(0);
-    this.updateErrorsForEveryField({});
+    this.updateErrorsForEveryField(undefined);
   };
 
   // changes field active state usually based on 'blur'/'focus' events called within the adapter
