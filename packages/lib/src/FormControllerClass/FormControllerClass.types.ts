@@ -45,13 +45,11 @@ export interface FormMeta {
 }
 
 export interface FormAPI {
-  values: any;
-  errors: any;
-  submit: <T = any, K = any>(
-    submitEvent?: FormEvent<any>,
-  ) => Promise<{
-    errors: T;
-    values: K;
+  values: Record<string, any>;
+  errors: Record<string, any>;
+  submit: (submitEvent?: FormEvent<any>) => Promise<{
+    errors: FormAPI['errors'];
+    values: FormAPI['errors'];
   }>;
   reset: () => void;
   resetToValues: (values: any) => void;

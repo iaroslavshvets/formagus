@@ -152,7 +152,11 @@ export class FormControllerClass {
 
   @action protected updateErrors = (params: {value: unknown} | {mutator: Function}) => {
     if ('value' in params) {
-      this.API.errors = isEmpty(params.value) ? {} : params.value;
+      if (typeof params.value === 'object' && params.value !== null) {
+        this.API.errors = params.value;
+      } else {
+        this.API.errors = {};
+      }
     } else {
       params.mutator();
     }
