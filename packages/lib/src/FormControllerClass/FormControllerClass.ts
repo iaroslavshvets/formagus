@@ -150,8 +150,13 @@ export class FormControllerClass {
     field.errors = errors;
   };
 
-  @action protected updateErrors = (errors: unknown) => {
-    this.API.errors = errors;
+  @action protected updateErrors = (params: {value: unknown} | {mutator: Function}) => {
+    if ('value' in params) {
+      this.API.errors = isEmpty(params.value) ? {} : params.value;
+    } else {
+      params.mutator();
+    }
+
     this.setIsValid(Object.keys(this.API.errors).length === 0);
   };
 
@@ -457,13 +462,15 @@ export class FormControllerClass {
         isValidating: false,
       });
 
-      if (isEmpty(errors)) {
-        delete this.API.errors[fieldName];
-      } else {
-        this.API.errors[fieldName] = errors;
-      }
-
-      this.updateErrors(this.API.errors);
+      this.updateErrors({
+        mutator: () => {
+          if (isEmpty(errors)) {
+            delete this.API.errors[fieldName];
+          } else {
+            this.API.errors[fieldName] = errors;
+          }
+        },
+      });
 
       if (field.meta.isMounted) {
         this.setFieldErrors(field, errors);
@@ -488,7 +495,7 @@ export class FormControllerClass {
     const combinedErrors = mergeDeep(fieldValidationErrors, formValidationErrors);
 
     runInAction(() => {
-      this.updateErrors(combinedErrors);
+      this.updateErrors({value: combinedErrors});
       this.updateErrorsForEveryField(this.API.errors);
       this.setIsValidating(false);
     });
