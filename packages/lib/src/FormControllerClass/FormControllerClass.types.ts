@@ -1,6 +1,5 @@
 import type {FormEvent} from 'react';
-import {ObservableMap} from 'mobx';
-import type {OnEqualityCheckFunction, FieldProps, FormagusProps} from '../Field/Field.types';
+import type {OnEqualityCheckFunction, FieldProps, FieldFormagus} from '../Field/Field.types';
 
 export interface FormControllerOptions {
   initialValues?: any;
@@ -18,7 +17,7 @@ export interface FormField {
   props?: FieldProps;
   value: any;
   errors: any;
-  handlers: Pick<FormagusProps, 'onChange' | 'setCustomState' | 'onFocus' | 'onBlur' | 'validate' | 'validateField'>;
+  handlers: Pick<FieldFormagus, 'onChange' | 'setCustomState' | 'onFocus' | 'onBlur' | 'validate' | 'validateField'>;
 }
 
 export interface FieldMeta {
@@ -62,9 +61,5 @@ export interface FormAPI {
   validate: () => any;
   validateField: (fieldName: string) => any;
   hasField: (fieldName: string) => boolean;
-  /** @deprecated don't use */
-  getFieldMeta: (fieldName: string) => FieldMeta;
   meta: FormMeta;
-  /** @deprecated use getFields/getField */
-  rawFields: ObservableMap<string, FormField>;
 }

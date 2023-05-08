@@ -129,7 +129,7 @@ describe('Field interactions', () => {
   it('set custom state', async () => {
     const formController = createFormController({});
 
-    expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).customState).toEqual({});
+    expect(formController.API.getField(TestForm.FIELD_ONE_NAME)?.meta.customState).toEqual(undefined);
 
     const wrapper = render(
       <TestForm>

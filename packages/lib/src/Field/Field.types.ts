@@ -6,8 +6,6 @@ import type {FormControllerClass} from '../FormControllerClass/FormControllerCla
 export type OnValidateFunction = ((value: any, values?: any) => any) | ((value: any, values?: any) => Promise<any>);
 
 export type FieldMeta = Readonly<{
-  /** @deprecated */
-  errors: any | null;
   initialValue: any;
   isDirty: boolean;
   isTouched: boolean;
@@ -19,7 +17,7 @@ export type FieldMeta = Readonly<{
   customState: Record<string, any>;
 }>;
 
-export type FormagusProps = Readonly<{
+export type FieldFormagus = Readonly<{
   name: string;
   meta: FieldMeta;
   value: any;
@@ -35,19 +33,19 @@ export type FormagusProps = Readonly<{
 }>;
 
 export type FieldRenderProps = {
-  formagus: FormagusProps;
+  formagus: FieldFormagus;
 };
 
-export type FormatterFunction = (value: any) => any;
+export type OnFormatFunction = (value: any) => any;
 export type OnEqualityCheckFunction = (newValue: any, oldValue: any) => boolean;
 
 export type FieldCommonProps = {
   name: string;
   defaultValue?: any;
   onValidate?: OnValidateFunction;
-  onFormat?: FormatterFunction;
+  onFormat?: OnFormatFunction;
   onEqualityCheck?: OnEqualityCheckFunction;
-  onInit?: (API: FormagusProps) => void;
+  onInit?: (API: FieldFormagus) => void;
   persist?: boolean;
   controller?: FormControllerClass;
 };

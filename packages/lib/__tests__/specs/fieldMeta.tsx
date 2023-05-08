@@ -12,9 +12,9 @@ describe('Field meta', () => {
 
   it('isRegistered', () => {
     const formController = createFormController({});
-    expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).isMounted).toEqual(false);
+    expect(formController.API.getField(TestForm.FIELD_ONE_NAME)?.meta.isMounted).toEqual(undefined);
     render(<TestForm controller={formController} />);
-    expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).isMounted).toEqual(true);
+    expect(formController.API.getField(TestForm.FIELD_ONE_NAME)?.meta.isMounted).toEqual(true);
   });
 
   it('isActive', () => {
@@ -99,7 +99,7 @@ describe('Field meta', () => {
   it('customState', async () => {
     const formController = createFormController({});
 
-    expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).customState).toEqual({});
+    expect(formController.API.getField(TestForm.FIELD_ONE_NAME)?.meta.customState).toEqual(undefined);
 
     const wrapper = render(<TestForm controller={formController} />).container;
     const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
@@ -108,7 +108,7 @@ describe('Field meta', () => {
 
     formController.API.setFieldCustomState(TestForm.FIELD_ONE_NAME, CUSTOM_KEY, CUSTOM_VALUE);
 
-    expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).customState[CUSTOM_KEY]).toBe(CUSTOM_VALUE);
+    expect(formController.API.getField(TestForm.FIELD_ONE_NAME)?.meta.customState[CUSTOM_KEY]).toBe(CUSTOM_VALUE);
 
     await eventually(() => {
       expect(fieldDriver.get.meta(`customState:${CUSTOM_KEY}`)).toBe(CUSTOM_VALUE);
@@ -134,7 +134,7 @@ describe('Field meta', () => {
     expect(fieldDriver.get.meta('isValidating')).toBe('true');
 
     await eventually(() => {
-      expect(fieldDriver.get.meta('form:isValidating')).toBe('false');
+      expect(fieldDriver.get.formMeta('isValidating')).toBe('false');
     });
   });
 });

@@ -281,11 +281,6 @@ export class FormControllerClass {
     });
   };
 
-  protected getFieldMeta = (fieldName: string) => {
-    this.createFieldIfDoesNotExist(fieldName);
-    return toJSCompat(this.fields.get(fieldName)!.meta);
-  };
-
   protected hasField = (fieldName: string) => {
     const field = this.fields.get(fieldName);
     return (field && field.meta.isMounted) || false;
@@ -317,9 +312,7 @@ export class FormControllerClass {
         isTouched: false,
         isChanged: false,
       },
-      getFieldMeta: this.getFieldMeta,
       setFieldCustomState: this.setFieldCustomState,
-      rawFields: this.fields,
     };
   };
 

@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 import {InputMeta} from './Input.meta';
 import {InputErrors} from './Input.errors';
 import type {FieldRenderProps} from '../../../src';
-import {useField} from '../../../src';
+import {useField, useForm} from '../../../src';
 
 export interface InputAdapterProps extends Partial<FieldRenderProps> {
   callback?: Function;
@@ -20,6 +20,7 @@ export const Input = observer((props: InputAdapterProps) => {
   const {fieldProps, onFocus, onBlur, validate, validateField, name, setCustomState, onChange, value, errors, meta} =
     useHook ? formagusHook : props.formagus!;
   const normalizedValue = isNil(value) ? '' : value;
+  const formMeta = useForm().meta;
 
   useEffect(() => {
     if (useRenderCounter) {
@@ -50,7 +51,7 @@ export const Input = observer((props: InputAdapterProps) => {
 
       <InputErrors errors={errors} />
 
-      <InputMeta meta={meta} />
+      <InputMeta meta={meta} formMeta={formMeta} />
 
       <span data-hook="set-custom-state" onClick={onSetCustomState} />
       <span

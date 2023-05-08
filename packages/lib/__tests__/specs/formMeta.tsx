@@ -27,24 +27,24 @@ describe('Form meta', () => {
     const formDriver = createTestFormDriver({wrapper});
     const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
-    expect(fieldDriver.get.meta('form:isValid')).toBe('true');
+    expect(fieldDriver.get.formMeta('isValid')).toBe('true');
 
     fieldDriver.when.change('harvy');
     formDriver.when.submit();
     await eventually(() => {
-      expect(fieldDriver.get.meta('form:isValid')).toBe('false');
+      expect(fieldDriver.get.formMeta('isValid')).toBe('false');
     });
 
     fieldDriver.when.change('batman');
     formDriver.when.submit();
     await eventually(() => {
-      expect(fieldDriver.get.meta('form:isValid')).toBe('true');
+      expect(fieldDriver.get.formMeta('isValid')).toBe('true');
     });
 
     fieldDriver.when.change('joker');
     fieldDriver.when.validate();
     await eventually(() => {
-      expect(fieldDriver.get.meta('form:isValid')).toBe('false');
+      expect(fieldDriver.get.formMeta('isValid')).toBe('false');
     });
   });
 
@@ -52,13 +52,13 @@ describe('Form meta', () => {
     const wrapper = render(<TestForm />).container;
     const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
-    expect(fieldDriver.get.meta('form:isTouched')).toBe('false');
+    expect(fieldDriver.get.formMeta('isTouched')).toBe('false');
 
     fieldDriver.when.focus();
-    expect(fieldDriver.get.meta('form:isTouched')).toBe('true');
+    expect(fieldDriver.get.formMeta('isTouched')).toBe('true');
 
     fieldDriver.when.blur();
-    expect(fieldDriver.get.meta('form:isTouched')).toBe('true');
+    expect(fieldDriver.get.formMeta('isTouched')).toBe('true');
   });
 
   it('isChanged', () => {
@@ -75,19 +75,19 @@ describe('Form meta', () => {
     ).container;
     const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
-    expect(fieldDriver.get.meta('form:isChanged')).toBe('false');
+    expect(fieldDriver.get.formMeta('isChanged')).toBe('false');
 
     fieldDriver.when.focus();
-    expect(fieldDriver.get.meta('form:isChanged')).toBe('false');
+    expect(fieldDriver.get.formMeta('isChanged')).toBe('false');
 
     fieldDriver.when.blur();
-    expect(fieldDriver.get.meta('form:isChanged')).toBe('false');
+    expect(fieldDriver.get.formMeta('isChanged')).toBe('false');
 
     fieldDriver.when.change('batman');
-    expect(fieldDriver.get.meta('form:isChanged')).toBe('true');
+    expect(fieldDriver.get.formMeta('isChanged')).toBe('true');
 
     fieldDriver.when.change('');
-    expect(fieldDriver.get.meta('form:isChanged')).toBe('true');
+    expect(fieldDriver.get.formMeta('isChanged')).toBe('true');
   });
 
   describe('isDirty', () => {
@@ -105,15 +105,15 @@ describe('Form meta', () => {
       ).container;
       const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
-      expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
+      expect(fieldDriver.get.formMeta('isDirty')).toBe('false');
 
       fieldDriver.when.change('batman');
 
-      expect(fieldDriver.get.meta('form:isDirty')).toBe('true');
+      expect(fieldDriver.get.formMeta('isDirty')).toBe('true');
 
       fieldDriver.when.change('');
 
-      expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
+      expect(fieldDriver.get.formMeta('isDirty')).toBe('false');
     });
 
     it('using initial field default value', () => {
@@ -126,15 +126,15 @@ describe('Form meta', () => {
       ).container;
       const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
-      expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
+      expect(fieldDriver.get.formMeta('isDirty')).toBe('false');
 
       fieldDriver.when.change('batman');
 
-      expect(fieldDriver.get.meta('form:isDirty')).toBe('true');
+      expect(fieldDriver.get.formMeta('isDirty')).toBe('true');
 
       fieldDriver.when.change('');
 
-      expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
+      expect(fieldDriver.get.formMeta('isDirty')).toBe('false');
     });
 
     it('should ignore unmounted fields when calculating form isDirty', () => {
@@ -158,15 +158,15 @@ describe('Form meta', () => {
       const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
       const secondFieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
 
-      expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
+      expect(fieldDriver.get.formMeta('isDirty')).toBe('false');
 
       secondFieldDriver.when.change('batman');
 
-      expect(fieldDriver.get.meta('form:isDirty')).toBe('true');
+      expect(fieldDriver.get.formMeta('isDirty')).toBe('true');
 
       rerender(<TestComponent hideField={true} />);
 
-      expect(fieldDriver.get.meta('form:isDirty')).toBe('false');
+      expect(fieldDriver.get.formMeta('isDirty')).toBe('false');
     });
   });
 
@@ -175,11 +175,11 @@ describe('Form meta', () => {
     const formDriver = createTestFormDriver({wrapper});
     const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
-    expect(fieldDriver.get.meta('form:submitCount')).toBe('0');
+    expect(fieldDriver.get.formMeta('submitCount')).toBe('0');
 
     formDriver.when.submit();
 
-    expect(fieldDriver.get.meta('form:submitCount')).toBe('1');
+    expect(fieldDriver.get.formMeta('submitCount')).toBe('1');
   });
 
   it('isSubmitting', async () => {
@@ -187,14 +187,14 @@ describe('Form meta', () => {
     const formDriver = createTestFormDriver({wrapper});
     const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
-    expect(fieldDriver.get.meta('form:isSubmitting')).toBe('false');
+    expect(fieldDriver.get.formMeta('isSubmitting')).toBe('false');
 
     formDriver.when.submit();
 
-    expect(fieldDriver.get.meta('form:isSubmitting')).toBe('true');
+    expect(fieldDriver.get.formMeta('isSubmitting')).toBe('true');
 
     await eventually(() => {
-      expect(fieldDriver.get.meta('form:isSubmitting')).toBe('false');
+      expect(fieldDriver.get.formMeta('isSubmitting')).toBe('false');
     });
   });
 
@@ -210,14 +210,14 @@ describe('Form meta', () => {
     const formDriver = createTestFormDriver({wrapper});
     const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
-    expect(fieldDriver.get.meta('form:isValidating')).toBe('false');
+    expect(fieldDriver.get.formMeta('isValidating')).toBe('false');
 
     formDriver.when.submit();
 
-    expect(fieldDriver.get.meta('form:isValidating')).toBe('true');
+    expect(fieldDriver.get.formMeta('isValidating')).toBe('true');
 
     await eventually(() => {
-      expect(fieldDriver.get.meta('form:isValidating')).toBe('false');
+      expect(fieldDriver.get.formMeta('isValidating')).toBe('false');
     });
   });
 });

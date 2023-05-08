@@ -1,8 +1,8 @@
 export type {
   OnValidateFunction,
   OnEqualityCheckFunction,
-  FieldMeta,
   FieldProps,
+  FieldFormagus,
   FieldRenderProps,
 } from './Field/Field.types';
 export type {FormProps} from './Form/Form.types';

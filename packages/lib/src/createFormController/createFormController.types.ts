@@ -1,3 +1,5 @@
-import {createFormController} from './createFormController';
+import {FormAPI} from '../FormControllerClass/FormControllerClass.types';
 
-export type FormController = ReturnType<typeof createFormController>;
+export type FormController = {
+  API: FormAPI;
+};

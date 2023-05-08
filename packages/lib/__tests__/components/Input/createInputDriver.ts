@@ -18,7 +18,10 @@ export const createInputDriver = (options: {wrapper: Element; dataHook: string})
         return API.get.inputNode().value;
       },
       meta: (key: string) => {
-        return API.get.root()?.querySelector(`[data-hook="meta_${key}"]`)!.textContent;
+        return API.get.root()?.querySelector(`[data-hook="field_meta_${key}"]`)!.textContent;
+      },
+      formMeta: (key: string) => {
+        return API.get.root()?.querySelector(`[data-hook="form_meta_${key}"]`)!.textContent;
       },
       errors: (key?: string) => {
         if (key) {
@@ -66,6 +69,7 @@ export const createInputDriver = (options: {wrapper: Element; dataHook: string})
     get: {
       value: API.get.value,
       meta: API.get.meta,
+      formMeta: API.get.formMeta,
       errors: API.get.errors,
     },
     when: {

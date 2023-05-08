@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import {computed} from 'mobx';
 import {useFormControllerClass} from '../Form/useFormControllerClass';
 import {toJSCompat} from '../utils/toJSCompat';
-import type {FieldCommonProps, FormagusProps} from './Field.types';
+import type {FieldCommonProps, FieldFormagus} from './Field.types';
 
 export const useRegisterField = (props: FieldCommonProps) => {
   const controller = useFormControllerClass(props);
@@ -12,7 +12,7 @@ export const useRegisterField = (props: FieldCommonProps) => {
   const field = computedField.get();
   const isReady = field !== undefined;
 
-  const formagus = computed<FormagusProps | undefined>(() => {
+  const formagus = computed<FieldFormagus | undefined>(() => {
     if (!isReady) {
       // component is not yet registered
       return undefined;
@@ -32,8 +32,6 @@ export const useRegisterField = (props: FieldCommonProps) => {
       meta: {
         /** @deprecated don't use */
         customState: safeCustomState,
-        /** @deprecated use errors from higher level */
-        errors: safeErrors,
         initialValue: meta.initialValue,
         isActive: meta.isActive,
         isDirty: meta.isDirty,
@@ -41,16 +39,6 @@ export const useRegisterField = (props: FieldCommonProps) => {
         isChanged: meta.isChanged,
         isValidating: meta.isValidating,
         isMounted: meta.isMounted,
-        /** @deprecated use useForm hook */
-        form: {
-          isSubmitting: controller.API.meta.isSubmitting,
-          isValidating: controller.API.meta.isValidating,
-          isValid: controller.API.meta.isValid,
-          isDirty: controller.API.meta.isDirty,
-          isTouched: controller.API.meta.isTouched,
-          isChanged: controller.API.meta.isChanged,
-          submitCount: controller.API.meta.submitCount,
-        },
       },
       ...field.handlers,
     };

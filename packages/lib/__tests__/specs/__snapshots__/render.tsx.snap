@@ -18,79 +18,74 @@ exports[`Render should render 1`] = `
         data-hook="meta-props"
       >
         <span
-          data-hook="meta_errors"
+          data-hook="field_meta_initialValue"
         >
           undefined
         </span>
         <span
-          data-hook="meta_initialValue"
-        >
-          undefined
-        </span>
-        <span
-          data-hook="meta_isActive"
+          data-hook="field_meta_isActive"
         >
           false
         </span>
         <span
-          data-hook="meta_isDirty"
+          data-hook="field_meta_isDirty"
         >
           false
         </span>
         <span
-          data-hook="meta_isTouched"
+          data-hook="field_meta_isTouched"
         >
           false
         </span>
         <span
-          data-hook="meta_isChanged"
+          data-hook="field_meta_isChanged"
         >
           false
         </span>
         <span
-          data-hook="meta_isValidating"
+          data-hook="field_meta_isValidating"
         >
           false
         </span>
         <span
-          data-hook="meta_isMounted"
+          data-hook="field_meta_isMounted"
         >
           true
         </span>
         <span
-          data-hook="meta_form:isSubmitting"
+          data-hook="form_meta_isValidating"
         >
           false
         </span>
         <span
-          data-hook="meta_form:isValidating"
+          data-hook="form_meta_isSubmitting"
         >
           false
         </span>
         <span
-          data-hook="meta_form:isValid"
-        >
-          true
-        </span>
-        <span
-          data-hook="meta_form:isDirty"
-        >
-          false
-        </span>
-        <span
-          data-hook="meta_form:isTouched"
-        >
-          false
-        </span>
-        <span
-          data-hook="meta_form:isChanged"
-        >
-          false
-        </span>
-        <span
-          data-hook="meta_form:submitCount"
+          data-hook="form_meta_submitCount"
         >
           0
+        </span>
+        <span
+          data-hook="form_meta_isValid"
+        >
+          true
+        </span>
+        <span
+          data-hook="form_meta_isDirty"
+        >
+          false
+        </span>
+        <span
+          data-hook="form_meta_isTouched"
+        >
+          false
+        </span>
+        <span
+          data-hook="form_meta_isChanged"
+        >
+          false
         </span>
       </div>
       <span
@@ -118,79 +113,74 @@ exports[`Render should render 1`] = `
         data-hook="meta-props"
       >
         <span
-          data-hook="meta_errors"
+          data-hook="field_meta_initialValue"
         >
           undefined
         </span>
         <span
-          data-hook="meta_initialValue"
-        >
-          undefined
-        </span>
-        <span
-          data-hook="meta_isActive"
+          data-hook="field_meta_isActive"
         >
           false
         </span>
         <span
-          data-hook="meta_isDirty"
+          data-hook="field_meta_isDirty"
         >
           false
         </span>
         <span
-          data-hook="meta_isTouched"
+          data-hook="field_meta_isTouched"
         >
           false
         </span>
         <span
-          data-hook="meta_isChanged"
+          data-hook="field_meta_isChanged"
         >
           false
         </span>
         <span
-          data-hook="meta_isValidating"
+          data-hook="field_meta_isValidating"
         >
           false
         </span>
         <span
-          data-hook="meta_isMounted"
+          data-hook="field_meta_isMounted"
         >
           true
         </span>
         <span
-          data-hook="meta_form:isSubmitting"
+          data-hook="form_meta_isValidating"
         >
           false
         </span>
         <span
-          data-hook="meta_form:isValidating"
+          data-hook="form_meta_isSubmitting"
         >
           false
         </span>
         <span
-          data-hook="meta_form:isValid"
-        >
-          true
-        </span>
-        <span
-          data-hook="meta_form:isDirty"
-        >
-          false
-        </span>
-        <span
-          data-hook="meta_form:isTouched"
-        >
-          false
-        </span>
-        <span
-          data-hook="meta_form:isChanged"
-        >
-          false
-        </span>
-        <span
-          data-hook="meta_form:submitCount"
+          data-hook="form_meta_submitCount"
         >
           0
+        </span>
+        <span
+          data-hook="form_meta_isValid"
+        >
+          true
+        </span>
+        <span
+          data-hook="form_meta_isDirty"
+        >
+          false
+        </span>
+        <span
+          data-hook="form_meta_isTouched"
+        >
+          false
+        </span>
+        <span
+          data-hook="form_meta_isChanged"
+        >
+          false
         </span>
       </div>
       <span
@@ -218,79 +208,74 @@ exports[`Render should render 1`] = `
         data-hook="meta-props"
       >
         <span
-          data-hook="meta_errors"
+          data-hook="field_meta_initialValue"
         >
           undefined
         </span>
         <span
-          data-hook="meta_initialValue"
-        >
-          undefined
-        </span>
-        <span
-          data-hook="meta_isActive"
+          data-hook="field_meta_isActive"
         >
           false
         </span>
         <span
-          data-hook="meta_isDirty"
+          data-hook="field_meta_isDirty"
         >
           false
         </span>
         <span
-          data-hook="meta_isTouched"
+          data-hook="field_meta_isTouched"
         >
           false
         </span>
         <span
-          data-hook="meta_isChanged"
+          data-hook="field_meta_isChanged"
         >
           false
         </span>
         <span
-          data-hook="meta_isValidating"
+          data-hook="field_meta_isValidating"
         >
           false
         </span>
         <span
-          data-hook="meta_isMounted"
+          data-hook="field_meta_isMounted"
         >
           true
         </span>
         <span
-          data-hook="meta_form:isSubmitting"
+          data-hook="form_meta_isValidating"
         >
           false
         </span>
         <span
-          data-hook="meta_form:isValidating"
+          data-hook="form_meta_isSubmitting"
         >
           false
         </span>
         <span
-          data-hook="meta_form:isValid"
-        >
-          true
-        </span>
-        <span
-          data-hook="meta_form:isDirty"
-        >
-          false
-        </span>
-        <span
-          data-hook="meta_form:isTouched"
-        >
-          false
-        </span>
-        <span
-          data-hook="meta_form:isChanged"
-        >
-          false
-        </span>
-        <span
-          data-hook="meta_form:submitCount"
+          data-hook="form_meta_submitCount"
         >
           0
+        </span>
+        <span
+          data-hook="form_meta_isValid"
+        >
+          true
+        </span>
+        <span
+          data-hook="form_meta_isDirty"
+        >
+          false
+        </span>
+        <span
+          data-hook="form_meta_isTouched"
+        >
+          false
+        </span>
+        <span
+          data-hook="form_meta_isChanged"
+        >
+          false
         </span>
       </div>
       <span
