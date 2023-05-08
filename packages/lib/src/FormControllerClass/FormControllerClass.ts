@@ -257,14 +257,12 @@ export class FormControllerClass {
       this.setFieldMeta(field, {
         isMounted: false,
       });
-
-      this.updateIsDirtyBasedOnFields();
-      this.removeFieldLevelValidation(fieldName);
     } else {
-      this.updateIsDirtyBasedOnFields();
       this.fields.delete(fieldName);
     }
 
+    this.updateIsDirtyBasedOnFields();
+    this.removeFieldLevelValidation(fieldName);
     this.updateAPIValues(fieldName, undefined);
   };
 
