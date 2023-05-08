@@ -1,14 +1,16 @@
 import type {FormEvent} from 'react';
 import type {OnEqualityCheckFunction, FieldProps, FieldFormagus} from '../Field/Field.types';
 
+export type Values = Record<string, any>;
+export type Errors = Record<string, any>;
 export interface FormControllerOptions {
   initialValues?: any;
-  onValidate?: (values: any) => Promise<any>;
-  onFormat?: (values: any) => any;
-  onSubmit?: (params: {errors: any; values: any; isSuccess: boolean; event?: FormEvent<HTMLElement>}) => void;
+  onValidate?: (values: Values) => Promise<any>;
+  onFormat?: (values: Values) => any;
+  onSubmit?: (params: {values: Values; errors: Errors; isSuccess: boolean; event?: FormEvent<HTMLElement>}) => void;
   fieldValueToFormValuesConverter?: {
-    set: (values: any, fieldName: string, value: any) => any;
-    get: (values: any, fieldName: string) => any;
+    set: (values: Values, fieldName: string, value: any) => any;
+    get: (values: Values, fieldName: string) => any;
   };
 }
 
@@ -44,17 +46,17 @@ export interface FormMeta {
 }
 
 export interface FormAPI {
-  values: Record<string, any>;
-  errors: Record<string, any>;
+  values: Values;
+  errors: Errors;
   submit: (submitEvent?: FormEvent<any>) => Promise<{
-    errors: FormAPI['errors'];
-    values: FormAPI['errors'];
+    values: Values;
+    errors: Errors;
   }>;
   getField: (fieldName: string) => FormField | undefined;
   getFields: () => Record<string, FormField>;
   reset: () => void;
   clear: () => void;
-  resetToValues: (values: any) => void;
+  resetToValues: (values: Values) => void;
   setFieldValue: (fieldName: string, value: any) => void;
   /** @deprecated don't use */
   setFieldCustomState: (fieldName: string, key: string, value: any) => void;

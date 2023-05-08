@@ -7,7 +7,7 @@ import _set from 'lodash/set';
 import _get from 'lodash/get';
 import {toJSCompat} from '../utils/toJSCompat';
 import type {FieldProps, OnValidateFunction} from '../Field/Field.types';
-import type {FormAPI, FormControllerOptions, FormField} from './FormControllerClass.types';
+import type { FormAPI, FormControllerOptions, FormField, Values } from "./FormControllerClass.types";
 import type {WithRequiredProperty} from '../utils/types/withRequiredProperty';
 import {isMobx6Used} from '../utils/isMobx6Used';
 import {isEmpty} from '../utils/isEmpty';
@@ -367,7 +367,7 @@ export class FormControllerClass {
   };
 
   // general handler for resetting form to specific state
-  @action protected resetToValues = (values: unknown) => {
+  @action protected resetToValues = (values: Values) => {
     this.fields.forEach((field, name) => {
       const newValue = this.options.fieldValueToFormValuesConverter.get(values, name);
       const fieldName = field.props?.name!;
