@@ -51,9 +51,11 @@ export interface FormAPI {
     errors: FormAPI['errors'];
     values: FormAPI['errors'];
   }>;
+  getField: (fieldName: string) => FormField | undefined;
+  getFields: () => Record<string, FormField>;
   reset: () => void;
-  resetToValues: (values: any) => void;
   clear: () => void;
+  resetToValues: (values: any) => void;
   setFieldValue: (fieldName: string, value: any) => void;
   /** @deprecated don't use */
   setFieldCustomState: (fieldName: string, key: string, value: any) => void;
@@ -63,5 +65,6 @@ export interface FormAPI {
   /** @deprecated don't use */
   getFieldMeta: (fieldName: string) => FieldMeta;
   meta: FormMeta;
+  /** @deprecated use getFields/getField */
   rawFields: ObservableMap<string, FormField>;
 }

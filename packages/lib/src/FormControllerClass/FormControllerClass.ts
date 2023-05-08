@@ -304,11 +304,10 @@ export class FormControllerClass {
       reset: () => this.resetToValues(this.options.initialValues || {}), // resets the form to initial values
       clear: () => this.resetToValues({}), // resets the form to empty values
       setFieldValue: this.setFieldValue,
-      setFieldCustomState: this.setFieldCustomState,
       validate: this.validate,
       validateField: this.validateField,
-      getFieldMeta: this.getFieldMeta,
-      rawFields: this.fields,
+      getField: this.getField,
+      getFields: this.getFields,
       meta: {
         isValidating: false,
         isSubmitting: false,
@@ -318,7 +317,21 @@ export class FormControllerClass {
         isTouched: false,
         isChanged: false,
       },
+      getFieldMeta: this.getFieldMeta,
+      setFieldCustomState: this.setFieldCustomState,
+      rawFields: this.fields,
     };
+  };
+
+  protected getField = (fieldName: string) => {
+    return this.fields.get(fieldName);
+  };
+
+  protected getFields = () => {
+    return Array.from(this.fields.entries()).reduce((acc, [key, value]) => {
+      acc[key] = value;
+      return acc;
+    }, {} as Record<string, FormField>);
   };
 
   @action protected updateIsDirtyBasedOnFields = () => {
