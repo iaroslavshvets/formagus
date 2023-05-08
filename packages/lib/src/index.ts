@@ -2,6 +2,7 @@ export type {
   OnValidateFunction,
   OnEqualityCheckFunction,
   FieldProps,
+  FieldMeta,
   FieldFormagus,
   FieldRenderProps,
 } from './Field/Field.types';
