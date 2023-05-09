@@ -51,6 +51,7 @@ export interface FormAPI {
   submit: (submitEvent?: FormEvent<any>) => Promise<{
     values: Values;
     errors: Errors;
+    isSuccess: boolean;
   }>;
   meta: FormMeta;
   getField: (fieldName: string) => FormField | undefined;

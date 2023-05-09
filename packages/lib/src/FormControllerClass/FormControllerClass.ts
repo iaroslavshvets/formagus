@@ -540,6 +540,6 @@ export class FormControllerClass {
       this.setIsSubmitting(false);
     }
 
-    return {errors, values};
+    return {errors, values, isSuccess};
   };
 }
