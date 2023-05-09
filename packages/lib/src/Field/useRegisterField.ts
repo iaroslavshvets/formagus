@@ -40,7 +40,13 @@ export const useRegisterField = (props: FieldCommonProps) => {
         isValidating: meta.isValidating,
         isMounted: meta.isMounted,
       },
-      ...field.handlers,
+      /** @deprecated */
+      setCustomState: field.setCustomState,
+      validateField: field.validateField,
+      validate: field.validate,
+      onChange: field.onChange,
+      onFocus: field.onFocus,
+      onBlur: field.onBlur,
     };
   });
 

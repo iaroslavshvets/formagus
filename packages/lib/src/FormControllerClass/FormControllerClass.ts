@@ -7,7 +7,7 @@ import _set from 'lodash/set';
 import _get from 'lodash/get';
 import {toJSCompat} from '../utils/toJSCompat';
 import type {FieldProps, OnValidateFunction} from '../Field/Field.types';
-import type { FormAPI, FormControllerOptions, FormField, Values } from "./FormControllerClass.types";
+import type {FormAPI, FormControllerOptions, FormField, Values} from './FormControllerClass.types';
 import type {WithRequiredProperty} from '../utils/types/withRequiredProperty';
 import {isMobx6Used} from '../utils/isMobx6Used';
 import {isEmpty} from '../utils/isEmpty';
@@ -59,7 +59,7 @@ export class FormControllerClass {
     this.options.fieldValueToFormValuesConverter.set(
       this.safeApiValuesCopy,
       fieldName,
-      field && field.props?.onFormat && field.meta.isMounted ? field.props.onFormat(safeValue) : safeValue,
+      field && field.fieldProps?.onFormat && field.meta.isMounted ? field.fieldProps.onFormat(safeValue) : safeValue,
     );
 
     if (onFormat) {
@@ -176,16 +176,14 @@ export class FormControllerClass {
     this.fields.set(fieldName, {
       errors: undefined,
       value: undefined,
-      props: undefined,
-      handlers: {
-        validateField: () => this.validateField(fieldName),
-        validate: () => this.validate(),
-        onChange: (value: unknown) => this.setFieldValue(fieldName, value),
-        /** @deprecated */
-        setCustomState: (key: string, value: unknown) => this.setFieldCustomState(fieldName, key, value),
-        onFocus: () => this.changeFieldActiveState(fieldName, true),
-        onBlur: () => this.changeFieldActiveState(fieldName, false),
-      },
+      fieldProps: undefined,
+      validateField: () => this.validateField(fieldName),
+      validate: () => this.validate(),
+      onChange: (value: unknown) => this.setFieldValue(fieldName, value),
+      /** @deprecated */
+      setCustomState: (key: string, value: unknown) => this.setFieldCustomState(fieldName, key, value),
+      onFocus: () => this.changeFieldActiveState(fieldName, true),
+      onBlur: () => this.changeFieldActiveState(fieldName, false),
       meta: {
         onEqualityCheck: (a: unknown, b: unknown) => a === b || (isEmpty(a) && isEmpty(b)),
         customState: {},
@@ -210,7 +208,7 @@ export class FormControllerClass {
     const initialValue =
       get(this.options.initialValues, name) !== undefined ? get(this.options.initialValues, name) : props.defaultValue;
 
-    field.props = {
+    field.fieldProps = {
       ...props,
       persist,
     };
@@ -230,7 +228,7 @@ export class FormControllerClass {
 
     // used for cases when field was created, unmounted and created again
     if (this.fields.get(name)?.meta.isRegistered) {
-      this.fields.get(name)!.props = props;
+      this.fields.get(name)!.fieldProps = props;
     } else {
       this.addVirtualField(name);
       this.initializeVirtualField(props);
@@ -253,7 +251,7 @@ export class FormControllerClass {
   // called when field is unmounted
   @action unRegisterField = (fieldName: string) => {
     const field = this.fields.get(fieldName)!;
-    if (field.props!.persist) {
+    if (field.fieldProps!.persist) {
       this.setFieldMeta(field, {
         isMounted: false,
       });
@@ -368,7 +366,7 @@ export class FormControllerClass {
   @action protected resetToValues = (values: Values) => {
     this.fields.forEach((field, name) => {
       const newValue = this.options.fieldValueToFormValuesConverter.get(values, name);
-      const fieldName = field.props?.name!;
+      const fieldName = field.fieldProps?.name!;
       // eslint-disable-next-line no-param-reassign
       field.value = newValue;
       this.setFieldMeta(field, {

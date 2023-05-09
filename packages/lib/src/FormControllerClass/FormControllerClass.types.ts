@@ -14,12 +14,12 @@ export interface FormControllerOptions {
   };
 }
 
-export interface FormField {
+export interface FormField
+  extends Pick<FieldFormagus, 'onChange' | 'setCustomState' | 'onFocus' | 'onBlur' | 'validate' | 'validateField'> {
   meta: FieldMeta;
-  props?: FieldProps;
+  fieldProps?: FieldProps;
   value: any;
   errors: any;
-  handlers: Pick<FieldFormagus, 'onChange' | 'setCustomState' | 'onFocus' | 'onBlur' | 'validate' | 'validateField'>;
 }
 
 export interface FieldMeta {
@@ -52,6 +52,7 @@ export interface FormAPI {
     values: Values;
     errors: Errors;
   }>;
+  meta: FormMeta;
   getField: (fieldName: string) => FormField | undefined;
   getFields: () => Record<string, FormField>;
   reset: () => void;
@@ -63,5 +64,4 @@ export interface FormAPI {
   validate: () => any;
   validateField: (fieldName: string) => any;
   hasField: (fieldName: string) => boolean;
-  meta: FormMeta;
 }
