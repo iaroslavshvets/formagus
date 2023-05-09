@@ -279,7 +279,7 @@ export class FormControllerClass {
 
   protected hasField = (fieldName: string) => {
     const field = this.fields.get(fieldName);
-    return (field && field.meta.isMounted) || false;
+    return field?.meta.isMounted ?? false;
   };
 
   // form FormAPI, which will be passed to child render function or could be retrieved with API prop from controller
