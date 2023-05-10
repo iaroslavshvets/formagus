@@ -30,6 +30,7 @@ export class FormControllerClass {
 
     this.options = {
       ...options,
+      shouldBatchValidationUpdates: options.shouldBatchValidationUpdates ?? true,
       fieldValueToFormValuesConverter: options.fieldValueToFormValuesConverter || {
         get: _get,
         set: _set,
@@ -95,7 +96,7 @@ export class FormControllerClass {
 
   // executes general form validator passed to Form as a `onValidate` prop and returns errors
   protected runFormLevelValidations = () => {
-    return this.options.onValidate ? this.options.onValidate(toJSCompat(this.API.values)) : undefined;
+    return this.options.onValidate?.(toJSCompat(this.API.values));
   };
 
   // executes all field level validators passed to Fields as a `onValidate` prop and returns errors
@@ -109,13 +110,14 @@ export class FormControllerClass {
     const errors: Record<string, unknown> = {};
 
     return new Promise<typeof errors>((resolve) => {
-      // use forEach instead of async/await to run validations in parallel
       Object.keys(this.fieldLevelValidations).forEach((fieldName) => {
         const field = this.fields.get(fieldName)!;
 
-        this.setFieldMeta(field, {
-          isValidating: true,
-        });
+        if (!this.options.shouldBatchValidationUpdates) {
+          this.setFieldMeta(field, {
+            isValidating: true,
+          });
+        }
 
         Promise.resolve(this.runFieldLevelValidation(fieldName))
           .then((error) => {
@@ -127,9 +129,11 @@ export class FormControllerClass {
             errors[fieldName] = error;
           })
           .then(() => {
-            this.setFieldMeta(field, {
-              isValidating: false,
-            });
+            if (!this.options.shouldBatchValidationUpdates) {
+              this.setFieldMeta(field, {
+                isValidating: false,
+              });
+            }
 
             pendingValidationCount -= 1;
 
@@ -490,28 +494,51 @@ export class FormControllerClass {
   // passed to Field as `onValidate` prop
   protected validate = async () => {
     this.triggerEvent({type: 'validate:begin'});
-    this.setIsValidating(true);
+
+    const hasFieldLevelValidations = Object.keys(this.fieldLevelValidations).length > 0;
+
+    const updateFieldIsValidating = (isValidating: boolean) => {
+      if (hasFieldLevelValidations) {
+        this.fields.forEach((field) => {
+          this.setFieldMeta(field, {
+            isValidating,
+          });
+        });
+      }
+    };
+
+    runInAction(() => {
+      this.setIsValidating(true);
+      if (this.options.shouldBatchValidationUpdates) {
+        updateFieldIsValidating(true);
+      }
+    });
 
     const [fieldValidationErrors, formValidationErrors] = await Promise.all([
-      this.runFieldLevelValidations(),
-      this.runFormLevelValidations(),
+      hasFieldLevelValidations ? this.runFieldLevelValidations() : {},
+      this.options.onValidate ? this.runFormLevelValidations() : {},
     ]);
 
     const combinedErrors = mergeDeep(fieldValidationErrors, formValidationErrors);
 
     runInAction(() => {
+      if (this.options.shouldBatchValidationUpdates) {
+        updateFieldIsValidating(false);
+      }
       this.updateErrors({value: combinedErrors});
       this.updateErrorsForEveryField(this.API.errors);
       this.setIsValidating(false);
     });
 
     this.triggerEvent({type: 'validate:end'});
+
     return combinedErrors;
   };
 
   // wraps submit function passed as Form `onSubmit` prop after it's being passed to child render function
   @action protected submit = async <E extends HTMLElement = HTMLElement>(submitEvent?: React.FormEvent<E>) => {
     this.triggerEvent({type: 'submit:begin'});
+
     if (submitEvent) {
       submitEvent.persist();
       submitEvent.preventDefault();
@@ -544,6 +571,7 @@ export class FormControllerClass {
     }
 
     this.triggerEvent({type: 'submit:end'});
+
     return {errors, values, isSuccess};
   };
 
