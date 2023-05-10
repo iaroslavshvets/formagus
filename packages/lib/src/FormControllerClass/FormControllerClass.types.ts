@@ -1,4 +1,4 @@
-import type React from 'react';
+import type {FormEvent} from 'react';
 import type {OnEqualityCheckFunction, FieldProps, FieldFormagus} from '../Field/Field.types';
 
 export type Values = Record<string, any>;
@@ -8,7 +8,7 @@ type SubmitParams<T extends HTMLElement = HTMLElement> = {
   values: Values;
   errors: Errors;
   isSuccess: boolean;
-  event?: React.FormEvent<T>;
+  event?: FormEvent<T>;
 };
 
 export type FormagusEvent =
@@ -73,7 +73,7 @@ export interface FormAPI {
   values: Values;
   errors: Errors;
   meta: FormMeta;
-  submit: <T extends HTMLElement>(submitEvent?: React.FormEvent<T>) => Promise<Omit<SubmitParams<T>, 'event'>>;
+  submit: <T extends HTMLElement>(submitEvent?: FormEvent<T>) => Promise<Omit<SubmitParams<T>, 'event'>>;
   reset: () => void;
   clear: () => void;
   validate: () => any;
