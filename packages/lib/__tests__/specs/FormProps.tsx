@@ -109,7 +109,7 @@ describe('Form props', () => {
     });
   });
 
-  it.only('events', async () => {
+  it('events', async () => {
     const submitTimeLogger = jest.fn();
     const validateTimeLogger = jest.fn();
 
