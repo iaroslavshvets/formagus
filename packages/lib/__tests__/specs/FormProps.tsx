@@ -116,6 +116,7 @@ describe('Form props', () => {
     const onEvent = ((): FormProps['onEvent'] => {
       let submitTime = 0;
       let validateTime = 0;
+
       return ({type}) => {
         switch (type) {
           case 'validate:begin': {
