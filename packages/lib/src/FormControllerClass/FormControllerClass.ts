@@ -519,7 +519,7 @@ export class FormControllerClass {
       this.options.onValidate ? this.runFormLevelValidations() : {},
     ]);
 
-    const combinedErrors = mergeDeep(fieldValidationErrors, formValidationErrors);
+    const combinedErrors = mergeDeep(fieldValidationErrors, formValidationErrors) || {};
 
     runInAction(() => {
       if (this.options.shouldBatchValidationUpdates) {
@@ -530,7 +530,7 @@ export class FormControllerClass {
       this.setIsValidating(false);
     });
 
-    this.triggerEvent({type: 'validate:end'});
+    this.triggerEvent({type: 'validate:end', errors: combinedErrors});
 
     return combinedErrors;
   };
@@ -570,7 +570,7 @@ export class FormControllerClass {
       this.setIsSubmitting(false);
     }
 
-    this.triggerEvent({type: 'submit:end'});
+    this.triggerEvent({type: 'submit:end', isSuccess, errors, values});
 
     return {errors, values, isSuccess};
   };

@@ -15,14 +15,15 @@ export type FormagusEvent =
   | {
       type: 'submit:begin';
     }
-  | {
+  | ({
       type: 'submit:end';
-    }
+    } & Omit<SubmitParams, 'event'>)
   | {
       type: 'validate:begin';
     }
   | {
       type: 'validate:end';
+      errors: Errors;
     };
 
 export interface FormControllerOptions {
