@@ -3,11 +3,19 @@ import type {OnEqualityCheckFunction, FieldProps, FieldFormagus} from '../Field/
 
 export type Values = Record<string, any>;
 export type Errors = Record<string, any>;
+
+type SubmitParams<T extends HTMLElement = HTMLElement> = {
+  values: Values;
+  errors: Errors;
+  isSuccess: boolean;
+  event?: FormEvent<T>;
+};
+
 export interface FormControllerOptions {
   initialValues?: any;
   onValidate?: (values: Values) => Promise<any>;
   onFormat?: (values: Values) => any;
-  onSubmit?: (params: {values: Values; errors: Errors; isSuccess: boolean; event?: FormEvent<HTMLElement>}) => void;
+  onSubmit?: (params: SubmitParams) => void;
   fieldValueToFormValuesConverter?: {
     set: (values: Values, fieldName: string, value: any) => any;
     get: (values: Values, fieldName: string) => any;
@@ -46,23 +54,21 @@ export interface FormMeta {
 }
 
 export interface FormAPI {
+  // form
   values: Values;
   errors: Errors;
-  submit: (submitEvent?: FormEvent<any>) => Promise<{
-    values: Values;
-    errors: Errors;
-    isSuccess: boolean;
-  }>;
   meta: FormMeta;
-  getField: (fieldName: string) => FormField | undefined;
-  getFields: () => Record<string, FormField>;
+  submit: <T extends HTMLElement>(submitEvent?: FormEvent<T>) => Promise<Omit<SubmitParams<T>, 'event'>>;
   reset: () => void;
   clear: () => void;
+  validate: () => any;
   resetToValues: (values: Values) => void;
+  // fields
+  hasField: (fieldName: string) => boolean;
+  getField: (fieldName: string) => FormField | undefined;
+  validateField: (fieldName: string) => any;
   setFieldValue: (fieldName: string, value: any) => void;
+  getFields: () => Record<string, FormField>;
   /** @deprecated don't use */
   setFieldCustomState: (fieldName: string, key: string, value: any) => void;
-  validate: () => any;
-  validateField: (fieldName: string) => any;
-  hasField: (fieldName: string) => boolean;
 }
