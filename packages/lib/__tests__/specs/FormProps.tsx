@@ -2,9 +2,10 @@ import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {TestForm} from '../components/TestForm';
 import {Input} from '../components/Input';
-import {Field} from '../../src';
+import {Field, FormProps} from '../../src';
 import {createTestFormDriver} from '../components/createTestFormDriver';
 import {createInputDriver} from '../components/Input/createInputDriver';
+import {eventually} from '../helpers/eventually';
 
 describe('Form props', () => {
   afterEach(() => cleanup());
@@ -105,6 +106,59 @@ describe('Form props', () => {
           field_two_name: 'Arya Stark:formatted',
         },
       ],
+    });
+  });
+
+  it.only('events', async () => {
+    const submitTimeLogger = jest.fn();
+    const validateTimeLogger = jest.fn();
+
+    const onEvent = ((): FormProps['onEvent'] => {
+      let submitTime = 0;
+      let validateTime = 0;
+      return ({type}) => {
+        switch (type) {
+          case 'validate:begin': {
+            validateTime = Date.now();
+            break;
+          }
+          case 'validate:end': {
+            validateTimeLogger(Date.now() - validateTime);
+            break;
+          }
+          case 'submit:begin': {
+            submitTime = Date.now();
+            break;
+          }
+          case 'submit:end': {
+            submitTimeLogger(Date.now() - submitTime);
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+      };
+    })();
+
+    const wrapper = render(
+      <TestForm onEvent={onEvent} onSubmit={jest.fn()} onValidate={jest.fn()}>
+        <Field name={TestForm.FIELD_ONE_NAME}>
+          <Input />
+        </Field>
+      </TestForm>,
+    ).container;
+
+    const formDriver = createTestFormDriver({wrapper});
+
+    formDriver.when.submit();
+
+    await eventually(() => {
+      const submitTime = submitTimeLogger.mock.calls[0][0];
+      const validateTime = validateTimeLogger.mock.calls[0][0];
+
+      expect(submitTime).toBeGreaterThan(1);
+      expect(submitTime).toBeGreaterThan(validateTime);
     });
   });
 });
