@@ -450,15 +450,7 @@ export class FormControllerClass {
       });
     });
 
-    const errors = await new Promise((resolve) => {
-      Promise.resolve(this.runFieldLevelValidation(fieldName))
-        .then((result: unknown) => {
-          resolve(result);
-        })
-        .catch((e: Error) => {
-          return resolve(e);
-        });
-    });
+    const errors = await this.runFieldLevelValidation(fieldName);
 
     runInAction(() => {
       this.setFieldMeta(field, {
