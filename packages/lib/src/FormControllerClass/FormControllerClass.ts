@@ -30,7 +30,6 @@ export class FormControllerClass {
 
     this.options = {
       ...options,
-      shouldBatchValidationUpdates: options.shouldBatchValidationUpdates ?? true,
       fieldValueToFormValuesConverter: options.fieldValueToFormValuesConverter || {
         get: _get,
         set: _set,
@@ -96,7 +95,7 @@ export class FormControllerClass {
 
   // executes general form validator passed to Form as a `onValidate` prop and returns errors
   protected runFormLevelValidations = () => {
-    return this.options.onValidate?.(toJSCompat(this.API.values));
+    return this.options.onValidate ? this.options.onValidate(toJSCompat(this.API.values)) : {};
   };
 
   // executes all field level validators passed to Fields as a `onValidate` prop and returns errors
@@ -104,7 +103,7 @@ export class FormControllerClass {
     let pendingValidationCount = Object.keys(this.fieldLevelValidations).length;
 
     if (pendingValidationCount === 0) {
-      return undefined;
+      return {};
     }
 
     const errors: Record<string, unknown> = {};
@@ -113,11 +112,9 @@ export class FormControllerClass {
       Object.keys(this.fieldLevelValidations).forEach((fieldName) => {
         const field = this.fields.get(fieldName)!;
 
-        if (!this.options.shouldBatchValidationUpdates) {
-          this.setFieldMeta(field, {
-            isValidating: true,
-          });
-        }
+        this.setFieldMeta(field, {
+          isValidating: true,
+        });
 
         Promise.resolve(this.runFieldLevelValidation(fieldName))
           .then((error) => {
@@ -129,11 +126,9 @@ export class FormControllerClass {
             errors[fieldName] = error;
           })
           .then(() => {
-            if (!this.options.shouldBatchValidationUpdates) {
-              this.setFieldMeta(field, {
-                isValidating: false,
-              });
-            }
+            this.setFieldMeta(field, {
+              isValidating: false,
+            });
 
             pendingValidationCount -= 1;
 
@@ -497,22 +492,7 @@ export class FormControllerClass {
 
     const hasFieldLevelValidations = Object.keys(this.fieldLevelValidations).length > 0;
 
-    const updateFieldIsValidating = (isValidating: boolean) => {
-      if (hasFieldLevelValidations) {
-        this.fields.forEach((field) => {
-          this.setFieldMeta(field, {
-            isValidating,
-          });
-        });
-      }
-    };
-
-    runInAction(() => {
-      this.setIsValidating(true);
-      if (this.options.shouldBatchValidationUpdates) {
-        updateFieldIsValidating(true);
-      }
-    });
+    this.setIsValidating(true);
 
     const [fieldValidationErrors, formValidationErrors] = await Promise.all([
       hasFieldLevelValidations ? this.runFieldLevelValidations() : {},
@@ -522,9 +502,6 @@ export class FormControllerClass {
     const combinedErrors = mergeDeep(fieldValidationErrors, formValidationErrors) || {};
 
     runInAction(() => {
-      if (this.options.shouldBatchValidationUpdates) {
-        updateFieldIsValidating(false);
-      }
       this.updateErrors({value: combinedErrors});
       this.updateErrorsForEveryField(this.API.errors);
       this.setIsValidating(false);

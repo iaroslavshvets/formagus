@@ -32,7 +32,6 @@ export interface FormControllerOptions {
   onEvent?: (event: FormagusEvent) => any;
   onFormat?: (values: Values) => any;
   onSubmit?: (params: SubmitParams) => void;
-  shouldBatchValidationUpdates?: boolean;
   fieldValueToFormValuesConverter?: {
     set: (values: Values, fieldName: string, value: any) => any;
     get: (values: Values, fieldName: string) => any;
