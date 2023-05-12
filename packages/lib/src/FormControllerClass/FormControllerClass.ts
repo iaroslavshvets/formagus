@@ -116,26 +116,20 @@ export class FormControllerClass {
           isValidating: true,
         });
 
-        Promise.resolve(this.runFieldLevelValidation(fieldName))
-          .then((error) => {
-            if (error !== undefined && error !== null) {
-              errors[fieldName] = error;
-            }
-          })
-          .catch((error) => {
+        Promise.resolve(this.runFieldLevelValidation(fieldName)).then((error) => {
+          if (error !== undefined && error !== null) {
             errors[fieldName] = error;
-          })
-          .then(() => {
-            this.setFieldMeta(field, {
-              isValidating: false,
-            });
-
-            pendingValidationCount -= 1;
-
-            if (pendingValidationCount === 0) {
-              resolve(errors);
-            }
+          }
+          this.setFieldMeta(field, {
+            isValidating: false,
           });
+
+          pendingValidationCount -= 1;
+
+          if (pendingValidationCount === 0) {
+            resolve(errors);
+          }
+        });
       });
     });
   };
