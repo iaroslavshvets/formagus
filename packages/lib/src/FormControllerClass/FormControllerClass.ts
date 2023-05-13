@@ -431,6 +431,7 @@ export class FormControllerClass {
 
   // validates single field by calling field level validation, passed to Field as `validate` prop
   protected validateField = async (fieldName: string) => {
+    this.triggerEvent({type: 'validateField:begin', field: fieldName});
     if (!this.fieldLevelValidations[fieldName]) {
       return undefined;
     }
@@ -467,7 +468,7 @@ export class FormControllerClass {
 
       this.setIsValidating(false);
     });
-
+    this.triggerEvent({type: 'validateField:end', field: fieldName, errors});
     return errors;
   };
 
