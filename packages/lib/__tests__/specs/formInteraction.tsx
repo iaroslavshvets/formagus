@@ -28,13 +28,13 @@ describe('Form interaction', () => {
 
     fieldDriver.when.change('harvy is cool');
 
-    expect(fieldDriver.get.meta('form:isTouched')).toBe('true');
+    expect(fieldDriver.get.formMeta('isTouched')).toBe('true');
 
     expect(fieldDriver.get.value()).toBe('harvy is cool');
 
     controller.API.reset();
 
-    expect(fieldDriver.get.meta('form:isTouched')).toBe('false');
+    expect(fieldDriver.get.formMeta('isTouched')).toBe('false');
     expect(fieldDriver.get.value()).toBe('batman is cool');
   });
 
@@ -79,7 +79,7 @@ describe('Form interaction', () => {
 
     fieldDriver.when.change('Joker is cool');
 
-    expect(fieldDriver.get.meta('form:isTouched')).toBe('true');
+    expect(fieldDriver.get.formMeta('isTouched')).toBe('true');
 
     expect(fieldDriver.get.value()).toBe('Joker is cool');
 
@@ -88,7 +88,7 @@ describe('Form interaction', () => {
       [TestForm.FIELD_TWO_NAME]: 'Wolverine is Logan',
     });
 
-    expect(fieldDriver.get.meta('form:isTouched')).toBe('false');
+    expect(fieldDriver.get.formMeta('isTouched')).toBe('false');
     expect(fieldDriver.get.value()).toBe('Batman is Bruce Wayne');
 
     const toggleField = wrapper.querySelector('[data-hook="toggle-field"]')!;
@@ -96,7 +96,7 @@ describe('Form interaction', () => {
 
     const fieldDriver2 = createInputDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
 
-    expect(fieldDriver.get.meta('form:isTouched')).toBe('false');
+    expect(fieldDriver.get.formMeta('isTouched')).toBe('false');
     expect(fieldDriver2.get.value()).toBe('Wolverine is Logan');
   });
 
@@ -120,7 +120,7 @@ describe('Form interaction', () => {
 
     controller.API.clear();
 
-    expect(fieldDriver.get.meta('form:isTouched')).toBe('false');
+    expect(fieldDriver.get.formMeta('isTouched')).toBe('false');
 
     expect(fieldDriver.get.value()).toBe('');
   });
@@ -145,7 +145,7 @@ describe('Form interaction', () => {
 
     controller.API.setFieldValue(TestForm.FIELD_ONE_NAME, 'joker is so cool');
 
-    expect(fieldDriver.get.meta('form:isTouched')).toBe('false');
+    expect(fieldDriver.get.formMeta('isTouched')).toBe('false');
 
     expect(fieldDriver.get.value()).toBe('joker is so cool');
   });
@@ -197,7 +197,7 @@ describe('Form interaction', () => {
           <Field name={TestForm.FIELD_TWO_NAME}>
             <Input />
           </Field>
-          <Field name={TestForm.FIELD_THREE_NAME}>
+          <Field name={TestForm.FIELD_NESTED_NAME}>
             <Input />
           </Field>
           <button
@@ -213,10 +213,10 @@ describe('Form interaction', () => {
             type="button"
             data-hook="change_field_3_value"
             onClick={() => {
-              controller.API.setFieldValue(TestForm.FIELD_THREE_NAME, '3: changed');
+              controller.API.setFieldValue(TestForm.FIELD_NESTED_NAME, '3: changed');
             }}
           >
-            {`Change value of ${TestForm.FIELD_THREE_NAME}`}
+            {`Change value of ${TestForm.FIELD_NESTED_NAME}`}
           </button>
         </TestForm>
       );
@@ -230,6 +230,6 @@ describe('Form interaction', () => {
     const toggleField3 = wrapper.querySelector('[data-hook="change_field_3_value"]')!;
     fireEvent.click(toggleField3);
 
-    expect(window.$_TEST_RENDER_COUNT_$![TestForm.FIELD_ONE_NAME]).toBe(2);
+    expect(window.$_TEST_RENDER_COUNT_$![TestForm.FIELD_ONE_NAME]).toBe(1);
   });
 });

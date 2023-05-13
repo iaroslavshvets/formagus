@@ -43,4 +43,4 @@ export const TestForm = (
 
 TestForm.FIELD_ONE_NAME = 'field_one_name';
 TestForm.FIELD_TWO_NAME = 'field_two_name';
-TestForm.FIELD_THREE_NAME = 'field_three_name';
+TestForm.FIELD_NESTED_NAME = 'root.field.nested';

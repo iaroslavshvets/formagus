@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import {computed} from 'mobx';
 import {useFormControllerClass} from '../Form/useFormControllerClass';
 import {toJSCompat} from '../utils/toJSCompat';
-import type {FieldCommonProps, FormagusProps} from './Field.types';
+import type {FieldCommonProps, FieldFormagus} from './Field.types';
 
 export const useRegisterField = (props: FieldCommonProps) => {
   const controller = useFormControllerClass(props);
@@ -12,39 +12,41 @@ export const useRegisterField = (props: FieldCommonProps) => {
   const field = computedField.get();
   const isReady = field !== undefined;
 
-  const formagus = computed<Required<FormagusProps> | undefined>(() => {
+  const formagus = computed<FieldFormagus | undefined>(() => {
     if (!isReady) {
       // component is not yet registered
       return undefined;
     }
 
     const {meta, errors} = field;
-    const hasValidation = meta.isMounted && field.props?.onValidate !== undefined;
+
+    const safeErrors = toJSCompat(errors);
+    const safeValue = toJSCompat(field.value, false);
+    const safeCustomState = toJSCompat(meta.customState);
 
     return {
       name: props.name,
-      value: toJSCompat(field.value, false),
+      value: safeValue,
+      errors: safeErrors,
+      fieldProps: props,
       meta: {
-        customState: toJSCompat(meta.customState),
-        errors: toJSCompat(errors),
+        /** @deprecated don't use */
+        customState: safeCustomState,
         initialValue: meta.initialValue,
         isActive: meta.isActive,
         isDirty: meta.isDirty,
         isTouched: meta.isTouched,
         isChanged: meta.isChanged,
         isValidating: meta.isValidating,
-        hasValidation,
-        form: {
-          isSubmitting: controller.API.meta.isSubmitting,
-          isValidating: controller.API.meta.isValidating,
-          isValid: controller.API.meta.isValid,
-          isDirty: controller.API.meta.isDirty,
-          isTouched: controller.API.meta.isTouched,
-          isChanged: controller.API.meta.isChanged,
-          submitCount: controller.API.meta.submitCount,
-        },
+        isMounted: meta.isMounted,
       },
-      ...field.handlers,
+      /** @deprecated */
+      setCustomState: field.setCustomState,
+      validateField: field.validateField,
+      validate: field.validate,
+      onChange: field.onChange,
+      onFocus: field.onFocus,
+      onBlur: field.onBlur,
     };
   });
 

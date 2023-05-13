@@ -3,9 +3,9 @@ import React from 'react';
 import {Field, createFormController} from '../../src';
 import {createInputDriver} from '../components/Input/createInputDriver';
 import {TestForm} from '../components/TestForm';
-import {waitFor} from '../helpers/conditions';
 import {createTestFormDriver} from '../components/createTestFormDriver';
 import {Input} from '../components/Input';
+import {eventually} from '../helpers/eventually';
 
 describe('Validation', () => {
   afterEach(() => cleanup());
@@ -26,9 +26,10 @@ describe('Validation', () => {
 
       formDriver.when.submit();
 
-      await waitFor(
-        () => fieldDriver.get.errors('notBatman') !== null && fieldDriver.get.errors('notBruceWayne') !== null,
-      );
+      await eventually(() => {
+        expect(fieldDriver.get.errors('notBatman')).not.toBe(null);
+        expect(fieldDriver.get.errors('notBruceWayne')).not.toBe(null);
+      });
     });
   });
 
@@ -50,12 +51,15 @@ describe('Validation', () => {
           </Field>
         </TestForm>,
       ).container;
+
       const formDriver = createTestFormDriver({wrapper});
       const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
       formDriver.when.submit();
 
-      await waitFor(() => fieldDriver.get.errors('nameError') !== null);
+      await eventually(() => {
+        expect(fieldDriver.get.errors('nameError')).not.toBe(null);
+      });
     });
 
     it('has errors (async)', async () => {
@@ -83,16 +87,96 @@ describe('Validation', () => {
 
       formDriver.when.submit();
 
-      await waitFor(() => fieldDriver.get.errors('nameError') !== null);
+      await eventually(() => {
+        expect(fieldDriver.get.errors('nameError')).not.toBe(null);
+      });
 
       fieldDriver.when.change('Bruce');
       formDriver.when.submit();
 
-      await waitFor(() => fieldDriver.get.errors('nameError') === null);
+      await eventually(() => {
+        expect(fieldDriver.get.errors('nameError')).toBe(null);
+      });
+    });
+
+    it('clear errors', async () => {
+      const controller = createFormController({
+        onSubmit: jest.fn(),
+      });
+
+      const wrapper = render(
+        <TestForm controller={controller}>
+          <Field
+            defaultValue="Batman"
+            name={TestForm.FIELD_ONE_NAME}
+            onValidate={(value) => {
+              return value === 'Bruce' ? null : ['nameError'];
+            }}
+          >
+            <Input />
+          </Field>
+        </TestForm>,
+      ).container;
+      const formDriver = createTestFormDriver({wrapper});
+      const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+
+      formDriver.when.submit();
+
+      await eventually(() => {
+        expect(fieldDriver.get.errors('nameError')).not.toBe(null);
+      });
+
+      fieldDriver.when.change('Bruce');
+      formDriver.when.submit();
+
+      await eventually(() => {
+        expect(fieldDriver.get.errors('nameError')).toBe(null);
+      });
     });
   });
 
   describe('form & field level combined', () => {
+    it('run only field level validation', async () => {
+      const formController = createFormController({});
+      const formLevelValidation = jest.fn();
+      const fieldLevelValidation = jest.fn((value) => {
+        return value === 'valid' ? undefined : ['invalid'];
+      });
+
+      const wrapper = render(
+        <TestForm onValidate={formLevelValidation} controller={formController}>
+          <Field onValidate={fieldLevelValidation} name={TestForm.FIELD_NESTED_NAME}>
+            <Input />
+          </Field>
+        </TestForm>,
+      ).container;
+
+      const fieldOneDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_NESTED_NAME});
+
+      expect(formController.API.errors).toEqual({});
+      expect(fieldOneDriver.get.errors()).toBe(null);
+
+      fieldOneDriver.when.validateField();
+
+      await eventually(() => {
+        expect(formController.API.errors).toEqual({
+          [TestForm.FIELD_NESTED_NAME]: ['invalid'],
+        });
+        expect(fieldOneDriver.get.errors('invalid')).not.toBe(null);
+      });
+
+      fieldOneDriver.when.change('valid');
+      fieldOneDriver.when.validateField();
+
+      await eventually(() => {
+        expect(formController.API.errors).toEqual({});
+        expect(fieldOneDriver.get.errors()).toBe(null);
+      });
+
+      expect(fieldLevelValidation).toBeCalled();
+      expect(formLevelValidation).not.toBeCalled();
+    });
+
     it('should be with errors', async () => {
       const controller = createFormController({
         onSubmit: jest.fn(),
@@ -121,15 +205,17 @@ describe('Validation', () => {
           </Field>
         </TestForm>,
       ).container;
+
       const formDriver = createTestFormDriver({wrapper});
       const firstFieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
       const secondFieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
 
       formDriver.when.submit();
 
-      await waitFor(
-        () => firstFieldDriver.get.errors('RobinHood') !== null && secondFieldDriver.get.errors('nameError') !== null,
-      );
+      await eventually(() => {
+        expect(firstFieldDriver.get.errors('RobinHood')).not.toBe(null);
+        expect(secondFieldDriver.get.errors('nameError')).not.toBe(null);
+      });
     });
   });
 });

@@ -4,10 +4,10 @@ import type {ChangeEvent} from 'react';
 import {observer} from 'mobx-react';
 import {InputMeta} from './Input.meta';
 import {InputErrors} from './Input.errors';
-import type {AdapterProps} from '../../../src';
-import {useField} from '../../../src';
+import type {FieldRenderProps} from '../../../src';
+import {useField, useForm} from '../../../src';
 
-export interface InputAdapterProps extends AdapterProps {
+export interface InputAdapterProps extends Partial<FieldRenderProps> {
   callback?: Function;
   useRenderCounter?: boolean;
   useHook?: boolean;
@@ -17,11 +17,10 @@ export interface InputAdapterProps extends AdapterProps {
 export const Input = observer((props: InputAdapterProps) => {
   const formagusHook = useField();
   const {useHook = true, useRenderCounter} = props;
-  const {onFocus, onBlur, validate, name, setCustomState, onChange, value, meta} = useHook
-    ? formagusHook
-    : props.formagus!;
-  const {errors} = meta;
+  const {fieldProps, onFocus, onBlur, validate, validateField, name, setCustomState, onChange, value, errors, meta} =
+    useHook ? formagusHook : props.formagus!;
   const normalizedValue = isNil(value) ? '' : value;
+  const formMeta = useForm().meta;
 
   useEffect(() => {
     if (useRenderCounter) {
@@ -52,7 +51,7 @@ export const Input = observer((props: InputAdapterProps) => {
 
       <InputErrors errors={errors} />
 
-      <InputMeta meta={meta} />
+      <InputMeta meta={meta} formMeta={formMeta} />
 
       <span data-hook="set-custom-state" onClick={onSetCustomState} />
       <span
@@ -61,6 +60,7 @@ export const Input = observer((props: InputAdapterProps) => {
           props.callback?.();
         }}
       />
+      <span data-hook="validate-field" onClick={fieldProps.onValidate ? validateField : validate} />
       <span data-hook="validate" onClick={validate} />
     </div>
   );

@@ -1,21 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {action, computed, observable, runInAction} from 'mobx';
+import {action, observable, runInAction} from 'mobx';
 import {observerBatching} from 'mobx-react';
 import _cloneDeep from 'lodash/cloneDeep';
 import _set from 'lodash/set';
 import _get from 'lodash/get';
 import {toJSCompat} from '../utils/toJSCompat';
 import type {FieldProps, OnValidateFunction} from '../Field/Field.types';
-import type {
-  FieldDictionary,
-  FieldErrors,
-  FormAPI,
-  FormControllerOptions,
-  FormField,
-  FormValidationErrors,
-  FormValues,
-} from './FormControllerClass.types';
+import type {FormAPI, FormControllerOptions, FormagusEvent, FormField, Values} from './FormControllerClass.types';
 import type {WithRequiredProperty} from '../utils/types/withRequiredProperty';
 import {isMobx6Used} from '../utils/isMobx6Used';
 import {isEmpty} from '../utils/isEmpty';
@@ -47,32 +39,27 @@ export class FormControllerClass {
     this.createFormApi();
   }
 
-  @computed
-  get fieldLevelValidations() {
-    const fieldValidations: FieldDictionary<OnValidateFunction> = {};
+  @observable protected fieldLevelValidations: Record<string, OnValidateFunction> = {};
 
-    this.fields.forEach((field, name) => {
-      if (field.meta.isMounted && field.props!.onValidate) {
-        fieldValidations[name] = field.props!.onValidate;
-      }
-    });
+  @action protected addFieldLevelValidation = (fieldName: string, onValidateFunction: OnValidateFunction) => {
+    this.fieldLevelValidations[fieldName] = onValidateFunction;
+  };
 
-    return fieldValidations;
-  }
+  @action removeFieldLevelValidation = (fieldName: string) => {
+    delete this.fieldLevelValidations[fieldName];
+  };
 
-  protected safeApiValuesCopy: FormValues = {};
+  protected safeApiValuesCopy: Record<string, unknown> = {};
 
-  @action protected updateAPIValues = (fieldName: string, value: any) => {
-    const dereferencedValue = toJSCompat(value, false);
+  @action protected updateAPIValues = (fieldName: string, value: unknown) => {
+    const safeValue = toJSCompat(value, false);
     const {onFormat} = this.options;
     const field = this.fields.get(fieldName);
 
     this.options.fieldValueToFormValuesConverter.set(
       this.safeApiValuesCopy,
       fieldName,
-      field && field.props?.onFormat && field.meta.isMounted
-        ? field.props.onFormat(dereferencedValue)
-        : dereferencedValue,
+      field && field.fieldProps?.onFormat && field.meta.isMounted ? field.fieldProps.onFormat(safeValue) : safeValue,
     );
 
     if (onFormat) {
@@ -87,19 +74,17 @@ export class FormControllerClass {
     Object.assign(field.meta, meta);
   };
 
-  @action protected updateInitialValues = (values?: FormValues) => {
+  @action protected updateInitialValues = (values?: unknown) => {
     if (values) {
       this.options.initialValues = values;
     }
 
-    const {get, set} = this.options.fieldValueToFormValuesConverter;
-
     this.fields.forEach((field, name) => {
       if (field.meta.isMounted) {
         if (!values) {
-          set(this.options.initialValues, name, field.value);
+          this.options.fieldValueToFormValuesConverter.set(this.options.initialValues, name, field.value);
         }
-        const initialValue = get(this.options.initialValues, name);
+        const initialValue = this.options.fieldValueToFormValuesConverter.get(this.options.initialValues, name);
         this.setFieldMeta(field, {
           initialValue,
           isDirty: !field.meta.onEqualityCheck(field.value, initialValue),
@@ -110,7 +95,7 @@ export class FormControllerClass {
 
   // executes general form validator passed to Form as a `onValidate` prop and returns errors
   protected runFormLevelValidations = () => {
-    return this.options.onValidate ? this.options.onValidate(this.API.values) : null;
+    return this.options.onValidate ? this.options.onValidate(toJSCompat(this.API.values)) : {};
   };
 
   // executes all field level validators passed to Fields as a `onValidate` prop and returns errors
@@ -118,13 +103,12 @@ export class FormControllerClass {
     let pendingValidationCount = Object.keys(this.fieldLevelValidations).length;
 
     if (pendingValidationCount === 0) {
-      return null;
+      return {};
     }
 
-    const errors: Record<string, FieldErrors> = {};
+    const errors: Record<string, unknown> = {};
 
     return new Promise<typeof errors>((resolve) => {
-      // use forEach instead of async/await to run validations in parallel
       Object.keys(this.fieldLevelValidations).forEach((fieldName) => {
         const field = this.fields.get(fieldName)!;
 
@@ -132,28 +116,20 @@ export class FormControllerClass {
           isValidating: true,
         });
 
-        Promise.resolve(this.runFieldLevelValidation(fieldName))
-          .then(
-            (error: FieldErrors) => {
-              if (!isEmpty(error)) {
-                errors[fieldName] = error;
-              }
-            },
-            (error) => {
-              errors[fieldName] = error;
-            },
-          )
-          .then(() => {
-            this.setFieldMeta(field, {
-              isValidating: false,
-            });
-
-            pendingValidationCount -= 1;
-
-            if (pendingValidationCount === 0) {
-              resolve(errors);
-            }
+        Promise.resolve(this.runFieldLevelValidation(fieldName)).then((error) => {
+          if (error !== undefined && error !== null) {
+            errors[fieldName] = error;
+          }
+          this.setFieldMeta(field, {
+            isValidating: false,
           });
+
+          pendingValidationCount -= 1;
+
+          if (pendingValidationCount === 0) {
+            resolve(errors);
+          }
+        });
       });
     });
   };
@@ -162,14 +138,23 @@ export class FormControllerClass {
   fields = observable.map<string, FormField>();
 
   // eslint-disable-next-line class-methods-use-this
-  @action protected setFieldErrors = (field: FormField, errors?: FieldErrors) => {
+  @action protected setFieldErrors = (field: FormField, errors?: unknown) => {
     // eslint-disable-next-line no-param-reassign
     field.errors = errors;
   };
 
-  @action protected updateErrors = (errors: FormValidationErrors) => {
-    this.API.errors = errors && Object.keys(errors).length ? errors : null;
-    this.setIsValid(isEmpty(this.API.errors));
+  @action protected updateErrors = (params: {value: unknown} | {mutator: Function}) => {
+    if ('value' in params) {
+      if (typeof params.value === 'object' && params.value !== null) {
+        this.API.errors = params.value;
+      } else {
+        this.API.errors = {};
+      }
+    } else {
+      params.mutator();
+    }
+
+    this.setIsValid(Object.keys(this.API.errors).length === 0);
   };
 
   // runs validation for particular field
@@ -182,19 +167,18 @@ export class FormControllerClass {
 
   @action protected addVirtualField = (fieldName: string) => {
     this.fields.set(fieldName, {
-      errors: null,
+      errors: undefined,
       value: undefined,
-      props: undefined,
-      handlers: {
-        validateField: () => this.validateField(fieldName),
-        validate: () => this.validate(),
-        onChange: (value: any) => this.setFieldValue(fieldName, value),
-        setCustomState: (key: string, value: any) => this.setFieldCustomState(fieldName, key, value),
-        onFocus: () => this.changeFieldActiveState(fieldName, true),
-        onBlur: () => this.changeFieldActiveState(fieldName, false),
-      },
+      fieldProps: undefined,
+      validateField: () => this.validateField(fieldName),
+      validate: () => this.validate(),
+      onChange: (value: unknown) => this.setFieldValue(fieldName, value),
+      /** @deprecated */
+      setCustomState: (key: string, value: unknown) => this.setFieldCustomState(fieldName, key, value),
+      onFocus: () => this.changeFieldActiveState(fieldName, true),
+      onBlur: () => this.changeFieldActiveState(fieldName, false),
       meta: {
-        onEqualityCheck: (a: any, b: any) => a === b || (isEmpty(a) && isEmpty(b)),
+        onEqualityCheck: (a: unknown, b: unknown) => a === b || (isEmpty(a) && isEmpty(b)),
         customState: {},
         initialValue: undefined,
         isTouched: false,
@@ -217,7 +201,7 @@ export class FormControllerClass {
     const initialValue =
       get(this.options.initialValues, name) !== undefined ? get(this.options.initialValues, name) : props.defaultValue;
 
-    field.props = {
+    field.fieldProps = {
       ...props,
       persist,
     };
@@ -233,11 +217,11 @@ export class FormControllerClass {
 
   // called when field is mounted
   @action registerField = (props: FieldProps) => {
-    const {name} = props;
+    const {name, onValidate} = props;
 
     // used for cases when field was created, unmounted and created again
     if (this.fields.get(name)?.meta.isRegistered) {
-      this.fields.get(name)!.props = props;
+      this.fields.get(name)!.fieldProps = props;
     } else {
       this.addVirtualField(name);
       this.initializeVirtualField(props);
@@ -250,37 +234,45 @@ export class FormControllerClass {
       isRegistered: true,
     });
 
+    if (onValidate) {
+      this.addFieldLevelValidation(name, onValidate);
+    }
+
     this.updateAPIValues(name, field.value);
   };
 
   // called when field is unmounted
   @action unRegisterField = (fieldName: string) => {
     const field = this.fields.get(fieldName)!;
-    if (field.props!.persist) {
+    if (field.fieldProps!.persist) {
       this.setFieldMeta(field, {
         isMounted: false,
       });
-
-      this.updateIsDirtyBasedOnFields();
     } else {
-      this.updateIsDirtyBasedOnFields();
       this.fields.delete(fieldName);
     }
 
+    this.updateIsDirtyBasedOnFields();
+    this.removeFieldLevelValidation(fieldName);
     this.updateAPIValues(fieldName, undefined);
   };
 
-  @action protected updateErrorsForEveryField = (formValidationErrors: FormValidationErrors) => {
+  @action protected updateErrorsForEveryField = (formValidationErrors: unknown) => {
     this.fields.forEach((field, name) => {
       if (field.meta.isMounted) {
-        this.setFieldErrors(field, formValidationErrors ? (formValidationErrors[name] as FieldErrors) : undefined);
+        const errors =
+          typeof formValidationErrors === 'object' && formValidationErrors !== null
+            ? formValidationErrors[name as keyof typeof formValidationErrors]
+            : undefined;
+
+        this.setFieldErrors(field, errors);
       }
     });
   };
 
-  protected getFieldMeta = (fieldName: string) => {
-    this.createFieldIfDoesNotExist(fieldName);
-    return toJSCompat(this.fields.get(fieldName)!.meta);
+  protected hasField = (fieldName: string) => {
+    const field = this.fields.get(fieldName);
+    return field?.meta.isMounted ?? false;
   };
 
   // form FormAPI, which will be passed to child render function or could be retrieved with API prop from controller
@@ -292,13 +284,14 @@ export class FormControllerClass {
       errors: {},
       submit: this.submit,
       resetToValues: this.resetToValues,
+      hasField: this.hasField,
       reset: () => this.resetToValues(this.options.initialValues || {}), // resets the form to initial values
       clear: () => this.resetToValues({}), // resets the form to empty values
       setFieldValue: this.setFieldValue,
-      setFieldCustomState: this.setFieldCustomState,
       validate: this.validate,
-      getFieldMeta: this.getFieldMeta,
-      rawFields: this.fields,
+      validateField: this.validateField,
+      getField: this.getField,
+      getFields: this.getFields,
       meta: {
         isValidating: false,
         isSubmitting: false,
@@ -308,7 +301,19 @@ export class FormControllerClass {
         isTouched: false,
         isChanged: false,
       },
+      setFieldCustomState: this.setFieldCustomState,
     };
+  };
+
+  protected getField = (fieldName: string) => {
+    return this.fields.get(fieldName);
+  };
+
+  protected getFields = () => {
+    return Array.from(this.fields.entries()).reduce((acc, [key, value]) => {
+      acc[key] = value;
+      return acc;
+    }, {} as Record<string, FormField>);
   };
 
   @action protected updateIsDirtyBasedOnFields = () => {
@@ -351,10 +356,10 @@ export class FormControllerClass {
   };
 
   // general handler for resetting form to specific state
-  @action protected resetToValues = (values: FormValues) => {
+  @action protected resetToValues = (values: Values) => {
     this.fields.forEach((field, name) => {
       const newValue = this.options.fieldValueToFormValuesConverter.get(values, name);
-      const fieldName = field.props?.name!;
+      const fieldName = field.fieldProps?.name!;
       // eslint-disable-next-line no-param-reassign
       field.value = newValue;
       this.setFieldMeta(field, {
@@ -369,7 +374,7 @@ export class FormControllerClass {
     this.setIsChanged(false);
     this.updateInitialValues(values);
     this.setSubmitCount(0);
-    this.updateErrorsForEveryField({});
+    this.updateErrorsForEveryField(undefined);
   };
 
   // changes field active state usually based on 'blur'/'focus' events called within the adapter
@@ -387,7 +392,8 @@ export class FormControllerClass {
   };
 
   // changes field custom state, that was set by user
-  @action protected setFieldCustomState = (fieldName: string, key: string, value: any) => {
+  /** @deprecated */
+  @action protected setFieldCustomState = (fieldName: string, key: string, value: unknown) => {
     this.createFieldIfDoesNotExist(fieldName);
     const field = this.fields.get(fieldName)!;
 
@@ -400,7 +406,7 @@ export class FormControllerClass {
   };
 
   // changes when adapter onChange handler is called
-  @action protected setFieldValue = (fieldName: string, value: any) => {
+  @action protected setFieldValue = (fieldName: string, value: unknown) => {
     this.createFieldIfDoesNotExist(fieldName);
     const field = this.fields.get(fieldName)!;
 
@@ -426,38 +432,34 @@ export class FormControllerClass {
   // validates single field by calling field level validation, passed to Field as `validate` prop
   protected validateField = async (fieldName: string) => {
     if (!this.fieldLevelValidations[fieldName]) {
-      return;
+      return undefined;
     }
+
+    const field = this.fields.get(fieldName)!;
 
     runInAction(() => {
       this.setIsValidating(true);
-      const field = this.fields.get(fieldName)!;
       this.setFieldMeta(field, {
         isValidating: true,
       });
     });
 
-    const errors = (await (async () => {
-      try {
-        const result = await this.runFieldLevelValidation(fieldName);
-        if (result !== undefined && result !== null) {
-          return result;
-        }
-        return undefined;
-      } catch (e) {
-        return e;
-      }
-    })()) as FieldErrors;
+    const errors = await this.runFieldLevelValidation(fieldName);
 
     runInAction(() => {
-      const field = this.fields.get(fieldName)!;
       this.setFieldMeta(field, {
         isValidating: false,
       });
 
-      this.options.fieldValueToFormValuesConverter.set(this.API.errors, fieldName, errors);
-
-      this.updateErrors(this.API.errors);
+      this.updateErrors({
+        mutator: () => {
+          if (isEmpty(errors)) {
+            delete this.API.errors[fieldName];
+          } else {
+            this.API.errors[fieldName] = errors;
+          }
+        },
+      });
 
       if (field.meta.isMounted) {
         this.setFieldErrors(field, errors);
@@ -465,27 +467,41 @@ export class FormControllerClass {
 
       this.setIsValidating(false);
     });
+
+    return errors;
   };
 
   // validates the form, by calling form level onValidate function combined with field level validations,
-  // passed to Field as `validate` prop
+  // passed to Field as `onValidate` prop
   protected validate = async () => {
+    this.triggerEvent({type: 'validate:begin'});
+
+    const hasFieldLevelValidations = Object.keys(this.fieldLevelValidations).length > 0;
+
     this.setIsValidating(true);
 
     const [fieldValidationErrors, formValidationErrors] = await Promise.all([
-      this.runFieldLevelValidations(),
-      this.runFormLevelValidations(),
+      hasFieldLevelValidations ? this.runFieldLevelValidations() : {},
+      this.options.onValidate ? this.runFormLevelValidations() : {},
     ]);
 
+    const combinedErrors = mergeDeep(fieldValidationErrors, formValidationErrors) || {};
+
     runInAction(() => {
-      this.updateErrors(mergeDeep(fieldValidationErrors, formValidationErrors));
+      this.updateErrors({value: combinedErrors});
       this.updateErrorsForEveryField(this.API.errors);
       this.setIsValidating(false);
     });
+
+    this.triggerEvent({type: 'validate:end', errors: combinedErrors});
+
+    return combinedErrors;
   };
 
   // wraps submit function passed as Form `onSubmit` prop after it's being passed to child render function
-  @action protected submit = async <E extends HTMLElement>(submitEvent?: React.FormEvent<E>) => {
+  @action protected submit = async <E extends HTMLElement = HTMLElement>(submitEvent?: React.FormEvent<E>) => {
+    this.triggerEvent({type: 'submit:begin'});
+
     if (submitEvent) {
       submitEvent.persist();
       submitEvent.preventDefault();
@@ -499,14 +515,15 @@ export class FormControllerClass {
     await this.validate();
 
     const [errors, values] = toJSCompat([this.API.errors, this.API.values]);
+    const isSuccess = isEmpty(errors);
 
     try {
       if (this.options.onSubmit) {
-        await this.options.onSubmit(errors, values, submitEvent);
+        await this.options.onSubmit({errors, values, isSuccess, event: submitEvent});
       }
 
       runInAction(() => {
-        if (isEmpty(this.API.errors)) {
+        if (isEmpty(errors)) {
           this.updateInitialValues();
           this.updateIsDirtyBasedOnFields();
         }
@@ -516,6 +533,14 @@ export class FormControllerClass {
       this.setIsSubmitting(false);
     }
 
-    return {errors, values};
+    this.triggerEvent({type: 'submit:end', isSuccess, errors, values});
+
+    return {errors, values, isSuccess};
+  };
+
+  protected triggerEvent = (event: FormagusEvent) => {
+    if (this.options.onEvent) {
+      this.options.onEvent(event);
+    }
   };
 }

@@ -1,57 +1,51 @@
 import React from 'react';
 import type {ComponentProps, JSXElementConstructor} from 'react';
-import type {FieldErrors, FormMeta} from '../FormControllerClass/FormControllerClass.types';
 import type {FormController} from '../createFormController/createFormController.types';
 import type {FormControllerClass} from '../FormControllerClass/FormControllerClass';
 
-export type OnValidateFunction =
-  | ((value: any, values?: any) => FieldErrors)
-  | ((value: any, values?: any) => Promise<FieldErrors>);
+export type OnValidateFunction = ((value: any, values?: any) => any) | ((value: any, values?: any) => Promise<any>);
 
 export type FieldMeta = Readonly<{
-  errors: any | null;
   initialValue: any;
   isDirty: boolean;
   isTouched: boolean;
   isChanged: boolean;
   isActive: boolean;
   isValidating: boolean;
-  hasValidation: boolean;
+  isMounted: boolean;
+  /** @deprecated */
   customState: Record<string, any>;
-  form: FormMeta;
 }>;
 
-export type FormagusProps = Readonly<{
+export type FieldFormagus = Readonly<{
   name: string;
   meta: FieldMeta;
   value: any;
+  errors: any;
+  /** @deprecated */
   setCustomState: (key: string, value: any) => void;
   onChange: (value: any) => void;
   onFocus: () => void;
   onBlur: () => void;
-  validate: () => Promise<void>;
-  validateField: () => Promise<void>;
+  validate: () => Promise<any>;
+  validateField: () => Promise<any>;
+  fieldProps: FieldProps;
 }>;
 
-/** @deprecated */
-export type AdapterProps = {
-  formagus?: FormagusProps;
-};
-
 export type FieldRenderProps = {
-  formagus: FormagusProps;
+  formagus: FieldFormagus;
 };
 
-export type FormatterFunction = (value: any) => any;
-export type EqualityCheckFunction = (newValue: any, oldValue: any) => boolean;
+export type OnFormatFunction = (value: any) => any;
+export type OnEqualityCheckFunction = (newValue: any, oldValue: any) => boolean;
 
 export type FieldCommonProps = {
   name: string;
   defaultValue?: any;
   onValidate?: OnValidateFunction;
-  onFormat?: FormatterFunction;
-  onEqualityCheck?: EqualityCheckFunction;
-  onInit?: (API: FormagusProps) => void;
+  onFormat?: OnFormatFunction;
+  onEqualityCheck?: OnEqualityCheckFunction;
+  onInit?: (API: FieldFormagus) => void;
   persist?: boolean;
   controller?: FormControllerClass;
 };
@@ -62,7 +56,9 @@ export type FieldProps<T extends JSXElementConstructor<any> = any> = Omit<FieldC
   children?: JSX.Element;
   render?: (injectedFieldDisplayProps: FieldRenderProps) => JSX.Element;
   /** @deprecated pass children and useField hook inside instead, or at least render prop */
-  adapter?: React.ComponentClass<AdapterProps & ComponentProps<T>> | React.FC<AdapterProps & ComponentProps<T>>;
+  adapter?:
+    | React.ComponentClass<Partial<FieldRenderProps> & ComponentProps<T>>
+    | React.FC<Partial<FieldRenderProps> & ComponentProps<T>>;
   /** @deprecated */
   adapterProps?: ComponentProps<T>; // Will be passed to adapter alongside injected formagus props
 };

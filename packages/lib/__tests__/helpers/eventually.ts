@@ -6,8 +6,8 @@ export interface EventuallyOptions {
 }
 
 const defaults: EventuallyOptions = {
-  timeout: 10000,
-  interval: 200,
+  timeout: 4500,
+  interval: 50,
 };
 
 export type ConditionCheckFunction = (...args: any[]) => any | never;

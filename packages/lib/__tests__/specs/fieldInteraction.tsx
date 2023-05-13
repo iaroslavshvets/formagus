@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {render, fireEvent, cleanup} from '@testing-library/react';
 import {observer} from 'mobx-react';
+import {get} from 'lodash';
 import {Field, createFormController} from '../../src';
 import {TestForm} from '../components/TestForm';
 import {Input} from '../components/Input';
 import {createInputDriver} from '../components/Input/createInputDriver';
-import {waitFor} from '../helpers/conditions';
+import {eventually} from '../helpers/eventually';
 
 describe('Field interactions', () => {
   afterEach(() => cleanup());
@@ -128,7 +129,7 @@ describe('Field interactions', () => {
   it('set custom state', async () => {
     const formController = createFormController({});
 
-    expect(formController.API.getFieldMeta(TestForm.FIELD_ONE_NAME).customState).toEqual({});
+    expect(formController.API.getField(TestForm.FIELD_ONE_NAME)?.meta.customState).toEqual(undefined);
 
     const wrapper = render(
       <TestForm>
@@ -150,11 +151,13 @@ describe('Field interactions', () => {
 
     fieldDriver.when.setCustomState();
 
-    await waitFor(() => fieldDriver.get.meta('customState:customProperty') === 'custom value');
+    await eventually(() => {
+      expect(fieldDriver.get.meta('customState:customProperty')).toBe('custom value');
+    });
   });
 
   it('set nested value', async () => {
-    const NESTED_FIELD_NAME = `${TestForm.FIELD_ONE_NAME}[0].nested`;
+    const NESTED_FIELD_NAME = `${TestForm.FIELD_NESTED_NAME}[0].nested`;
     const NEW_VALUE = 'batman';
     const formController = createFormController({});
 
@@ -170,6 +173,8 @@ describe('Field interactions', () => {
 
     fieldDriver.when.change(NEW_VALUE);
 
-    await waitFor(() => formController.API.values[TestForm.FIELD_ONE_NAME][0].nested === NEW_VALUE);
+    await eventually(() => {
+      expect(get(formController.API.values, `${TestForm.FIELD_NESTED_NAME}[0].nested`)).toBe(NEW_VALUE);
+    });
   });
 });

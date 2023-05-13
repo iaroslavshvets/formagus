@@ -1,34 +1,54 @@
 import type {FormEvent} from 'react';
-import {ObservableMap} from 'mobx';
-import type {EqualityCheckFunction, FieldProps, FormagusProps} from '../Field/Field.types';
+import type {OnEqualityCheckFunction, FieldProps, FieldFormagus} from '../Field/Field.types';
 
-export type FormValues = any;
-export type FieldDictionary<T = any> = Record<string, T>;
-export type FormValidationErrors = FieldDictionary | null | undefined;
-export type FieldErrors = any;
+export type Values = Record<string, any>;
+export type Errors = Record<string, any>;
+
+type SubmitParams<T extends HTMLElement = HTMLElement> = {
+  values: Values;
+  errors: Errors;
+  isSuccess: boolean;
+  event?: FormEvent<T>;
+};
+
+export type FormagusEvent =
+  | {
+      type: 'submit:begin';
+    }
+  | ({
+      type: 'submit:end';
+    } & Omit<SubmitParams, 'event'>)
+  | {
+      type: 'validate:begin';
+    }
+  | {
+      type: 'validate:end';
+      errors: Errors;
+    };
 
 export interface FormControllerOptions {
-  initialValues?: FormValues;
-  onValidate?: (values: any) => Promise<any>;
-  onFormat?: (values: FormValues) => any;
-  onSubmit?: (errors: FormValidationErrors, values: FormValues, submitEvent?: FormEvent<HTMLElement>) => void;
+  initialValues?: any;
+  onValidate?: (values: Values) => Promise<any>;
+  onEvent?: (event: FormagusEvent) => any;
+  onFormat?: (values: Values) => any;
+  onSubmit?: (params: SubmitParams) => void;
   fieldValueToFormValuesConverter?: {
-    set: (values: any, fieldName: string, value: any) => any;
-    get: (values: any, fieldName: string) => any;
+    set: (values: Values, fieldName: string, value: any) => any;
+    get: (values: Values, fieldName: string) => any;
   };
 }
 
-export interface FormField {
-  errors: FieldErrors;
+export interface FormField
+  extends Pick<FieldFormagus, 'onChange' | 'setCustomState' | 'onFocus' | 'onBlur' | 'validate' | 'validateField'> {
   meta: FieldMeta;
-  props?: FieldProps;
+  fieldProps?: FieldProps;
   value: any;
-  handlers: Pick<FormagusProps, 'onChange' | 'setCustomState' | 'onFocus' | 'onBlur' | 'validate' | 'validateField'>;
+  errors: any;
 }
 
 export interface FieldMeta {
   customState: Record<string, any>;
-  onEqualityCheck: EqualityCheckFunction;
+  onEqualityCheck: OnEqualityCheckFunction;
   initialValue: any;
   isTouched: boolean;
   isChanged: boolean;
@@ -49,22 +69,22 @@ export interface FormMeta {
   isChanged: boolean;
 }
 
-export interface SubmitResult {
-  errors: FormValidationErrors;
-  values: FormValues;
-}
-
 export interface FormAPI {
-  values: FormValues;
-  errors: FormValidationErrors;
-  submit: (submitEvent?: FormEvent<any>) => Promise<SubmitResult>;
-  reset: () => void;
-  resetToValues: (values: FormValues) => void;
-  clear: () => void;
-  setFieldValue: (fieldName: string, value: any) => void;
-  setFieldCustomState: (fieldName: string, key: string, value: any) => void;
-  validate: () => void;
-  getFieldMeta: (fieldName: string) => FieldMeta;
+  // form
+  values: Values;
+  errors: Errors;
   meta: FormMeta;
-  rawFields: ObservableMap<string, FormField>;
+  submit: <T extends HTMLElement>(submitEvent?: FormEvent<T>) => Promise<Omit<SubmitParams<T>, 'event'>>;
+  reset: () => void;
+  clear: () => void;
+  validate: () => any;
+  resetToValues: (values: Values) => void;
+  // fields
+  hasField: (fieldName: string) => boolean;
+  getField: (fieldName: string) => FormField | undefined;
+  validateField: (fieldName: string) => any;
+  setFieldValue: (fieldName: string, value: any) => void;
+  getFields: () => Record<string, FormField>;
+  /** @deprecated don't use */
+  setFieldCustomState: (fieldName: string, key: string, value: any) => void;
 }
