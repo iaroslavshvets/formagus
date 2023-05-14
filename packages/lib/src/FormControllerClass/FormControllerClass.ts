@@ -2,9 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {action, observable, runInAction} from 'mobx';
 import {observerBatching} from 'mobx-react';
-import _cloneDeep from 'lodash/cloneDeep';
-import _set from 'lodash/set';
-import _get from 'lodash/get';
+import rfdc from 'rfdc';
+import {get as _get, set as _set} from 'lodash';
 import {toJSCompat} from '../utils/toJSCompat';
 import type {FieldProps, OnValidateFunction} from '../Field/Field.types';
 import type {FormAPI, FormControllerOptions, FormagusEvent, FormField, Values} from './FormControllerClass.types';
@@ -66,7 +65,7 @@ export class FormControllerClass {
       this.safeApiValuesCopy = onFormat(this.safeApiValuesCopy);
     }
 
-    this.API.values = _cloneDeep(this.safeApiValuesCopy);
+    this.API.values = rfdc()(this.safeApiValuesCopy);
   };
 
   // eslint-disable-next-line class-methods-use-this

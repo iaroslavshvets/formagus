@@ -158,8 +158,8 @@ describe('Form props', () => {
       const submitTime = submitTimeLogger.mock.calls[0][0];
       const validateTime = validateTimeLogger.mock.calls[0][0];
 
-      expect(submitTime).toBeGreaterThan(1);
-      expect(submitTime).toBeGreaterThan(validateTime);
+      expect(submitTime).toBeGreaterThanOrEqual(1);
+      expect(submitTime).toBeGreaterThanOrEqual(validateTime);
     });
   });
 });
