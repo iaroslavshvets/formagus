@@ -1,6 +1,6 @@
 import type {FormEvent} from 'react';
 import type {OnEqualityCheckFunction, FieldProps, FieldFormagus} from '../Field/Field.types';
-import {EventEmitter, FormagusEvent} from '../createEventEmitter/createEventEmitter.types';
+import {EventEmitter} from '../createEventEmitter/createEventEmitter.types';
 
 export type Values = Record<string, any>;
 export type Errors = Record<string, any>;

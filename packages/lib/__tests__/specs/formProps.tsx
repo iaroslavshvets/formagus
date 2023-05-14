@@ -2,7 +2,7 @@ import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {TestForm} from '../components/TestForm';
 import {Input} from '../components/Input';
-import { createFormController, Field, FormProps } from "../../src";
+import {createFormController, Field} from '../../src';
 import {createTestFormDriver} from '../components/createTestFormDriver';
 import {createInputDriver} from '../components/Input/createInputDriver';
 import {eventually} from '../helpers/eventually';
@@ -157,11 +157,11 @@ describe('Form props', () => {
     formDriver.when.submit();
 
     await eventually(() => {
-      const submitTime = submitTimeLogger.mock.calls[0][0];
-      const validateTime = validateTimeLogger.mock.calls[0][0];
+      const submitTimeLogged = submitTimeLogger.mock.calls[0][0];
+      const validateTimeLogged = validateTimeLogger.mock.calls[0][0];
 
-      expect(submitTime).toBeGreaterThanOrEqual(1);
-      expect(submitTime).toBeGreaterThanOrEqual(validateTime);
+      expect(validateTimeLogged).toBeGreaterThanOrEqual(1);
+      expect(submitTimeLogged).toBeGreaterThanOrEqual(validateTimeLogged);
     });
   });
 });

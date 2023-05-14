@@ -1,34 +1,36 @@
 import {InnerEventEmitter} from './createEventEmitter.types';
 
 export const createEventEmitter = () => {
-  const API: InnerEventEmitter = {
+  const emitter: InnerEventEmitter = {
     listeners: {} as InnerEventEmitter['listeners'],
     on: (eventType, callback) => {
-      if (!API.listeners[eventType]) {
-        API.listeners[eventType] = [];
+      if (!emitter.listeners[eventType]) {
+        emitter.listeners[eventType] = [];
       }
-      API.listeners[eventType].push(callback);
+      emitter.listeners[eventType].push(callback);
 
       return () => {
-        if (API.listeners[eventType]) {
-          API.listeners[eventType] = API.listeners[eventType].filter(
-            (listener) => listener !== callback,
-          );
+        emitter.off(eventType, callback);
+      };
+    },
+    off: (eventType, callback?: Function) => {
+      if (emitter.listeners[eventType]) {
+        if (callback) {
+          emitter.listeners[eventType] = emitter.listeners[eventType].filter((listener) => listener !== callback);
+        } else {
+          delete emitter.listeners[eventType];
         }
       }
     },
-    off: (eventType) => {
-      delete API.listeners[eventType];
-    },
     trigger: (event) => {
       const {type, ...params} = event;
-      if (API.listeners[type]) {
-        API.listeners[type].forEach((callback) => {
+      if (emitter.listeners[type]) {
+        emitter.listeners[type].forEach((callback) => {
           callback(params);
         });
       }
     },
   };
 
-  return API;
+  return emitter;
 };
