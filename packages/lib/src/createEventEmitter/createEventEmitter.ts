@@ -1,10 +1,11 @@
 import {InnerEventEmitter} from './createEventEmitter.types';
+import { isEmpty } from "../utils/isEmpty";
 
 export const createEventEmitter = () => {
   const emitter: InnerEventEmitter = {
     listeners: {} as InnerEventEmitter['listeners'],
     on: (eventType, callback) => {
-      if (emitter.listeners[eventType] === undefined) {
+      if (isEmpty(emitter.listeners[eventType])) {
         emitter.listeners[eventType] = [];
       }
       emitter.listeners[eventType].push(callback);
@@ -18,7 +19,7 @@ export const createEventEmitter = () => {
         emitter.listeners = {} as InnerEventEmitter['listeners'];
         return;
       }
-      if (emitter.listeners[eventType] !== undefined) {
+      if (!isEmpty(emitter.listeners[eventType])) {
         if (callback) {
           emitter.listeners[eventType] = emitter.listeners[eventType].filter((listener) => listener !== callback);
         } else {
@@ -28,7 +29,7 @@ export const createEventEmitter = () => {
     },
     trigger: (event) => {
       const {type, ...params} = event;
-      if (emitter.listeners[type] !== undefined) {
+      if (!isEmpty(emitter.listeners[type])) {
         emitter.listeners[type].forEach((listener) => {
           listener(params);
         });
