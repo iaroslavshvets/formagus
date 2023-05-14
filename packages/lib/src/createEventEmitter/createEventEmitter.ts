@@ -4,7 +4,7 @@ export const createEventEmitter = () => {
   const emitter: InnerEventEmitter = {
     listeners: {} as InnerEventEmitter['listeners'],
     on: (eventType, callback) => {
-      if (!emitter.listeners[eventType]) {
+      if (emitter.listeners[eventType] === undefined) {
         emitter.listeners[eventType] = [];
       }
       emitter.listeners[eventType].push(callback);
@@ -18,7 +18,7 @@ export const createEventEmitter = () => {
         emitter.listeners = {} as InnerEventEmitter['listeners'];
         return;
       }
-      if (emitter.listeners[eventType]) {
+      if (emitter.listeners[eventType].length > 1) {
         if (callback && emitter.listeners[eventType].length > 1) {
           emitter.listeners[eventType] = emitter.listeners[eventType].filter((listener) => listener !== callback);
         } else {
