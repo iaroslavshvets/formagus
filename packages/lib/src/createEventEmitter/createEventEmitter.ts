@@ -29,8 +29,8 @@ export const createEventEmitter = () => {
     trigger: (event) => {
       const {type, ...params} = event;
       if (emitter.listeners[type]) {
-        emitter.listeners[type].forEach((callback) => {
-          callback(params);
+        emitter.listeners[type].forEach((listener) => {
+          listener(params);
         });
       }
     },
