@@ -19,7 +19,7 @@ export const createEventEmitter = () => {
         return;
       }
       if (emitter.listeners[eventType].length > 1) {
-        if (callback && emitter.listeners[eventType].length > 1) {
+        if (callback) {
           emitter.listeners[eventType] = emitter.listeners[eventType].filter((listener) => listener !== callback);
         } else {
           delete emitter.listeners[eventType];
