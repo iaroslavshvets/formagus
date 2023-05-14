@@ -18,7 +18,7 @@ export const createEventEmitter = () => {
         emitter.listeners = {} as InnerEventEmitter['listeners'];
         return;
       }
-      if (emitter.listeners[eventType]?.length > 0) {
+      if (emitter.listeners[eventType] !== undefined) {
         if (callback) {
           emitter.listeners[eventType] = emitter.listeners[eventType].filter((listener) => listener !== callback);
         } else {
@@ -28,7 +28,7 @@ export const createEventEmitter = () => {
     },
     trigger: (event) => {
       const {type, ...params} = event;
-      if (emitter.listeners[type]?.length > 0) {
+      if (emitter.listeners[type] !== undefined) {
         emitter.listeners[type].forEach((listener) => {
           listener(params);
         });
