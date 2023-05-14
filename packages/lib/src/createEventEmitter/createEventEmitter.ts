@@ -13,7 +13,11 @@ export const createEventEmitter = () => {
         emitter.off(eventType, callback);
       };
     },
-    off: (eventType, callback?: Function) => {
+    off: (eventType?, callback?: Function) => {
+      if (eventType === undefined) {
+        emitter.listeners = {} as InnerEventEmitter['listeners'];
+        return;
+      }
       if (emitter.listeners[eventType]) {
         if (callback) {
           emitter.listeners[eventType] = emitter.listeners[eventType].filter((listener) => listener !== callback);
