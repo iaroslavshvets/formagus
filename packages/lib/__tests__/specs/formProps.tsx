@@ -2,7 +2,7 @@ import {cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {TestForm} from '../components/TestForm';
 import {Input} from '../components/Input';
-import {Field, FormProps} from '../../src';
+import { createFormController, Field, FormProps } from "../../src";
 import {createTestFormDriver} from '../components/createTestFormDriver';
 import {createInputDriver} from '../components/Input/createInputDriver';
 import {eventually} from '../helpers/eventually';
@@ -112,38 +112,40 @@ describe('Form props', () => {
   it('events', async () => {
     const submitTimeLogger = jest.fn();
     const validateTimeLogger = jest.fn();
+    let submitTime = 0;
+    let validateTime = 0;
 
-    const onEvent = ((): FormProps['onEvent'] => {
-      let submitTime = 0;
-      let validateTime = 0;
+    const formController = createFormController({
+      onSubmit: jest.fn(),
+      onValidate: async () => {
+        return {
+          errors: {
+            [TestForm.FIELD_ONE_NAME]: 'Error',
+          },
+        };
+      },
+    });
 
-      return ({type}) => {
-        switch (type) {
-          case 'validate:begin': {
-            validateTime = Date.now();
-            break;
-          }
-          case 'validate:end': {
-            validateTimeLogger(Date.now() - validateTime);
-            break;
-          }
-          case 'submit:begin': {
-            submitTime = Date.now();
-            break;
-          }
-          case 'submit:end': {
-            submitTimeLogger(Date.now() - submitTime);
-            break;
-          }
-          default: {
-            break;
-          }
-        }
-      };
-    })();
+    const {on} = formController.API.events;
+
+    on('validate:begin', () => {
+      validateTime = Date.now();
+    });
+    on('validate:end', (params) => {
+      expect(params.errors).not.toBe(undefined);
+      // @ts-expect-error
+      expect(params.ACCESS_UNEXISTING_VALUE_TO_CHECK_TYPINGS).toBe(undefined);
+      validateTimeLogger(Date.now() - validateTime);
+    });
+    on('submit:begin', () => {
+      submitTime = Date.now();
+    });
+    on('submit:end', () => {
+      submitTimeLogger(Date.now() - submitTime);
+    });
 
     const wrapper = render(
-      <TestForm onEvent={onEvent} onSubmit={jest.fn()} onValidate={jest.fn()}>
+      <TestForm controller={formController}>
         <Field name={TestForm.FIELD_ONE_NAME}>
           <Input />
         </Field>

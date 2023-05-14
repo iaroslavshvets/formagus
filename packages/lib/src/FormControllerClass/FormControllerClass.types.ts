@@ -1,44 +1,20 @@
 import type {FormEvent} from 'react';
 import type {OnEqualityCheckFunction, FieldProps, FieldFormagus} from '../Field/Field.types';
+import {EventEmitter, FormagusEvent} from '../createEventEmitter/createEventEmitter.types';
 
 export type Values = Record<string, any>;
 export type Errors = Record<string, any>;
 
-type SubmitParams<T extends HTMLElement = HTMLElement> = {
+export type SubmitParams<T extends HTMLElement = HTMLElement> = {
   values: Values;
   errors: Errors;
   isSuccess: boolean;
   event?: FormEvent<T>;
 };
 
-export type FormagusEvent =
-  | {
-      type: 'submit:begin';
-    }
-  | ({
-      type: 'submit:end';
-    } & Omit<SubmitParams, 'event'>)
-  | {
-      type: 'validate:begin';
-    }
-  | {
-      type: 'validate:end';
-      errors: Errors;
-    }
-  | {
-      type: 'validateField:begin';
-      name: string;
-    }
-  | {
-      type: 'validateField:end';
-      name: string;
-      errors: Errors;
-    };
-
 export interface FormControllerOptions {
   initialValues?: any;
   onValidate?: (values: Values) => Promise<any>;
-  onEvent?: (event: FormagusEvent) => any;
   onFormat?: (values: Values) => any;
   onSubmit?: (params: SubmitParams) => void;
   fieldValueToFormValuesConverter?: {
@@ -79,6 +55,7 @@ export interface FormMeta {
 }
 
 export interface FormAPI {
+  events: EventEmitter;
   // form
   values: Values;
   errors: Errors;
