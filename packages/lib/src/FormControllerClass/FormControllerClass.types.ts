@@ -26,14 +26,14 @@ export type FormagusEvent =
       errors: Errors;
     }
   | {
-    type: 'validateField:begin';
-    field: string;
-  }
+      type: 'validateField:begin';
+      name: string;
+    }
   | {
-    type: 'validateField:end';
-    field: string;
-    errors: Errors;
-  };
+      type: 'validateField:end';
+      name: string;
+      errors: Errors;
+    };
 
 export interface FormControllerOptions {
   initialValues?: any;
