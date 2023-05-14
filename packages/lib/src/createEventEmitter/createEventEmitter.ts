@@ -9,7 +9,7 @@ export const createEventEmitter = () => {
       }
       emitter.listeners[eventType].push(callback);
 
-      return () => {
+      return function unsubscribe() {
         emitter.off(eventType, callback);
       };
     },
