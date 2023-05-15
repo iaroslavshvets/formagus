@@ -436,7 +436,7 @@ export class FormControllerClass {
 
   // validates single field by calling field level validation, passed to Field as `validate` prop
   protected validateField = async (fieldName: string) => {
-    this.events.emit({type: 'validateField:begin', name: fieldName});
+    this.events.emit('validateField:begin', {name: fieldName});
     if (!this.fieldLevelValidations[fieldName]) {
       return undefined;
     }
@@ -473,14 +473,14 @@ export class FormControllerClass {
 
       this.setIsValidating(false);
     });
-    this.events.emit({type: 'validateField:end', name: fieldName, errors});
+    this.events.emit('validateField:end', {name: fieldName, errors});
     return errors;
   };
 
   // validates the form, by calling form level onValidate function combined with field level validations,
   // passed to Field as `onValidate` prop
   protected validate = async () => {
-    this.events.emit({type: 'validate:begin'});
+    this.events.emit('validate:begin');
 
     const hasFieldLevelValidations = Object.keys(this.fieldLevelValidations).length > 0;
 
@@ -499,14 +499,14 @@ export class FormControllerClass {
       this.setIsValidating(false);
     });
 
-    this.events.emit({type: 'validate:end', errors: combinedErrors});
+    this.events.emit('validate:end', {errors: combinedErrors});
 
     return combinedErrors;
   };
 
   // wraps submit function passed as Form `onSubmit` prop after it's being passed to child render function
   @action protected submit = async <E extends HTMLElement = HTMLElement>(submitEvent?: React.FormEvent<E>) => {
-    this.events.emit({type: 'submit:begin'});
+    this.events.emit('submit:begin');
 
     if (submitEvent) {
       submitEvent.persist();
@@ -539,7 +539,7 @@ export class FormControllerClass {
       this.setIsSubmitting(false);
     }
 
-    this.events.emit({type: 'submit:end', isSuccess, errors, values});
+    this.events.emit('submit:end', {isSuccess, errors, values});
 
     return {errors, values, isSuccess};
   };

@@ -9858,6 +9858,7 @@ __metadata:
     jest-environment-jsdom: ^29.5.0
     lint-staged: ^13.2.2
     lodash: ^4.17.21
+    mitt: ^3.0.0
     mobx: ^6.9.0
     mobx-react: ^7.6.0
     prettier: ^2.8.8
@@ -9868,6 +9869,7 @@ __metadata:
     rollup: ^3.21.6
     rollup-plugin-size: ^0.3.1
     rollup-plugin-visualizer: ^5.9.0
+    strict-event-emitter: ^0.5.0
     trier-promise: ^1.0.1
     ts-jest: ^29.1.0
     ts-loader: ^9.4.2
@@ -13995,6 +13997,13 @@ __metadata:
     minipass: ^3.0.0
     yallist: ^4.0.0
   checksum: 64fae024e1a7d0346a1102bb670085b17b7f95bf6cfdf5b128772ec8faf9ea211464ea4add406a3a6384a7d87a0cd1a96263692134323477b4fb43659a6cab78
+  languageName: node
+  linkType: hard
+
+"mitt@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "mitt@npm:3.0.0"
+  checksum: c530c7747d5de7c9976c83d7c2450d9dfddbfed45f7e8b55e5e197be68dbed80e509a8aae97807ae6945dc79f3922d49b2813f3c08fd20cf8aa6a6a47e454a36
   languageName: node
   linkType: hard
 
@@ -18144,6 +18153,13 @@ __metadata:
   dependencies:
     internal-slot: ^1.0.4
   checksum: c4158d6188aac510d9e92925b58709207bd94699e9c31186a040c80932a687f84a51356b5895e6dc72710aad83addb9411c22171832c9ae0e6e11b7d61b0dfb9
+  languageName: node
+  linkType: hard
+
+"strict-event-emitter@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "strict-event-emitter@npm:0.5.0"
+  checksum: 6045b9961212e0b8140ceb22a00e82fa59f3b4c7261c2aaee9a2e01fe0eaa98336ee947451d42a37950682e7680eee9a52fbf1f81a75f783f6758d077c052a43
   languageName: node
   linkType: hard
 

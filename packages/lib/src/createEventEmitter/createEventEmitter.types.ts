@@ -1,44 +1,13 @@
+import {Emitter} from 'mitt';
 import type {Errors, SubmitParams} from '../FormControllerClass/FormControllerClass.types';
 
-export type FormagusEvent =
-  | {
-      type: 'submit:begin';
-    }
-  | ({
-      type: 'submit:end';
-    } & Omit<SubmitParams, 'event'>)
-  | {
-      type: 'validate:begin';
-    }
-  | {
-      type: 'validate:end';
-      errors: Errors;
-    }
-  | {
-      type: 'validateField:begin';
-      name: string;
-    }
-  | {
-      type: 'validateField:end';
-      name: string;
-      errors: Errors;
-    };
-
-export type InnerEventEmitter = {
-  listeners: Record<FormagusEvent['type'], Function[]>;
-  emit: <T extends FormagusEvent>(event: T) => void;
-  off: (eventType?: FormagusEvent['type'], callback?: Function) => void;
-  on: <T extends FormagusEvent['type']>(
-    eventType: T,
-    callback: (
-      params: Omit<
-        FormagusEvent & {
-          type: T;
-        },
-        'type'
-      >,
-    ) => any,
-  ) => Function;
+export type FormagusEvent = {
+  'submit:begin': undefined;
+  'submit:end': Omit<SubmitParams, 'event'>;
+  'validate:begin': undefined;
+  'validate:end': {errors: Errors};
+  'validateField:begin': {name: string};
+  'validateField:end': {name: string; errors: Errors};
 };
 
-export type EventEmitter = Omit<InnerEventEmitter, 'emit' | 'listeners'>;
+export type EventEmitter = Emitter<FormagusEvent>;

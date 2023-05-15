@@ -126,21 +126,21 @@ describe('Form props', () => {
       },
     });
 
-    const {on} = formController.API.events;
+    const {events} = formController.API;
 
-    on('validate:begin', () => {
+    events.on('validate:begin', () => {
       validateTime = Date.now();
     });
-    on('validate:end', (params) => {
+    events.on('validate:end', (params) => {
       expect(params.errors).not.toBe(undefined);
       // @ts-expect-error
       expect(params.ACCESS_UNEXISTING_VALUE_TO_CHECK_TYPINGS).toBe(undefined);
       validateTimeLogger(Date.now() - validateTime);
     });
-    on('submit:begin', () => {
+    events.on('submit:begin', () => {
       submitTime = Date.now();
     });
-    on('submit:end', () => {
+    events.on('submit:end', () => {
       submitTimeLogger(Date.now() - submitTime);
     });
 
