@@ -1,9 +1,15 @@
-import _isEmpty from 'lodash/isEmpty';
-
 export const isEmpty = (value: unknown) => {
-  // short-circuit for performance
   if (value === undefined || value === null) {
     return true;
   }
-  return _isEmpty(value) as boolean;
+  if (typeof value === 'string') {
+    return value.length === 0;
+  }
+  if (value instanceof Map || value instanceof Set) {
+    return value.size === 0;
+  }
+  if (typeof value === 'object') {
+    return Object.keys(value).length === 0;
+  }
+  return false;
 };
