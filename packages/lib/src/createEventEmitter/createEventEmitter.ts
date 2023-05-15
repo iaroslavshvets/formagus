@@ -27,7 +27,7 @@ export const createEventEmitter = () => {
         }
       }
     },
-    trigger: (event) => {
+    emit: (event) => {
       const {type, ...params} = event;
       if (!isEmpty(emitter.listeners[type])) {
         emitter.listeners[type].forEach((listener) => {

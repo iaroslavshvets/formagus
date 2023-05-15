@@ -26,7 +26,7 @@ export type FormagusEvent =
 
 export type InnerEventEmitter = {
   listeners: Record<FormagusEvent['type'], Function[]>;
-  trigger: <T extends FormagusEvent>(event: T) => void;
+  emit: <T extends FormagusEvent>(event: T) => void;
   off: (eventType?: FormagusEvent['type'], callback?: Function) => void;
   on: <T extends FormagusEvent['type']>(
     eventType: T,
@@ -41,4 +41,4 @@ export type InnerEventEmitter = {
   ) => Function;
 };
 
-export type EventEmitter = Omit<InnerEventEmitter, 'trigger' | 'listeners'>;
+export type EventEmitter = Omit<InnerEventEmitter, 'emit' | 'listeners'>;
