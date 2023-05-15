@@ -6,7 +6,7 @@ import rfdc from 'rfdc';
 import {get as _get, set as _set} from 'lodash';
 import {toJSCompat} from '../utils/toJSCompat';
 import type {FieldProps, OnValidateFunction} from '../Field/Field.types';
-import type {FormAPI, FormControllerOptions, FormagusEvent, FormField, Values} from './FormControllerClass.types';
+import type {FormAPI, FormControllerOptions, FormField, Values} from './FormControllerClass.types';
 import type {WithRequiredProperty} from '../utils/types/withRequiredProperty';
 import {isMobx6Used} from '../utils/isMobx6Used';
 import {isEmpty} from '../utils/isEmpty';
@@ -430,7 +430,6 @@ export class FormControllerClass {
 
   // validates single field by calling field level validation, passed to Field as `validate` prop
   protected validateField = async (fieldName: string) => {
-    this.triggerEvent({type: 'validateField:begin', name: fieldName});
     if (!this.fieldLevelValidations[fieldName]) {
       return undefined;
     }
@@ -467,15 +466,13 @@ export class FormControllerClass {
 
       this.setIsValidating(false);
     });
-    this.triggerEvent({type: 'validateField:end', name: fieldName, errors});
+
     return errors;
   };
 
   // validates the form, by calling form level onValidate function combined with field level validations,
   // passed to Field as `onValidate` prop
   protected validate = async () => {
-    this.triggerEvent({type: 'validate:begin'});
-
     const hasFieldLevelValidations = Object.keys(this.fieldLevelValidations).length > 0;
 
     this.setIsValidating(true);
@@ -493,15 +490,11 @@ export class FormControllerClass {
       this.setIsValidating(false);
     });
 
-    this.triggerEvent({type: 'validate:end', errors: combinedErrors});
-
     return combinedErrors;
   };
 
   // wraps submit function passed as Form `onSubmit` prop after it's being passed to child render function
   @action protected submit = async <E extends HTMLElement = HTMLElement>(submitEvent?: React.FormEvent<E>) => {
-    this.triggerEvent({type: 'submit:begin'});
-
     if (submitEvent) {
       submitEvent.persist();
       submitEvent.preventDefault();
@@ -533,14 +526,6 @@ export class FormControllerClass {
       this.setIsSubmitting(false);
     }
 
-    this.triggerEvent({type: 'submit:end', isSuccess, errors, values});
-
     return {errors, values, isSuccess};
-  };
-
-  protected triggerEvent = (event: FormagusEvent) => {
-    if (this.options.onEvent) {
-      this.options.onEvent(event);
-    }
   };
 }

@@ -38,7 +38,6 @@ export type FormagusEvent =
 export interface FormControllerOptions {
   initialValues?: any;
   onValidate?: (values: Values) => Promise<any>;
-  onEvent?: (event: FormagusEvent) => any;
   onFormat?: (values: Values) => any;
   onSubmit?: (params: SubmitParams) => void;
   fieldValueToFormValuesConverter?: {
