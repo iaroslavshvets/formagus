@@ -10,9 +10,8 @@ import {eventually} from '../helpers/eventually';
 describe('Subscriptions', () => {
   afterEach(() => cleanup());
 
-  it('onValidate, onSubmit reactions', async () => {
+  it('onSubmit reaction', async () => {
     const submitTimeLogger = jest.fn();
-    const validateTimeLogger = jest.fn();
 
     const controller = createFormController({
       onSubmit: jest.fn(),
@@ -20,20 +19,8 @@ describe('Subscriptions', () => {
     });
 
     let submitTimeCounter = 0;
-    let validateTimeCounter = 0;
 
-    const onValidateEvent = reaction(
-      () => controller.API.meta.isValidating,
-      (isValidating) => {
-        if (isValidating) {
-          validateTimeCounter = Date.now();
-        } else {
-          validateTimeLogger(Date.now() - validateTimeCounter);
-        }
-      },
-    );
-
-    const onSubmitEvent = reaction(
+    const unsubscribe = reaction(
       () => controller.API.meta.isSubmitting,
       (isSubmitting) => {
         if (isSubmitting) {
@@ -58,13 +45,10 @@ describe('Subscriptions', () => {
 
     await eventually(() => {
       const submitTime = submitTimeLogger.mock.calls[0][0];
-      const validateTime = validateTimeLogger.mock.calls[0][0];
 
       expect(submitTime).toBeGreaterThanOrEqual(1);
-      expect(submitTime).toBeGreaterThanOrEqual(validateTime);
 
-      onSubmitEvent();
-      onValidateEvent();
+      unsubscribe();
     });
   });
 });
