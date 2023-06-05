@@ -3514,18 +3514,18 @@ __metadata:
   linkType: hard
 
 "@rollup/plugin-terser@npm:^0.4.1":
-  version: 0.4.1
-  resolution: "@rollup/plugin-terser@npm:0.4.1"
+  version: 0.4.3
+  resolution: "@rollup/plugin-terser@npm:0.4.3"
   dependencies:
-    serialize-javascript: ^6.0.0
-    smob: ^0.0.6
-    terser: ^5.15.1
+    serialize-javascript: ^6.0.1
+    smob: ^1.0.0
+    terser: ^5.17.4
   peerDependencies:
     rollup: ^2.x || ^3.x
   peerDependenciesMeta:
     rollup:
       optional: true
-  checksum: 018519d87b7d463f0780142ebefd65d1581b8047075e3c678c885f13a6c4719338723ccf01bed462600f488232862942ab213e830419c894fd93c25dd6f6a73f
+  checksum: 22cab18203745e71e4ad2de9a4e984c385213e5327fd538c881860c7027ba52a6009e2148ad0bf383b0404bf1125d2254f5bb1545e3436cea702aa962f60ed1b
   languageName: node
   linkType: hard
 
@@ -17850,10 +17850,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"smob@npm:^0.0.6":
-  version: 0.0.6
-  resolution: "smob@npm:0.0.6"
-  checksum: 518d2787ba11235271776c9aff831a320cf4392ed6b510bf83e944d3cf0565c42a2c64fb9e8c622f9f03e2ddf58b037089833d11fffcb55d482a03afa4596c1f
+"smob@npm:^1.0.0":
+  version: 1.1.1
+  resolution: "smob@npm:1.1.1"
+  checksum: 7b8710b20ab3776e94f5b14c4a0ccc21d2b1b5c0b139c217eb39cd39a26048cbdc14cee0014ef0c470e24441460ccf4832b29fd487ea5997ce99cb61fd3e6cd8
   languageName: node
   linkType: hard
 
@@ -18648,7 +18648,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser@npm:^5.10.0, terser@npm:^5.15.1, terser@npm:^5.16.5":
+"terser@npm:^5.10.0, terser@npm:^5.16.5":
   version: 5.17.1
   resolution: "terser@npm:5.17.1"
   dependencies:
@@ -18659,6 +18659,20 @@ __metadata:
   bin:
     terser: bin/terser
   checksum: 00d4712b954307709b4e14cf17e0ab2fc2d527b480a50f212414aad12a739fb374d7b3391da2b73f82e21c9d469111ad2cd1d054861759624bd67c6dea4bd76a
+  languageName: node
+  linkType: hard
+
+"terser@npm:^5.17.4":
+  version: 5.17.4
+  resolution: "terser@npm:5.17.4"
+  dependencies:
+    "@jridgewell/source-map": ^0.3.2
+    acorn: ^8.5.0
+    commander: ^2.20.0
+    source-map-support: ~0.5.20
+  bin:
+    terser: bin/terser
+  checksum: 73e97368473a16c8f526ee6c8697ca7be5bb44248a626ad0efac93973cbbc9cc61aee726a8091671b0c8a88545961c6249f5e0e0af822088c410cbc312096617
   languageName: node
   linkType: hard
 
