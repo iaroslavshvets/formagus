@@ -2327,7 +2327,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint-community/eslint-utils@npm:^4.2.0":
+"@eslint-community/eslint-utils@npm:^4.1.2, @eslint-community/eslint-utils@npm:^4.2.0, @eslint-community/eslint-utils@npm:^4.4.0":
   version: 4.4.0
   resolution: "@eslint-community/eslint-utils@npm:4.4.0"
   dependencies:
@@ -2342,6 +2342,13 @@ __metadata:
   version: 4.5.0
   resolution: "@eslint-community/regexpp@npm:4.5.0"
   checksum: 7a828a8cf9422c4d6676f3b207237cabf3cd3c4327a28c5990b726630677ddc35ea9f9488d3c9c449db924cd5d9d58ded7824339774ca3592d292e0d6f945bde
+  languageName: node
+  linkType: hard
+
+"@eslint-community/regexpp@npm:^4.5.0":
+  version: 4.5.1
+  resolution: "@eslint-community/regexpp@npm:4.5.1"
+  checksum: d79cbd99cc4dcfbb17e8dd30a30bb5aec5da9c60b9471043f886f116615bb15f0d417cb0ca638cefedba0b4c67c339e2011b53d88264a4540775f042a5879e01
   languageName: node
   linkType: hard
 
@@ -8830,15 +8837,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-es@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "eslint-plugin-es@npm:4.1.0"
+"eslint-plugin-es-x@npm:^6.1.0":
+  version: 6.2.1
+  resolution: "eslint-plugin-es-x@npm:6.2.1"
   dependencies:
-    eslint-utils: ^2.0.0
-    regexpp: ^3.0.0
+    "@eslint-community/eslint-utils": ^4.1.2
+    "@eslint-community/regexpp": ^4.5.0
   peerDependencies:
-    eslint: ">=4.19.1"
-  checksum: 5e1212d0c5b31b114f8a2ae51b7d79cbb6ec361f46e0f4ae56c4158e9adb6265e01ea75369c2f1515b7bfb80dc327eb7aefe84077e92e7d7d629dd15a5f92ace
+    eslint: ">=8"
+  checksum: 3956434c5f2d5ea3cc38ec811849f916ddf33d0702e3bad9e6771c97d6dfea1615136df8465db5681086265301789b960292bc0c7a5ecda5d85219ed20dbf4a9
   languageName: node
   linkType: hard
 
@@ -8893,21 +8900,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-n@npm:^15.7.0":
-  version: 15.7.0
-  resolution: "eslint-plugin-n@npm:15.7.0"
+"eslint-plugin-n@npm:^16.0.0":
+  version: 16.0.0
+  resolution: "eslint-plugin-n@npm:16.0.0"
   dependencies:
+    "@eslint-community/eslint-utils": ^4.4.0
     builtins: ^5.0.1
-    eslint-plugin-es: ^4.1.0
-    eslint-utils: ^3.0.0
+    eslint-plugin-es-x: ^6.1.0
     ignore: ^5.1.1
-    is-core-module: ^2.11.0
+    is-core-module: ^2.12.0
     minimatch: ^3.1.2
-    resolve: ^1.22.1
-    semver: ^7.3.8
+    resolve: ^1.22.2
+    semver: ^7.5.0
   peerDependencies:
     eslint: ">=7.0.0"
-  checksum: 192ec3188cc72ed892d80ddf26011cb52beb2c61f0867bc5e93cb7efa9dd3ff834a0062b46d5aab3aa4a034a09df577434e571a1384d8f569f16f2c956f5bcb7
+  checksum: b5dfbd03563e08821076323f143956b1bc67e8f727b603cd8202dad8fd126b57d0826ea4bf7c638472465f8e2983a550b48e4106231fe13d45055c03517652af
   languageName: node
   linkType: hard
 
@@ -8977,40 +8984,6 @@ __metadata:
     esrecurse: ^4.3.0
     estraverse: ^5.2.0
   checksum: 5b48a3cc2485a3a58ca0bdecfb557c349009308a9b2afb24d070b1c0c254d445ee86d78bfee2c4ed6d1b8944307604a987c92f6d7e611e29de5d06256747a0ff
-  languageName: node
-  linkType: hard
-
-"eslint-utils@npm:^2.0.0":
-  version: 2.1.0
-  resolution: "eslint-utils@npm:2.1.0"
-  dependencies:
-    eslint-visitor-keys: ^1.1.0
-  checksum: 69521c5d6569384b24093125d037ba238d3d6e54367f7143af9928f5286369e912c26cad5016d730c0ffb9797ac9e83831059d7f1d863f7dc84330eb02414611
-  languageName: node
-  linkType: hard
-
-"eslint-utils@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "eslint-utils@npm:3.0.0"
-  dependencies:
-    eslint-visitor-keys: ^2.0.0
-  peerDependencies:
-    eslint: ">=5"
-  checksum: 45aa2b63667a8d9b474c98c28af908d0a592bed1a4568f3145cd49fb5d9510f545327ec95561625290313fe126e6d7bdfe3fdbdb6f432689fab6b9497d3bfb52
-  languageName: node
-  linkType: hard
-
-"eslint-visitor-keys@npm:^1.1.0":
-  version: 1.3.0
-  resolution: "eslint-visitor-keys@npm:1.3.0"
-  checksum: 10c91fdbbe36810dd4308e57f9a8bc7177188b2a70247e54e3af1fa05ebc66414ae6fd4ce3c6c6821591f43a556e9037bc6b071122e099b5f8b7d2f76df553e3
-  languageName: node
-  linkType: hard
-
-"eslint-visitor-keys@npm:^2.0.0":
-  version: 2.1.0
-  resolution: "eslint-visitor-keys@npm:2.1.0"
-  checksum: 9f0e3a2db751d84067d15977ac4b4472efd6b303e369e6ff241a99feac04da758f46d5add022c33d06b53596038dbae4b4aceb27c7e68b8dfc1055b35e495787
   languageName: node
   linkType: hard
 
@@ -9848,7 +9821,7 @@ __metadata:
     eslint-config-standard-with-typescript: ^34.0.1
     eslint-plugin-import: ^2.27.5
     eslint-plugin-jsx-a11y: ^6.7.1
-    eslint-plugin-n: ^15.7.0
+    eslint-plugin-n: ^16.0.0
     eslint-plugin-prettier: ^4.2.1
     eslint-plugin-promise: ^6.1.1
     eslint-plugin-react: ^7.32.2
@@ -16847,13 +16820,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regexpp@npm:^3.0.0":
-  version: 3.2.0
-  resolution: "regexpp@npm:3.2.0"
-  checksum: d1da82385c8754a1681416b90b9cca0e21b4a2babef159099b88f640637d789c69011d0bc94705dacab85b81133e929d027d85210e8b8b03f8035164dbc14710
-  languageName: node
-  linkType: hard
-
 "regexpu-core@npm:^5.3.1":
   version: 5.3.2
   resolution: "regexpu-core@npm:5.3.2"
@@ -17110,7 +17076,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@npm:^1.1.6, resolve@npm:^1.10.0, resolve@npm:^1.14.2, resolve@npm:^1.20.0, resolve@npm:^1.22.1, resolve@npm:^1.3.2":
+"resolve@npm:^1.1.6, resolve@npm:^1.10.0, resolve@npm:^1.14.2, resolve@npm:^1.20.0, resolve@npm:^1.22.1, resolve@npm:^1.22.2, resolve@npm:^1.3.2":
   version: 1.22.3
   resolution: "resolve@npm:1.22.3"
   dependencies:
@@ -17136,7 +17102,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.3.2#~builtin<compat/resolve>":
+"resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.3.2#~builtin<compat/resolve>":
   version: 1.22.3
   resolution: "resolve@patch:resolve@npm%3A1.22.3#~builtin<compat/resolve>::version=1.22.3&hash=c3c19d"
   dependencies:
@@ -17565,6 +17531,17 @@ __metadata:
   bin:
     semver: ./bin/semver.js
   checksum: 1f4959e15bcfbaf727e964a4920f9260141bb8805b399793160da4e7de128e42a7d1f79c1b7d5cd21a6073fba0d55feb9966f5fef3e5ccb8e1d7ead3d7527458
+  languageName: node
+  linkType: hard
+
+"semver@npm:^7.5.0":
+  version: 7.5.1
+  resolution: "semver@npm:7.5.1"
+  dependencies:
+    lru-cache: ^6.0.0
+  bin:
+    semver: bin/semver.js
+  checksum: ae6aca3cfba9b4d0e0a8fa789c7fa4a8412e39f24ecc19500db291a0a31bb43c151021e4fdbb68a85dcd06c1297f6daeeb09647cea4253eba0ccc0106eb7cd67
   languageName: node
   linkType: hard
 
