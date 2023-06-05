@@ -11,22 +11,21 @@ describe('Subscriptions', () => {
   afterEach(() => cleanup());
 
   it('onSubmit reaction', async () => {
-    const submitTimeLogger = jest.fn();
-
     const controller = createFormController({
       onSubmit: jest.fn(),
       onValidate: jest.fn(),
     });
 
-    let submitTimeCounter = 0;
+    let submitStartTime = 0;
+    let submitTimeTotal = 0;
 
     const unsubscribe = reaction(
       () => controller.API.meta.isSubmitting,
       (isSubmitting) => {
         if (isSubmitting) {
-          submitTimeCounter = Date.now();
+          submitStartTime = Date.now();
         } else {
-          submitTimeLogger(Date.now() - submitTimeCounter);
+          submitTimeTotal = Date.now() - submitStartTime;
         }
       },
     );
@@ -44,9 +43,7 @@ describe('Subscriptions', () => {
     formDriver.when.submit();
 
     await eventually(() => {
-      const submitTime = submitTimeLogger.mock.calls[0][0];
-
-      expect(submitTime).toBeGreaterThanOrEqual(1);
+      expect(submitTimeTotal).toBeGreaterThanOrEqual(1);
 
       unsubscribe();
     });
