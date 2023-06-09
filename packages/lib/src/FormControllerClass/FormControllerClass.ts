@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {action, observable, runInAction} from 'mobx';
 import {observerBatching} from 'mobx-react';
-import rfdc from 'rfdc';
 import {get as _get, set as _set} from 'lodash';
 import {toJSCompat} from '../utils/toJSCompat';
 import type {FieldProps, OnValidateFunction} from '../Field/Field.types';
@@ -44,28 +43,41 @@ export class FormControllerClass {
     this.fieldLevelValidations[fieldName] = onValidateFunction;
   };
 
-  @action removeFieldLevelValidation = (fieldName: string) => {
-    delete this.fieldLevelValidations[fieldName];
-  };
-
   protected safeApiValuesCopy: Record<string, unknown> = {};
 
-  @action protected updateAPIValues = (fieldName: string, value: unknown) => {
-    const safeValue = toJSCompat(value, false);
-    const {onFormat} = this.options;
-    const field = this.fields.get(fieldName);
+  @action protected updateAPIValues = (fieldName?: string, value?: unknown) => {
+    if (fieldName) {
+      const safeValue = toJSCompat(value, false);
+      const field = this.fields.get(fieldName);
 
-    this.options.fieldValueToFormValuesConverter.set(
-      this.safeApiValuesCopy,
-      fieldName,
-      field && field.fieldProps?.onFormat && field.meta.isMounted ? field.fieldProps.onFormat(safeValue) : safeValue,
-    );
+      if (field?.meta.isMounted) {
+        this.options.fieldValueToFormValuesConverter.set(
+          this.safeApiValuesCopy,
+          fieldName,
+          field.fieldProps?.onFormat ? field.fieldProps.onFormat(safeValue) : safeValue,
+        );
+      }
+    } else {
+      this.safeApiValuesCopy = {};
 
-    if (onFormat) {
-      this.safeApiValuesCopy = onFormat(this.safeApiValuesCopy);
+      this.fields.forEach((field, name) => {
+        if (field.meta.isMounted) {
+          const safeValue = toJSCompat(field.value, false);
+
+          this.options.fieldValueToFormValuesConverter.set(
+            this.safeApiValuesCopy,
+            name,
+            field.fieldProps?.onFormat ? field.fieldProps.onFormat(safeValue) : safeValue,
+          );
+        }
+      });
     }
 
-    this.API.values = rfdc()(this.safeApiValuesCopy);
+    if (this.options.onFormat) {
+      this.safeApiValuesCopy = this.options.onFormat(this.safeApiValuesCopy);
+    }
+
+    this.API.values = this.safeApiValuesCopy;
   };
 
   // eslint-disable-next-line class-methods-use-this
@@ -252,8 +264,10 @@ export class FormControllerClass {
     }
 
     this.updateIsDirtyBasedOnFields();
-    this.removeFieldLevelValidation(fieldName);
-    this.updateAPIValues(fieldName, undefined);
+
+    delete this.fieldLevelValidations[fieldName];
+
+    this.updateAPIValues();
   };
 
   @action protected updateErrorsForEveryField = (formValidationErrors: unknown) => {
