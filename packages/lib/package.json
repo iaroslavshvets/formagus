@@ -1,6 +1,6 @@
 {
   "name": "formagus",
-  "version": "2.0.39",
+  "version": "2.0.40",
   "license": "MIT",
   "sideEffects": false,
   "authors": [
@@ -84,8 +84,7 @@
   },
   "dependencies": {
     "hoist-non-react-statics": "^3.3.2",
-    "lodash": "^4.17.21",
-    "rfdc": "^1.3.0"
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
     "mobx": "*",

@@ -11,71 +11,124 @@ import {eventually} from '../helpers/eventually';
 describe('Field interactions', () => {
   afterEach(() => cleanup());
 
-  it('should keep value if "persist=true"', async () => {
-    const controller = createFormController({});
+  describe('should keep value if "persist=true"', () => {
+    it('change dom structure', async () => {
+      const controller = createFormController({});
 
-    const Form = observer(() => {
-      const [isDisplayed, setIsDisplayed] = useState(false);
-      const [isSwitchedPosition, setIsSwitchedPosition] = useState(false);
+      const Form = observer(() => {
+        const [isDisplayed, setIsDisplayed] = useState(false);
+        const [isSwitchedPosition, setIsSwitchedPosition] = useState(false);
 
-      return (
-        <TestForm controller={controller}>
-          {isDisplayed && !isSwitchedPosition && (
-            <Field name={TestForm.FIELD_ONE_NAME} persist={true}>
-              <Input />
-            </Field>
-          )}
-          <div>
-            {isDisplayed && isSwitchedPosition && (
+        return (
+          <TestForm controller={controller}>
+            {isDisplayed && !isSwitchedPosition && (
               <Field name={TestForm.FIELD_ONE_NAME} persist={true}>
                 <Input />
               </Field>
             )}
-          </div>
-          <button
-            type="button"
-            data-hook="toggle-visibility"
-            onClick={() => {
-              setIsDisplayed(!isDisplayed);
-            }}
-          >
-            Toggle Visibility
-          </button>
-          <button
-            type="button"
-            data-hook="toggle-position"
-            onClick={() => {
-              setIsSwitchedPosition(!isSwitchedPosition);
-            }}
-          >
-            Toggle Position
-          </button>
-        </TestForm>
-      );
+            <div>
+              {isDisplayed && isSwitchedPosition && (
+                <Field name={TestForm.FIELD_ONE_NAME} persist={true}>
+                  <Input />
+                </Field>
+              )}
+            </div>
+
+            <button
+              type="button"
+              data-hook="toggle-visibility"
+              onClick={() => {
+                setIsDisplayed(!isDisplayed);
+              }}
+            >
+              Toggle Visibility
+            </button>
+            <button
+              type="button"
+              data-hook="toggle-position"
+              onClick={() => {
+                setIsSwitchedPosition(!isSwitchedPosition);
+              }}
+            >
+              Toggle Position
+            </button>
+          </TestForm>
+        );
+      });
+
+      const wrapper = render(<Form />).container;
+      const toggleVisibilityField = wrapper.querySelector('[data-hook="toggle-visibility"]')!;
+      const togglePositionField = wrapper.querySelector('[data-hook="toggle-position"]')!;
+      const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+
+      // visible
+      fireEvent.click(toggleVisibilityField);
+
+      fieldDriver.when.change('batman');
+
+      // hidden
+      fireEvent.click(toggleVisibilityField);
+
+      expect(controller.API.values).not.toHaveProperty(TestForm.FIELD_ONE_NAME);
+
+      // visible
+      fireEvent.click(toggleVisibilityField);
+      // switched position
+      fireEvent.click(togglePositionField);
+
+      expect(fieldDriver.get.value()).toBe('batman');
+
+      expect(controller.API.values[TestForm.FIELD_ONE_NAME]).toBe('batman');
     });
 
-    const wrapper = render(<Form />).container;
-    const toggleVisibilityField = wrapper.querySelector('[data-hook="toggle-visibility"]')!;
-    const togglePositionField = wrapper.querySelector('[data-hook="toggle-position"]')!;
-    const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
+    it('nested field', async () => {
+      const controller = createFormController({});
 
-    // visible
-    fireEvent.click(toggleVisibilityField);
+      const Form = observer(() => {
+        const [isDisplayed, setIsDisplayed] = useState(false);
 
-    fieldDriver.when.change('batman');
+        return (
+          <TestForm controller={controller}>
+            {isDisplayed && (
+              <Field name={TestForm.FIELD_NESTED_NAME} persist={true}>
+                <Input />
+              </Field>
+            )}
 
-    // hidden
-    fireEvent.click(toggleVisibilityField);
+            <button
+              type="button"
+              data-hook="toggle-visibility"
+              onClick={() => {
+                setIsDisplayed(!isDisplayed);
+              }}
+            >
+              Toggle Visibility
+            </button>
+          </TestForm>
+        );
+      });
 
-    expect(controller.API.values[TestForm.FIELD_ONE_NAME]).toBe(undefined);
+      const wrapper = render(<Form />).container;
+      const toggleVisibilityField = wrapper.querySelector('[data-hook="toggle-visibility"]')!;
+      const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_NESTED_NAME});
 
-    // visible
-    fireEvent.click(toggleVisibilityField);
-    // switched position
-    fireEvent.click(togglePositionField);
+      // visible
+      fireEvent.click(toggleVisibilityField);
 
-    expect(fieldDriver.get.value()).toBe('batman');
-    expect(controller.API.values[TestForm.FIELD_ONE_NAME]).toBe('batman');
+      fieldDriver.when.change('batman');
+
+      // hidden
+      fireEvent.click(toggleVisibilityField);
+
+      expect(controller.API.values).not.toHaveProperty(TestForm.FIELD_NESTED_NAME);
+
+      // visible
+      fireEvent.click(toggleVisibilityField);
+
+      expect(fieldDriver.get.value()).toBe('batman');
+
+      expect(get(controller.API.values, TestForm.FIELD_NESTED_NAME)).toBe('batman');
+    });
   });
 
   it('should not keep value', () => {
