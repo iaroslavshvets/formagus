@@ -50,11 +50,13 @@ export class FormControllerClass {
       const safeValue = toJSCompat(value, false);
       const field = this.fields.get(fieldName);
 
-      this.options.fieldValueToFormValuesConverter.set(
-        this.safeApiValuesCopy,
-        fieldName,
-        field && field.fieldProps?.onFormat && field.meta.isMounted ? field.fieldProps.onFormat(safeValue) : safeValue,
-      );
+      if (field?.meta.isMounted) {
+        this.options.fieldValueToFormValuesConverter.set(
+          this.safeApiValuesCopy,
+          fieldName,
+          field.fieldProps?.onFormat ? field.fieldProps.onFormat(safeValue) : safeValue,
+        );
+      }
     } else {
       this.safeApiValuesCopy = {};
 
