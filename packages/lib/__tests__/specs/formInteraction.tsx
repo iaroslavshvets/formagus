@@ -1,4 +1,4 @@
-import {cleanup, fireEvent, render} from '@testing-library/react';
+import {act, cleanup, fireEvent, render} from '@testing-library/react';
 import React, {useState} from 'react';
 import {createFormController, Field} from '../../src';
 import {Input} from '../components/Input';
@@ -26,13 +26,13 @@ describe('Form interaction', () => {
 
     expect(fieldDriver.get.value()).toBe('batman is cool');
 
-    fieldDriver.when.change('harvy is cool');
+    await fieldDriver.when.change('harvy is cool');
 
     expect(fieldDriver.get.formMeta('isTouched')).toBe('true');
 
     expect(fieldDriver.get.value()).toBe('harvy is cool');
 
-    controller.API.reset();
+    act(() => controller.API.reset());
 
     expect(fieldDriver.get.formMeta('isTouched')).toBe('false');
     expect(fieldDriver.get.value()).toBe('batman is cool');
@@ -77,15 +77,17 @@ describe('Form interaction', () => {
 
     expect(fieldDriver.get.value()).toBe('Batman is cool');
 
-    fieldDriver.when.change('Joker is cool');
+    await fieldDriver.when.change('Joker is cool');
 
     expect(fieldDriver.get.formMeta('isTouched')).toBe('true');
 
     expect(fieldDriver.get.value()).toBe('Joker is cool');
 
-    controller.API.resetToValues({
-      [TestForm.FIELD_ONE_NAME]: 'Batman is Bruce Wayne',
-      [TestForm.FIELD_TWO_NAME]: 'Wolverine is Logan',
+    act(() => {
+      controller.API.resetToValues({
+        [TestForm.FIELD_ONE_NAME]: 'Batman is Bruce Wayne',
+        [TestForm.FIELD_TWO_NAME]: 'Wolverine is Logan',
+      });
     });
 
     expect(fieldDriver.get.formMeta('isTouched')).toBe('false');
@@ -118,7 +120,9 @@ describe('Form interaction', () => {
 
     expect(fieldDriver.get.value()).toBe('batman is cool');
 
-    controller.API.clear();
+    act(() => {
+      controller.API.clear();
+    });
 
     expect(fieldDriver.get.formMeta('isTouched')).toBe('false');
 
@@ -143,7 +147,9 @@ describe('Form interaction', () => {
 
     expect(fieldDriver.get.value()).toBe('batman is cool');
 
-    controller.API.setFieldValue(TestForm.FIELD_ONE_NAME, 'joker is so cool');
+    act(() => {
+      controller.API.setFieldValue(TestForm.FIELD_ONE_NAME, 'joker is so cool');
+    });
 
     expect(fieldDriver.get.formMeta('isTouched')).toBe('false');
 
@@ -167,16 +173,18 @@ describe('Form interaction', () => {
       </TestForm>,
     );
 
-    controller.API.setFieldValue(TestForm.FIELD_ONE_NAME, 'batman is cool');
+    act(() => controller.API.setFieldValue(TestForm.FIELD_ONE_NAME, 'batman is cool'));
 
-    const {errors, values} = await controller.API.submit();
+    await act(async () => {
+      const {errors, values} = await controller.API.submit();
 
-    expect(errors).toEqual({
-      [TestForm.FIELD_ONE_NAME]: ['nameError'],
-    });
+      expect(errors).toEqual({
+        [TestForm.FIELD_ONE_NAME]: ['nameError'],
+      });
 
-    expect(values).toEqual({
-      [TestForm.FIELD_ONE_NAME]: 'batman is cool',
+      expect(values).toEqual({
+        [TestForm.FIELD_ONE_NAME]: 'batman is cool',
+      });
     });
   });
 

@@ -14,7 +14,7 @@ export const createTestFormDriver = (options: {wrapper: Element}) => {
     },
 
     when: {
-      submit: () => {
+      submit: async () => {
         return fireEvent.submit(wrapper.querySelector(`[data-hook="test-form"]`)!, {target: {}});
       },
     },

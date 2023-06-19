@@ -8,7 +8,6 @@ import type {FieldRenderProps} from '../../../src';
 import {useField, useForm} from '../../../src';
 
 export interface InputAdapterProps extends Partial<FieldRenderProps> {
-  callback?: Function;
   useRenderCounter?: boolean;
   useHook?: boolean;
   customState?: Record<string, any>;
@@ -54,12 +53,6 @@ export const Input = observer((props: InputAdapterProps) => {
       <InputMeta meta={meta} formMeta={formMeta} />
 
       <span data-hook="set-custom-state" onClick={onSetCustomState} />
-      <span
-        data-hook="callback"
-        onClick={() => {
-          props.callback?.();
-        }}
-      />
       <span data-hook="validate-field" onClick={fieldProps.onValidate ? validateField : validate} />
       <span data-hook="validate" onClick={validate} />
     </div>

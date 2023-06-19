@@ -40,26 +40,23 @@ export const createInputDriver = (options: {wrapper: Element; dataHook: string})
     },
 
     when: {
-      setCustomState: () => {
+      setCustomState: async () => {
         return fireEvent.click(API.get.root()?.querySelector(`[data-hook="set-custom-state"]`)!);
       },
-      clickOnCallback: () => {
-        return fireEvent.click(API.get.root()?.querySelector(`[data-hook="callback"]`)!);
-      },
-      focus: () => {
+      focus: async () => {
         return fireEvent.focus(API.get.input());
       },
-      blur: () => {
+      blur: async () => {
         return fireEvent.blur(API.get.input());
       },
-      validate: () => {
+      validate: async () => {
         return fireEvent.click(API.get.root()?.querySelector(`[data-hook="validate"]`)!);
       },
-      validateField: () => {
+      validateField: async () => {
         return fireEvent.click(API.get.root()?.querySelector(`[data-hook="validate-field"]`)!);
       },
-      change: (value: string) => {
-        API.when.focus();
+      change: async (value: string) => {
+        await API.when.focus();
         return fireEvent.change(API.get.input(), {target: {value}});
       },
     },
@@ -73,7 +70,6 @@ export const createInputDriver = (options: {wrapper: Element; dataHook: string})
       errors: API.get.errors,
     },
     when: {
-      clickOnCallback: API.when.clickOnCallback,
       setCustomState: API.when.setCustomState,
       focus: API.when.focus,
       blur: API.when.blur,

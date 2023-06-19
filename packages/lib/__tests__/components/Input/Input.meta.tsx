@@ -6,6 +6,9 @@ import {FormMeta} from '../../../src/FormControllerClass/FormControllerClass.typ
 
 export const InputMeta = observer((props: {meta: FieldMeta; formMeta: FormMeta}) => {
   const renderMetaProperty = (meta: any, currentKey: string, isFormMeta: boolean): any => {
+    if (isEmpty(meta)) {
+      return null;
+    }
     return Object.keys(meta).map((key) => {
       if (!isObject(meta[key])) {
         return (
