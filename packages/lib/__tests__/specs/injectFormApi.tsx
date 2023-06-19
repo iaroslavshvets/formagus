@@ -13,7 +13,7 @@ describe('injectFormApi', () => {
   const NEW_VALUE = 'new-value';
   const INNER_FORM_COMPONENT_DATA_HOOK = 'inner-data-hook';
 
-  it('should pass formApi with `injectFormApi` decorator', () => {
+  it('should pass formApi with `injectFormApi` decorator', async () => {
     const wrapper = render(
       <TestForm
         initialValues={{
@@ -37,7 +37,7 @@ describe('injectFormApi', () => {
     });
 
     expect(FieldValueDisplayDriver.get.text()).toEqual(TEST_INITIAL_VALUE);
-    fieldDriver.when.change(NEW_VALUE);
+    await fieldDriver.when.change(NEW_VALUE);
 
     expect(FieldValueDisplayDriver.get.text()).toEqual(NEW_VALUE);
   });

@@ -1,4 +1,4 @@
-import {cleanup, render} from '@testing-library/react';
+import {act, cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {reaction} from 'mobx';
 import {TestForm} from '../components/TestForm';
@@ -30,7 +30,7 @@ describe('Subscriptions', () => {
       },
     );
 
-    const wrapper = render(
+    const wrapper = await render(
       <TestForm controller={controller}>
         <Field name={TestForm.FIELD_ONE_NAME}>
           <Input />
@@ -40,7 +40,7 @@ describe('Subscriptions', () => {
 
     const formDriver = createTestFormDriver({wrapper});
 
-    formDriver.when.submit();
+    await act(() => formDriver.when.submit());
 
     await eventually(() => {
       expect(submitTimeTotal).toBeGreaterThanOrEqual(1);

@@ -1,4 +1,4 @@
-import {cleanup, render} from '@testing-library/react';
+import {act, cleanup, render} from '@testing-library/react';
 import React from 'react';
 import {TestForm} from '../components/TestForm';
 import {Input} from '../components/Input';
@@ -90,13 +90,13 @@ describe('Form props', () => {
     expect(getFirstFieldValue()).toBe('John Snow:formatted');
     expect(getSecondFieldValue()).toBe('Ned Stark:formatted');
 
-    fieldOneDriver.when.change('Tyrion Lannister');
-    fieldTwoDriver.when.change('Arya Stark');
+    await fieldOneDriver.when.change('Tyrion Lannister');
+    await fieldTwoDriver.when.change('Arya Stark');
 
     expect(getFirstFieldValue()).toBe('Tyrion Lannister:formatted');
     expect(getSecondFieldValue()).toBe('Arya Stark:formatted');
 
-    formDriver.when.submit();
+    await act(() => formDriver.when.submit());
 
     expect(onValidate).toBeCalledWith({
       array: [

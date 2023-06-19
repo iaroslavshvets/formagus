@@ -92,9 +92,6 @@ exports[`Render should render 1`] = `
         data-hook="set-custom-state"
       />
       <span
-        data-hook="callback"
-      />
-      <span
         data-hook="validate-field"
       />
       <span
@@ -187,9 +184,6 @@ exports[`Render should render 1`] = `
         data-hook="set-custom-state"
       />
       <span
-        data-hook="callback"
-      />
-      <span
         data-hook="validate-field"
       />
       <span
@@ -280,9 +274,6 @@ exports[`Render should render 1`] = `
       </div>
       <span
         data-hook="set-custom-state"
-      />
-      <span
-        data-hook="callback"
       />
       <span
         data-hook="validate-field"

@@ -64,7 +64,7 @@ describe('Field interactions', () => {
       // visible
       fireEvent.click(toggleVisibilityField);
 
-      fieldDriver.when.change('batman');
+      await fieldDriver.when.change('batman');
 
       // hidden
       fireEvent.click(toggleVisibilityField);
@@ -115,7 +115,7 @@ describe('Field interactions', () => {
       // visible
       fireEvent.click(toggleVisibilityField);
 
-      fieldDriver.when.change('batman');
+      await fieldDriver.when.change('batman');
 
       // hidden
       fireEvent.click(toggleVisibilityField);
@@ -131,7 +131,7 @@ describe('Field interactions', () => {
     });
   });
 
-  it('should not keep value', () => {
+  it('should not keep value', async () => {
     class StatefulForm extends React.Component<{}, {hiddenField: boolean}> {
       constructor(props: {}) {
         super(props);
@@ -171,7 +171,7 @@ describe('Field interactions', () => {
     const toggleField = wrapper.querySelector('[data-hook="toggle-field"]')!;
     const NEW_VALUE = 'batman';
 
-    fieldDriver.when.change(NEW_VALUE);
+    await fieldDriver.when.change(NEW_VALUE);
 
     fireEvent.click(toggleField);
     fireEvent.click(toggleField);
@@ -202,7 +202,7 @@ describe('Field interactions', () => {
 
     const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
-    fieldDriver.when.setCustomState();
+    await fieldDriver.when.setCustomState();
 
     await eventually(() => {
       expect(fieldDriver.get.meta('customState:customProperty')).toBe('custom value');
@@ -224,7 +224,7 @@ describe('Field interactions', () => {
 
     const fieldDriver = createInputDriver({wrapper, dataHook: NESTED_FIELD_NAME});
 
-    fieldDriver.when.change(NEW_VALUE);
+    await fieldDriver.when.change(NEW_VALUE);
 
     await eventually(() => {
       expect(get(formController.API.values, `${TestForm.FIELD_NESTED_NAME}[0].nested`)).toBe(NEW_VALUE);
