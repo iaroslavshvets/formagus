@@ -18,3 +18,5 @@ updates:
         versions: [ "18.x" ]
       - dependency-name: "@types/react-dom"
         versions: [ "18.x" ]
+      - dependency-name: "prism-react-renderer"
+        versions: [ "2.x" ]
