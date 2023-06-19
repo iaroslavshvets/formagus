@@ -4458,7 +4458,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^5.10.0, @typescript-eslint/parser@npm:^5.43.0":
+"@typescript-eslint/parser@npm:^5.10.0":
   version: 5.59.0
   resolution: "@typescript-eslint/parser@npm:5.59.0"
   dependencies:
@@ -4472,6 +4472,23 @@ __metadata:
     typescript:
       optional: true
   checksum: 5e0f8dfe4eb762bf1d2e8186559d39df653005a8f976101cd7b3739f3e0253d1003b4268976e52c7e42b63bf6ea042b1ed9412f85d06ed8fb0407b56dba19db2
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/parser@npm:^5.50.0":
+  version: 5.59.11
+  resolution: "@typescript-eslint/parser@npm:5.59.11"
+  dependencies:
+    "@typescript-eslint/scope-manager": 5.59.11
+    "@typescript-eslint/types": 5.59.11
+    "@typescript-eslint/typescript-estree": 5.59.11
+    debug: ^4.3.4
+  peerDependencies:
+    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 3deea3a9b694ea97e315881ba37d0a90d7f37f0acbb5990270f44c79db9fc3d5675df856f8d1fb7d92c8d38dc63226a42402d57633513981ee526c06e6e8f3c3
   languageName: node
   linkType: hard
 
@@ -8549,20 +8566,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-standard-with-typescript@npm:^34.0.1":
-  version: 34.0.1
-  resolution: "eslint-config-standard-with-typescript@npm:34.0.1"
+"eslint-config-standard-with-typescript@npm:^35.0.0":
+  version: 35.0.0
+  resolution: "eslint-config-standard-with-typescript@npm:35.0.0"
   dependencies:
-    "@typescript-eslint/parser": ^5.43.0
+    "@typescript-eslint/parser": ^5.50.0
     eslint-config-standard: 17.0.0
   peerDependencies:
-    "@typescript-eslint/eslint-plugin": ^5.43.0
+    "@typescript-eslint/eslint-plugin": ^5.50.0
     eslint: ^8.0.1
     eslint-plugin-import: ^2.25.2
     eslint-plugin-n: ^15.0.0
     eslint-plugin-promise: ^6.0.0
     typescript: "*"
-  checksum: ce8c38e3526acb17709bf86e3dd7ef6d6d9598757392370c8c5b528841f4e23269b003ece04746998ab0f7d6735082d30b740af3605bb77495ae64f2186a09a6
+  checksum: 0209c42ca932f5c7dd877d975cc5c718f810878917e887bded7794dcb32f4da7804a1dc83ce82e847285a1c5cc927726357d9620934f320557babcf6f53823c6
   languageName: node
   linkType: hard
 
@@ -9577,7 +9594,7 @@ __metadata:
     eslint-config-airbnb: ^19.0.4
     eslint-config-airbnb-typescript: ^17.0.0
     eslint-config-prettier: ^8.8.0
-    eslint-config-standard-with-typescript: ^34.0.1
+    eslint-config-standard-with-typescript: ^35.0.0
     eslint-plugin-import: ^2.27.5
     eslint-plugin-jsx-a11y: ^6.7.1
     eslint-plugin-n: ^16.0.0
