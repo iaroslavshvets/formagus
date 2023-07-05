@@ -522,12 +522,24 @@ export class FormControllerClass {
     await this.validate();
 
     const [errors, values] = toJSCompat([this.API.errors, this.API.values]);
-    const isSuccess = isEmpty(errors);
+    const isValid = isEmpty(errors);
+
+    let isSuccess: boolean = false;
+    let error: unknown;
+    let response: unknown;
 
     try {
       if (this.options.onSubmit) {
-        await this.options.onSubmit({errors, values, isSuccess, event: submitEvent});
+        response = await this.options.onSubmit({
+          errors,
+          values,
+          isValid,
+          isSuccess: isValid,
+          event: submitEvent,
+        });
       }
+
+      isSuccess = true;
 
       runInAction(() => {
         if (isEmpty(errors)) {
@@ -536,10 +548,26 @@ export class FormControllerClass {
         }
         this.setIsSubmitting(false);
       });
-    } catch {
+    } catch (e) {
+      error = e;
+
       this.setIsSubmitting(false);
     }
 
-    return {errors, values, isSuccess};
+    return {
+      errors,
+      values,
+      isValid,
+      isSuccess: isValid,
+      submitResult: isSuccess
+        ? ({
+            isSuccess,
+            response,
+          } as const)
+        : ({
+            isSuccess,
+            error: error as Error,
+          } as const),
+    };
   };
 }

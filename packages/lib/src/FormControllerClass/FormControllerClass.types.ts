@@ -8,6 +8,7 @@ type SubmitParams<T extends HTMLElement = HTMLElement> = {
   values: Values;
   errors: Errors;
   isSuccess: boolean;
+  isValid: boolean;
   event?: FormEvent<T>;
 };
 
@@ -82,7 +83,21 @@ export interface FormAPI {
   values: Values;
   errors: Errors;
   meta: FormMeta;
-  submit: <T extends HTMLElement>(submitEvent?: FormEvent<T>) => Promise<Omit<SubmitParams<T>, 'event'>>;
+  submit: <T extends HTMLElement>(
+    submitEvent?: FormEvent<T>,
+  ) => Promise<
+    Omit<SubmitParams<T>, 'event'> & {
+      submitResult:
+        | {
+            isSuccess: true;
+            response: any;
+          }
+        | {
+            isSuccess: false;
+            error: Error;
+          };
+    }
+  >;
   reset: () => void;
   clear: () => void;
   validate: () => any;
