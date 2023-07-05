@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import {action, observable, runInAction} from 'mobx';
 import {observerBatching} from 'mobx-react';
@@ -419,7 +418,7 @@ export class FormControllerClass {
   };
 
   // changes when adapter onChange handler is called
-  @action protected setFieldValue = (fieldName: string, value: unknown) => {
+  @action protected setFieldValue: FormAPI['setFieldValue'] = (fieldName, value) => {
     this.createFieldIfDoesNotExist(fieldName);
     const field = this.fields.get(fieldName)!;
 
@@ -443,7 +442,7 @@ export class FormControllerClass {
   };
 
   // validates single field by calling field level validation, passed to Field as `validate` prop
-  protected validateField = async (fieldName: string) => {
+  protected validateField: FormAPI['validateField'] = async (fieldName) => {
     if (!this.fieldLevelValidations[fieldName]) {
       return undefined;
     }
@@ -486,7 +485,7 @@ export class FormControllerClass {
 
   // validates the form, by calling form level onValidate function combined with field level validations,
   // passed to Field as `onValidate` prop
-  protected validate = async () => {
+  protected validate: FormAPI['validate'] = async () => {
     const hasFieldLevelValidations = Object.keys(this.fieldLevelValidations).length > 0;
 
     this.setIsValidating(true);
@@ -508,7 +507,7 @@ export class FormControllerClass {
   };
 
   // wraps submit function passed as Form `onSubmit` prop after it's being passed to child render function
-  @action protected submit = async <E extends HTMLElement = HTMLElement>(submitEvent?: React.FormEvent<E>) => {
+  @action protected submit: FormAPI['submit'] = async (submitEvent) => {
     if (submitEvent) {
       submitEvent.persist();
       submitEvent.preventDefault();
