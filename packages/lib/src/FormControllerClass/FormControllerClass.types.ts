@@ -7,6 +7,7 @@ export type Errors = Record<string, any>;
 type SubmitParams<T extends HTMLElement = HTMLElement> = {
   values: Values;
   errors: Errors;
+  /** @deprecated don't use, use isValid instead */
   isSuccess: boolean;
   isValid: boolean;
   event?: FormEvent<T>;
