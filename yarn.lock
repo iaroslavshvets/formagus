@@ -3903,10 +3903,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tsconfig/docusaurus@npm:^1.0.7":
-  version: 1.0.7
-  resolution: "@tsconfig/docusaurus@npm:1.0.7"
-  checksum: 49a9bb6f04a4eaee889a6950084dd14c6755fbd68951c7b9101f7031f7186ab7b46bb7e58e60e7a42d58db7ea20f981f43501ea653c1125f9863287c7108eb86
+"@tsconfig/docusaurus@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@tsconfig/docusaurus@npm:2.0.0"
+  checksum: a93251e2efba1086586c7d47698c7f416d799f03dc11d92ab359a6ad48bc07cf7f1cc40e09c404b6804e62376b5a42c6f53e1e726cfe960bd053d2f74b973c0a
   languageName: node
   linkType: hard
 
@@ -4294,6 +4294,13 @@ __metadata:
   version: 2.7.2
   resolution: "@types/prettier@npm:2.7.2"
   checksum: 16ffbd1135c10027f118517d3b12aaaf3936be1f3c6e4c6c9c03d26d82077c2d86bf0dcad545417896f29e7d90faf058aae5c9db2e868be64298c644492ea29e
+  languageName: node
+  linkType: hard
+
+"@types/prismjs@npm:^1.26.0":
+  version: 1.26.0
+  resolution: "@types/prismjs@npm:1.26.0"
+  checksum: dce1388a626c20b95fa2715917deef5a401eec33e9e181f202840ee3b3c7d8a84d5558c834af4c29b8e007741a6a18639b074db8ecccdd6e7de15280fc4dfdd2
   languageName: node
   linkType: hard
 
@@ -15262,9 +15269,9 @@ __metadata:
     "@docusaurus/preset-classic": 2.4.1
     "@docusaurus/theme-mermaid": ^2.4.1
     "@mdx-js/react": ^1.6.22
-    "@tsconfig/docusaurus": ^1.0.7
+    "@tsconfig/docusaurus": ^2.0.0
     clsx: ^2.0.0
-    prism-react-renderer: ^1.3.5
+    prism-react-renderer: ^2.0.6
     react: ^18.2.0
     react-dom: ^18.2.0
     surge: ^0.23.1
@@ -16217,6 +16224,18 @@ __metadata:
   peerDependencies:
     react: ">=0.14.9"
   checksum: 9caada97fa7325fc99484cff409a84ed947a061615851bd0aedf4fcfd4b3496e2eff4b252dbfd4465dd6ea7310134ed67d737cabf0c78b192969c3c7da383237
+  languageName: node
+  linkType: hard
+
+"prism-react-renderer@npm:^2.0.6":
+  version: 2.0.6
+  resolution: "prism-react-renderer@npm:2.0.6"
+  dependencies:
+    "@types/prismjs": ^1.26.0
+    clsx: ^1.2.1
+  peerDependencies:
+    react: ">=16.0.0"
+  checksum: f98b67ebe64c2c83449c7cedd285b55ad1ab48fafb189fba7b7bc653f68717172699934c9403906ccbc0da414329d00e15fa673cc38265fd003f010d8efb3331
   languageName: node
   linkType: hard
 
