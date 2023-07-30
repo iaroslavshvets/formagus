@@ -3,13 +3,14 @@ import {action, observable, runInAction} from 'mobx';
 import {observerBatching} from 'mobx-react';
 import {get as _get, set as _set} from 'lodash';
 import {toJSCompat} from '../utils/toJSCompat';
-import type {FieldProps, OnValidateFunction} from '../Field/Field.types';
-import type {FormAPI, FormControllerOptions, FormField, Values} from './FormControllerClass.types';
-import type {WithRequiredProperty} from '../utils/types/withRequiredProperty';
+import {type FieldProps, type OnValidateFunction} from '../Field/Field.types';
+import {type FormAPI, type FormControllerOptions, type FormField, type Values} from './FormControllerClass.types';
+import {type WithRequiredProperty} from '../utils/types/withRequiredProperty';
 import {isMobx6Used} from '../utils/isMobx6Used';
 import {isEmpty} from '../utils/isEmpty';
 import {mergeDeep} from '../utils/mergeDeep';
 
+//eslint-disable-next-line @typescript-eslint/no-var-requires
 const {makeObservable} = require('mobx'); // require as import might not work in case of mobx5 bundling in userland
 
 export class FormControllerClass {
@@ -153,7 +154,7 @@ export class FormControllerClass {
     field.errors = errors;
   };
 
-  @action protected updateErrors = (params: {value: unknown} | {mutator: Function}) => {
+  @action protected updateErrors = (params: {value: unknown} | {mutator: () => unknown}) => {
     if ('value' in params) {
       if (typeof params.value === 'object' && params.value !== null) {
         this.API.errors = params.value;
@@ -322,10 +323,13 @@ export class FormControllerClass {
   };
 
   protected getFields = () => {
-    return Array.from(this.fields.entries()).reduce((acc, [key, value]) => {
-      acc[key] = value;
-      return acc;
-    }, {} as Record<string, FormField>);
+    return Array.from(this.fields.entries()).reduce(
+      (acc, [key, value]) => {
+        acc[key] = value;
+        return acc;
+      },
+      {} as Record<string, FormField>,
+    );
   };
 
   @action protected updateIsDirtyBasedOnFields = () => {
@@ -371,7 +375,7 @@ export class FormControllerClass {
   @action protected resetToValues = (values: Values) => {
     this.fields.forEach((field, name) => {
       const newValue = this.options.fieldValueToFormValuesConverter.get(values, name);
-      const fieldName = field.fieldProps?.name!;
+      const fieldName = field.fieldProps?.name;
       // eslint-disable-next-line no-param-reassign
       field.value = newValue;
       this.setFieldMeta(field, {
@@ -523,7 +527,7 @@ export class FormControllerClass {
     const [errors, values] = toJSCompat([this.API.errors, this.API.values]);
     const isValid = isEmpty(errors);
 
-    let isSuccess: boolean = false;
+    let isSuccess = false;
     let error: unknown;
     let response: unknown;
 

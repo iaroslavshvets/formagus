@@ -1,17 +1,17 @@
-import type {FormEvent} from 'react';
-import type {OnEqualityCheckFunction, FieldProps, FieldFormagus} from '../Field/Field.types';
+import {type FormEvent} from 'react';
+import {type OnEqualityCheckFunction, type FieldProps, type FieldFormagus} from '../Field/Field.types';
 
 export type Values = Record<string, any>;
 export type Errors = Record<string, any>;
 
-type SubmitParams<T extends HTMLElement = HTMLElement> = {
+interface SubmitParams<T extends HTMLElement = HTMLElement> {
   values: Values;
   errors: Errors;
-  /** @deprecated don't use, use isValid instead */
+  /** @deprecated Don't use, use isValid instead. */
   isSuccess: boolean;
   isValid: boolean;
   event?: FormEvent<T>;
-};
+}
 
 export type FormagusEvent =
   | {

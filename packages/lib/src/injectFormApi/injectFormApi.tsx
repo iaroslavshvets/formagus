@@ -13,13 +13,13 @@ export const injectFormApi: any = <C extends React.ComponentClass>(WrappedCompon
       forceUpdate({});
     }, [
       JSON.stringify({
-        values: controller!.API.values,
-        errors: controller!.API.errors,
+        values: controller.API.values,
+        errors: controller.API.errors,
         ...controller.API.meta,
       }),
     ]);
 
-    return <WrappedComponent {...props} formApi={controller!.API} />;
+    return <WrappedComponent {...props} formApi={controller.API} />;
   });
 
   (InjectFormApiWrapper as any).displayName = 'FormagusInjectFormApiWrapper';

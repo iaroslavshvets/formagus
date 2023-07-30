@@ -2,12 +2,12 @@ import {useEffect} from 'react';
 import {computed} from 'mobx';
 import {useFormControllerClass} from '../Form/useFormControllerClass';
 import {toJSCompat} from '../utils/toJSCompat';
-import type {FieldCommonProps, FieldFormagus} from './Field.types';
+import {type FieldCommonProps, type FieldFormagus} from './Field.types';
 
 export const useRegisterField = (props: FieldCommonProps) => {
   const controller = useFormControllerClass(props);
 
-  const computedField = computed(() => controller!.fields.get(props.name));
+  const computedField = computed(() => controller.fields.get(props.name));
 
   const field = computedField.get();
   const isReady = field !== undefined;

@@ -1,6 +1,6 @@
-import {FormAPI} from '../FormControllerClass/FormControllerClass.types';
+import {type FormAPI} from '../FormControllerClass/FormControllerClass.types';
 
 /** @deprecated use hooks */
-export type InjectedFormAPI = {
+export interface InjectedFormAPI {
   formApi?: FormAPI;
-};
+}

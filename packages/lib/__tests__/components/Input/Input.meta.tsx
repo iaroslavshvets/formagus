@@ -1,8 +1,8 @@
 import React from 'react';
 import {isEmpty, isObject} from 'lodash';
 import {observer} from 'mobx-react';
-import type {FieldMeta} from '../../../src/Field/Field.types';
-import {FormMeta} from '../../../src/FormControllerClass/FormControllerClass.types';
+import {type FieldMeta} from '../../../src/Field/Field.types';
+import {type FormMeta} from '../../../src/FormControllerClass/FormControllerClass.types';
 
 export const InputMeta = observer((props: {meta: FieldMeta; formMeta: FormMeta}) => {
   const renderMetaProperty = (meta: any, currentKey: string, isFormMeta: boolean): any => {

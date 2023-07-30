@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
 import {isNil} from 'lodash';
-import type {ChangeEvent} from 'react';
+import {type ChangeEvent} from 'react';
 import {observer} from 'mobx-react';
 import {InputMeta} from './Input.meta';
 import {InputErrors} from './Input.errors';
-import type {FieldRenderProps} from '../../../src';
+import {type FieldRenderProps} from '../../../src';
 import {useField, useForm} from '../../../src';
 
 export interface InputAdapterProps extends Partial<FieldRenderProps> {
