@@ -9,6 +9,7 @@ export const createInputDriver = (options: {wrapper: Element; dataHook: string})
         return wrapper.querySelector(`[data-hook="${dataHook}"]`);
       },
       input: () => {
+        //eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
         return API.get.root()?.querySelector<HTMLInputElement>(`[data-hook="input-${dataHook}"]`)!;
       },
       inputNode: () => {
@@ -29,6 +30,7 @@ export const createInputDriver = (options: {wrapper: Element; dataHook: string})
 
           return error ? error.textContent : null;
         }
+        //eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
         const errors = Array.from(API.get.root()?.querySelectorAll(`[data-hook^="error:"]`)!);
 
         return errors.length
@@ -41,6 +43,7 @@ export const createInputDriver = (options: {wrapper: Element; dataHook: string})
 
     when: {
       setCustomState: async () => {
+        //eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
         return fireEvent.click(API.get.root()?.querySelector(`[data-hook="set-custom-state"]`)!);
       },
       focus: async () => {
@@ -50,9 +53,11 @@ export const createInputDriver = (options: {wrapper: Element; dataHook: string})
         return fireEvent.blur(API.get.input());
       },
       validate: async () => {
+        //eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
         return fireEvent.click(API.get.root()?.querySelector(`[data-hook="validate"]`)!);
       },
       validateField: async () => {
+        //eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
         return fireEvent.click(API.get.root()?.querySelector(`[data-hook="validate-field"]`)!);
       },
       change: async (value: string) => {

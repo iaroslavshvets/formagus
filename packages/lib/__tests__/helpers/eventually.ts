@@ -1,4 +1,4 @@
-const trier = require('trier-promise');
+import trier from 'trier-promise';
 
 export interface EventuallyOptions {
   timeout: number;

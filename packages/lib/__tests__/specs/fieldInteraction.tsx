@@ -132,8 +132,8 @@ describe('Field interactions', () => {
   });
 
   it('should not keep value', async () => {
-    class StatefulForm extends React.Component<{}, {hiddenField: boolean}> {
-      constructor(props: {}) {
+    class StatefulForm extends React.Component<object, {hiddenField: boolean}> {
+      constructor(props: object) {
         super(props);
         this.state = {
           hiddenField: false,

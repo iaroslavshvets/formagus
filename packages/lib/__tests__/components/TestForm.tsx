@@ -1,13 +1,11 @@
 import React from 'react';
-import type {FormAPI, FormControllerOptions} from '../../src/FormControllerClass/FormControllerClass.types';
-import {Field, Form, FormController} from '../../src';
+import {type FormAPI, type FormControllerOptions} from '../../src/FormControllerClass/FormControllerClass.types';
+import {Field, Form, type FormController} from '../../src';
 import {Input} from './Input';
 
 export const TestForm = (
   props: FormControllerOptions & {
-    // eslint-disable-next-line react/require-default-props
     controller?: FormController;
-    // eslint-disable-next-line react/require-default-props
     children?: React.ReactNode;
   },
 ) => {

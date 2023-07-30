@@ -1,37 +1,42 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "es2021": true
+  env: {
+    browser: true,
+    es2021: true,
+  },
+  parser: "@typescript-eslint/parser",
+  plugins: ["isaacscript", "import", "prettier"],
+  extends: [
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked",
+    "plugin:prettier/recommended",
+    "prettier",
+  ],
+  parserOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
+    project: "./tsconfig.json",
+  },
+  overrides: [
+    {
+      files: ["!./__tests__/**/*.{ts,tsx}"],
+      extends: ["plugin:@typescript-eslint/disable-type-checked"],
     },
-    settings: {
-        react: {
-            version: "detect",
-        },
-    },
-    "parser": "@typescript-eslint/parser",
-    "extends": [
-      "airbnb",
-      "airbnb-typescript",
-      "prettier"
+  ],
+  rules: {
+    // These off/not-configured-the-way-we-want lint rules we like & opt into
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { argsIgnorePattern: "^_", destructuredArrayIgnorePattern: "^_" },
     ],
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module",
-        "project": "./tsconfig.json",
-    },
-    "plugins": [
-        "react",
-        "@typescript-eslint",
-        "prettier"
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      { prefer: "type-imports", fixStyle: "inline-type-imports" },
     ],
-    "rules": {
-        "import/prefer-default-export": "off",
-        "react/prop-types": "off",
-        "react/jsx-props-no-spreading": "off",
-        "jsx-a11y/click-events-have-key-events": "off",
-        "jsx-a11y/no-static-element-interactions": "off",
-        "react/jsx-boolean-value": "off",
-        "arrow-body-style": "off",
-        "react/function-component-definition": "off",
-    }
-}
+    "import/consistent-type-specifier-style": ["error", "prefer-inline"],
+
+    // For educational purposes we format our comments/jsdoc nicely
+    "isaacscript/complete-sentences-jsdoc": "warn",
+    "isaacscript/format-jsdoc-comments": "warn",
+  },
+};

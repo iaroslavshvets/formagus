@@ -2,8 +2,8 @@ import {observer} from 'mobx-react';
 import React, {useState} from 'react';
 import {FormControllerContext} from './FormControllerContext';
 import {createFormController} from '../createFormController/createFormController';
-import type {FormProps} from './Form.types';
-import type {FormControllerClass} from '../FormControllerClass/FormControllerClass';
+import {type FormProps} from './Form.types';
+import {type FormControllerClass} from '../FormControllerClass/FormControllerClass';
 import {invariant} from '../utils/invariant';
 
 export const Form = observer((props: FormProps) => {
