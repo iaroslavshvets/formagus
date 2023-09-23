@@ -4542,21 +4542,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:6.2.0":
-  version: 6.2.0
-  resolution: "@typescript-eslint/parser@npm:6.2.0"
+"@typescript-eslint/parser@npm:6.7.2":
+  version: 6.7.2
+  resolution: "@typescript-eslint/parser@npm:6.7.2"
   dependencies:
-    "@typescript-eslint/scope-manager": 6.2.0
-    "@typescript-eslint/types": 6.2.0
-    "@typescript-eslint/typescript-estree": 6.2.0
-    "@typescript-eslint/visitor-keys": 6.2.0
+    "@typescript-eslint/scope-manager": 6.7.2
+    "@typescript-eslint/types": 6.7.2
+    "@typescript-eslint/typescript-estree": 6.7.2
+    "@typescript-eslint/visitor-keys": 6.7.2
     debug: ^4.3.4
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 65ecbe654251a78e4b5eaef7b4fd85907c5bcbecfa18d919a0ed03a91c5c0bc0ef899115a08d06bedbf873ac27c24c3ee53180a5e7cf7650d249267a76bb3bc9
+  checksum: dde49a291d15e4eba0f286de40bd6ebcec4167979220bba5c30ff94a3c5f6f36ce2d04e7df94204a84b8cb99c261252b972500e2c46733a55d8c8c325937eeca
   languageName: node
   linkType: hard
 
@@ -4604,6 +4604,16 @@ __metadata:
     "@typescript-eslint/types": 6.5.0
     "@typescript-eslint/visitor-keys": 6.5.0
   checksum: aaec7d7260eef0f36e09ab54050184223b24d5c10a915ef857af49658ec910c004dfe8c799866c0f49542b36d6218610d5dff97e642e8b3b0fb0de3c53ca1b8b
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/scope-manager@npm:6.7.2":
+  version: 6.7.2
+  resolution: "@typescript-eslint/scope-manager@npm:6.7.2"
+  dependencies:
+    "@typescript-eslint/types": 6.7.2
+    "@typescript-eslint/visitor-keys": 6.7.2
+  checksum: 806cc2c10edb3324763bbedfa922147bf38b114da432c5feb11886f1b7f9f498b014cb1c26fbd9ea18ead3245abe268e29ea120962fd463de0a950ca69f620c4
   languageName: node
   linkType: hard
 
@@ -4662,6 +4672,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript-eslint/types@npm:6.7.2":
+  version: 6.7.2
+  resolution: "@typescript-eslint/types@npm:6.7.2"
+  checksum: d5daf0051609b1bbe5a0d43a130647c23e2951f2443307d3b5dd323a71e3bedd32f3263a4bb5fdfaa8ad8a78c865ba3d5b606695cb27d85c412d2a8931c5d9a6
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/typescript-estree@npm:5.59.0":
   version: 5.59.0
   resolution: "@typescript-eslint/typescript-estree@npm:5.59.0"
@@ -4713,6 +4730,24 @@ __metadata:
     typescript:
       optional: true
   checksum: 6b5cff285a61ce1163efb257d2ba62c0c8cadff9ac3fde4cf5b4ac62ac14c76d33bf4e5b7ee920ebbfe92acaf79ed14fd9288585eedbc699083fa3a0dccd2e44
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/typescript-estree@npm:6.7.2":
+  version: 6.7.2
+  resolution: "@typescript-eslint/typescript-estree@npm:6.7.2"
+  dependencies:
+    "@typescript-eslint/types": 6.7.2
+    "@typescript-eslint/visitor-keys": 6.7.2
+    debug: ^4.3.4
+    globby: ^11.1.0
+    is-glob: ^4.0.3
+    semver: ^7.5.4
+    ts-api-utils: ^1.0.1
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 80205c23807ea0d508189de4326ec18dccfcaf4bccd4304c9fc8b49504083df3d001af16733272487197ffd5d499e6c8d0e0f2eb9d2d61423e163b6d4787a7bb
   languageName: node
   linkType: hard
 
@@ -4777,6 +4812,16 @@ __metadata:
     "@typescript-eslint/types": 6.5.0
     eslint-visitor-keys: ^3.4.1
   checksum: 1b7d06b933aa36a89957e89c38d8ec437df63df2ce1a76d5f5b0e293b62a758f30b44799458f189aa01c426e822a3c7ee884545e20af3a61716c94c782f84307
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/visitor-keys@npm:6.7.2":
+  version: 6.7.2
+  resolution: "@typescript-eslint/visitor-keys@npm:6.7.2"
+  dependencies:
+    "@typescript-eslint/types": 6.7.2
+    eslint-visitor-keys: ^3.4.1
+  checksum: e6b35338a98fcf6719388a2dce7ae476622f6fa37b0d5e3607de260100a72b8cb86e76b73b16a9a3c434e8386e1ea394cd946add1e4ce712d3b8a7fd0e221830
   languageName: node
   linkType: hard
 
@@ -9829,7 +9874,7 @@ __metadata:
     "@types/react": ^18.2.17
     "@types/react-dom": ^18.2.7
     "@typescript-eslint/eslint-plugin": ^6.2.0
-    "@typescript-eslint/parser": 6.2.0
+    "@typescript-eslint/parser": 6.7.2
     commitizen: ^4.3.0
     cz-conventional-changelog: ^3.3.0
     eslint: ^8.46.0
