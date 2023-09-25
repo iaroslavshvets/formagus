@@ -3833,14 +3833,14 @@ __metadata:
   linkType: hard
 
 "@swc/jest@npm:^0.2.27":
-  version: 0.2.27
-  resolution: "@swc/jest@npm:0.2.27"
+  version: 0.2.29
+  resolution: "@swc/jest@npm:0.2.29"
   dependencies:
     "@jest/create-cache-key-function": ^27.4.2
     jsonc-parser: ^3.2.0
   peerDependencies:
     "@swc/core": "*"
-  checksum: fe996de5890e8d74aecbb4992b56d52fb1d584bfdb1ef4bcebe3d1a9690d804a95550e77dfe6b45a5f84acb137ed6f42c996e25a165aed07746094b67383d41a
+  checksum: 10f34341f9bc8003cec44f91a88b531ba44094aad97b2f8410fb2f94db9eb3b8fc7f6d14ba867eb9c1dc6ba29cc46058244b8280d673a7c681062fe0dc73c3f0
   languageName: node
   linkType: hard
 
