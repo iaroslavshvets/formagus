@@ -3436,13 +3436,13 @@ __metadata:
   linkType: hard
 
 "@rollup/plugin-typescript@npm:^11.1.2":
-  version: 11.1.2
-  resolution: "@rollup/plugin-typescript@npm:11.1.2"
+  version: 11.1.5
+  resolution: "@rollup/plugin-typescript@npm:11.1.5"
   dependencies:
     "@rollup/pluginutils": ^5.0.1
     resolve: ^1.22.1
   peerDependencies:
-    rollup: ^2.14.0||^3.0.0
+    rollup: ^2.14.0||^3.0.0||^4.0.0
     tslib: "*"
     typescript: ">=3.7.0"
   peerDependenciesMeta:
@@ -3450,7 +3450,7 @@ __metadata:
       optional: true
     tslib:
       optional: true
-  checksum: f0fd21995afdd45bfe9b85711a48c45b9b2a2b909db590dd9d97780e329b6b8e77c827e23192d3a31648529b5fc0629c72e0addd7e8d7dfcebb78b9ee2eb0dec
+  checksum: ce49baf4cf97f3a33d0e60324a0f80ebe963fee002e791171bec2d05a1ae5e5be6de2bc4191790d88fbc78d4c2bac1be141fc47bd5f2dec7172514acd7652ffe
   languageName: node
   linkType: hard
 
