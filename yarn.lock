@@ -10436,7 +10436,7 @@ __metadata:
     lint-staged: ^13.2.3
     lodash: ^4.17.21
     mobx: ^6.10.0
-    mobx-react: ^9.0.0
+    mobx-react-lite: ^4.0.7
     prettier: ^3.0.0
     prettier-eslint: ^15.0.1
     react: ^18.2.0
@@ -10451,7 +10451,7 @@ __metadata:
     typescript: ^5.1.6
   peerDependencies:
     mobx: "*"
-    mobx-react: "*"
+    mobx-react-lite: "*"
     react: "*"
     react-dom: "*"
   languageName: unknown
@@ -15117,9 +15117,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mobx-react-lite@npm:^4.0.3":
-  version: 4.0.3
-  resolution: "mobx-react-lite@npm:4.0.3"
+"mobx-react-lite@npm:^4.0.7":
+  version: 4.0.7
+  resolution: "mobx-react-lite@npm:4.0.7::__archiveUrl=https%3A%2F%2Fnpm.dev.wixpress.com%2Fapi%2Fnpm%2Fnpm-repos%2Fmobx-react-lite%2F-%2Fmobx-react-lite-4.0.7.tgz"
   dependencies:
     use-sync-external-store: ^1.2.0
   peerDependencies:
@@ -15130,24 +15130,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: 3cfff6878c7540fa6bc6eb6e5102d19b6c625b63bd3a7e7c43a3101d3262420ab7130274b8139bef6da022161e3fc353fd156369f4ce12dcd52a355bf7462b96
-  languageName: node
-  linkType: hard
-
-"mobx-react@npm:^9.0.0":
-  version: 9.0.0
-  resolution: "mobx-react@npm:9.0.0"
-  dependencies:
-    mobx-react-lite: ^4.0.3
-  peerDependencies:
-    mobx: ^6.9.0
-    react: ^16.8.0 || ^17 || ^18
-  peerDependenciesMeta:
-    react-dom:
-      optional: true
-    react-native:
-      optional: true
-  checksum: e2a48fda650f81eef4f123376c4ec5209f9912d8a432fa187992c222c57c0aa845b1edbb4042fa460b8362b9e5cefb9f3b0ff8aba2df222f44fe26cd156e4f7b
+  checksum: 175e190c5e6c35136ce2b8ef7e9ddeae68b180b585a907a891cd1781038c97eaad195ce9846b0f8e6fe87ac8bc005e31310003d1f7b402f81e460b9411d801d8
   languageName: node
   linkType: hard
 

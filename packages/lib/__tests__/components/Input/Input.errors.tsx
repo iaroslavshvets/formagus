@@ -1,6 +1,6 @@
 import React from 'react';
 import {isEmpty} from 'lodash';
-import {observer} from 'mobx-react';
+import {observer} from 'mobx-react-lite';
 
 export const InputErrors = observer((props: {errors: string[]}) => {
   const errors = props?.errors;

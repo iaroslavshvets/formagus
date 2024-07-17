@@ -1,5 +1,5 @@
 import React from 'react';
-import {observer} from 'mobx-react';
+import {observer} from 'mobx-react-lite';
 import {get} from 'lodash';
 import {useForm} from '../../../src';
 

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {isNil} from 'lodash';
 import {type ChangeEvent} from 'react';
-import {observer} from 'mobx-react';
+import {observer} from 'mobx-react-lite';
 import {InputMeta} from './Input.meta';
 import {InputErrors} from './Input.errors';
 import {type FieldRenderProps} from '../../../src';

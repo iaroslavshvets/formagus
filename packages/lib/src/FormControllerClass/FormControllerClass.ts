@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 import {action, observable, runInAction} from 'mobx';
-import {observerBatching} from 'mobx-react';
+import {observerBatching} from 'mobx-react-lite';
 import {get as _get, set as _set} from 'lodash';
 import {toJSCompat} from '../utils/toJSCompat';
 import {type FieldProps, type OnValidateFunction} from '../Field/Field.types';

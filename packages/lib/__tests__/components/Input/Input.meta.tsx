@@ -1,6 +1,6 @@
 import React from 'react';
 import {isEmpty, isObject} from 'lodash';
-import {observer} from 'mobx-react';
+import {observer} from 'mobx-react-lite';
 import {type FieldMeta} from '../../../src/Field/Field.types';
 import {type FormMeta} from '../../../src/FormControllerClass/FormControllerClass.types';
 
