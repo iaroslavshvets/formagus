@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {render, fireEvent, cleanup} from '@testing-library/react';
-import {observer} from 'mobx-react';
+import {observer} from 'mobx-react-lite';
 import {get} from 'lodash';
 import {Field, createFormController} from '../../src';
 import {TestForm} from '../components/TestForm';

@@ -1,5 +1,5 @@
-import React from 'react';
-import {observer} from 'mobx-react';
+import React, {type ElementType} from 'react';
+import {observer} from 'mobx-react-lite';
 import {type JSXElementConstructor} from 'react';
 import {useRegisterField} from './useRegisterField';
 import {FieldContextProvider} from './FieldContext';
@@ -19,7 +19,7 @@ export const Field = observer(<T extends JSXElementConstructor<any>>(props: Fiel
       'You cannot use both adapter and render or children prop',
     );
 
-    const Adapter: React.ElementType<any> = props.adapter;
+    const Adapter: ElementType<any> = props.adapter;
     return (
       <FieldContextProvider value={formagus}>
         <Adapter formagus={formagus} {...props.adapterProps} />

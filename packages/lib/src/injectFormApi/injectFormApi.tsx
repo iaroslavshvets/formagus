@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, type ComponentClass} from 'react';
 import * as hoistNonReactStatics from 'hoist-non-react-statics';
-import {observer} from 'mobx-react';
+import {observer} from 'mobx-react-lite';
 import {useFormControllerClass} from '../Form/useFormControllerClass';
 
 /** @deprecated */
-export const injectFormApi: any = <C extends React.ComponentClass>(WrappedComponent: C) => {
+export const injectFormApi: any = <C extends ComponentClass>(WrappedComponent: C) => {
   const InjectFormApiWrapper = observer((props: any) => {
     const controller = useFormControllerClass(props);
     const [, forceUpdate] = useState<unknown>();

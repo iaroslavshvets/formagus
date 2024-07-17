@@ -1,4 +1,4 @@
-import type React from 'react';
+import {type ComponentClass, type FC, type ReactNode} from 'react';
 import {type ComponentProps, type JSXElementConstructor} from 'react';
 import {type FormController} from '../createFormController/createFormController.types';
 import {type FormControllerClass} from '../FormControllerClass/FormControllerClass';
@@ -55,12 +55,12 @@ export interface FieldCommonProps {
 // eslint-disable-next-line  @typescript-eslint/no-unused-vars
 export type FieldProps<T extends JSXElementConstructor<any> = any> = Omit<FieldCommonProps, 'controller'> & {
   controller?: FormController;
-  children?: JSX.Element;
-  render?: (injectedFieldDisplayProps: FieldRenderProps) => JSX.Element;
+  children?: ReactNode;
+  render?: (injectedFieldDisplayProps: FieldRenderProps) => ReactNode;
   /** @deprecated Pass children and useField hook inside instead, or at least render prop. */
   adapter?:
-    | React.ComponentClass<Partial<FieldRenderProps> & ComponentProps<T>>
-    | React.FC<Partial<FieldRenderProps> & ComponentProps<T>>;
+    | ComponentClass<Partial<FieldRenderProps> & ComponentProps<T>>
+    | FC<Partial<FieldRenderProps> & ComponentProps<T>>;
   /** @deprecated */
   adapterProps?: ComponentProps<T>; // Will be passed to adapter alongside injected formagus props
 };
