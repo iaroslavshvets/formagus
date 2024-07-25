@@ -9,6 +9,7 @@ import {type WithRequiredProperty} from '../utils/types/withRequiredProperty';
 import {isMobx6Used} from '../utils/isMobx6Used';
 import {isEmpty} from '../utils/isEmpty';
 import {mergeDeep} from '../utils/mergeDeep';
+import * as mobx from 'mobx';
 
 export class FormControllerClass {
   // Form options passed through form Props or directly through new Controller(options)
@@ -21,7 +22,7 @@ export class FormControllerClass {
 
     if (isMobx6Used()) {
       //eslint-disable-next-line @typescript-eslint/no-var-requires
-      require('mobx').makeObservable?.(this);
+      mobx.makeObservable(this);
     }
 
     this.options = {
