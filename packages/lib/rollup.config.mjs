@@ -1,6 +1,5 @@
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
-import resolve from '@rollup/plugin-node-resolve';
 import commonJS from '@rollup/plugin-commonjs';
 import {visualizer} from 'rollup-plugin-visualizer';
 import size from 'rollup-plugin-size';
@@ -23,10 +22,9 @@ export default {
   ],
   plugins: [
     typescript(),
-    resolve(),
     commonJS(),
-    size(),
     terser(),
+    size(),
     visualizer({
       filename: `./build-stats.html`,
       gzipSize: true,
