@@ -10,9 +10,6 @@ import {isMobx6Used} from '../utils/isMobx6Used';
 import {isEmpty} from '../utils/isEmpty';
 import {mergeDeep} from '../utils/mergeDeep';
 
-//eslint-disable-next-line @typescript-eslint/no-var-requires
-const {makeObservable} = require('mobx'); // require as import might not work in case of mobx5 bundling in userland
-
 export class FormControllerClass {
   // Form options passed through form Props or directly through new Controller(options)
   protected options: WithRequiredProperty<FormControllerOptions, 'fieldValueToFormValuesConverter'>;
@@ -23,7 +20,8 @@ export class FormControllerClass {
     }
 
     if (isMobx6Used()) {
-      makeObservable(this);
+      //eslint-disable-next-line @typescript-eslint/no-var-requires
+      require('mobx').makeObservable?.(this);
     }
 
     this.options = {
