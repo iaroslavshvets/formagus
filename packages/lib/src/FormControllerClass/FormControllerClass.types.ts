@@ -4,7 +4,7 @@ import {type OnEqualityCheckFunction, type FieldProps, type FieldFormagus} from 
 export type Values = Record<string, any>;
 export type Errors = Record<string, any>;
 
-interface SubmitParams<T extends HTMLElement = HTMLElement> {
+export interface SubmitParams<T extends HTMLElement = HTMLElement> {
   values: Values;
   errors: Errors;
   /** @deprecated Don't use, use isValid instead. */
