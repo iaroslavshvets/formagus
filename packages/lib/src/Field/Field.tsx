@@ -1,13 +1,12 @@
 import React, {type ElementType} from 'react';
 import {observer} from 'mobx-react-lite';
-import {type JSXElementConstructor} from 'react';
 import {useRegisterField} from './useRegisterField';
 import {FieldContextProvider} from './FieldContext';
 import {type FieldProps} from './Field.types';
 import {invariant} from '../utils/invariant';
 
-export const Field = observer(<T extends JSXElementConstructor<any>>(props: FieldProps<T>) => {
-  const {formagus} = useRegisterField(props as Omit<FieldProps<T>, 'controller'>);
+export const Field = observer((props: FieldProps) => {
+  const {formagus} = useRegisterField(props as Omit<FieldProps, 'controller'>);
 
   if (!formagus) {
     return null;
@@ -36,4 +35,4 @@ export const Field = observer(<T extends JSXElementConstructor<any>>(props: Fiel
   return <FieldContextProvider value={formagus}>{props.children}</FieldContextProvider>;
 });
 
-(Field as any).displayName = 'FormagusField';
+Field.displayName = 'FormagusField';

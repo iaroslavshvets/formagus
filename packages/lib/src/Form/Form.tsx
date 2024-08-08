@@ -30,4 +30,4 @@ export const Form = observer((props: FormProps) => {
   );
 });
 
-(Form as any).displayName = 'FormagusForm';
+Form.displayName = 'FormagusForm';
