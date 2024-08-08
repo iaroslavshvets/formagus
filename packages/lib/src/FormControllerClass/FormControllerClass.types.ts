@@ -82,6 +82,7 @@ export interface FormMeta {
 export interface FormAPI {
   // form
   values: Values;
+  rawValues: Values;
   errors: Errors;
   meta: FormMeta;
   submit: <T extends HTMLElement>(
