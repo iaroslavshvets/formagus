@@ -1,9 +1,8 @@
-import {type ComponentClass, type FC, type ReactNode} from 'react';
-import {type ComponentProps, type JSXElementConstructor} from 'react';
+import {type ReactNode} from 'react';
 import {type FormController} from '../createFormController/createFormController.types';
 import {type FormControllerClass} from '../FormControllerClass/FormControllerClass';
 
-export type OnValidateFunction<T extends any = any> =
+export type OnValidateFunction<T = any> =
   | ((value: T, values?: any) => any)
   | ((value: T, values?: any) => Promise<any>);
 
@@ -25,9 +24,9 @@ export type FieldFormagus = Readonly<{
   value: any;
   errors: any;
   /** @deprecated */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   setCustomState: (key: string, value: any) => void;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   onChange: (value: any) => void;
   onFocus: () => void;
   onBlur: () => void;
@@ -54,15 +53,8 @@ export interface FieldCommonProps<T = any> {
   controller?: FormControllerClass;
 }
 
-// eslint-disable-next-line  @typescript-eslint/no-unused-vars
-export type FieldProps<T extends JSXElementConstructor<any> = any> = Omit<FieldCommonProps, 'controller'> & {
+export type FieldProps = Omit<FieldCommonProps, 'controller'> & {
   controller?: FormController;
   children?: ReactNode;
   render?: (injectedFieldDisplayProps: FieldRenderProps) => ReactNode;
-  /** @deprecated Pass children and useField hook inside instead, or at least render prop. */
-  adapter?:
-    | ComponentClass<Partial<FieldRenderProps> & ComponentProps<T>>
-    | FC<Partial<FieldRenderProps> & ComponentProps<T>>;
-  /** @deprecated */
-  adapterProps?: ComponentProps<T>; // Will be passed to adapter alongside injected formagus props
 };

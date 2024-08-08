@@ -11,9 +11,8 @@ describe('Render', () => {
   it('should render', () => {
     const wrapper = render(
       <TestForm>
-        <Field name={TestForm.FIELD_ONE_NAME} adapter={Input} />
         <Field
-          name={TestForm.FIELD_TWO_NAME}
+          name={TestForm.FIELD_ONE_NAME}
           render={(props) => {
             return <Input {...props} useHook={false} />;
           }}

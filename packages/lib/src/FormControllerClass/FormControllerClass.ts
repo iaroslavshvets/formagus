@@ -22,7 +22,6 @@ export class FormControllerClass {
     }
 
     if (isMobx6Used()) {
-      //eslint-disable-next-line @typescript-eslint/no-var-requires
       makeObservable(this);
     }
 
@@ -43,6 +42,7 @@ export class FormControllerClass {
     this.fieldLevelValidations[fieldName] = onValidateFunction;
   };
 
+  protected safeApiRawValuesCopy: Record<string, unknown> = {};
   protected safeApiValuesCopy: Record<string, unknown> = {};
 
   @action protected updateAPIValues = (fieldName?: string, value?: unknown) => {
@@ -56,9 +56,11 @@ export class FormControllerClass {
           fieldName,
           field.fieldProps?.onFormat ? field.fieldProps.onFormat(safeValue) : safeValue,
         );
+        this.options.fieldValueToFormValuesConverter.set(this.safeApiRawValuesCopy, fieldName, safeValue);
       }
     } else {
       this.safeApiValuesCopy = {};
+      this.safeApiRawValuesCopy = {};
 
       this.fields.forEach((field, name) => {
         if (field.meta.isMounted) {
@@ -69,6 +71,7 @@ export class FormControllerClass {
             name,
             field.fieldProps?.onFormat ? field.fieldProps.onFormat(safeValue) : safeValue,
           );
+          this.options.fieldValueToFormValuesConverter.set(this.safeApiRawValuesCopy, name, safeValue);
         }
       });
     }
@@ -78,9 +81,9 @@ export class FormControllerClass {
     }
 
     this.API.values = this.safeApiValuesCopy;
+    this.API.rawValues = this.safeApiRawValuesCopy;
   };
 
-  // eslint-disable-next-line class-methods-use-this
   @action protected setFieldMeta = (field: FormField, meta: Partial<FormField['meta']>) => {
     Object.assign(field.meta, meta);
   };
@@ -148,9 +151,7 @@ export class FormControllerClass {
   // all registered form fields, new field is being added when Field constructor is called
   fields = observable.map<string, FormField>();
 
-  // eslint-disable-next-line class-methods-use-this
   @action protected setFieldErrors = (field: FormField, errors?: unknown) => {
-    // eslint-disable-next-line no-param-reassign
     field.errors = errors;
   };
 
@@ -294,6 +295,7 @@ export class FormControllerClass {
   @action protected createFormApi = () => {
     this.API = {
       values: {},
+      rawValues: {},
       errors: {},
       submit: this.submit,
       resetToValues: this.resetToValues,
@@ -376,7 +378,7 @@ export class FormControllerClass {
     this.fields.forEach((field, name) => {
       const newValue = this.options.fieldValueToFormValuesConverter.get(values, name);
       const fieldName = field.fieldProps?.name;
-      // eslint-disable-next-line no-param-reassign
+
       field.value = newValue;
       this.setFieldMeta(field, {
         isTouched: false,

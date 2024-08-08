@@ -26,10 +26,10 @@ export function mergeDeep(/* [deep], obj1, obj2, [objn] */ ...args: any[]) {
 
   const extenders = args.slice(1);
   const len = extenders.length;
-  // eslint-disable-next-line no-plusplus
+
   for (let i = 0; i < len; i++) {
     const extender = extenders[i];
-    // eslint-disable-next-line no-restricted-syntax
+
     for (const key in extender) {
       if (Object.prototype.hasOwnProperty.call(extender, key)) {
         const value = extender[key];
