@@ -22,7 +22,7 @@ export const injectFormApi: any = <C extends ComponentClass>(WrappedComponent: C
     return <WrappedComponent {...props} formApi={controller.API} />;
   });
 
-  (InjectFormApiWrapper as any).displayName = 'FormagusInjectFormApiWrapper';
+  InjectFormApiWrapper.displayName = 'FormagusInjectFormApiWrapper';
 
   hoistNonReactStatics.default(InjectFormApiWrapper, WrappedComponent);
 

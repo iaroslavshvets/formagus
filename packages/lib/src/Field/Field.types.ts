@@ -3,7 +3,9 @@ import {type ComponentProps, type JSXElementConstructor} from 'react';
 import {type FormController} from '../createFormController/createFormController.types';
 import {type FormControllerClass} from '../FormControllerClass/FormControllerClass';
 
-export type OnValidateFunction = ((value: any, values?: any) => any) | ((value: any, values?: any) => Promise<any>);
+export type OnValidateFunction<T extends any = any> =
+  | ((value: T, values?: any) => any)
+  | ((value: T, values?: any) => Promise<any>);
 
 export type FieldMeta = Readonly<{
   initialValue: any;
@@ -38,15 +40,15 @@ export interface FieldRenderProps {
   formagus: FieldFormagus;
 }
 
-export type OnFormatFunction = (value: any) => any;
-export type OnEqualityCheckFunction = (newValue: any, oldValue: any) => boolean;
+export type OnFormatFunction<T = any> = (value: T) => any;
+export type OnEqualityCheckFunction<T = any> = (newValue: T, oldValue: T) => boolean;
 
-export interface FieldCommonProps {
+export interface FieldCommonProps<T = any> {
   name: string;
-  defaultValue?: any;
-  onValidate?: OnValidateFunction;
-  onFormat?: OnFormatFunction;
-  onEqualityCheck?: OnEqualityCheckFunction;
+  defaultValue?: T;
+  onValidate?: OnValidateFunction<T>;
+  onFormat?: OnFormatFunction<T>;
+  onEqualityCheck?: OnEqualityCheckFunction<T>;
   onInit?: (API: FieldFormagus) => void;
   persist?: boolean;
   controller?: FormControllerClass;
