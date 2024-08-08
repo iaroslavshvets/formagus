@@ -18,7 +18,7 @@ export type FieldMeta = Readonly<{
   customState: Record<string, any>;
 }>;
 
-export type FieldFormagus = Readonly<{
+export type FieldFormagus<T = any> = Readonly<{
   name: string;
   meta: FieldMeta;
   value: any;
@@ -32,11 +32,11 @@ export type FieldFormagus = Readonly<{
   onBlur: () => void;
   validate: () => Promise<any>;
   validateField: () => Promise<any>;
-  fieldProps: FieldProps;
+  fieldProps: FieldProps<T>;
 }>;
 
-export interface FieldRenderProps {
-  formagus: FieldFormagus;
+export interface FieldRenderProps<T = any> {
+  formagus: FieldFormagus<T>;
 }
 
 export type OnFormatFunction<T = any> = (value: T) => any;
@@ -53,8 +53,8 @@ export interface FieldCommonProps<T = any> {
   controller?: FormControllerClass;
 }
 
-export type FieldProps = Omit<FieldCommonProps, 'controller'> & {
+export type FieldProps<T = any> = Omit<FieldCommonProps<T>, 'controller'> & {
   controller?: FormController;
   children?: ReactNode;
-  render?: (injectedFieldDisplayProps: FieldRenderProps) => ReactNode;
+  render?: (injectedFieldDisplayProps: FieldRenderProps<T>) => ReactNode;
 };
