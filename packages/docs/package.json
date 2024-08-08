@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "2.4.3",
-    "@docusaurus/theme-mermaid": "^2.4.3",
+    "@docusaurus/theme-mermaid": "^3.4.0",
     "@tsconfig/docusaurus": "^2.0.3",
     "surge": "^0.23.1",
     "typescript": "^5.5.4"
