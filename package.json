@@ -15,7 +15,7 @@
 		"@eslint/eslintrc": "^3.1.0",
 		"@eslint/js": "^9.8.0",
 		"globals": "^15.9.0",
-		"lefthook": "^1.7.7"
+		"lefthook": "^1.7.18"
 	},
 	"resolutions": {
 		"@types/react": "18.2.17"
