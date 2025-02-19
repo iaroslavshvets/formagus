@@ -18,7 +18,7 @@ export default {
       file: packageJson.module,
       format: 'es',
       sourcemap: true,
-    }
+    },
   ],
   plugins: [
     typescript(),
@@ -28,6 +28,6 @@ export default {
     visualizer({
       filename: `./build-stats.html`,
       gzipSize: true,
-    })
-  ]
+    }),
+  ],
 };
