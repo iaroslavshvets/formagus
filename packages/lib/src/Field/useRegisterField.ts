@@ -6,10 +6,7 @@ import {type FieldCommonProps, type FieldFormagus} from './Field.types';
 
 export const useRegisterField = (props: FieldCommonProps) => {
   const controller = useFormControllerClass(props);
-
-  const computedField = computed(() => controller.fields.get(props.name));
-
-  const field = computedField.get();
+  const field = controller.fields.get(props.name);
   const isReady = field !== undefined;
 
   const formagus = computed<FieldFormagus | undefined>(() => {
@@ -18,10 +15,10 @@ export const useRegisterField = (props: FieldCommonProps) => {
       return undefined;
     }
 
-    const {meta, errors} = field;
+    const {meta} = field;
 
-    const safeErrors = toJSCompat(errors);
-    const safeValue = toJSCompat(field.value, false);
+    const safeErrors = toJSCompat(field.errors);
+    const safeValue = toJSCompat(field.value);
     const safeCustomState = toJSCompat(meta.customState);
 
     return {
@@ -58,8 +55,8 @@ export const useRegisterField = (props: FieldCommonProps) => {
   }, []);
 
   useEffect(() => {
-    if (isReady && props.onInit) {
-      props.onInit(formagus.get()!);
+    if (isReady) {
+      props.onInit?.(formagus.get()!);
     }
   }, [isReady]);
 
