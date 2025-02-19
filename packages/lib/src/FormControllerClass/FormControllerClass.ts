@@ -9,7 +9,7 @@ import {type WithRequiredProperty} from '../utils/types/withRequiredProperty';
 import {isMobx6Used} from '../utils/isMobx6Used';
 import {isEmpty} from '../utils/isEmpty';
 import {mergeDeep} from '../utils/mergeDeep';
-//eslint-disable-next-line @typescript-eslint/no-var-requires
+
 const {makeObservable} = require('mobx'); // require as import might not work in case of mobx5 bundling in userland
 
 export class FormControllerClass {
@@ -146,7 +146,7 @@ export class FormControllerClass {
 
   // all registered form fields, new field is being added when Field constructor is called
   fields = observable.map<string, FormField>(undefined, {
-    deep: false,
+    deep: !isMobx6Used(),
   });
 
   @action protected setFieldErrors = (field: FormField, errors?: unknown) => {
@@ -176,39 +176,41 @@ export class FormControllerClass {
   };
 
   @action protected addVirtualField = (fieldName: string) => {
-    const fieldProps = makeObservable(
-      {
-        errors: undefined,
-        value: undefined,
-        fieldProps: undefined,
-        validateField: () => this.validateField(fieldName),
-        validate: () => this.validate(),
-        onChange: (value: unknown) => this.setFieldValue(fieldName, value),
-        /** @deprecated */
-        setCustomState: (key: string, value: unknown) => this.setFieldCustomState(fieldName, key, value),
-        onFocus: () => this.changeFieldActiveState(fieldName, true),
-        onBlur: () => this.changeFieldActiveState(fieldName, false),
-        meta: {
-          onEqualityCheck: (a: unknown, b: unknown) => a === b || (isEmpty(a) && isEmpty(b)),
-          customState: {},
-          initialValue: undefined,
-          isTouched: false,
-          isChanged: false,
-          isActive: false,
-          isValidating: false,
-          isMounted: false,
-          isRegistered: false,
-          isDirty: false,
-        },
+    const rawFieldProps = {
+      errors: undefined,
+      value: undefined,
+      fieldProps: undefined,
+      validateField: () => this.validateField(fieldName),
+      validate: () => this.validate(),
+      onChange: (value: unknown) => this.setFieldValue(fieldName, value),
+      /** @deprecated */
+      setCustomState: (key: string, value: unknown) => this.setFieldCustomState(fieldName, key, value),
+      onFocus: () => this.changeFieldActiveState(fieldName, true),
+      onBlur: () => this.changeFieldActiveState(fieldName, false),
+      meta: {
+        onEqualityCheck: (a: unknown, b: unknown) => a === b || (isEmpty(a) && isEmpty(b)),
+        customState: {},
+        initialValue: undefined,
+        isTouched: false,
+        isChanged: false,
+        isActive: false,
+        isValidating: false,
+        isMounted: false,
+        isRegistered: false,
+        isDirty: false,
       },
-      {
+    };
+
+    if (isMobx6Used()) {
+      const fieldProps = makeObservable(rawFieldProps, {
         value: observable,
         errors: observable,
         meta: observable,
-      },
-    );
-
-    this.fields.set(fieldName, fieldProps);
+      });
+      this.fields.set(fieldName, fieldProps);
+    } else {
+      this.fields.set(fieldName, rawFieldProps);
+    }
   };
 
   // used for first time field creation
