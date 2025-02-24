@@ -9049,7 +9049,7 @@ __metadata:
     "@types/hoist-non-react-statics": ^3.3.6
     "@types/jest": ^29.5.14
     "@types/lodash": ^4.17.15
-    "@types/react": ^18.3.18
+    "@types/react": ^19.0.10
     "@types/react-dom": ^18.3.5
     "@typescript-eslint/eslint-plugin": ^8.24.1
     "@typescript-eslint/parser": 8.24.1
@@ -9073,7 +9073,7 @@ __metadata:
     mobx-react-lite: ^4.1.0
     prettier: ^3.5.1
     prettier-eslint: ^16.3.0
-    react: ^18.3.1
+    react: ^19.0.0
     react-dom: ^18.3.1
     rollup: ^4.34.8
     rollup-plugin-size: ^0.3.1
@@ -13313,7 +13313,7 @@ __metadata:
     "@tsconfig/docusaurus": ^2.0.3
     clsx: ^2.1.1
     prism-react-renderer: ^2.4.1
-    react: ^18.3.1
+    react: ^19.0.0
     react-dom: ^18.3.1
     surge: ^0.24.6
     typescript: ^5.7.3
@@ -14610,12 +14610,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^18.3.1":
-  version: 18.3.1
-  resolution: "react@npm:18.3.1"
-  dependencies:
-    loose-envify: ^1.1.0
-  checksum: 283e8c5efcf37802c9d1ce767f302dd569dd97a70d9bb8c7be79a789b9902451e0d16334b05d73299b20f048cbc3c7d288bbbde10b701fa194e2089c237dbea3
+"react@npm:^19.0.0":
+  version: 19.0.0
+  resolution: "react@npm:19.0.0"
+  checksum: 9cad8f103e8e3a16d15cb18a0d8115d8bd9f9e1ce3420310aea381eb42aa0a4f812cf047bb5441349257a05fba8a291515691e3cb51267279b2d2c3253f38471
   languageName: node
   linkType: hard
 
