@@ -26,7 +26,7 @@ jobs:
         uses: borales/actions-yarn@v4
         with:
           dir: packages/lib
-          cmd: test:ci-coverage
+          cmd: test:coverage
       - name: Build docs
         uses: borales/actions-yarn@v4
         with:
