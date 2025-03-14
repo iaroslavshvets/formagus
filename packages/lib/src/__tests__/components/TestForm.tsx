@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {type ReactNode} from 'react';
 import {type FormAPI, type FormControllerOptions} from '../../FormControllerClass/FormControllerClass.types';
 import {Field, Form, type FormController} from '../../index';
 import {Input} from './Input';
@@ -6,7 +6,7 @@ import {Input} from './Input';
 export const TestForm = (
   props: FormControllerOptions & {
     controller?: FormController;
-    children?: React.ReactNode;
+    children?: ReactNode;
   },
 ) => {
   const {controller, children, ...formProps} = props;
@@ -21,7 +21,7 @@ export const TestForm = (
             onSubmit={(e) => {
               void submit(e);
             }}
-            noValidate
+            noValidate={true}
             data-hook="test-form"
           >
             {children ?? (
