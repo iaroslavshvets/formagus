@@ -4,6 +4,7 @@ import commonJS from '@rollup/plugin-commonjs';
 import {visualizer} from 'rollup-plugin-visualizer';
 import size from 'rollup-plugin-size';
 import packageJson from './package.json' assert {type: 'json'};
+import isCi from 'is-ci';
 
 export default {
   external: ['react', 'react-dom', 'mobx', 'mobx-react-lite', 'lodash'],
@@ -25,7 +26,7 @@ export default {
     commonJS(),
     terser(),
     size(),
-    visualizer({
+    !isCi && visualizer({
       filename: `./build-stats.html`,
       gzipSize: true,
     }),
