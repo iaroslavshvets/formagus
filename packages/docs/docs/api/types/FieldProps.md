@@ -4,7 +4,6 @@ interface FieldProps {
     name: string;
     meta: FieldMeta;
     value: any;
-    setCustomState: (key: string, value: any) => void;
     onChange: (value: any) => void;
     onFocus: () => void;
     onBlur: () => void;

@@ -18,17 +18,17 @@ export const useRegisterField = (props: FieldCommonProps) => {
     const {meta} = field;
 
     const safeErrors = toJSCompat(field.errors);
+
     const safeValue = toJSCompat(field.value);
-    const safeCustomState = toJSCompat(meta.customState);
 
     return {
       name: props.name,
+
       value: safeValue,
+
       errors: safeErrors,
       fieldProps: props,
       meta: {
-        /** @deprecated don't use */
-        customState: safeCustomState,
         initialValue: meta.initialValue,
         isActive: meta.isActive,
         isDirty: meta.isDirty,
@@ -37,8 +37,6 @@ export const useRegisterField = (props: FieldCommonProps) => {
         isValidating: meta.isValidating,
         isMounted: meta.isMounted,
       },
-      /** @deprecated */
-      setCustomState: field.setCustomState,
       validateField: field.validateField,
       validate: field.validate,
       onChange: field.onChange,

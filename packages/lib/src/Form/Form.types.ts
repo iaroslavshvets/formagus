@@ -2,7 +2,7 @@ import {type FormAPI, type FormControllerOptions} from '../FormControllerClass/F
 import {type FormController} from '../createFormController/createFormController.types';
 import {type ReactNode} from 'react';
 
-export interface FormProps extends FormControllerOptions {
+export type FormProps = {
   children: (renderProps: FormAPI) => ReactNode;
   controller?: FormController;
-}
+} & FormControllerOptions;

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://unpkg.com/syncpack@13.0.3/dist/schema.json",
+  "dependencyTypes": [
+    "!peer",
+    "!local"
+  ],
+  "semverGroups": [
+    {
+      "range": "^"
+    }
+  ],
+  "versionGroups": [
+    {
+      "label": "@types packages should only be under devDependencies",
+      "dependencies": ["@types/**"],
+      "dependencyTypes": ["prod", "peer"],
+      "isBanned": true
+    }
+  ],
+  "sortFirst": [
+    "name",
+    "description",
+    "version",
+    "private",
+    "license",
+    "author",
+    "contributors",
+    "repository",
+    "homepage",
+    "packageManager",
+    "type",
+    "exports",
+    "main",
+    "module",
+    "types",
+    "sideEffects",
+    "files",
+    "workspaces",
+    "scripts",
+    "eslintConfig",
+    "lint-staged",
+    "resolutions",
+    "dependencies",
+    "devDependencies",
+    "peerDependencies",
+    "engines"
+  ]
+}

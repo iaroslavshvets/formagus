@@ -4,60 +4,28 @@ import {type OnEqualityCheckFunction, type FieldProps, type FieldFormagus} from 
 export type Values = Record<string, any>;
 export type Errors = Record<string, any>;
 
-export interface SubmitParams<T extends HTMLElement = HTMLElement> {
+export type SubmitParams<T extends HTMLElement = HTMLElement> = {
   values: Values;
   errors: Errors;
-  /** @deprecated Don't use, use isValid instead. */
-  isSuccess: boolean;
   isValid: boolean;
   event?: FormEvent<T>;
-}
+};
 
-export type FormagusEvent =
-  | {
-      type: 'submit:begin';
-    }
-  | ({
-      type: 'submit:end';
-    } & Omit<SubmitParams, 'event'>)
-  | {
-      type: 'validate:begin';
-    }
-  | {
-      type: 'validate:end';
-      errors: Errors;
-    }
-  | {
-      type: 'validateField:begin';
-      name: string;
-    }
-  | {
-      type: 'validateField:end';
-      name: string;
-      errors: Errors;
-    };
-
-export interface FormControllerOptions {
+export type FormControllerOptions = {
   initialValues?: any;
   onValidate?: (values: Values) => Promise<any>;
-  onFormat?: (values: Values) => any;
-  onSubmit?: (params: SubmitParams) => void;
-  fieldValueToFormValuesConverter?: {
-    set: (values: Values, fieldName: string, value: any) => any;
-    get: (values: Values, fieldName: string) => any;
-  };
-}
+  onFormat?: (values: Values) => Values;
+  onSubmit?: (params: SubmitParams) => any;
+};
 
-export interface FormField
-  extends Pick<FieldFormagus, 'onChange' | 'setCustomState' | 'onFocus' | 'onBlur' | 'validate' | 'validateField'> {
+export type FormField = {
   meta: FieldMeta;
   fieldProps?: FieldProps;
   value: any;
   errors: any;
-}
+} & Pick<FieldFormagus, 'onChange' | 'onFocus' | 'onBlur' | 'validate' | 'validateField'>;
 
-export interface FieldMeta {
-  customState: Record<string, any>;
+export type FieldMeta = {
   onEqualityCheck: OnEqualityCheckFunction;
   initialValue: any;
   isTouched: boolean;
@@ -67,9 +35,9 @@ export interface FieldMeta {
   isDirty: boolean;
   isMounted: boolean;
   isRegistered: boolean;
-}
+};
 
-export interface FormMeta {
+export type FormMeta = {
   isValidating: boolean;
   isSubmitting: boolean;
   submitCount: number;
@@ -77,12 +45,11 @@ export interface FormMeta {
   isDirty: boolean;
   isTouched: boolean;
   isChanged: boolean;
-}
+};
 
-export interface FormAPI {
+export type FormAPI = {
   // form
   values: Values;
-  rawValues: Values;
   errors: Errors;
   meta: FormMeta;
   submit: <T extends HTMLElement>(
@@ -91,17 +58,16 @@ export interface FormAPI {
     Omit<SubmitParams<T>, 'event'> & {
       submitResult:
         | {
-            isSuccess: true;
+            isValid: true;
             response: any;
           }
         | {
-            isSuccess: false;
+            isValid: false;
             error: Error;
           };
     }
   >;
-  reset: () => void;
-  clear: () => void;
+  reset: (values?: Values) => void;
   validate: () => any;
   resetToValues: (values: Values) => void;
   // fields
@@ -110,6 +76,4 @@ export interface FormAPI {
   validateField: (fieldName: string) => any;
   setFieldValue: (fieldName: string, value: any) => void;
   getFields: () => Record<string, FormField>;
-  /** @deprecated don't use */
-  setFieldCustomState: (fieldName: string, key: string, value: any) => void;
-}
+};

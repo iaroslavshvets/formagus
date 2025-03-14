@@ -12,10 +12,12 @@ dist
 # misc
 .DS_Store
 
-packages/**npm-debug.log*
 packages/**yarn-debug.log*
 packages/**yarn-error.log*
 packages/lib/coverage*
 packages/lib/build-stats.html
 
 .yarn/install-state.gz
+
+yarn-debug.log*
+yarn-error.log*

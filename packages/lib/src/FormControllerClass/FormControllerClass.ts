@@ -1,37 +1,32 @@
 import ReactDOM from 'react-dom';
 import {action, observable, runInAction} from 'mobx';
 import {observerBatching} from 'mobx-react-lite';
-import {get as _get, set as _set} from 'lodash';
+import {get, set} from 'lodash';
 import {toJSCompat} from '../utils/toJSCompat';
 import {type FieldProps, type OnValidateFunction} from '../Field/Field.types';
 import {type FormAPI, type FormControllerOptions, type FormField, type Values} from './FormControllerClass.types';
-import {type WithRequiredProperty} from '../utils/types/withRequiredProperty';
 import {isMobx6Used} from '../utils/isMobx6Used';
 import {isEmpty} from '../utils/isEmpty';
 import {mergeDeep} from '../utils/mergeDeep';
-
+// eslint-disable-next-line @typescript-eslint/no-require-imports, no-undef
 const {makeObservable} = require('mobx'); // require as import might not work in case of mobx5 bundling in userland
 
 export class FormControllerClass {
   // Form options passed through form Props or directly through new Controller(options)
-  protected options: WithRequiredProperty<FormControllerOptions, 'fieldValueToFormValuesConverter'>;
+  protected options: FormControllerOptions;
 
   constructor(options: FormControllerOptions) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (observerBatching) {
       observerBatching(ReactDOM.unstable_batchedUpdates);
     }
 
     if (isMobx6Used()) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       makeObservable(this);
     }
 
-    this.options = {
-      ...options,
-      fieldValueToFormValuesConverter: options.fieldValueToFormValuesConverter || {
-        get: _get,
-        set: _set,
-      },
-    };
+    this.options = options;
 
     this.createFormApi();
   }
@@ -42,7 +37,6 @@ export class FormControllerClass {
     this.fieldLevelValidations[fieldName] = onValidateFunction;
   };
 
-  protected safeApiRawValuesCopy: Record<string, unknown> = {};
   protected safeApiValuesCopy: Record<string, unknown> = {};
 
   @action protected updateAPIValues = (fieldName?: string, value?: unknown) => {
@@ -51,27 +45,24 @@ export class FormControllerClass {
       const field = this.fields.get(fieldName);
 
       if (field?.meta.isMounted) {
-        this.options.fieldValueToFormValuesConverter.set(
+        set(
           this.safeApiValuesCopy,
           fieldName,
           field.fieldProps?.onFormat ? field.fieldProps.onFormat(safeValue) : safeValue,
         );
-        this.options.fieldValueToFormValuesConverter.set(this.safeApiRawValuesCopy, fieldName, safeValue);
       }
     } else {
       this.safeApiValuesCopy = {};
-      this.safeApiRawValuesCopy = {};
 
       this.fields.forEach((field, name) => {
         if (field.meta.isMounted) {
           const safeValue = toJSCompat(field.value, false);
 
-          this.options.fieldValueToFormValuesConverter.set(
+          set(
             this.safeApiValuesCopy,
             name,
             field.fieldProps?.onFormat ? field.fieldProps.onFormat(safeValue) : safeValue,
           );
-          this.options.fieldValueToFormValuesConverter.set(this.safeApiRawValuesCopy, name, safeValue);
         }
       });
     }
@@ -81,7 +72,6 @@ export class FormControllerClass {
     }
 
     this.API.values = this.safeApiValuesCopy;
-    this.API.rawValues = this.safeApiRawValuesCopy;
   };
 
   @action protected updateInitialValues = (values?: unknown) => {
@@ -92,9 +82,9 @@ export class FormControllerClass {
     this.fields.forEach((field, name) => {
       if (field.meta.isMounted) {
         if (!values) {
-          this.options.fieldValueToFormValuesConverter.set(this.options.initialValues, name, field.value);
+          set(this.options.initialValues, name, field.value);
         }
-        const initialValue = this.options.fieldValueToFormValuesConverter.get(this.options.initialValues, name);
+        const initialValue = get(this.options.initialValues, name);
 
         field.meta.isDirty = !field.meta.onEqualityCheck(field.value, initialValue);
         field.meta.initialValue = initialValue;
@@ -108,7 +98,7 @@ export class FormControllerClass {
   };
 
   // executes all field level validators passed to Fields as a `onValidate` prop and returns errors
-  protected runFieldLevelValidations = () => {
+  @action protected runFieldLevelValidations = () => {
     let pendingValidationCount = Object.keys(this.fieldLevelValidations).length;
 
     if (pendingValidationCount === 0) {
@@ -125,7 +115,7 @@ export class FormControllerClass {
           field.meta.isValidating = true;
         });
 
-        Promise.resolve(this.runFieldLevelValidation(fieldName)).then((error) => {
+        void Promise.resolve(this.runFieldLevelValidation(fieldName)).then((error) => {
           if (error !== undefined && error !== null) {
             errors[fieldName] = error;
           }
@@ -169,10 +159,7 @@ export class FormControllerClass {
 
   // runs validation for particular field
   protected runFieldLevelValidation = (fieldName: string) => {
-    return this.fieldLevelValidations[fieldName](
-      this.options.fieldValueToFormValuesConverter.get(this.API.values, fieldName),
-      this.API.values,
-    );
+    return this.fieldLevelValidations[fieldName]?.(get(this.API.values, fieldName), this.API.values);
   };
 
   @action protected addVirtualField = (fieldName: string) => {
@@ -182,14 +169,17 @@ export class FormControllerClass {
       fieldProps: undefined,
       validateField: () => this.validateField(fieldName),
       validate: () => this.validate(),
-      onChange: (value: unknown) => this.setFieldValue(fieldName, value),
-      /** @deprecated */
-      setCustomState: (key: string, value: unknown) => this.setFieldCustomState(fieldName, key, value),
-      onFocus: () => this.changeFieldActiveState(fieldName, true),
-      onBlur: () => this.changeFieldActiveState(fieldName, false),
+      onChange: (value: unknown) => {
+        this.setFieldValue(fieldName, value);
+      },
+      onFocus: () => {
+        this.changeFieldActiveState(fieldName, true);
+      },
+      onBlur: () => {
+        this.changeFieldActiveState(fieldName, false);
+      },
       meta: {
         onEqualityCheck: (a: unknown, b: unknown) => a === b || (isEmpty(a) && isEmpty(b)),
-        customState: {},
         initialValue: undefined,
         isTouched: false,
         isChanged: false,
@@ -202,11 +192,13 @@ export class FormControllerClass {
     };
 
     if (isMobx6Used()) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       const fieldProps = makeObservable(rawFieldProps, {
         value: observable,
         errors: observable,
         meta: observable,
       });
+
       this.fields.set(fieldName, fieldProps);
     } else {
       this.fields.set(fieldName, rawFieldProps);
@@ -216,7 +208,6 @@ export class FormControllerClass {
   // used for first time field creation
   @action protected initializeVirtualField = (props: FieldProps) => {
     const {name, onEqualityCheck, persist = false} = props;
-    const {get} = this.options.fieldValueToFormValuesConverter;
     const field = this.fields.get(name)!;
 
     const initialValue =
@@ -272,6 +263,7 @@ export class FormControllerClass {
 
     this.updateIsDirtyBasedOnFields();
 
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     delete this.fieldLevelValidations[name];
 
     this.updateAPIValues();
@@ -299,13 +291,14 @@ export class FormControllerClass {
   @action protected createFormApi = () => {
     this.API = {
       values: {},
-      rawValues: {},
       errors: {},
       submit: this.submit,
       resetToValues: this.resetToValues,
       hasField: this.hasField,
-      reset: () => this.resetToValues(this.options.initialValues || {}), // resets the form to initial values
-      clear: () => this.resetToValues({}), // resets the form to empty values
+      reset: (values?: Values) => {
+        // resets the form to initial values or custom if provided
+        this.resetToValues(values ?? this.options.initialValues ?? {});
+      },
       setFieldValue: this.setFieldValue,
       validate: this.validate,
       validateField: this.validateField,
@@ -320,7 +313,6 @@ export class FormControllerClass {
         isTouched: false,
         isChanged: false,
       },
-      setFieldCustomState: this.setFieldCustomState,
     };
   };
 
@@ -329,17 +321,14 @@ export class FormControllerClass {
   };
 
   protected getFields = () => {
-    return Array.from(this.fields.entries()).reduce(
-      (acc, [key, value]) => {
-        acc[key] = value;
-        return acc;
-      },
-      {} as Record<string, FormField>,
-    );
+    return [...this.fields.entries()].reduce<Record<string, FormField>>((acc, [key, value]) => {
+      acc[key] = value;
+      return acc;
+    }, {});
   };
 
   @action protected updateIsDirtyBasedOnFields = () => {
-    const fields = Array.from(this.fields.values());
+    const fields = [...this.fields.values()];
     this.setIsDirty(fields.some((field) => field.meta.isMounted && field.meta.isDirty));
   };
 
@@ -352,7 +341,7 @@ export class FormControllerClass {
   };
 
   @action protected updateIsChangedBasedOnFields = () => {
-    const fields = Array.from(this.fields.values());
+    const fields = [...this.fields.values()];
     this.setIsChanged(fields.some((field) => field.meta.isMounted && field.meta.isChanged));
   };
 
@@ -380,7 +369,7 @@ export class FormControllerClass {
   // general handler for resetting form to specific state
   @action protected resetToValues = (values: Values) => {
     this.fields.forEach((field, name) => {
-      const newValue = this.options.fieldValueToFormValuesConverter.get(values, name);
+      const newValue = get(values, name);
       const fieldName = field.fieldProps?.name;
 
       field.value = newValue;
@@ -410,18 +399,6 @@ export class FormControllerClass {
     field.meta.isActive = isActive;
   };
 
-  // changes field custom state, that was set by user
-  /** @deprecated */
-  @action protected setFieldCustomState = (fieldName: string, key: string, value: unknown) => {
-    this.createFieldIfDoesNotExist(fieldName);
-    const field = this.fields.get(fieldName)!;
-
-    field.meta.customState = {
-      ...field.meta.customState,
-      [key]: value,
-    };
-  };
-
   // changes when adapter onChange handler is called
   @action protected setFieldValue: FormAPI['setFieldValue'] = (fieldName, value) => {
     this.createFieldIfDoesNotExist(fieldName);
@@ -430,12 +407,12 @@ export class FormControllerClass {
     field.value = value;
 
     field.meta.isChanged = true;
-    field.meta.isDirty = !field.meta.onEqualityCheck(value, field.meta.initialValue);
+    field.meta.isDirty = !field.meta.onEqualityCheck(field.value, field.meta.initialValue);
 
     this.updateIsChangedBasedOnFields();
     this.updateIsDirtyBasedOnFields();
 
-    this.updateAPIValues(fieldName, value);
+    this.updateAPIValues(fieldName, field.value);
   };
 
   protected createFieldIfDoesNotExist = (fieldName: string) => {
@@ -445,7 +422,7 @@ export class FormControllerClass {
   };
 
   // validates single field by calling field level validation, passed to Field as `validate` prop
-  protected validateField: FormAPI['validateField'] = async (fieldName) => {
+  @action protected validateField: FormAPI['validateField'] = async (fieldName) => {
     if (!this.fieldLevelValidations[fieldName]) {
       return undefined;
     }
@@ -465,6 +442,7 @@ export class FormControllerClass {
       this.updateErrors({
         mutator: () => {
           if (isEmpty(errors)) {
+            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete this.API.errors[fieldName];
           } else {
             this.API.errors[fieldName] = errors;
@@ -484,7 +462,7 @@ export class FormControllerClass {
 
   // validates the form, by calling form level onValidate function combined with field level validations,
   // passed to Field as `onValidate` prop
-  protected validate: FormAPI['validate'] = async () => {
+  @action protected validate: FormAPI['validate'] = async () => {
     const hasFieldLevelValidations = Object.keys(this.fieldLevelValidations).length > 0;
 
     this.setIsValidating(true);
@@ -494,7 +472,7 @@ export class FormControllerClass {
       this.options.onValidate ? this.runFormLevelValidations() : {},
     ]);
 
-    const combinedErrors = mergeDeep(fieldValidationErrors, formValidationErrors) || {};
+    const combinedErrors = mergeDeep(fieldValidationErrors, formValidationErrors);
 
     runInAction(() => {
       this.updateErrors({value: combinedErrors});
@@ -522,22 +500,18 @@ export class FormControllerClass {
     const [errors, values] = toJSCompat([this.API.errors, this.API.values]);
     const isValid = isEmpty(errors);
 
-    let isSuccess = false;
     let error: unknown;
     let response: unknown;
 
     try {
       if (this.options.onSubmit) {
         response = await this.options.onSubmit({
-          errors,
-          values,
+          errors: errors!,
+          values: values!,
           isValid,
-          isSuccess: isValid,
           event: submitEvent,
         });
       }
-
-      isSuccess = true;
 
       runInAction(() => {
         if (isEmpty(errors)) {
@@ -553,17 +527,16 @@ export class FormControllerClass {
     }
 
     return {
-      errors,
-      values,
+      errors: errors!,
+      values: values!,
       isValid,
-      isSuccess: isValid,
-      submitResult: isSuccess
+      submitResult: isValid
         ? ({
-            isSuccess,
+            isValid,
             response,
           } as const)
         : ({
-            isSuccess,
+            isValid,
             error: error as Error,
           } as const),
     };

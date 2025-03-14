@@ -4,7 +4,6 @@ export interface AdapterProps {
     name: string;
     meta: FieldMeta;
     value: any;
-    setCustomState: (key: string, value: any) => void;
     formAPI: FormAPI;
     onChange: (value: any) => void;
     onFocus: () => void;

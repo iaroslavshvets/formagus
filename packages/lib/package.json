@@ -1,36 +1,11 @@
 {
   "name": "formagus",
-  "version": "2.1.4",
+  "version": "3.0.0",
   "license": "MIT",
-  "sideEffects": false,
-  "authors": [
-    {
-      "name": "Iaroslav Shvets",
-      "email": "iaroslav.shvets@gmail.com"
-    }
-  ],
-  "engines": {
-    "node": ">=20"
-  },
-  "scripts": {
-    "build": "rollup --config",
-    "test": "jest",
-    "test:unit": "jest",
-    "test:watch": "jest --watch --detectOpenHandles",
-    "test:coverage": "jest --coverage",
-    "test:ci-coverage": "jest --ci --coverage",
-    "posttest": "yarn test:coverage",
-    "precommit": "lint-staged",
-    "postcommit": "git update-index --again",
-    "prepush": "yarn test",
-    "lint": "yarn es-lint && yarn format",
-    "format": "prettier --write '{src,__tests__}/**/*.{ts,tsx,js,json,scss,css}'",
-    "es-lint": "eslint --fix '{src,__tests__}/**/*.{ts,tsx}'",
-    "commit-cz": "git-cz"
-  },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/src/index.d.ts",
+  "sideEffects": false,
   "files": [
     "/dist/src",
     "/dist/index.cjs",
@@ -38,52 +13,55 @@
     "/dist/index.js",
     "/dist/index.js.map"
   ],
+  "scripts": {
+    "build": "rollup --config",
+    "commit-cz": "git-cz",
+    "es-lint": "eslint ./src/**/*.(json|ts|tsx) --fix --max-warnings=0",
+    "format": "prettier --write 'src/**/*.{ts,tsx,js,json,scss,css}'",
+    "lint": "yarn es-lint && yarn format",
+    "postcommit": "git update-index --again",
+    "posttest": "yarn test:coverage",
+    "precommit": "lint-staged",
+    "prepush": "yarn test",
+    "test": "yarn test:unit",
+    "test:coverage": "vitest --coverage",
+    "test:unit": "vitest run",
+    "test:watch": "vitest watch",
+    "tsc": "tsc --noEmit"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^26.0.3",
+    "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^11.1.6",
-    "@swc/core": "^1.10.18",
-    "@swc/jest": "^0.2.37",
-    "@testing-library/react": "^15.0.7",
-    "@types/hoist-non-react-statics": "^3.3.6",
-    "@types/jest": "^29.5.14",
-    "@types/lodash": "^4.17.15",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "@typescript-eslint/eslint-plugin": "^8.24.1",
-    "@typescript-eslint/parser": "8.24.1",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.2.0",
+    "@types/lodash": "^4.17.16",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@typescript-eslint/eslint-plugin": "^8.26.1",
+    "@typescript-eslint/parser": "^8.26.1",
+    "@vitejs/plugin-react": "^4.3.4",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^9.20.1",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-isaacscript": "^3.12.2",
-    "eslint-plugin-prettier": "^5.2.3",
-    "eslint-plugin-promise": "^7.2.1",
-    "eslint-plugin-react": "^7.37.4",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "jest": "^29.7.0",
-    "jest-cli": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
-    "lint-staged": "^15.4.3",
+    "eslint": "^9.22.0",
+    "jsdom": "^26.0.0",
+    "lint-staged": "^15.5.0",
     "mobx": "^6.13.6",
     "mobx-react-lite": "^4.1.0",
-    "prettier": "^3.5.1",
-    "prettier-eslint": "^16.3.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "rollup": "^4.34.8",
+    "prettier": "^3.5.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "rollup": "^4.35.0",
     "rollup-plugin-size": "^0.3.1",
     "rollup-plugin-visualizer": "^5.14.0",
     "trier-promise": "^1.0.1",
-    "ts-jest": "^29.2.5",
-    "ts-loader": "^9.5.2",
     "tslib": "^2.8.1",
-    "typescript": "^5.7.3"
-  },
-  "dependencies": {
-    "hoist-non-react-statics": "^3.3.2",
-    "lodash": "^4.17.21"
+    "typescript": "^5.8.2",
+    "vite": "^6.2.2",
+    "vitest": "^3.0.8"
   },
   "peerDependencies": {
     "mobx": "*",
@@ -91,6 +69,15 @@
     "react": "*",
     "react-dom": "*"
   },
+  "engines": {
+    "node": ">=20"
+  },
+  "authors": [
+    {
+      "name": "Iaroslav Shvets",
+      "email": "iaroslav.shvets@gmail.com"
+    }
+  ],
   "config": {
     "commitizen": {
       "path": "./packages/lib/node_modules/cz-conventional-changelog"

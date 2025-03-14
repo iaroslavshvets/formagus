@@ -24,6 +24,4 @@ export {useField} from './useField';
 export {Form} from './Form/Form';
 export {useForm} from './useForm';
 
-// deprecated, but still may be used with React class components
-export {injectFormApi} from './injectFormApi/injectFormApi';
-export {InjectedFormAPI} from './injectFormApi/injectFormApi.types';
+export {get as getValue, set as setValue} from 'lodash';

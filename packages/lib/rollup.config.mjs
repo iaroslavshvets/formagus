@@ -6,7 +6,7 @@ import size from 'rollup-plugin-size';
 import packageJson from './package.json' assert {type: 'json'};
 
 export default {
-  external: ['react', 'react-dom', 'mobx', 'mobx-react-lite', 'lodash', 'hoist-non-react-statics'],
+  external: ['react', 'react-dom', 'mobx', 'mobx-react-lite', 'lodash'],
   input: 'src/index.ts',
   output: [
     {

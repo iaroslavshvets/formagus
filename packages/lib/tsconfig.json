@@ -1,20 +1,40 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
     "strict": true,
-    "importHelpers": true,
     "esModuleInterop": true,
+    "sourceMap": true,
+    "erasableSyntaxOnly": true,
+    "allowJs": false,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "resolveJsonModule": true,
+    "declarationMap": true,
+    "importHelpers": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitThis": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "useDefineForClassFields": true,
+    "allowUnreachableCode": false,
+    "noEmit": false,
+    "outDir": "./dist/",
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "pretty": true,
-    "target": "es5",
+    "target": "ES2021",
     "jsx": "react",
+    "module": "ES2022",
+    "moduleResolution": "Node",
     "skipLibCheck": true,
-    "declaration": true
+    "declaration": true,
+    "types": ["vitest/globals.d.ts"]
   },
   "include": [
     "./typings/**/*.d.ts",
     "./src/**/*.ts*",
-    "./__tests__/**/*.ts*"
+    "./src/__tests__/**/*.ts*"
   ]
 }

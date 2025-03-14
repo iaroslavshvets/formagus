@@ -2,9 +2,9 @@ import {type ReactNode} from 'react';
 import {type FormController} from '../createFormController/createFormController.types';
 import {type FormControllerClass} from '../FormControllerClass/FormControllerClass';
 
-export type OnValidateFunction<T = any> =
-  | ((value: T, values?: any) => any)
-  | ((value: T, values?: any) => Promise<any>);
+export type OnValidateFunction<T = unknown> =
+  | ((value: T, values?: unknown) => unknown)
+  | ((value: T, values?: unknown) => Promise<unknown>);
 
 export type FieldMeta = Readonly<{
   initialValue: any;
@@ -14,18 +14,13 @@ export type FieldMeta = Readonly<{
   isActive: boolean;
   isValidating: boolean;
   isMounted: boolean;
-  /** @deprecated */
-  customState: Record<string, any>;
 }>;
 
-export type FieldFormagus<T = any> = Readonly<{
+export type FieldFormagus<T = unknown> = Readonly<{
   name: string;
   meta: FieldMeta;
   value: any;
   errors: any;
-  /** @deprecated */
-
-  setCustomState: (key: string, value: any) => void;
 
   onChange: (value: any) => void;
   onFocus: () => void;
@@ -35,14 +30,14 @@ export type FieldFormagus<T = any> = Readonly<{
   fieldProps: FieldProps<T>;
 }>;
 
-export interface FieldRenderProps<T = any> {
+export type FieldRenderProps<T = any> = {
   formagus: FieldFormagus<T>;
-}
+};
 
 export type OnFormatFunction<T = any> = (value: T) => any;
 export type OnEqualityCheckFunction<T = any> = (newValue: T, oldValue: T) => boolean;
 
-export interface FieldCommonProps<T = any> {
+export type FieldCommonProps<T = any> = {
   name: string;
   defaultValue?: T;
   onValidate?: OnValidateFunction<T>;
@@ -51,7 +46,7 @@ export interface FieldCommonProps<T = any> {
   onInit?: (API: FieldFormagus) => void;
   persist?: boolean;
   controller?: FormControllerClass;
-}
+};
 
 export type FieldProps<T = any> = Omit<FieldCommonProps<T>, 'controller'> & {
   controller?: FormController;
