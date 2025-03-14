@@ -1,20 +1,36 @@
 {
   "name": "formagus",
+  "description": "Versatile form library powered by Mobx",
   "version": "3.0.0",
   "license": "MIT",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/src/index.d.ts",
+  "author": {
+    "name": "Iaroslav Shvets",
+    "email": "iaroslav.shvets@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:iaroslavshvets/formagus.git",
+    "directory": "/packages/lib"
+  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
   "sideEffects": false,
   "files": [
-    "/dist/src",
-    "/dist/index.cjs",
-    "/dist/index.cjs.map",
-    "/dist/index.js",
-    "/dist/index.js.map"
+    "dist/cjs",
+    "dist/esm",
+    "dist/types"
   ],
   "scripts": {
-    "build": "rollup --config",
+    "build": "rm -rf dist && yarn build:ts",
+    "build:ts": "tsc --declarationDir dist/types && tsc --module CommonJS --outDir dist/cjs",
     "commit-cz": "git-cz",
     "es-lint": "eslint ./src/**/*.(json|ts|tsx) --fix --max-warnings=0",
     "format": "prettier --write 'src/**/*.{ts,tsx,js,json,scss,css}'",
@@ -33,9 +49,6 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.3",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^12.1.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
     "@types/lodash": "^4.17.16",
@@ -56,9 +69,6 @@
     "prettier": "^3.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "rollup": "^4.35.0",
-    "rollup-plugin-size": "^0.3.1",
-    "rollup-plugin-visualizer": "^5.14.0",
     "trier-promise": "^1.0.1",
     "tslib": "^2.8.1",
     "typescript": "^5.8.2",
@@ -74,12 +84,6 @@
   "engines": {
     "node": ">=20"
   },
-  "authors": [
-    {
-      "name": "Iaroslav Shvets",
-      "email": "iaroslav.shvets@gmail.com"
-    }
-  ],
   "config": {
     "commitizen": {
       "path": "./packages/lib/node_modules/cz-conventional-changelog"

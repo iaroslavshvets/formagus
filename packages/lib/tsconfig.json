@@ -7,7 +7,6 @@
     "allowJs": false,
     "lib": ["dom", "dom.iterable", "esnext"],
     "resolveJsonModule": true,
-    "declarationMap": true,
     "importHelpers": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -20,7 +19,6 @@
     "useDefineForClassFields": true,
     "allowUnreachableCode": false,
     "noEmit": false,
-    "outDir": "./dist/",
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "pretty": true,
@@ -29,8 +27,9 @@
     "module": "ES2022",
     "moduleResolution": "Node",
     "skipLibCheck": true,
+    "types": ["vitest/globals.d.ts"],
     "declaration": true,
-    "types": ["vitest/globals.d.ts"]
+    "outDir": "dist/esm"
   },
   "include": [
     "./typings/**/*.d.ts",
