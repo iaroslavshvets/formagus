@@ -47,8 +47,8 @@ const config  = [
       ...jsEslint.configs.recommended.rules,
       ...vitest.configs.recommended.rules,
       ...deMorgan.rules.recommended,
-      ...tsEslint.configs['stylistic-type-checked']?.rules,
-      ...tsEslint.configs['strict-type-checked']?.rules,
+      ...tsEslint.configs['stylistic-type-checked'].rules,
+      ...tsEslint.configs['strict-type-checked'].rules,
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
       '@typescript-eslint/consistent-type-imports': [
         'error',
