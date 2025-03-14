@@ -44,7 +44,7 @@ export class FormControllerClass {
       const safeValue = toJSCompat(value, false);
       const field = this.fields.get(fieldName);
 
-      if (field?.meta.isMounted) {
+      if (field?.fieldState.isMounted) {
         set(
           this.safeApiValuesCopy,
           fieldName,
@@ -55,7 +55,7 @@ export class FormControllerClass {
       this.safeApiValuesCopy = {};
 
       this.fields.forEach((field, name) => {
-        if (field.meta.isMounted) {
+        if (field.fieldState.isMounted) {
           const safeValue = toJSCompat(field.value, false);
 
           set(
@@ -80,14 +80,14 @@ export class FormControllerClass {
     }
 
     this.fields.forEach((field, name) => {
-      if (field.meta.isMounted) {
+      if (field.fieldState.isMounted) {
         if (!values) {
           set(this.options.initialValues, name, field.value);
         }
         const initialValue = get(this.options.initialValues, name);
 
-        field.meta.isDirty = !field.meta.onEqualityCheck(field.value, initialValue);
-        field.meta.initialValue = initialValue;
+        field.fieldState.isDirty = !field.fieldState.onEqualityCheck(field.value, initialValue);
+        field.fieldState.initialValue = initialValue;
       }
     });
   };
@@ -112,7 +112,7 @@ export class FormControllerClass {
         const field = this.fields.get(fieldName)!;
 
         runInAction(() => {
-          field.meta.isValidating = true;
+          field.fieldState.isValidating = true;
         });
 
         void Promise.resolve(this.runFieldLevelValidation(fieldName)).then((error) => {
@@ -121,7 +121,7 @@ export class FormControllerClass {
           }
 
           runInAction(() => {
-            field.meta.isValidating = false;
+            field.fieldState.isValidating = false;
           });
 
           pendingValidationCount -= 1;
@@ -178,7 +178,7 @@ export class FormControllerClass {
       onBlur: () => {
         this.changeFieldActiveState(fieldName, false);
       },
-      meta: {
+      fieldState: {
         onEqualityCheck: (a: unknown, b: unknown) => a === b || (isEmpty(a) && isEmpty(b)),
         initialValue: undefined,
         isTouched: false,
@@ -196,7 +196,7 @@ export class FormControllerClass {
       const fieldProps = makeObservable(rawFieldProps, {
         value: observable,
         errors: observable,
-        meta: observable,
+        fieldState: observable,
       });
 
       this.fields.set(fieldName, fieldProps);
@@ -220,9 +220,9 @@ export class FormControllerClass {
 
     field.value = initialValue;
 
-    field.meta.initialValue = initialValue;
+    field.fieldState.initialValue = initialValue;
     if (onEqualityCheck) {
-      field.meta.onEqualityCheck = onEqualityCheck;
+      field.fieldState.onEqualityCheck = onEqualityCheck;
     }
 
     this.updateAPIValues(name, initialValue);
@@ -233,7 +233,7 @@ export class FormControllerClass {
     const {name, onValidate} = props;
 
     // used for cases when field was created, unmounted and created again
-    if (this.fields.get(name)?.meta.isRegistered) {
+    if (this.fields.get(name)?.fieldState.isRegistered) {
       this.fields.get(name)!.fieldProps = props;
     } else {
       this.addVirtualField(name);
@@ -242,8 +242,8 @@ export class FormControllerClass {
 
     const field = this.fields.get(name)!;
 
-    field.meta.isMounted = true;
-    field.meta.isRegistered = true;
+    field.fieldState.isMounted = true;
+    field.fieldState.isRegistered = true;
 
     if (onValidate) {
       this.addFieldLevelValidation(name, onValidate);
@@ -256,7 +256,7 @@ export class FormControllerClass {
   @action unRegisterField = (name: string) => {
     const field = this.fields.get(name)!;
     if (field.fieldProps!.persist) {
-      field.meta.isMounted = false;
+      field.fieldState.isMounted = false;
     } else {
       this.fields.delete(name);
     }
@@ -271,7 +271,7 @@ export class FormControllerClass {
 
   @action protected updateErrorsForEveryField = (formValidationErrors: unknown) => {
     this.fields.forEach((field, name) => {
-      if (field.meta.isMounted) {
+      if (field.fieldState.isMounted) {
         field.errors =
           typeof formValidationErrors === 'object' && formValidationErrors !== null
             ? formValidationErrors[name as keyof typeof formValidationErrors]
@@ -282,7 +282,7 @@ export class FormControllerClass {
 
   protected hasField = (fieldName: string) => {
     const field = this.fields.get(fieldName);
-    return field?.meta.isMounted ?? false;
+    return field?.fieldState.isMounted ?? false;
   };
 
   // form FormAPI, which will be passed to child render function or could be retrieved with API prop from controller
@@ -304,7 +304,7 @@ export class FormControllerClass {
       validateField: this.validateField,
       getField: this.getField,
       getFields: this.getFields,
-      meta: {
+      formState: {
         isValidating: false,
         isSubmitting: false,
         submitCount: 0,
@@ -329,41 +329,41 @@ export class FormControllerClass {
 
   @action protected updateIsDirtyBasedOnFields = () => {
     const fields = [...this.fields.values()];
-    this.setIsDirty(fields.some((field) => field.meta.isMounted && field.meta.isDirty));
+    this.setIsDirty(fields.some((field) => field.fieldState.isMounted && field.fieldState.isDirty));
   };
 
   @action protected setIsDirty = (state: boolean) => {
-    this.API.meta.isDirty = state;
+    this.API.formState.isDirty = state;
   };
 
   @action protected setIsTouched = (state: boolean) => {
-    this.API.meta.isTouched = state;
+    this.API.formState.isTouched = state;
   };
 
   @action protected updateIsChangedBasedOnFields = () => {
     const fields = [...this.fields.values()];
-    this.setIsChanged(fields.some((field) => field.meta.isMounted && field.meta.isChanged));
+    this.setIsChanged(fields.some((field) => field.fieldState.isMounted && field.fieldState.isChanged));
   };
 
   @action protected setIsChanged = (state: boolean) => {
-    this.API.meta.isChanged = state;
+    this.API.formState.isChanged = state;
   };
 
   @action protected setIsValid = (state: boolean) => {
-    this.API.meta.isValid = state;
+    this.API.formState.isValid = state;
   };
 
   @action protected setIsValidating = (state: boolean) => {
-    this.API.meta.isValidating = state;
+    this.API.formState.isValidating = state;
   };
 
   @action protected setIsSubmitting = (state: boolean) => {
-    this.API.meta.isSubmitting = state;
+    this.API.formState.isSubmitting = state;
   };
 
   // increments upon every submit try
   @action protected setSubmitCount = (state: number) => {
-    this.API.meta.submitCount = state;
+    this.API.formState.submitCount = state;
   };
 
   // general handler for resetting form to specific state
@@ -374,9 +374,9 @@ export class FormControllerClass {
 
       field.value = newValue;
 
-      field.meta.isTouched = false;
-      field.meta.isChanged = false;
-      field.meta.isDirty = false;
+      field.fieldState.isTouched = false;
+      field.fieldState.isChanged = false;
+      field.fieldState.isDirty = false;
 
       this.updateAPIValues(fieldName, newValue);
     });
@@ -392,11 +392,11 @@ export class FormControllerClass {
   @action protected changeFieldActiveState = (fieldName: string, isActive: boolean) => {
     const field = this.fields.get(fieldName)!;
     if (isActive) {
-      field.meta.isTouched = true;
+      field.fieldState.isTouched = true;
       this.setIsTouched(true);
     }
 
-    field.meta.isActive = isActive;
+    field.fieldState.isActive = isActive;
   };
 
   // changes when adapter onChange handler is called
@@ -406,8 +406,8 @@ export class FormControllerClass {
 
     field.value = value;
 
-    field.meta.isChanged = true;
-    field.meta.isDirty = !field.meta.onEqualityCheck(field.value, field.meta.initialValue);
+    field.fieldState.isChanged = true;
+    field.fieldState.isDirty = !field.fieldState.onEqualityCheck(field.value, field.fieldState.initialValue);
 
     this.updateIsChangedBasedOnFields();
     this.updateIsDirtyBasedOnFields();
@@ -431,13 +431,13 @@ export class FormControllerClass {
 
     runInAction(() => {
       this.setIsValidating(true);
-      field.meta.isValidating = true;
+      field.fieldState.isValidating = true;
     });
 
     const errors = await this.runFieldLevelValidation(fieldName);
 
     runInAction(() => {
-      field.meta.isValidating = false;
+      field.fieldState.isValidating = false;
 
       this.updateErrors({
         mutator: () => {
@@ -450,7 +450,7 @@ export class FormControllerClass {
         },
       });
 
-      if (field.meta.isMounted) {
+      if (field.fieldState.isMounted) {
         field.errors = errors;
       }
 
@@ -491,7 +491,7 @@ export class FormControllerClass {
     }
 
     runInAction(() => {
-      this.setSubmitCount(this.API.meta.submitCount + 1);
+      this.setSubmitCount(this.API.formState.submitCount + 1);
       this.setIsSubmitting(true);
     });
 

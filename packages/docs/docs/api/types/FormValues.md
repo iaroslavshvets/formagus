@@ -1,3 +1,0 @@
-```typescript
-type FormValues = any;
-```

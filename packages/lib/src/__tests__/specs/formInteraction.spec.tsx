@@ -30,7 +30,7 @@ describe('Form interaction', () => {
 
     await fieldDriver.when.change('harvy is cool');
 
-    expect(fieldDriver.get.formMeta('isTouched')).toBe('true');
+    expect(fieldDriver.get.formState('isTouched')).toBe('true');
 
     expect(fieldDriver.get.value()).toBe('harvy is cool');
 
@@ -38,7 +38,7 @@ describe('Form interaction', () => {
       controller.API.reset();
     });
 
-    expect(fieldDriver.get.formMeta('isTouched')).toBe('false');
+    expect(fieldDriver.get.formState('isTouched')).toBe('false');
     expect(fieldDriver.get.value()).toBe('batman is cool');
   });
 
@@ -83,7 +83,7 @@ describe('Form interaction', () => {
 
     await fieldDriver.when.change('Joker is cool');
 
-    expect(fieldDriver.get.formMeta('isTouched')).toBe('true');
+    expect(fieldDriver.get.formState('isTouched')).toBe('true');
 
     expect(fieldDriver.get.value()).toBe('Joker is cool');
 
@@ -94,7 +94,7 @@ describe('Form interaction', () => {
       });
     });
 
-    expect(fieldDriver.get.formMeta('isTouched')).toBe('false');
+    expect(fieldDriver.get.formState('isTouched')).toBe('false');
     expect(fieldDriver.get.value()).toBe('Batman is Bruce Wayne');
 
     const toggleField = wrapper.querySelector('[data-hook="toggle-field"]')!;
@@ -102,7 +102,7 @@ describe('Form interaction', () => {
 
     const fieldDriver2 = createInputDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
 
-    expect(fieldDriver.get.formMeta('isTouched')).toBe('false');
+    expect(fieldDriver.get.formState('isTouched')).toBe('false');
     expect(fieldDriver2.get.value()).toBe('Wolverine is Logan');
   });
 
@@ -128,7 +128,7 @@ describe('Form interaction', () => {
       controller.API.reset({});
     });
 
-    expect(fieldDriver.get.formMeta('isTouched')).toBe('false');
+    expect(fieldDriver.get.formState('isTouched')).toBe('false');
 
     expect(fieldDriver.get.value()).toBe('');
   });
@@ -155,7 +155,7 @@ describe('Form interaction', () => {
       controller.API.setFieldValue(TestForm.FIELD_ONE_NAME, 'joker is so cool');
     });
 
-    expect(fieldDriver.get.formMeta('isTouched')).toBe('false');
+    expect(fieldDriver.get.formState('isTouched')).toBe('false');
 
     expect(fieldDriver.get.value()).toBe('joker is so cool');
   });

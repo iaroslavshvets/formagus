@@ -22,7 +22,7 @@ describe('Subscriptions', () => {
     let submitTimeTotal = 0;
 
     const unsubscribe = reaction(
-      () => controller.API.meta.isSubmitting,
+      () => controller.API.formState.isSubmitting,
       (isSubmitting) => {
         if (isSubmitting) {
           submitStartTime = Date.now();

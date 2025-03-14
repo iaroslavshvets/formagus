@@ -1,5 +1,5 @@
 ```typescript
-type FormatterFunction = (values: FormValues) => FormValues
+type FormatterFunction = (values: Values) => Values
 ```
 
-- [FormValues](./FormValues)
+- [Values](./Values)

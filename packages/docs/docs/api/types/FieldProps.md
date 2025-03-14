@@ -2,7 +2,7 @@
 interface FieldProps {
   formagus?: {
     name: string;
-    meta: FieldMeta;
+    fieldState: FieldState;
     value: any;
     onChange: (value: any) => void;
     onFocus: () => void;
@@ -12,4 +12,4 @@ interface FieldProps {
 }
 ```
 
-- [FieldMeta](./FieldMeta)
+- [FieldState](./FieldState)

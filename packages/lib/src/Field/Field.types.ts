@@ -6,7 +6,7 @@ export type OnValidateFunction<T = unknown> =
   | ((value: T, values?: unknown) => unknown)
   | ((value: T, values?: unknown) => Promise<unknown>);
 
-export type FieldMeta = Readonly<{
+export type FieldState = Readonly<{
   initialValue: any;
   isDirty: boolean;
   isTouched: boolean;
@@ -18,10 +18,9 @@ export type FieldMeta = Readonly<{
 
 export type FieldFormagus<T = unknown> = Readonly<{
   name: string;
-  meta: FieldMeta;
+  fieldState: FieldState;
   value: any;
   errors: any;
-
   onChange: (value: any) => void;
   onFocus: () => void;
   onBlur: () => void;

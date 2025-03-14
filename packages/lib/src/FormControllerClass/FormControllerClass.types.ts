@@ -19,13 +19,13 @@ export type FormControllerOptions = {
 };
 
 export type FormField = {
-  meta: FieldMeta;
+  fieldState: FieldState;
   fieldProps?: FieldProps;
   value: any;
   errors: any;
 } & Pick<FieldFormagus, 'onChange' | 'onFocus' | 'onBlur' | 'validate' | 'validateField'>;
 
-export type FieldMeta = {
+export type FieldState = {
   onEqualityCheck: OnEqualityCheckFunction;
   initialValue: any;
   isTouched: boolean;
@@ -37,7 +37,7 @@ export type FieldMeta = {
   isRegistered: boolean;
 };
 
-export type FormMeta = {
+export type FormState = {
   isValidating: boolean;
   isSubmitting: boolean;
   submitCount: number;
@@ -51,7 +51,7 @@ export type FormAPI = {
   // form
   values: Values;
   errors: Errors;
-  meta: FormMeta;
+  formState: FormState;
   submit: <T extends HTMLElement>(
     submitEvent?: FormEvent<T>,
   ) => Promise<

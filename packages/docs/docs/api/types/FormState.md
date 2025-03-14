@@ -1,5 +1,5 @@
 ```typescript
-interface FormMeta {
+interface FormState {
   isValidating: boolean;
   isSubmitting: boolean;
   submitCount: number;

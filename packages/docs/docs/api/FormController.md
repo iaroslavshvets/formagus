@@ -5,15 +5,15 @@
 
 | prop          | signature                                                                                                                              | description |
 | ------------- |----------------------------------------------------------------------------------------------------------------------------------------| --- |
-| onSubmit      | (errors: [FormValidationErrors][FormValidationErrors], values: [FormValues][FormValues], submitEvent?: React.FormEvent\<any\>) => void |
-| initialValues | [FormValues][FormValues]                                                                                                               |
-| onValidate    | (values: any) => [FormValidationErrors][FormValidationErrors]                                                                          |
+| onSubmit      | (errors: [Errors][Errors], values: [Values][Values], submitEvent?: React.FormEvent\<any\>) => void |
+| initialValues | [Values][Values]                                                                                                               |
+| onValidate    | (values: any) => [Errors][Errors]                                                                          |
 | onFormat      | [FormatterFunction][FormatterFunction]                                                                                                 |
-| onSubmitAfter | (errors: [FormValidationErrors][FormValidationErrors], values: [FormValues][FormValues], submitEvent?: React.FormEvent\<any\>) => void |
+| onSubmitAfter | (errors: [Errors][Errors], values: [Values][Values], submitEvent?: React.FormEvent\<any\>) => void |
 
 `*` - **FormController** instance will have `API` field, which will have all of the [FormAPI][FormAPI] methods.
 
 [FormatterFunction]: ./types/FormatterFunction
-[FormValidationErrors]: ./types/FormValidationErrors
-[FormValues]: ./types/FormValues
+[Errors]: ./types/Errors
+[Values]: ./types/Values
 [FormAPI]: ./types/FormAPI

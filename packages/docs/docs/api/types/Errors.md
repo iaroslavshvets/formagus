@@ -1,5 +1,5 @@
 ```typescript
 type Valid = null | undefined;
 type Invalid = Omit<any, Valid>;
-type FormValidationErrors = {[fieldName: string]: Invalid} | null;
+type Errors = {[fieldName: string]: Invalid} | null;
 ```

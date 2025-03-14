@@ -1,19 +1,26 @@
 ```typescript
 interface FormAPI {
-  values: FormValues;
-  errors: FormValidationErrors;
-  submit: (submitEvent?: React.FormEvent<any>) => void;
-  reset: () => void;
-  resetToValues: (values?: FormValues) => void;
-  clear: () => void;
+  values: Values;
+  errors: Errors;
+  submit: (submitEvent?: React.FormEvent<any>) => Promise<{
+    values: Values;
+    errors: Errors;
+    isValid: boolean;
+    submitResult: {
+      isValid: boolean;
+      response?: any;
+      error?: Error;
+    };
+  }>;
+  reset: (values?: Values) => void;
   setFieldValue: (fieldName: string, value: any) => void;
   validate: () => void;
-  getFieldMeta: (fieldName: string) => FieldMeta;
-  meta: FormMeta;
+  getField: (fieldName: string) => FormField | undefined;
+  formState: FormState;
 }
 ```
 
-- [FieldMeta](./FieldMeta)
-- [FormValidationErrors](./FormValidationErrors)
-- [FormValues](./FormValues)
-- [FormMeta](./FormMeta)
+- [FieldState](./FieldState)
+- [Errors](./Errors)
+- [Values](./Values)
+- [FormState](./FormState)

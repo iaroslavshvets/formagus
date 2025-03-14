@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {isNil} from 'lodash';
 import {type ChangeEvent} from 'react';
 import {observer} from 'mobx-react-lite';
-import {InputMeta} from './Input.meta';
+import {InputState} from './Input.state';
 import {InputErrors} from './Input.errors';
 import {type FieldRenderProps} from '../../../index';
 import {useField, useForm} from '../../../index';
@@ -15,11 +15,11 @@ export type InputAdapterProps = {
 export const Input = observer((props: InputAdapterProps) => {
   const formagusHook = useField();
   const {useHook = true, useRenderCounter} = props;
-  const {fieldProps, onFocus, onBlur, validate, validateField, name, onChange, value, errors, meta} = useHook
+  const {fieldProps, onFocus, onBlur, validate, validateField, name, onChange, value, errors, fieldState} = useHook
     ? formagusHook
     : props.formagus!;
   const normalizedValue = isNil(value) ? '' : value;
-  const formMeta = useForm().meta;
+  const formState = useForm().formState;
 
   useEffect(() => {
     if (useRenderCounter) {
@@ -42,7 +42,7 @@ export const Input = observer((props: InputAdapterProps) => {
 
       <InputErrors errors={errors} />
 
-      <InputMeta meta={meta} formMeta={formMeta} />
+      <InputState fieldState={fieldState} formState={formState} />
 
       <span
         data-hook="validate-field"

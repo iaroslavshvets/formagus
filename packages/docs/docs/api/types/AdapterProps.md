@@ -2,7 +2,7 @@
 export interface AdapterProps {
   formagus: {
     name: string;
-    meta: FieldMeta;
+    fieldState: FieldState;
     value: any;
     formAPI: FormAPI;
     onChange: (value: any) => void;
@@ -13,5 +13,5 @@ export interface AdapterProps {
 }
 ```
 
-- [FieldMeta](./FieldMeta)
+- [FieldState](./FieldState)
 - [FormAPI](./FormAPI)
