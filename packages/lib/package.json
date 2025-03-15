@@ -1,7 +1,7 @@
 {
   "name": "formagus",
   "description": "Versatile form library powered by Mobx",
-  "version": "3.0.0-rc5",
+  "version": "3.0.0-rc6",
   "license": "MIT",
   "author": {
     "name": "Iaroslav Shvets",
