@@ -8,6 +8,8 @@ import {type FormAPI, type FormControllerOptions, type FormField, type Values} f
 import {isMobx6Used} from '../utils/isMobx6Used';
 import {isEmpty} from '../utils/isEmpty';
 import {mergeDeep} from '../utils/mergeDeep';
+import {makeObservableForMobx6} from './utils/makeObservableForMobx6';
+import {decorateForMobx5} from './utils/decorateForMobx5';
 
 export class FormControllerClass {
   // Form options passed through form Props or directly through new Controller(options)
@@ -20,9 +22,7 @@ export class FormControllerClass {
     }
 
     if (isMobx6Used()) {
-      // require as import might not work in case of mobx@5 used during bundling in userland
-      // eslint-disable-next-line @typescript-eslint/no-require-imports, no-undef,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-      require('mobx').makeObservable(this, {
+      makeObservableForMobx6<This, 'fieldLevelValidations'>(this, {
         fieldLevelValidations: observable.shallow,
         fields: observable.shallow,
         API: observable,
@@ -206,8 +206,7 @@ export class FormControllerClass {
       };
 
       if (isMobx6Used()) {
-        // eslint-disable-next-line @typescript-eslint/no-require-imports, no-undef,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-        const fieldProps = require('mobx').makeObservable(rawFieldProps, {
+        const fieldProps = makeObservableForMobx6(rawFieldProps, {
           value: observable,
           errors: observable,
           fieldState: observable,
@@ -555,11 +554,11 @@ export class FormControllerClass {
 }
 
 if (!isMobx6Used()) {
-  // require as import might not work in case of mobx@6 used during bundling in userland
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-require-imports,@typescript-eslint/no-unsafe-call,no-undef
-  require('mobx').decorate(FormControllerClass, {
+  decorateForMobx5(FormControllerClass, {
     fieldLevelValidations: observable.ref,
     API: observable,
     fields: observable,
   });
 }
+
+type This = FormControllerClass;
