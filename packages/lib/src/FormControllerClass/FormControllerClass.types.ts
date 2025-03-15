@@ -1,5 +1,5 @@
 import {type FormEvent} from 'react';
-import {type OnEqualityCheckFunction, type FieldProps, type FormagusField} from '../Field/Field.types';
+import {type OnEqualityCheckFunction, type FieldProps, type FieldApi} from '../Field/Field.types';
 
 export type Values = Record<string, any>;
 export type Errors = Record<string, any>;
@@ -23,7 +23,7 @@ export type FormField = {
   fieldProps?: FieldProps;
   value: any;
   errors: any;
-} & Pick<FormagusField, 'onChange' | 'onFocus' | 'onBlur' | 'validate' | 'validateField'>;
+} & Pick<FieldApi, 'onChange' | 'onFocus' | 'onBlur' | 'validate' | 'validateField'>;
 
 export type FieldState = {
   onEqualityCheck: OnEqualityCheckFunction;
@@ -47,7 +47,7 @@ export type FormState = {
   isChanged: boolean;
 };
 
-export type FormAPI = {
+export type FormApi = {
   // form
   values: Values;
   errors: Errors;

@@ -3,11 +3,11 @@ export type {
   OnEqualityCheckFunction,
   FieldProps,
   FieldState,
-  FormagusField,
+  FieldApi,
   FieldRenderProps,
 } from './Field/Field.types';
 export type {FormProps} from './Form/Form.types';
-export type {FormAPI, FormField} from './FormControllerClass/FormControllerClass.types';
+export type {FormApi, FormField} from './FormControllerClass/FormControllerClass.types';
 export type {FormController} from './createFormController/createFormController.types';
 
 /**

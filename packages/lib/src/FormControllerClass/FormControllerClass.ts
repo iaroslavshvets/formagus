@@ -4,7 +4,7 @@ import {observerBatching} from 'mobx-react-lite';
 import {get, set} from 'lodash';
 import {toJSCompat} from '../utils/toJSCompat';
 import {type FieldProps, type OnValidateFunction} from '../Field/Field.types';
-import {type FormAPI, type FormControllerOptions, type FormField, type Values} from './FormControllerClass.types';
+import {type FormApi, type FormControllerOptions, type FormField, type Values} from './FormControllerClass.types';
 import {isMobx6Used} from '../utils/isMobx6Used';
 import {isEmpty} from '../utils/isEmpty';
 import {mergeDeep} from '../utils/mergeDeep';
@@ -303,7 +303,7 @@ export class FormControllerClass {
   };
 
   // form FormAPI, which will be passed to child render function or could be retrieved with API prop from controller
-  API: FormAPI = {} as any;
+  API: FormApi = {} as any;
 
   protected createFormApi = () => {
     runInAction(() => {
@@ -395,7 +395,7 @@ export class FormControllerClass {
   };
 
   // changes when adapter onChange handler is called
-  protected setFieldValue: FormAPI['setFieldValue'] = (fieldName, value) => {
+  protected setFieldValue: FormApi['setFieldValue'] = (fieldName, value) => {
     runInAction(() => {
       this.createFieldIfDoesNotExist(fieldName);
 
@@ -422,7 +422,7 @@ export class FormControllerClass {
   };
 
   // validates single field by calling field level validation, passed to Field as `validate` prop
-  protected validateField: FormAPI['validateField'] = async (fieldName) => {
+  protected validateField: FormApi['validateField'] = async (fieldName) => {
     if (!this.fieldLevelValidations[fieldName]) {
       return undefined;
     }
@@ -462,7 +462,7 @@ export class FormControllerClass {
 
   // validates the form, by calling form level onValidate function combined with field level validations,
   // passed to Field as `onValidate` prop
-  protected validate: FormAPI['validate'] = async () => {
+  protected validate: FormApi['validate'] = async () => {
     const hasFieldLevelValidations = Object.keys(this.fieldLevelValidations).length > 0;
 
     runInAction(() => {
@@ -486,7 +486,7 @@ export class FormControllerClass {
   };
 
   // wraps submit function passed as Form `onSubmit` prop after it's being passed to child render function
-  protected submit: FormAPI['submit'] = async (submitEvent) => {
+  protected submit: FormApi['submit'] = async (submitEvent) => {
     if (submitEvent) {
       submitEvent.persist();
       submitEvent.preventDefault();

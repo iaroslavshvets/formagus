@@ -1,5 +1,5 @@
 import React, {type ReactNode} from 'react';
-import {type FormAPI, type FormControllerOptions} from '../../FormControllerClass/FormControllerClass.types';
+import {type FormApi, type FormControllerOptions} from '../../FormControllerClass/FormControllerClass.types';
 import {Field, Form, type FormController} from '../../index';
 import {Input} from './Input';
 
@@ -13,7 +13,7 @@ export const TestForm = (
 
   return (
     <Form {...(controller ? {controller} : formProps)}>
-      {(formApi: FormAPI) => {
+      {(formApi: FormApi) => {
         const {submit, values} = formApi;
 
         return (
