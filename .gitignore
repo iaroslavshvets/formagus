@@ -11,6 +11,7 @@ dist
 
 # misc
 .DS_Store
+packages/**/*.tgz
 
 packages/**yarn-debug.log*
 packages/**yarn-error.log*
