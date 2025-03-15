@@ -42,7 +42,7 @@ describe('Form interaction', () => {
     expect(fieldDriver.get.value()).toBe('batman is cool');
   });
 
-  it('should reset to specific values, if they are passed as "resetToValues" argument, like "reset({newKey: ‘newValue’})"', async () => {
+  it('should reset to specific values, if they are passed as "reset" argument, like "reset({newKey: ‘newValue’})"', async () => {
     const controller = createFormController({
       initialValues: {
         [TestForm.FIELD_ONE_NAME]: 'Batman is cool',
@@ -88,7 +88,7 @@ describe('Form interaction', () => {
     expect(fieldDriver.get.value()).toBe('Joker is cool');
 
     act(() => {
-      controller.API.resetToValues({
+      controller.API.reset({
         [TestForm.FIELD_ONE_NAME]: 'Batman is Bruce Wayne',
         [TestForm.FIELD_TWO_NAME]: 'Wolverine is Logan',
       });

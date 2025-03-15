@@ -2,9 +2,9 @@ import {type ReactNode} from 'react';
 import {type FormController} from '../createFormController/createFormController.types';
 import {type FormControllerClass} from '../FormControllerClass/FormControllerClass';
 
-export type OnValidateFunction<T = unknown> =
-  | ((value: T, values?: unknown) => unknown)
-  | ((value: T, values?: unknown) => Promise<unknown>);
+export type OnValidateFunction<T = any> =
+  | ((value: T, values?: any) => any)
+  | ((value: T, values?: any) => Promise<any>);
 
 export type FieldState = Readonly<{
   initialValue: any;
@@ -16,7 +16,7 @@ export type FieldState = Readonly<{
   isMounted: boolean;
 }>;
 
-export type FieldFormagus<T = unknown> = Readonly<{
+export type FieldFormagus<T = any> = Readonly<{
   name: string;
   fieldState: FieldState;
   value: any;

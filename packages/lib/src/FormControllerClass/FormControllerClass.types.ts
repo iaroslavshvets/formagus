@@ -69,7 +69,6 @@ export type FormAPI = {
   >;
   reset: (values?: Values) => void;
   validate: () => any;
-  resetToValues: (values: Values) => void;
   // fields
   hasField: (fieldName: string) => boolean;
   getField: (fieldName: string) => FormField | undefined;
