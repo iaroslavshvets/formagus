@@ -16,7 +16,6 @@
     "noImplicitThis": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
-    "useDefineForClassFields": true,
     "allowUnreachableCode": false,
     "noEmit": false,
     "allowSyntheticDefaultImports": true,
