@@ -8,8 +8,9 @@ import {type FormAPI, type FormControllerOptions, type FormField, type Values} f
 import {isMobx6Used} from '../utils/isMobx6Used';
 import {isEmpty} from '../utils/isEmpty';
 import {mergeDeep} from '../utils/mergeDeep';
-import {makeObservableForMobx6} from './utils/makeObservableForMobx6';
-import {decorateForMobx5} from './utils/decorateForMobx5';
+import {makeObservableForMobx6} from '../utils/makeObservableForMobx6';
+import {decorateForMobx5} from '../utils/decorateForMobx5';
+import {assign} from '../utils/assign';
 
 export class FormControllerClass {
   // Form options passed through form Props or directly through new Controller(options)
@@ -92,10 +93,13 @@ export class FormControllerClass {
           if (!values) {
             set(this.options.initialValues, name, field.value);
           }
+
           const initialValue = get(this.options.initialValues, name);
 
-          field.fieldState.isDirty = !field.fieldState.onEqualityCheck(field.value, initialValue);
-          field.fieldState.initialValue = initialValue;
+          assign(field.fieldState, {
+            isDirty: !field.fieldState.onEqualityCheck(field.value, initialValue),
+            initialValue,
+          });
         }
       });
     });
@@ -147,12 +151,6 @@ export class FormControllerClass {
 
   // all registered form fields, new field is being added when Field constructor is called
   fields = new Map<string, FormField>();
-
-  protected setFieldErrors = (field: FormField, errors?: unknown) => {
-    runInAction(() => {
-      field.errors = errors;
-    });
-  };
 
   protected updateErrors = (params: {value: unknown} | {mutator: () => unknown}) => {
     runInAction(() => {
@@ -225,22 +223,19 @@ export class FormControllerClass {
       const {name, onEqualityCheck, persist = false} = props;
       const field = this.fields.get(name)!;
 
-      const initialValue =
-        get(this.options.initialValues, name) !== undefined
-          ? get(this.options.initialValues, name)
-          : props.defaultValue;
+      const initialValue = get(this.options.initialValues, name) ?? props.defaultValue;
+
+      field.value = initialValue;
 
       field.fieldProps = {
         ...props,
         persist,
       };
 
-      field.value = initialValue;
-
-      field.fieldState.initialValue = initialValue;
-      if (onEqualityCheck) {
-        field.fieldState.onEqualityCheck = onEqualityCheck;
-      }
+      assign(field.fieldState, {
+        initialValue,
+        ...(onEqualityCheck ? {onEqualityCheck} : {}),
+      });
 
       this.updateAPIValues(name, initialValue);
     });
@@ -261,8 +256,10 @@ export class FormControllerClass {
 
       const field = this.fields.get(name)!;
 
-      field.fieldState.isMounted = true;
-      field.fieldState.isRegistered = true;
+      assign(field.fieldState, {
+        isMounted: true,
+        isRegistered: true,
+      });
 
       if (onValidate) {
         this.addFieldLevelValidation(name, onValidate);
@@ -276,6 +273,7 @@ export class FormControllerClass {
   unRegisterField = (name: string) => {
     runInAction(() => {
       const field = this.fields.get(name)!;
+
       if (field.fieldProps!.persist) {
         field.fieldState.isMounted = false;
       } else {
@@ -304,11 +302,6 @@ export class FormControllerClass {
     });
   };
 
-  protected hasField = (fieldName: string) => {
-    const field = this.fields.get(fieldName);
-    return field?.fieldState.isMounted ?? false;
-  };
-
   // form FormAPI, which will be passed to child render function or could be retrieved with API prop from controller
   API: FormAPI = {} as any;
 
@@ -318,7 +311,10 @@ export class FormControllerClass {
         values: {},
         errors: {},
         submit: this.submit,
-        hasField: this.hasField,
+        hasField: (fieldName: string) => {
+          const field = this.fields.get(fieldName);
+          return field?.fieldState.isMounted ?? false;
+        },
         reset: (values?: Values) => {
           // resets the form to initial values or custom if provided
           this.reset(values ?? this.options.initialValues ?? {});
@@ -326,8 +322,8 @@ export class FormControllerClass {
         setFieldValue: this.setFieldValue,
         validate: this.validate,
         validateField: this.validateField,
-        getField: this.getField,
-        getFields: this.getFields,
+        getField: (fieldName) => this.fields.get(fieldName),
+        getFields: () => Object.fromEntries(this.fields.entries()),
         formState: {
           isValidating: false,
           isSubmitting: false,
@@ -339,17 +335,6 @@ export class FormControllerClass {
         },
       };
     });
-  };
-
-  protected getField = (fieldName: string) => {
-    return this.fields.get(fieldName);
-  };
-
-  protected getFields = () => {
-    return [...this.fields.entries()].reduce<Record<string, FormField>>((acc, [key, value]) => {
-      acc[key] = value;
-      return acc;
-    }, {});
   };
 
   protected updateIsDirtyBasedOnFields = () => {
@@ -375,17 +360,23 @@ export class FormControllerClass {
 
         field.value = newValue;
 
-        field.fieldState.isTouched = false;
-        field.fieldState.isChanged = false;
-        field.fieldState.isDirty = false;
+        assign(field.fieldState, {
+          isTouched: false,
+          isChanged: false,
+          isDirty: false,
+        });
 
         this.updateAPIValues(fieldName, newValue);
       });
-      this.API.formState.isTouched = false;
-      this.API.formState.isDirty = false;
-      this.API.formState.isChanged = false;
+
+      assign(this.API.formState, {
+        isTouched: false,
+        isDirty: false,
+        isChanged: false,
+        submitCount: 0,
+      });
+
       this.updateInitialValues(values);
-      this.API.formState.submitCount = 0;
       this.updateErrorsForEveryField(undefined);
     });
   };
@@ -407,17 +398,20 @@ export class FormControllerClass {
   protected setFieldValue: FormAPI['setFieldValue'] = (fieldName, value) => {
     runInAction(() => {
       this.createFieldIfDoesNotExist(fieldName);
+
       const field = this.fields.get(fieldName)!;
 
       field.value = value;
 
-      field.fieldState.isChanged = true;
-      field.fieldState.isDirty = !field.fieldState.onEqualityCheck(field.value, field.fieldState.initialValue);
+      assign(field.fieldState, {
+        isChanged: true,
+        isDirty: !field.fieldState.onEqualityCheck(value, field.fieldState.initialValue),
+      });
 
       this.updateIsChangedBasedOnFields();
       this.updateIsDirtyBasedOnFields();
 
-      this.updateAPIValues(fieldName, field.value);
+      this.updateAPIValues(fieldName, value);
     });
   };
 
@@ -499,8 +493,10 @@ export class FormControllerClass {
     }
 
     runInAction(() => {
-      this.API.formState.submitCount = this.API.formState.submitCount + 1;
-      this.API.formState.isSubmitting = true;
+      assign(this.API.formState, {
+        submitCount: this.API.formState.submitCount + 1,
+        isSubmitting: true,
+      });
     });
 
     await this.validate();
