@@ -8,8 +8,6 @@ import {type FormAPI, type FormControllerOptions, type FormField, type Values} f
 import {isMobx6Used} from '../utils/isMobx6Used';
 import {isEmpty} from '../utils/isEmpty';
 import {mergeDeep} from '../utils/mergeDeep';
-// eslint-disable-next-line @typescript-eslint/no-require-imports, no-undef
-const {makeObservable} = require('mobx'); // require as import might not work in case of mobx5 bundling in userland
 
 export class FormControllerClass {
   // Form options passed through form Props or directly through new Controller(options)
@@ -22,8 +20,13 @@ export class FormControllerClass {
     }
 
     if (isMobx6Used()) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      makeObservable(this);
+      // require as import might not work in case of mobx@5 used during bundling in userland
+      // eslint-disable-next-line @typescript-eslint/no-require-imports, no-undef,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      require('mobx').makeObservable(this, {
+        fieldLevelValidations: observable.ref,
+        fields: observable,
+        API: observable,
+      });
     }
 
     this.options = options;
@@ -31,7 +34,7 @@ export class FormControllerClass {
     this.createFormApi();
   }
 
-  @observable protected fieldLevelValidations: Record<string, OnValidateFunction> = {};
+  protected fieldLevelValidations: Record<string, OnValidateFunction> = {};
 
   protected addFieldLevelValidation = (fieldName: string, onValidateFunction: OnValidateFunction) => {
     runInAction(() => {
@@ -143,9 +146,7 @@ export class FormControllerClass {
   };
 
   // all registered form fields, new field is being added when Field constructor is called
-  fields = observable.map<string, FormField>(undefined, {
-    deep: !isMobx6Used(),
-  });
+  fields = new Map<string, FormField>();
 
   protected setFieldErrors = (field: FormField, errors?: unknown) => {
     runInAction(() => {
@@ -205,8 +206,8 @@ export class FormControllerClass {
       };
 
       if (isMobx6Used()) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        const fieldProps = makeObservable(rawFieldProps, {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports, no-undef,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+        const fieldProps = require('mobx').makeObservable(rawFieldProps, {
           value: observable,
           errors: observable,
           fieldState: observable,
@@ -310,7 +311,7 @@ export class FormControllerClass {
   };
 
   // form FormAPI, which will be passed to child render function or could be retrieved with API prop from controller
-  @observable API: FormAPI = {} as any;
+  API: FormAPI = {} as any;
 
   protected createFormApi = () => {
     runInAction(() => {
@@ -551,4 +552,14 @@ export class FormControllerClass {
           } as const),
     };
   };
+}
+
+if (!isMobx6Used()) {
+  // require as import might not work in case of mobx@6 used during bundling in userland
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-require-imports,@typescript-eslint/no-unsafe-call,no-undef
+  require('mobx').decorate(FormControllerClass, {
+    fieldLevelValidations: observable.ref,
+    API: observable,
+    fields: observable,
+  });
 }
