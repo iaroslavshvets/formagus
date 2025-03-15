@@ -23,8 +23,8 @@ export class FormControllerClass {
       // require as import might not work in case of mobx@5 used during bundling in userland
       // eslint-disable-next-line @typescript-eslint/no-require-imports, no-undef,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       require('mobx').makeObservable(this, {
-        fieldLevelValidations: observable.ref,
-        fields: observable,
+        fieldLevelValidations: observable.shallow,
+        fields: observable.shallow,
         API: observable,
       });
     }
