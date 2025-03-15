@@ -22,9 +22,8 @@
   "types": "./dist/types/index.d.ts",
   "sideEffects": false,
   "files": [
-    "dist/cjs",
-    "dist/esm",
-    "dist/types"
+    "dist",
+    "!__tests__"
   ],
   "scripts": {
     "build": "rm -rf dist && yarn build:ts",
