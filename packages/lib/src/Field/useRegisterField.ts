@@ -1,47 +1,29 @@
 import {useEffect} from 'react';
-import {computed} from 'mobx';
 import {useFormControllerClass} from '../Form/useFormControllerClass';
-import {toJSCompat} from '../utils/toJSCompat';
-import {type FieldCommonProps, type FieldFormagus} from './Field.types';
+import {type FieldCommonProps} from './Field.types';
 
 export const useRegisterField = (props: FieldCommonProps) => {
   const controller = useFormControllerClass(props);
   const field = controller.fields.get(props.name);
   const isReady = field !== undefined;
 
-  const formagus = computed<FieldFormagus | undefined>(() => {
+  const fieldApi = (() => {
     if (!isReady) {
       // component is not yet registered
       return undefined;
     }
 
-    const {fieldState} = field;
-
-    const safeErrors = toJSCompat(field.errors);
-
-    const safeValue = toJSCompat(field.value);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {onEqualityCheck, isRegistered, ...rest} = field.fieldState;
+    const {name} = props;
 
     return {
-      name: props.name,
-      value: safeValue,
-      errors: safeErrors,
+      name,
+      ...field,
       fieldProps: props,
-      fieldState: {
-        initialValue: fieldState.initialValue,
-        isActive: fieldState.isActive,
-        isDirty: fieldState.isDirty,
-        isTouched: fieldState.isTouched,
-        isChanged: fieldState.isChanged,
-        isValidating: fieldState.isValidating,
-        isMounted: fieldState.isMounted,
-      },
-      validateField: field.validateField,
-      validate: field.validate,
-      onChange: field.onChange,
-      onFocus: field.onFocus,
-      onBlur: field.onBlur,
+      fieldState: rest,
     };
-  });
+  })();
 
   useEffect(() => {
     controller.registerField(props);
@@ -51,13 +33,13 @@ export const useRegisterField = (props: FieldCommonProps) => {
   }, []);
 
   useEffect(() => {
-    if (isReady) {
-      props.onInit?.(formagus.get()!);
+    if (fieldApi) {
+      props.onInit?.(fieldApi);
     }
-  }, [isReady]);
+  }, [fieldApi]);
 
   return {
     isReady,
-    formagus: formagus.get(),
+    fieldApi,
   };
 };

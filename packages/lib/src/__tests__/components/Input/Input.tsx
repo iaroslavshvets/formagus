@@ -17,7 +17,7 @@ export const Input = observer((props: InputAdapterProps) => {
   const {useHook = true, useRenderCounter} = props;
   const {fieldProps, onFocus, onBlur, validate, validateField, name, onChange, value, errors, fieldState} = useHook
     ? formagusHook
-    : props.formagus!;
+    : props.field!;
   const normalizedValue = isNil(value) ? '' : value;
   const formState = useForm().formState;
 

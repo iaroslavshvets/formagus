@@ -28,22 +28,12 @@ exports[`Render > should render 1`] = `
           false
         </span>
         <span
-          data-hook="field_state_isDirty"
-        >
-          false
-        </span>
-        <span
-          data-hook="field_state_isTouched"
-        >
-          false
-        </span>
-        <span
           data-hook="field_state_isChanged"
         >
           false
         </span>
         <span
-          data-hook="field_state_isValidating"
+          data-hook="field_state_isDirty"
         >
           false
         </span>
@@ -53,7 +43,22 @@ exports[`Render > should render 1`] = `
           true
         </span>
         <span
-          data-hook="form_state_isValidating"
+          data-hook="field_state_isTouched"
+        >
+          false
+        </span>
+        <span
+          data-hook="field_state_isValidating"
+        >
+          false
+        </span>
+        <span
+          data-hook="form_state_isChanged"
+        >
+          false
+        </span>
+        <span
+          data-hook="form_state_isDirty"
         >
           false
         </span>
@@ -63,9 +68,9 @@ exports[`Render > should render 1`] = `
           false
         </span>
         <span
-          data-hook="form_state_submitCount"
+          data-hook="form_state_isTouched"
         >
-          0
+          false
         </span>
         <span
           data-hook="form_state_isValid"
@@ -73,19 +78,14 @@ exports[`Render > should render 1`] = `
           true
         </span>
         <span
-          data-hook="form_state_isDirty"
+          data-hook="form_state_isValidating"
         >
           false
         </span>
         <span
-          data-hook="form_state_isTouched"
+          data-hook="form_state_submitCount"
         >
-          false
-        </span>
-        <span
-          data-hook="form_state_isChanged"
-        >
-          false
+          0
         </span>
       </div>
       <span
@@ -117,22 +117,12 @@ exports[`Render > should render 1`] = `
           false
         </span>
         <span
-          data-hook="field_state_isDirty"
-        >
-          false
-        </span>
-        <span
-          data-hook="field_state_isTouched"
-        >
-          false
-        </span>
-        <span
           data-hook="field_state_isChanged"
         >
           false
         </span>
         <span
-          data-hook="field_state_isValidating"
+          data-hook="field_state_isDirty"
         >
           false
         </span>
@@ -142,7 +132,22 @@ exports[`Render > should render 1`] = `
           true
         </span>
         <span
-          data-hook="form_state_isValidating"
+          data-hook="field_state_isTouched"
+        >
+          false
+        </span>
+        <span
+          data-hook="field_state_isValidating"
+        >
+          false
+        </span>
+        <span
+          data-hook="form_state_isChanged"
+        >
+          false
+        </span>
+        <span
+          data-hook="form_state_isDirty"
         >
           false
         </span>
@@ -152,9 +157,9 @@ exports[`Render > should render 1`] = `
           false
         </span>
         <span
-          data-hook="form_state_submitCount"
+          data-hook="form_state_isTouched"
         >
-          0
+          false
         </span>
         <span
           data-hook="form_state_isValid"
@@ -162,19 +167,14 @@ exports[`Render > should render 1`] = `
           true
         </span>
         <span
-          data-hook="form_state_isDirty"
+          data-hook="form_state_isValidating"
         >
           false
         </span>
         <span
-          data-hook="form_state_isTouched"
+          data-hook="form_state_submitCount"
         >
-          false
-        </span>
-        <span
-          data-hook="form_state_isChanged"
-        >
-          false
+          0
         </span>
       </div>
       <span

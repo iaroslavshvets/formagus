@@ -6,19 +6,19 @@ import {type FieldProps} from './Field.types';
 import {invariant} from '../utils/invariant';
 
 export const Field = observer((props: FieldProps) => {
-  const {formagus} = useRegisterField(props as Omit<FieldProps, 'controller'>);
+  const {fieldApi} = useRegisterField(props as Omit<FieldProps, 'controller'>);
 
-  if (!formagus) {
+  if (!fieldApi) {
     return null;
   }
 
   if (props.render) {
     invariant(props.children === undefined, 'You cannot use both render and children prop');
 
-    return <FieldContextProvider value={formagus}>{props.render({formagus})}</FieldContextProvider>;
+    return <FieldContextProvider value={fieldApi}>{props.render({field: fieldApi})}</FieldContextProvider>;
   }
 
-  return <FieldContextProvider value={formagus}>{props.children}</FieldContextProvider>;
+  return <FieldContextProvider value={fieldApi}>{props.children}</FieldContextProvider>;
 });
 
 Field.displayName = 'FormagusField';

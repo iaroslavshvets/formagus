@@ -14,23 +14,25 @@ export const InputState = observer((props: {fieldState: FieldState; formState: F
       return null;
     }
 
-    return Object.keys(state).map((key) => {
-      if (!isObject(state[key])) {
-        return (
-          <span
-            key={key}
-            data-hook={`${isFormState ? 'form_' : 'field_'}state_${currentKey ? `${currentKey}:` : ''}${key}`}
-          >
-            {}
-            {String(state[key])}
-          </span>
-        );
-      }
-      if (!isEmpty(state)) {
-        return renderStateProperty(state[key], key, isFormState);
-      }
-      return null;
-    });
+    return Object.keys(state)
+      .toSorted()
+      .map((key) => {
+        if (!isObject(state[key])) {
+          return (
+            <span
+              key={key}
+              data-hook={`${isFormState ? 'form_' : 'field_'}state_${currentKey ? `${currentKey}:` : ''}${key}`}
+            >
+              {}
+              {String(state[key])}
+            </span>
+          );
+        }
+        if (!isEmpty(state)) {
+          return renderStateProperty(state[key], key, isFormState);
+        }
+        return null;
+      });
   };
 
   const stateFields = renderStateProperty(props.fieldState, '', false);

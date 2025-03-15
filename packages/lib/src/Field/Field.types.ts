@@ -16,7 +16,7 @@ export type FieldState = Readonly<{
   isMounted: boolean;
 }>;
 
-export type FieldFormagus<T = any> = Readonly<{
+export type FormagusField<T = any> = Readonly<{
   name: string;
   fieldState: FieldState;
   value: any;
@@ -30,7 +30,7 @@ export type FieldFormagus<T = any> = Readonly<{
 }>;
 
 export type FieldRenderProps<T = any> = {
-  formagus: FieldFormagus<T>;
+  field: FormagusField<T>;
 };
 
 export type OnFormatFunction<T = any> = (value: T) => any;
@@ -42,7 +42,7 @@ export type FieldCommonProps<T = any> = {
   onValidate?: OnValidateFunction<T>;
   onFormat?: OnFormatFunction<T>;
   onEqualityCheck?: OnEqualityCheckFunction<T>;
-  onInit?: (API: FieldFormagus) => void;
+  onInit?: (API: FormagusField) => void;
   persist?: boolean;
   controller?: FormControllerClass;
 };

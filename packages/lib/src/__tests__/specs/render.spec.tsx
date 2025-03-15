@@ -24,6 +24,7 @@ describe('Render', () => {
         </Field>
       </TestForm>,
     ).container;
+
     const formDriver = createTestFormDriver({wrapper});
 
     expect(formDriver.get.serialized()).toMatchSnapshot();

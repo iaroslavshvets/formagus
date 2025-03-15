@@ -3,7 +3,7 @@ export type {
   OnEqualityCheckFunction,
   FieldProps,
   FieldState,
-  FieldFormagus,
+  FormagusField,
   FieldRenderProps,
 } from './Field/Field.types';
 export type {FormProps} from './Form/Form.types';
