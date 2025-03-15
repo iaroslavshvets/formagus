@@ -26,17 +26,17 @@ export const useRegisterField = (props: FieldCommonProps) => {
   })();
 
   useEffect(() => {
+    if (fieldApi) {
+      props.onInit?.(fieldApi);
+    }
+  }, [fieldApi]);
+
+  useEffect(() => {
     controller.registerField(props);
     return () => {
       controller.unRegisterField(props.name);
     };
   }, []);
-
-  useEffect(() => {
-    if (fieldApi) {
-      props.onInit?.(fieldApi);
-    }
-  }, [fieldApi]);
 
   return {
     isReady,
