@@ -43,42 +43,31 @@ export class FormControllerClass {
     });
   };
 
-  protected safeApiValuesCopy: Record<string, unknown> = {};
-
   protected updateAPIValues = (fieldName?: string, value?: unknown) => {
     runInAction(() => {
       if (fieldName) {
-        const safeValue = toJSCompat(value, false);
         const field = this.fields.get(fieldName);
 
         if (field?.fieldState.isMounted) {
-          set(
-            this.safeApiValuesCopy,
-            fieldName,
-            field.fieldProps.onFormat ? field.fieldProps.onFormat(safeValue) : safeValue,
-          );
+          set(this.API.values, fieldName, field.fieldProps.onFormat ? field.fieldProps.onFormat(value) : value);
         }
       } else {
-        this.safeApiValuesCopy = {};
+        this.API.values = {};
 
         this.fields.forEach((field, name) => {
           if (field.fieldState.isMounted) {
-            const safeValue = toJSCompat(field.value, false);
-
             set(
-              this.safeApiValuesCopy,
+              this.API.values,
               name,
-              field.fieldProps.onFormat ? field.fieldProps.onFormat(safeValue) : safeValue,
+              field.fieldProps.onFormat ? field.fieldProps.onFormat(field.value) : field.value,
             );
           }
         });
       }
 
       if (this.options.onFormat) {
-        this.safeApiValuesCopy = this.options.onFormat(this.safeApiValuesCopy);
+        this.API.values = this.options.onFormat(this.API.values);
       }
-
-      this.API.values = this.safeApiValuesCopy;
     });
   };
 
@@ -501,8 +490,8 @@ export class FormControllerClass {
 
     await this.validate();
 
-    const [errors, values] = toJSCompat([this.API.errors, this.API.values]);
-    const isValid = isEmpty(errors);
+    const [nonObservableErrors, nonObservableValues] = toJSCompat([this.API.errors, this.API.values]);
+    const isValid = isEmpty(nonObservableErrors);
 
     let error: unknown;
     let response: unknown;
@@ -510,15 +499,15 @@ export class FormControllerClass {
     try {
       if (this.options.onSubmit) {
         response = await this.options.onSubmit({
-          errors: errors!,
-          values: values!,
+          errors: nonObservableErrors!,
+          values: nonObservableValues!,
           isValid,
           event: submitEvent,
         });
       }
 
       runInAction(() => {
-        if (isEmpty(errors)) {
+        if (isEmpty(nonObservableErrors)) {
           this.updateInitialValues();
           this.updateIsDirtyBasedOnFields();
         }
@@ -533,8 +522,8 @@ export class FormControllerClass {
     }
 
     return {
-      errors: errors!,
-      values: values!,
+      errors: nonObservableErrors!,
+      values: nonObservableValues!,
       isValid,
       submitResult: isValid
         ? ({
