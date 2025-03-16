@@ -5,14 +5,12 @@
 
 | prop          | signature                                                                                                                              | description |
 | ------------- |----------------------------------------------------------------------------------------------------------------------------------------| --- |
-| onSubmit      | (errors: [Errors][Errors], values: [Values][Values], submitEvent?: React.FormEvent\<any\>) => void |
+| onSubmit      | (params: SubmitParams) => any |
 | initialValues | [Values][Values]                                                                                                               |
-| onValidate    | (values: any) => [Errors][Errors]                                                                          |
+| onValidate    | (values: Values) => Promise<any>                                                                          |
 | onFormat      | [FormatterFunction][FormatterFunction]                                                                                                 |
-| onSubmitAfter | (errors: [Errors][Errors], values: [Values][Values], submitEvent?: React.FormEvent\<any\>) => void |
 | children      | (renderProps: [FormAPI][FormAPI]) => JSX.Element                                                                                       |
 | controller * | [FormController][FormController]                                                                                                       |
-
 
 `*` - **controller** prop should be passed (instance of controller created manually before) OR any other props, but not both.
 

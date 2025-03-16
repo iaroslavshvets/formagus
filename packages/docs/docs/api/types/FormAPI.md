@@ -2,21 +2,29 @@
 interface FormAPI {
   values: Values;
   errors: Errors;
-  submit: (submitEvent?: React.FormEvent<any>) => Promise<{
-    values: Values;
-    errors: Errors;
-    isValid: boolean;
-    submitResult: {
-      isValid: boolean;
-      response?: any;
-      error?: Error;
-    };
-  }>;
-  reset: (values?: Values) => void;
-  setFieldValue: (fieldName: string, value: any) => void;
-  validate: () => void;
-  getField: (fieldName: string) => FormField | undefined;
   formState: FormState;
+  submit: <T extends HTMLElement>(
+    submitEvent?: React.FormEvent<T>,
+  ) => Promise<
+    Omit<SubmitParams<T>, 'event'> & {
+      submitResult:
+        | {
+            isValid: true;
+            response: any;
+          }
+        | {
+            isValid: false;
+            error: Error;
+          };
+    }
+  >;
+  reset: (values?: Values) => void;
+  validate: () => any;
+  hasField: (fieldName: string) => boolean;
+  getField: (fieldName: string) => FormField | undefined;
+  validateField: (fieldName: string) => any;
+  setFieldValue: (fieldName: string, value: any) => void;
+  getFields: () => Record<string, FormField>;
 }
 ```
 

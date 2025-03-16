@@ -5,11 +5,10 @@
 
 | prop          | signature                                                                                                                              | description |
 | ------------- |----------------------------------------------------------------------------------------------------------------------------------------| --- |
-| onSubmit      | (errors: [Errors][Errors], values: [Values][Values], submitEvent?: React.FormEvent\<any\>) => void |
+| onSubmit      | (params: SubmitParams) => any |
 | initialValues | [Values][Values]                                                                                                               |
-| onValidate    | (values: any) => [Errors][Errors]                                                                          |
+| onValidate    | (values: Values) => Promise<any>                                                                          |
 | onFormat      | [FormatterFunction][FormatterFunction]                                                                                                 |
-| onSubmitAfter | (errors: [Errors][Errors], values: [Values][Values], submitEvent?: React.FormEvent\<any\>) => void |
 
 `*` - **FormController** instance will have `API` field, which will have all of the [FormAPI][FormAPI] methods.
 
