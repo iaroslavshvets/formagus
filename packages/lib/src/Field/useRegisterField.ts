@@ -7,23 +7,20 @@ export const useRegisterField = (props: FieldCommonProps) => {
   const field = controller.fields.get(props.name);
   const isReady = field !== undefined;
 
-  const fieldApi = (() => {
-    if (!isReady) {
-      // component is not yet registered
-      return undefined;
-    }
+  const fieldApi = isReady
+    ? (() => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const {onEqualityCheck, isRegistered, ...rest} = field.fieldState;
+        const {name} = props;
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const {onEqualityCheck, isRegistered, ...rest} = field.fieldState;
-    const {name} = props;
-
-    return {
-      name,
-      ...field,
-      fieldProps: props,
-      fieldState: rest,
-    };
-  })();
+        return {
+          name,
+          ...field,
+          fieldProps: props,
+          fieldState: rest,
+        };
+      })()
+    : undefined;
 
   useEffect(() => {
     if (fieldApi) {
