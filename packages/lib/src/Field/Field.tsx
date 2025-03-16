@@ -3,7 +3,6 @@ import {observer} from 'mobx-react-lite';
 import {useRegisterField} from './useRegisterField';
 import {FieldContextProvider} from './FieldContext';
 import {type FieldProps} from './Field.types';
-import {invariant} from '../utils/invariant';
 
 export const Field = observer((props: FieldProps) => {
   const {fieldApi} = useRegisterField(props as Omit<FieldProps, 'controller'>);
@@ -13,8 +12,9 @@ export const Field = observer((props: FieldProps) => {
   }
 
   if (props.render) {
-    invariant(props.children === undefined, 'You cannot use both render and children prop');
-
+    if (props.children) {
+      throw new Error('You cannot use both render and children prop');
+    }
     return <FieldContextProvider value={fieldApi}>{props.render({field: fieldApi})}</FieldContextProvider>;
   }
 
