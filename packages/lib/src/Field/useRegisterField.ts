@@ -9,37 +9,26 @@ export const useRegisterField = (props: FieldCommonProps) => {
   const field = controller.fields.get(props.name);
   const isReady = field !== undefined;
 
-  const fieldApi = computed(() =>
-    isReady
-      ? (() => {
-          const {fieldState} = field;
+  const fieldApi = computed(() => {
+    if (isReady) {
+      const {fieldState} = field;
 
-          const safeErrors = toJSCompat(field.errors);
-          const safeValue = toJSCompat(field.value);
+      const safeErrors = toJSCompat(field.errors);
+      const safeValue = toJSCompat(field.value);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const {onEqualityCheck, isRegistered, ...rest} = fieldState;
 
-          return {
-            name: props.name,
-            value: safeValue,
-            errors: safeErrors,
-            fieldProps: props,
-            fieldState: {
-              initialValue: fieldState.initialValue,
-              isActive: fieldState.isActive,
-              isDirty: fieldState.isDirty,
-              isTouched: fieldState.isTouched,
-              isChanged: fieldState.isChanged,
-              isValidating: fieldState.isValidating,
-              isMounted: fieldState.isMounted,
-            },
-            validateField: field.validateField,
-            validate: field.validate,
-            onChange: field.onChange,
-            onFocus: field.onFocus,
-            onBlur: field.onBlur,
-          };
-        })()
-      : undefined,
-  );
+      return {
+        ...field,
+        name: props.name,
+        value: safeValue,
+        errors: safeErrors,
+        fieldProps: props,
+        fieldState: rest,
+      };
+    }
+    return undefined;
+  });
 
   useEffect(() => {
     if (isReady) {
