@@ -6,7 +6,7 @@ export type OnValidateFunction<T = any> =
   | ((value: T, values?: any) => any)
   | ((value: T, values?: any) => Promise<any>);
 
-export type FieldState = Readonly<{
+export type FieldState = {
   initialValue: any;
   isDirty: boolean;
   isTouched: boolean;
@@ -14,12 +14,12 @@ export type FieldState = Readonly<{
   isActive: boolean;
   isValidating: boolean;
   isMounted: boolean;
-}>;
+};
 
-export type FieldApi<T = any> = Readonly<{
+export type FieldApi<T = any> = {
   name: string;
   fieldState: FieldState;
-  value: any;
+  value: T;
   errors: any;
   onChange: (value: any) => void;
   onFocus: () => void;
@@ -27,7 +27,7 @@ export type FieldApi<T = any> = Readonly<{
   validate: () => Promise<any>;
   validateField: () => Promise<any>;
   fieldProps: FieldProps<T>;
-}>;
+};
 
 export type FieldRenderProps<T = any> = {
   field: FieldApi<T>;

@@ -1,5 +1,5 @@
 import {type FormEvent} from 'react';
-import {type OnEqualityCheckFunction, type FieldProps, type FieldApi} from '../Field/Field.types';
+import {type OnEqualityCheckFunction, type FieldApi} from '../Field/Field.types';
 
 export type Values = Record<string, any>;
 export type Errors = Record<string, any>;
@@ -18,12 +18,11 @@ export type FormControllerOptions = {
   onSubmit?: (params: SubmitParams) => any;
 };
 
-export type FormField = {
-  fieldState: FieldState;
-  fieldProps?: FieldProps;
-  value: any;
-  errors: any;
-} & Pick<FieldApi, 'onChange' | 'onFocus' | 'onBlur' | 'validate' | 'validateField'>;
+export type FormField = Omit<FieldApi, 'name'> & {name?: string} & {
+  fieldState: FieldState & {
+    isRegistered: boolean;
+  };
+};
 
 export type FieldState = {
   onEqualityCheck: OnEqualityCheckFunction;

@@ -55,7 +55,7 @@ export class FormControllerClass {
           set(
             this.safeApiValuesCopy,
             fieldName,
-            field.fieldProps?.onFormat ? field.fieldProps.onFormat(safeValue) : safeValue,
+            field.fieldProps.onFormat ? field.fieldProps.onFormat(safeValue) : safeValue,
           );
         }
       } else {
@@ -68,7 +68,7 @@ export class FormControllerClass {
             set(
               this.safeApiValuesCopy,
               name,
-              field.fieldProps?.onFormat ? field.fieldProps.onFormat(safeValue) : safeValue,
+              field.fieldProps.onFormat ? field.fieldProps.onFormat(safeValue) : safeValue,
             );
           }
         });
@@ -178,7 +178,7 @@ export class FormControllerClass {
       const rawFieldProps = {
         errors: undefined,
         value: undefined,
-        fieldProps: undefined,
+        fieldProps: undefined as any,
         validateField: () => this.validateField(fieldName),
         validate: () => this.validate(),
         onChange: (value: unknown) => {
@@ -274,7 +274,7 @@ export class FormControllerClass {
     runInAction(() => {
       const field = this.fields.get(name)!;
 
-      if (field.fieldProps!.persist) {
+      if (field.fieldProps.persist) {
         field.fieldState.isMounted = false;
       } else {
         this.fields.delete(name);
@@ -356,7 +356,7 @@ export class FormControllerClass {
     runInAction(() => {
       this.fields.forEach((field, name) => {
         const newValue = get(values, name);
-        const fieldName = field.fieldProps?.name;
+        const fieldName = field.fieldProps.name;
 
         field.value = newValue;
 

@@ -13,10 +13,10 @@ export type InputAdapterProps = {
 } & Partial<FieldRenderProps>;
 
 export const Input = observer((props: InputAdapterProps) => {
-  const formagusHook = useField();
+  const field = useField();
   const {useHook = true, useRenderCounter} = props;
   const {fieldProps, onFocus, onBlur, validate, validateField, name, onChange, value, errors, fieldState} = useHook
-    ? formagusHook
+    ? field
     : props.field!;
   const normalizedValue = isNil(value) ? '' : value;
   const formState = useForm().formState;

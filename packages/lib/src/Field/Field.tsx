@@ -5,20 +5,19 @@ import {FieldContextProvider} from './FieldContext';
 import {type FieldProps} from './Field.types';
 
 export const Field = observer((props: FieldProps) => {
-  const {fieldApi} = useRegisterField(props as Omit<FieldProps, 'controller'>);
+  const field = useRegisterField(props as Omit<FieldProps, 'controller'>);
 
-  if (!fieldApi) {
+  if (props.render && props.children) {
+    throw new Error('You cannot use both render and children prop');
+  }
+
+  if (!field) {
     return null;
   }
 
-  if (props.render) {
-    if (props.children) {
-      throw new Error('You cannot use both render and children prop');
-    }
-    return <FieldContextProvider value={fieldApi}>{props.render({field: fieldApi})}</FieldContextProvider>;
-  }
-
-  return <FieldContextProvider value={fieldApi}>{props.children}</FieldContextProvider>;
+  return (
+    <FieldContextProvider value={field}>{props.render ? props.render({field}) : props.children}</FieldContextProvider>
+  );
 });
 
 Field.displayName = 'FormagusField';
