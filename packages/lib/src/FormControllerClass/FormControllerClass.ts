@@ -328,15 +328,27 @@ export class FormControllerClass {
 
   protected updateIsDirtyBasedOnFields = () => {
     runInAction(() => {
-      const fields = [...this.fields.values()];
-      this.API.formState.isDirty = fields.some((field) => field.fieldState.isMounted && field.fieldState.isDirty);
+      let isDirty = false;
+      for (const field of this.fields.values()) {
+        if (field.fieldState.isMounted && field.fieldState.isDirty) {
+          isDirty = true;
+          break;
+        }
+      }
+      this.API.formState.isDirty = isDirty;
     });
   };
 
   protected updateIsChangedBasedOnFields = () => {
     runInAction(() => {
-      const fields = [...this.fields.values()];
-      this.API.formState.isChanged = fields.some((field) => field.fieldState.isMounted && field.fieldState.isChanged);
+      let isChanged = false;
+      for (const field of this.fields.values()) {
+        if (field.fieldState.isMounted && field.fieldState.isChanged) {
+          isChanged = true;
+          break;
+        }
+      }
+      this.API.formState.isChanged = isChanged;
     });
   };
 
