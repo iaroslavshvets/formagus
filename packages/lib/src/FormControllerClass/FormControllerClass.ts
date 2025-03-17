@@ -100,62 +100,38 @@ export class FormControllerClass {
   };
 
   // executes all field level validators passed to Fields as a `onValidate` prop and returns errors
-  protected runFieldLevelValidations = () => {
-    return runInAction(() => {
-      let pendingValidationCount = Object.keys(this.fieldLevelValidations).length;
+  protected runFieldLevelValidations = async () => {
+    if (isEmpty(this.fieldLevelValidations)) {
+      return {};
+    }
 
-      if (pendingValidationCount === 0) {
-        return {};
-      }
+    const errors: Record<string, unknown> = {};
 
-      const errors: Record<string, unknown> = {};
+    await Promise.all(
+      Object.keys(this.fieldLevelValidations).map(async (fieldName) => {
+        const field = this.fields.get(fieldName)!;
 
-      return new Promise<typeof errors>((resolve) => {
-        Object.keys(this.fieldLevelValidations).forEach((fieldName) => {
-          const field = this.fields.get(fieldName)!;
-
-          runInAction(() => {
-            field.fieldState.isValidating = true;
-          });
-
-          void Promise.resolve(this.runFieldLevelValidation(fieldName)).then((error) => {
-            if (error !== undefined && error !== null) {
-              errors[fieldName] = error;
-            }
-
-            runInAction(() => {
-              field.fieldState.isValidating = false;
-            });
-
-            pendingValidationCount -= 1;
-
-            if (pendingValidationCount === 0) {
-              resolve(errors);
-            }
-          });
+        runInAction(() => {
+          field.fieldState.isValidating = true;
         });
-      });
-    });
+
+        const error = await this.runFieldLevelValidation(fieldName);
+
+        if (error !== undefined && error !== null) {
+          errors[fieldName] = error;
+        }
+
+        runInAction(() => {
+          field.fieldState.isValidating = false;
+        });
+      }),
+    );
+
+    return errors;
   };
 
   // all registered form fields, new field is being added when Field constructor is called
   fields = new Map<string, FormField>();
-
-  protected updateErrors = (params: {value: unknown} | {mutator: () => unknown}) => {
-    runInAction(() => {
-      if ('value' in params) {
-        if (typeof params.value === 'object' && params.value !== null) {
-          this.API.errors = params.value;
-        } else {
-          this.API.errors = {};
-        }
-      } else {
-        params.mutator();
-      }
-
-      this.API.formState.isValid = Object.keys(this.API.errors).length === 0;
-    });
-  };
 
   // runs validation for particular field
   protected runFieldLevelValidation = (fieldName: string) => {
@@ -269,7 +245,7 @@ export class FormControllerClass {
         this.fields.delete(name);
       }
 
-      this.updateIsDirtyBasedOnFields();
+      this.updateFormIsDirtyBasedOnFields();
 
       // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete this.fieldLevelValidations[name];
@@ -326,7 +302,7 @@ export class FormControllerClass {
     });
   };
 
-  protected updateIsDirtyBasedOnFields = () => {
+  protected updateFormIsDirtyBasedOnFields = () => {
     runInAction(() => {
       let isDirty = false;
       for (const field of this.fields.values()) {
@@ -339,7 +315,7 @@ export class FormControllerClass {
     });
   };
 
-  protected updateIsChangedBasedOnFields = () => {
+  protected updateFormIsChangedBasedOnFields = () => {
     runInAction(() => {
       let isChanged = false;
       for (const field of this.fields.values()) {
@@ -409,8 +385,8 @@ export class FormControllerClass {
         isDirty: !field.fieldState.onEqualityCheck(value, field.fieldState.initialValue),
       });
 
-      this.updateIsChangedBasedOnFields();
-      this.updateIsDirtyBasedOnFields();
+      this.updateFormIsChangedBasedOnFields();
+      this.updateFormIsDirtyBasedOnFields();
 
       this.updateAPIValues(fieldName, value);
     });
@@ -440,22 +416,21 @@ export class FormControllerClass {
     runInAction(() => {
       field.fieldState.isValidating = false;
 
-      this.updateErrors({
-        mutator: () => {
-          if (isEmpty(errors)) {
-            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-            delete this.API.errors[fieldName];
-          } else {
-            this.API.errors[fieldName] = errors;
-          }
-        },
-      });
+      if (isEmpty(errors)) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete this.API.errors[fieldName];
+      } else {
+        this.API.errors[fieldName] = errors;
+      }
 
       if (field.fieldState.isMounted) {
         field.errors = errors;
       }
 
-      this.API.formState.isValidating = false;
+      assign(this.API.formState, {
+        isValid: isEmpty(this.API.errors),
+        isValidating: false,
+      });
     });
 
     return errors;
@@ -464,23 +439,26 @@ export class FormControllerClass {
   // validates the form, by calling form level onValidate function combined with field level validations,
   // passed to Field as `onValidate` prop
   protected validate: FormApi['validate'] = async () => {
-    const hasFieldLevelValidations = Object.keys(this.fieldLevelValidations).length > 0;
-
     runInAction(() => {
       this.API.formState.isValidating = true;
     });
 
     const [fieldValidationErrors, formValidationErrors] = await Promise.all([
-      hasFieldLevelValidations ? this.runFieldLevelValidations() : {},
+      !isEmpty(this.fieldLevelValidations) ? this.runFieldLevelValidations() : {},
       this.options.onValidate ? this.runFormLevelValidations() : {},
     ]);
 
     const combinedErrors = mergeDeep(fieldValidationErrors, formValidationErrors);
 
     runInAction(() => {
-      this.updateErrors({value: combinedErrors});
-      this.updateErrorsForEveryField(this.API.errors);
-      this.API.formState.isValidating = false;
+      this.API.errors = combinedErrors;
+
+      this.updateErrorsForEveryField(combinedErrors);
+
+      assign(this.API.formState, {
+        isValid: isEmpty(combinedErrors),
+        isValidating: false,
+      });
     });
 
     return combinedErrors;
@@ -521,7 +499,7 @@ export class FormControllerClass {
       runInAction(() => {
         if (isEmpty(nonObservableErrors)) {
           this.updateInitialValues();
-          this.updateIsDirtyBasedOnFields();
+          this.updateFormIsDirtyBasedOnFields();
         }
         this.API.formState.isSubmitting = false;
       });
