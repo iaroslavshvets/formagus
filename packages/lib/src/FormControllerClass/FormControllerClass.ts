@@ -305,7 +305,7 @@ export class FormControllerClass {
   protected updateFormIsDirtyBasedOnFields = () => {
     runInAction(() => {
       let isDirty = false;
-      for (const [, field] of this.fields) {
+      for (const field of this.fields.values()) {
         if (field.fieldState.isMounted && field.fieldState.isDirty) {
           isDirty = true;
           break;
@@ -318,7 +318,7 @@ export class FormControllerClass {
   protected updateFormIsChangedBasedOnFields = () => {
     runInAction(() => {
       let isChanged = false;
-      for (const [, field] of this.fields) {
+      for (const field of this.fields.values()) {
         if (field.fieldState.isMounted && field.fieldState.isChanged) {
           isChanged = true;
           break;
