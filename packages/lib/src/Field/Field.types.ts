@@ -6,7 +6,7 @@ export type OnValidateFunction<T = any> =
   | ((value: T, values?: any) => any)
   | ((value: T, values?: any) => Promise<any>);
 
-export type FieldMeta = Readonly<{
+export type FieldState = {
   initialValue: any;
   isDirty: boolean;
   isTouched: boolean;
@@ -14,44 +14,38 @@ export type FieldMeta = Readonly<{
   isActive: boolean;
   isValidating: boolean;
   isMounted: boolean;
-  /** @deprecated */
-  customState: Record<string, any>;
-}>;
+};
 
-export type FieldFormagus<T = any> = Readonly<{
+export type FieldApi<T = any> = {
   name: string;
-  meta: FieldMeta;
-  value: any;
+  fieldState: FieldState;
+  value: T;
   errors: any;
-  /** @deprecated */
-
-  setCustomState: (key: string, value: any) => void;
-
   onChange: (value: any) => void;
   onFocus: () => void;
   onBlur: () => void;
   validate: () => Promise<any>;
   validateField: () => Promise<any>;
   fieldProps: FieldProps<T>;
-}>;
+};
 
-export interface FieldRenderProps<T = any> {
-  formagus: FieldFormagus<T>;
-}
+export type FieldRenderProps<T = any> = {
+  field: FieldApi<T>;
+};
 
 export type OnFormatFunction<T = any> = (value: T) => any;
 export type OnEqualityCheckFunction<T = any> = (newValue: T, oldValue: T) => boolean;
 
-export interface FieldCommonProps<T = any> {
+export type FieldCommonProps<T = any> = {
   name: string;
   defaultValue?: T;
   onValidate?: OnValidateFunction<T>;
   onFormat?: OnFormatFunction<T>;
   onEqualityCheck?: OnEqualityCheckFunction<T>;
-  onInit?: (API: FieldFormagus) => void;
+  onInit?: (API: FieldApi) => void;
   persist?: boolean;
   controller?: FormControllerClass;
-}
+};
 
 export type FieldProps<T = any> = Omit<FieldCommonProps<T>, 'controller'> & {
   controller?: FormController;

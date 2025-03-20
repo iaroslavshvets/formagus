@@ -1,5 +1,5 @@
-import {type FormAPI} from '../FormControllerClass/FormControllerClass.types';
+import {type FormApi} from '../FormControllerClass/FormControllerClass.types';
 
-export interface FormController {
-  API: FormAPI;
-}
+export type FormController = {
+  API: FormApi;
+};

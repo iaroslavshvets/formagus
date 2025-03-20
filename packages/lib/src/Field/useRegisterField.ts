@@ -1,51 +1,35 @@
 import {useEffect} from 'react';
-import {computed} from 'mobx';
 import {useFormControllerClass} from '../Form/useFormControllerClass';
-import {toJSCompat} from '../utils/toJSCompat';
-import {type FieldCommonProps, type FieldFormagus} from './Field.types';
+import {type FieldApi, type FieldCommonProps} from './Field.types';
+import {computed} from 'mobx';
 
 export const useRegisterField = (props: FieldCommonProps) => {
   const controller = useFormControllerClass(props);
   const field = controller.fields.get(props.name);
   const isReady = field !== undefined;
 
-  const formagus = computed<FieldFormagus | undefined>(() => {
-    if (!isReady) {
-      // component is not yet registered
-      return undefined;
+  const fieldApi = computed<FieldApi | undefined>(() => {
+    if (isReady) {
+      const {fieldState} = field;
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const {onEqualityCheck, isRegistered, ...rest} = fieldState;
+
+      return {
+        ...field,
+        name: props.name,
+        fieldProps: props,
+        fieldState: rest,
+      };
     }
-
-    const {meta} = field;
-
-    const safeErrors = toJSCompat(field.errors);
-    const safeValue = toJSCompat(field.value);
-    const safeCustomState = toJSCompat(meta.customState);
-
-    return {
-      name: props.name,
-      value: safeValue,
-      errors: safeErrors,
-      fieldProps: props,
-      meta: {
-        /** @deprecated don't use */
-        customState: safeCustomState,
-        initialValue: meta.initialValue,
-        isActive: meta.isActive,
-        isDirty: meta.isDirty,
-        isTouched: meta.isTouched,
-        isChanged: meta.isChanged,
-        isValidating: meta.isValidating,
-        isMounted: meta.isMounted,
-      },
-      /** @deprecated */
-      setCustomState: field.setCustomState,
-      validateField: field.validateField,
-      validate: field.validate,
-      onChange: field.onChange,
-      onFocus: field.onFocus,
-      onBlur: field.onBlur,
-    };
+    return undefined;
   });
+
+  useEffect(() => {
+    if (isReady) {
+      props.onInit?.(fieldApi.get()!);
+    }
+  }, [isReady]);
 
   useEffect(() => {
     controller.registerField(props);
@@ -54,14 +38,5 @@ export const useRegisterField = (props: FieldCommonProps) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (isReady) {
-      props.onInit?.(formagus.get()!);
-    }
-  }, [isReady]);
-
-  return {
-    isReady,
-    formagus: formagus.get(),
-  };
+  return fieldApi.get();
 };

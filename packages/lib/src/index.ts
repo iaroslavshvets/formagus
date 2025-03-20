@@ -2,12 +2,12 @@ export type {
   OnValidateFunction,
   OnEqualityCheckFunction,
   FieldProps,
-  FieldMeta,
-  FieldFormagus,
+  FieldState,
+  FieldApi,
   FieldRenderProps,
 } from './Field/Field.types';
 export type {FormProps} from './Form/Form.types';
-export type {FormAPI, FormField} from './FormControllerClass/FormControllerClass.types';
+export type {FormApi, FormField} from './FormControllerClass/FormControllerClass.types';
 export type {FormController} from './createFormController/createFormController.types';
 
 /**
@@ -24,6 +24,4 @@ export {useField} from './useField';
 export {Form} from './Form/Form';
 export {useForm} from './useForm';
 
-// deprecated, but still may be used with React class components
-export {injectFormApi} from './injectFormApi/injectFormApi';
-export {InjectedFormAPI} from './injectFormApi/injectFormApi.types';
+export {get as getValue, set as setValue} from 'lodash';

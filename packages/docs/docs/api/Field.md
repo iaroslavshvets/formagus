@@ -16,7 +16,7 @@
 | persist         | boolean |
 | adapterProps    | any |
 
-[EqualityCheckFunction]: ./types/EqualityCheckFunction
-[FormatterFunction]: ./types/FormatterFunction
-[ValidationFunction]: ./types/ValidationFunction
+[EqualityCheckFunction]: ./types/OnEqualityCheckFunction
+[FormatterFunction]: ./types/OnFormatFunction
+[ValidationFunction]: ./types/OnValidateFunction
 [AdapterProps]: ./types/AdapterProps

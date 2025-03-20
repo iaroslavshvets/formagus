@@ -5,5 +5,5 @@ import {type FormControllerClass} from '../FormControllerClass/FormControllerCla
 export const useFormControllerClass = (props?: {controller?: FormControllerClass}) => {
   const controllerFromContext = useContext(FormControllerContext);
 
-  return props?.controller || controllerFromContext;
+  return props?.controller ?? controllerFromContext;
 };

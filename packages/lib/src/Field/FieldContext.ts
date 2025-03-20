@@ -1,6 +1,6 @@
 import {createContext} from 'react';
-import {type FieldFormagus} from './Field.types';
+import {type FieldApi} from './Field.types';
 
-export const FieldContext = createContext<FieldFormagus | undefined>(undefined);
+export const FieldContext = createContext<FieldApi | null>(null);
 
 export const FieldContextProvider = FieldContext.Provider;
