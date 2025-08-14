@@ -55,15 +55,10 @@ export type FormApi = {
     submitEvent?: FormEvent<T>,
   ) => Promise<
     Omit<SubmitParams<T>, 'event'> & {
-      submitResult:
-        | {
-            isValid: true;
-            response: any;
-          }
-        | {
-            isValid: false;
-            error: Error;
-          };
+      submitResult: {
+        error?: unknown;
+        response?: any;
+      };
     }
   >;
   reset: (values?: Values) => void;
