@@ -515,15 +515,10 @@ export class FormControllerClass {
       errors: nonObservableErrors!,
       values: nonObservableValues!,
       isValid,
-      submitResult: isValid
-        ? ({
-            isValid,
-            response,
-          } as const)
-        : ({
-            isValid,
-            error: error as Error,
-          } as const),
+      submitResult: {
+        error,
+        response,
+      },
     };
   };
 }
