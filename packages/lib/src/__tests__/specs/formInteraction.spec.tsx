@@ -246,4 +246,40 @@ describe('Form interaction', () => {
 
     expect(window.$_TEST_RENDER_COUNT_$![TestForm.FIELD_ONE_NAME]).toBe(1);
   });
+
+  describe('submitResult', () => {
+    it('should return submitResult.error in case onSubmit throws an error', async () => {
+      const error = new Error('test error');
+      const controller = createFormController({
+        initialValues: {},
+        onSubmit: async () => {
+          throw error;
+        },
+      });
+
+      await act(async () => {
+        const {submitResult} = await controller.API.submit();
+
+        expect(submitResult.error).toBe(error);
+        expect(submitResult.response).toBeUndefined();
+      });
+    });
+
+    it('should return submitResult.response in case onSubmit returns a response', async () => {
+      const response = {success: true};
+      const controller = createFormController({
+        initialValues: {},
+        onSubmit: async () => {
+          return Promise.resolve(response);
+        },
+      });
+
+      await act(async () => {
+        const {submitResult} = await controller.API.submit();
+
+        expect(submitResult.response).toEqual(response);
+        expect(submitResult.error).toBeUndefined();
+      });
+    });
+  });
 });
