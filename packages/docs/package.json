@@ -28,7 +28,7 @@
     "@docusaurus/module-type-aliases": "^3.7.0",
     "@docusaurus/theme-mermaid": "^3.7.0",
     "@tsconfig/docusaurus": "^2.0.3",
-    "@types/node": "^22.13.10",
+    "@types/node": "^24.7.0",
     "surge": "^0.24.6",
     "typescript": "^5.8.2"
   },
