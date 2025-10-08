@@ -126,7 +126,7 @@ describe('Field state', () => {
 
     expect(fieldDriver.get.fieldState('isValidating')).not.toBe('true');
 
-    await act(() => formDriver.when.submit());
+    await act(() => formDriver.whenSubmit());
 
     await eventually(() => {
       expect(isValidatingResults[1]).toBe(true);

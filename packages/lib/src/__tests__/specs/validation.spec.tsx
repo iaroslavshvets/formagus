@@ -26,7 +26,7 @@ describe('Validation', () => {
       const formDriver = createTestFormDriver({wrapper});
       const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
-      await act(() => formDriver.when.submit());
+      await act(() => formDriver.whenSubmit());
 
       await eventually(() => {
         expect(fieldDriver.get.errors('notBatman')).not.toBe(null);
@@ -57,7 +57,7 @@ describe('Validation', () => {
       const formDriver = createTestFormDriver({wrapper});
       const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
-      await act(() => formDriver.when.submit());
+      await act(() => formDriver.whenSubmit());
 
       await eventually(() => {
         expect(fieldDriver.get.errors('nameError')).not.toBe(null);
@@ -87,14 +87,14 @@ describe('Validation', () => {
       const formDriver = createTestFormDriver({wrapper});
       const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
-      await act(() => formDriver.when.submit());
+      await act(() => formDriver.whenSubmit());
 
       await eventually(() => {
         expect(fieldDriver.get.errors('nameError')).not.toBe(null);
       });
 
       await fieldDriver.when.change('Bruce');
-      await act(() => formDriver.when.submit());
+      await act(() => formDriver.whenSubmit());
 
       await eventually(() => {
         expect(fieldDriver.get.errors('nameError')).toBe(null);
@@ -122,14 +122,14 @@ describe('Validation', () => {
       const formDriver = createTestFormDriver({wrapper});
       const fieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
 
-      await act(() => formDriver.when.submit());
+      await act(() => formDriver.whenSubmit());
 
       await eventually(() => {
         expect(fieldDriver.get.errors('nameError')).not.toBe(null);
       });
 
       await fieldDriver.when.change('Bruce');
-      await act(() => formDriver.when.submit());
+      await act(() => formDriver.whenSubmit());
 
       await eventually(() => {
         expect(fieldDriver.get.errors('nameError')).toBe(null);
@@ -212,7 +212,7 @@ describe('Validation', () => {
       const firstFieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_ONE_NAME});
       const secondFieldDriver = createInputDriver({wrapper, dataHook: TestForm.FIELD_TWO_NAME});
 
-      await act(() => formDriver.when.submit());
+      await act(() => formDriver.whenSubmit());
 
       await eventually(() => {
         expect(firstFieldDriver.get.errors('RobinHood')).not.toBe(null);

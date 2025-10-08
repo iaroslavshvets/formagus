@@ -89,9 +89,9 @@ describe('Form props', () => {
     const fieldTwoDriver = createInputDriver({wrapper, dataHook: FIELD_TWO_NAME});
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const getFirstFieldValue = () => formDriver.get.values().array?.[0].field_one_name;
+    const getFirstFieldValue = () => formDriver.getValues().array?.[0].field_one_name;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const getSecondFieldValue = () => formDriver.get.values().array?.[0].field_two_name;
+    const getSecondFieldValue = () => formDriver.getValues().array?.[0].field_two_name;
 
     expect(getFirstFieldValue()).toBe('John Snow:formatted');
     expect(getSecondFieldValue()).toBe('Ned Stark:formatted');
@@ -102,7 +102,7 @@ describe('Form props', () => {
     expect(getFirstFieldValue()).toBe('Tyrion Lannister:formatted');
     expect(getSecondFieldValue()).toBe('Arya Stark:formatted');
 
-    await act(() => formDriver.when.submit());
+    await act(() => formDriver.whenSubmit());
 
     expect(onValidate).toBeCalledWith({
       array: [

@@ -1,18 +1,11 @@
+import {getBase} from '../../helpers/getBase';
+
 export const createFieldValueDisplayDriver = (options: {wrapper: Element; dataHook: string}) => {
   const {wrapper, dataHook} = options;
 
-  const API = {
-    get: {
-      root: () => {
-        return wrapper.querySelector(`[data-hook="${dataHook}"]`);
-      },
-      text: () => {
-        return API.get.root()?.textContent;
-      },
-    },
-  };
-
   return {
-    get: {text: API.get.text},
+    getText: () => {
+      return getBase(wrapper, dataHook).textContent;
+    },
   };
 };

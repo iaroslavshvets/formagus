@@ -1,2 +1,2 @@
-export * from './FieldValueDisplayWithHook';
+export * from './FieldValueDisplay';
 export * from './createFieldValueDisplayDriver';
