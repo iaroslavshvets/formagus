@@ -42,7 +42,7 @@ describe('Subscriptions', () => {
 
     const formDriver = createTestFormDriver({wrapper});
 
-    await act(() => formDriver.when.submit());
+    await act(() => formDriver.whenSubmit());
 
     await eventually(() => {
       expect(submitTimeTotal).toBeGreaterThanOrEqual(1);

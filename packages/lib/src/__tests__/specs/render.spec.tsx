@@ -27,6 +27,6 @@ describe('Render', () => {
 
     const formDriver = createTestFormDriver({wrapper});
 
-    expect(formDriver.get.serialized()).toMatchSnapshot();
+    expect(formDriver.getSerialized()).toMatchSnapshot();
   });
 });

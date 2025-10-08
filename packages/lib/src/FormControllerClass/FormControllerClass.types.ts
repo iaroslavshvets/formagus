@@ -69,4 +69,8 @@ export type FormApi = {
   validateField: (fieldName: string) => any;
   setFieldValue: (fieldName: string, value: any) => void;
   getFields: () => Record<string, FormField>;
+  // controller
+  controller: {
+    options: FormControllerOptions;
+  };
 };

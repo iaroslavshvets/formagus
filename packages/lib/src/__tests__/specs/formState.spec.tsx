@@ -33,13 +33,13 @@ describe('Form state', () => {
     expect(fieldDriver.get.formState('isValid')).toBe('true');
 
     await fieldDriver.when.change('harvy');
-    await act(() => formDriver.when.submit());
+    await act(() => formDriver.whenSubmit());
     await eventually(() => {
       expect(fieldDriver.get.formState('isValid')).toBe('false');
     });
 
     await fieldDriver.when.change('batman');
-    await act(() => formDriver.when.submit());
+    await act(() => formDriver.whenSubmit());
     await eventually(() => {
       expect(fieldDriver.get.formState('isValid')).toBe('true');
     });
@@ -180,7 +180,7 @@ describe('Form state', () => {
 
     expect(fieldDriver.get.formState('submitCount')).toBe('0');
 
-    await act(() => formDriver.when.submit());
+    await act(() => formDriver.whenSubmit());
 
     expect(fieldDriver.get.formState('submitCount')).toBe('1');
   });
@@ -205,7 +205,7 @@ describe('Form state', () => {
 
     expect(fieldDriver.get.formState('isSubmitting')).toBe('false');
 
-    await act(() => formDriver.when.submit());
+    await act(() => formDriver.whenSubmit());
 
     await eventually(() => {
       expect(isSubmittingResults[0]).toBe(true);
@@ -237,7 +237,7 @@ describe('Form state', () => {
 
     expect(fieldDriver.get.formState('isValidating')).toBe('false');
 
-    await act(() => formDriver.when.submit());
+    await act(() => formDriver.whenSubmit());
 
     await eventually(() => {
       expect(isValidatingResults[0]).toBe(true);
