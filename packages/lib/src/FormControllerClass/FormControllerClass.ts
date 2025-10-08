@@ -14,7 +14,7 @@ import {assign} from '../utils/assign';
 
 export class FormControllerClass {
   // Form options passed through form Props or directly through new Controller(options)
-  options: FormControllerOptions;
+  protected options: FormControllerOptions;
 
   constructor(options: FormControllerOptions) {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
