@@ -8,11 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Install node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
+      - name: Shai-Hulud 2.0 Detector
+        uses: gensecaihq/Shai-Hulud-2.0-Detector@v2.0.0
       - name: Install dependencies
         uses: borales/actions-yarn@v4
         with:
