@@ -1,0 +1,60 @@
+# This workflow reviews and audits dependencies in pull requests using dependency review and npm audit.
+#
+name: Dependencies
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  # Allows you to call this workflow from other workflows
+  workflow_call:
+
+concurrency:
+  group: ${{ github.workflow }}_${{ github.head_ref || github.ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    name: '⛓️ Dependency Review'
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: '☁️ Checkout repository'
+        uses: actions/checkout@v6
+
+      - name: '⚙️ Use Node.js'
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: '🛡️ Dependency Review'
+        uses: actions/dependency-review-action@v4
+        with:
+          retry-on-snapshot-warnings: true
+          comment-summary-in-pr: on-failure
+
+      - name: '⛓️ Install dependencies'
+        run: npm ci --no-optional --no-audit --prefer-offline --progress=false --ignore-scripts
+
+      - name: '🔏 Audit NPM dependencies signatures'
+        run: npm audit signatures
+
+  security-check:
+    name: '🕵️ Security Checks'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: '☁️ Checkout repository'
+        uses: actions/checkout@v6
+
+      - name: '🦠 Shai-Hulud Check'
+        uses: gensecaihq/Shai-Hulud-2.0-Detector@v2.0.0
+        with:
+          fail-on-critical: true

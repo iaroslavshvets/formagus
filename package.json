@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "author": "iaroslav.shvets@gmail.com",
-  "packageManager": "yarn@4.7.0",
+  "packageManager": "yarn@4.12.0",
   "workspaces": {
     "packages": [
       "packages/lib",
