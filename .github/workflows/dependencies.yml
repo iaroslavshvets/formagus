@@ -41,7 +41,7 @@ jobs:
           comment-summary-in-pr: on-failure
 
       - name: '⛓️ Install dependencies'
-        run: npm ci --no-optional --no-audit --prefer-offline --progress=false --ignore-scripts
+        run: NPQ_PKG_MGR=yarn npx npq install
 
       - name: '🔏 Audit NPM dependencies signatures'
         run: npm audit signatures
