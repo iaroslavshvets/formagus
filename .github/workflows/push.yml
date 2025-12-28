@@ -10,25 +10,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
       - name: Install node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@65d868f8d4d85d7d4abb7de0875cde3fcc8798f5
         with:
-          node-version: 22
+          node-version: 24
       - name: Install dependencies
-        uses: borales/actions-yarn@v4
+        uses: borales/actions-yarn@972a7c1f85208fe23aa783c7841034a43c40c162
         with:
-          cmd: install
+          cmd: NPQ_PKG_MGR=yarn npx npq install
       - name: Build library
-        uses: borales/actions-yarn@v4
+        uses: borales/actions-yarn@972a7c1f85208fe23aa783c7841034a43c40c162
         with:
           dir: packages/lib
           cmd: build
       - name: Test library
-        uses: borales/actions-yarn@v4
+        uses: borales/actions-yarn@972a7c1f85208fe23aa783c7841034a43c40c162
         with:
           dir: packages/lib
           cmd: test:coverage
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

@@ -1,0 +1,62 @@
+# This workflow reviews and audits dependencies in pull requests using dependency review and npm audit.
+#
+name: Dependencies
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  # Allows you to call this workflow from other workflows
+  workflow_call:
+
+concurrency:
+  group: ${{ github.workflow }}_${{ github.head_ref || github.ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    name: '⛓️ Dependency Review'
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: '☁️ Checkout repository'
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+
+      - name: '⚙️ Use Node.js'
+        uses: actions/setup-node@65d868f8d4d85d7d4abb7de0875cde3fcc8798f5
+        with:
+          node-version: 24
+
+      - name: '🛡️ Dependency Review'
+        uses: actions/dependency-review-action@774d14bf50b7a2e2460f9f49e25c52503ecab125
+        with:
+          retry-on-snapshot-warnings: true
+          comment-summary-in-pr: on-failure
+
+      - name: Install dependencies
+        uses: borales/actions-yarn@972a7c1f85208fe23aa783c7841034a43c40c162
+        with:
+          cmd: NPQ_PKG_MGR=yarn npx npq install
+
+      - name: '🔏 Audit NPM dependencies signatures'
+        run: npm audit signatures
+
+  security-check:
+    name: '🕵️ Security Checks'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: '☁️ Checkout repository'
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+
+      - name: '🦠 Shai-Hulud Check'
+        uses: gensecaihq/Shai-Hulud-2.0-Detector@v2.0.0
+        with:
+          fail-on-critical: true
