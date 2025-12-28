@@ -17,8 +17,6 @@ jobs:
           node-version: 24
       - name: Install dependencies
         run: NPQ_PKG_MGR=yarn npx npq install
-        with:
-          cmd: install
       - name: Build library
         uses: borales/actions-yarn@v4
         with:
